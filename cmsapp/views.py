@@ -34,7 +34,7 @@ from django.contrib.auth.decorators import login_required
 
 @login_required
 def home(request):
-    if request.user.is_authenticated():
+    if request.user.is_authenticated:
     #data=Youtube_links.objects.filter(pk=request.user.id).order_by('-id')
     #return render(request,'base.html',{'post':data})
         x = Upload.objects.filter(file_type = "video",user=request.user).order_by('id')[:10]
@@ -509,23 +509,23 @@ def images_upload(request):
 @login_required
 def video_upload_download(link,filename):
 
-	yt = YouTube(link)
+    yt = YouTube(link)
 
 
 
-	yt.streams.first().download("/home/adskite/myproject/signagecms/cmsapp",filename=str(filename))
+    yt.streams.first().download("/home/adskite/myproject/signagecms/cmsapp",filename=str(filename))
 
 
-	return
+    return
 @login_required
 def image_upload_download(link):
 
-	name=link.split('/')[-1]
-	img_data = requests.get(link).content
-	with open('/home/adskite/myproject/signagecms/cmsapp/'+str(name), 'wb') as handler:
-		handler.write(img_data)
+    name=link.split('/')[-1]
+    img_data = requests.get(link).content
+    with open('/home/adskite/myproject/signagecms/cmsapp/'+str(name), 'wb') as handler:
+        handler.write(img_data)
 
-	return name
+    return name
 @login_required
 def downloads_videos(request,num):
     check = Searched_videos.objects.filter(id=int(num))
@@ -580,13 +580,13 @@ def downloads_images(request,num):
 
 def downloads_image_local(link):
 
-	ran = random.randint(0,100000000)
-	name = str(ran)+'.jpg'
-	img_data = requests.get(link).content
-	with open('/home/adskite/myproject/signagecms/static/downloads/images/'+str(name), 'wb') as handler:
-		handler.write(img_data)
+    ran = random.randint(0,100000000)
+    name = str(ran)+'.jpg'
+    img_data = requests.get(link).content
+    with open('/home/adskite/myproject/signagecms/static/downloads/images/'+str(name), 'wb') as handler:
+        handler.write(img_data)
 
-	return name
+    return name
 
 from pytube import YouTube
 
@@ -847,7 +847,8 @@ def upload(request):
         file = request.FILES['file']
         desc = request.POST['desc']
         keys = request.POST['keys']
-        y=keys.decode('utf-8').split(',')
+        #y=keys.decode('utf-8').split(',')
+        y=keys.split(',')
         type=  request.POST['Private']
         group = request.POST['email_gc_name']
         if len(group) == 1:
