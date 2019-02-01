@@ -1,0 +1,86 @@
+
+
+/*#body {
+    position: relative;
+    left: 400px;
+
+}*/
+
+
+/*#home {
+    position: relative;
+    left: 670px;
+    width: 450px;
+    height: 400px;
+    border: 3px solid gainsboro;
+    bottom:400px;
+
+}*/
+
+#home {
+   width:100%;
+   height:auto;
+   border:2px solid #17a2b8;
+   padding:10px;
+   border-radius:2px;
+
+}
+
+
+h4 b {
+    color: darkblue;
+}
+
+h1 {
+    text-align: center;
+}
+
+h1 b {
+    color: darkblue;
+}
+
+
+h3 {
+    text-align: center;
+}
+
+#signup-button {
+    /*position: relative;
+    left: 160px;
+    border-radius: 50px;
+    cursor: pointer;*/
+    width: 100px;
+    text-align: center;
+}
+
+div.bot {
+    position: relative;
+    left: 600px;
+    top: 30px;
+}
+
+
+@media screen and (max-width: 400px) {
+    #home {
+        margin-top:10px;
+        margin-bottom:10px;
+    }
+
+
+ }
+
+ @media screen and (max-width: 565px) {
+    #home {
+        margin-top:10px;
+        margin-bottom:10px;
+    }
+
+ }
+
+  @media screen and (max-width: 765px) {
+    #home {
+        margin-top:10px;
+        margin-bottom:10px;
+    }
+
+ }

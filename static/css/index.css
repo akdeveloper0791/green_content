@@ -1,0 +1,25 @@
+
+/*.**/
+/*{*/
+/*    padding: 0;*/
+/*    margin: 0;*/
+/*}*/
+/*#over*/
+/*{*/
+/*    position:absolute;*/
+/*    width:50%;*/
+/*    height:50%;*/
+    /*text-align: center;*/ /*handles the horizontal centering*/
+/*}*/
+/*handles the vertical centering*/
+/*.Centerer*/
+/*{*/
+/*    display: inline-block;*/
+/*    height: 50%;*/
+/*    vertical-align: middle;*/
+/*}*/
+/*.Centered*/
+/*{*/
+/*    display: inline-block;*/
+/*    vertical-align: middle;*/
+/*}
