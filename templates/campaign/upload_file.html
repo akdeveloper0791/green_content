@@ -1,0 +1,1099 @@
+{% load static %}
+<!doctype html>
+<html>
+<head>
+
+  {% block header %}
+   {% include 'header.html' %}
+  {% endblock %}
+
+  <!--[++] style for horizantal busy dialog -->
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <style>
+  .loader {
+    border: 6px solid #f3f3f3;
+    border-radius: 50%;
+    border-top: 6px solid #000;
+    width: 35px;
+    height: 35px;
+    -webkit-animation: spin 1s linear infinite; /* Safari */
+    animation: spin 1s linear infinite;
+  }
+
+  /* Safari */
+  @-webkit-keyframes spin {
+    0% { -webkit-transform: rotate(0deg); }
+    100% { -webkit-transform: rotate(360deg); }
+  }
+
+  @keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+  }
+
+  /* inderteminate progress bar styles
+  */
+  /* Progress Bar */
+.progress {
+  position: relative;
+  height: 2px; /* initial 4px*/
+  display: block;
+  width: 100%;
+  background-color: #acece6;
+  border-radius: 2px;
+  background-clip: padding-box;
+  margin: 0.5rem 0 1rem 0;
+  overflow: hidden; }
+ 
+  .progress .indeterminate {
+    background-color: #26a69a; }
+    .progress .indeterminate:before {
+      content: '';
+      position: absolute;
+      background-color: inherit;
+      top: 0;
+      left: 0;
+      bottom: 0;
+      will-change: left, right;
+      -webkit-animation: indeterminate 2.1s cubic-bezier(0.65, 0.815, 0.735, 0.395) infinite;
+              animation: indeterminate 2.1s cubic-bezier(0.65, 0.815, 0.735, 0.395) infinite; }
+    .progress .indeterminate:after {
+      content: '';
+      position: absolute;
+      background-color: inherit;
+      top: 0;
+      left: 0;
+      bottom: 0;
+      will-change: left, right;
+      -webkit-animation: indeterminate-short 2.1s cubic-bezier(0.165, 0.84, 0.44, 1) infinite;
+              animation: indeterminate-short 2.1s cubic-bezier(0.165, 0.84, 0.44, 1) infinite;
+      -webkit-animation-delay: 1.15s;
+              animation-delay: 1.15s; }
+
+@-webkit-keyframes indeterminate {
+  0% {
+    left: -35%;
+    right: 100%; }
+  60% {
+    left: 100%;
+    right: -90%; }
+  100% {
+    left: 100%;
+    right: -90%; } }
+@keyframes indeterminate {
+  0% {
+    left: -35%;
+    right: 100%; }
+  60% {
+    left: 100%;
+    right: -90%; }
+  100% {
+    left: 100%;
+    right: -90%; } }
+@-webkit-keyframes indeterminate-short {
+  0% {
+    left: -200%;
+    right: 100%; }
+  60% {
+    left: 107%;
+    right: -8%; }
+  100% {
+    left: 107%;
+    right: -8%; } }
+@keyframes indeterminate-short {
+  0% {
+    left: -200%;
+    right: 100%; }
+  60% {
+    left: 107%;
+    right: -8%; }
+  100% {
+    left: 107%;
+    right: -8%; } }
+
+
+  /* to display the busy dialog in center of the screen 
+  */
+  .centered-modal.in {
+    display: flex !important;
+}
+.centered-modal .modal-dialog {
+    margin: auto;
+}
+</style>
+
+
+
+<!--[-] style for horizantal busy dialog -->
+
+  <title>Upload campaign</title>
+   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
+ 
+
+  <script  src="{% static 'scripts/Dropbox-sdk.min.js' %}"></script>
+   
+   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+   
+</head>
+
+<body>
+<style>
+    @import url(https://fonts.googleapis.com/css?family=Roboto:400,300,600,400italic);
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  -webkit-font-smoothing: antialiased;
+  -moz-font-smoothing: antialiased;
+  -o-font-smoothing: antialiased;
+  font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+body {
+  font-family: "Roboto", Helvetica, Arial, sans-serif;
+  /*font-weight: 100;*/
+  /*font-size: 12px;*/
+  line-height: 30px;
+  color: #777;
+  background: #4CAF50;
+}
+
+.containers {
+  max-width: 400px;
+  width: 100%;
+  margin: 0 auto;
+  position: relative;
+
+}
+
+#contact input[type="text"],
+#contact input[type="email"],
+#contact input[type="tel"],
+#contact input[type="url"],
+#contact textarea,
+#contact button[type="submit"] {
+  font: 400 12px/16px "Roboto", Helvetica, Arial, sans-serif;
+}
+
+#contact {
+  background: #F9F9F9;
+  padding: 25px;
+  margin: 150px 0;
+  box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.2), 0 5px 5px 0 rgba(0, 0, 0, 0.24);
+}
+
+#contact h3 {
+  display: block;
+  font-size: 28px;
+  font-weight: 300;
+  margin-bottom: 10px;
+  text-align:center;
+}
+
+#contact h4 {
+  margin: 5px 0 15px;
+  display: block;
+  font-size: 13px;
+  font-weight: 400;
+}
+
+fieldset {
+  border: medium none !important;
+  margin: 0 0 10px;
+  min-width: 100%;
+  padding: 0;
+  width: 100%;
+}
+
+#contact input[type="text"],
+#contact input[type="email"],
+#contact input[type="tel"],
+#contact input[type="url"],
+#contact textarea {
+  width: 100%;
+  border: 1px solid #ccc;
+  background: #FFF;
+  margin: 0 0 5px;
+  padding: 10px;
+}
+
+#contact input[type="text"]:hover,
+#contact input[type="email"]:hover,
+#contact input[type="tel"]:hover,
+#contact input[type="url"]:hover,
+#contact textarea:hover {
+  -webkit-transition: border-color 0.3s ease-in-out;
+  -moz-transition: border-color 0.3s ease-in-out;
+  transition: border-color 0.3s ease-in-out;
+  border: 1px solid #aaa;
+}
+
+#contact textarea {
+  height: 100px;
+  max-width: 100%;
+  resize: none;
+}
+
+#contact button[type="submit"] {
+  cursor: pointer;
+  width: 100%;
+  border: none;
+  background: #4CAF50;
+  color: #FFF;
+  margin: 0 0 5px;
+  padding: 10px;
+  font-size: 15px;
+}
+
+#contact button[type="submit"]:hover {
+  background: #43A047;
+  -webkit-transition: background 0.3s ease-in-out;
+  -moz-transition: background 0.3s ease-in-out;
+  transition: background-color 0.3s ease-in-out;
+}
+
+#contact button[type="submit"]:active {
+  box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.5);
+}
+
+.copyright {
+  text-align: center;
+}
+
+#contact input:focus,
+#contact textarea:focus {
+  outline: 0;
+  border: 1px solid #aaa;
+}
+
+::-webkit-input-placeholder {
+  color: #888;
+}
+
+:-moz-placeholder {
+  color: #888;
+}
+
+::-moz-placeholder {
+  color: #888;
+}
+
+:-ms-input-placeholder {
+  color: #888;
+}
+
+.file-upload{display:block;text-align:center;font-family: Helvetica, Arial, sans-serif;font-size: 14px;}
+.file-upload .file-select{display:block;border: 2px solid #dce4ec;color: #34495e;cursor:pointer;height:40px;line-height:40px;text-align:left;background:#FFFFFF;overflow:hidden;position:relative;}
+.file-upload .file-select .file-select-button{background:#dce4ec;padding:0 10px;display:inline-block;height:40px;line-height:40px;}
+.file-upload .file-select .file-select-name{line-height:40px;display:inline-block;padding:0 10px;}
+.file-upload .file-select:hover{border-color:#34495e;transition:all .2s ease-in-out;-moz-transition:all .2s ease-in-out;-webkit-transition:all .2s ease-in-out;-o-transition:all .2s ease-in-out;}
+.file-upload .file-select:hover .file-select-button{background:#34495e;color:#FFFFFF;transition:all .2s ease-in-out;-moz-transition:all .2s ease-in-out;-webkit-transition:all .2s ease-in-out;-o-transition:all .2s ease-in-out;}
+.file-upload.active .file-select{border-color:#3fa46a;transition:all .2s ease-in-out;-moz-transition:all .2s ease-in-out;-webkit-transition:all .2s ease-in-out;-o-transition:all .2s ease-in-out;}
+.file-upload.active .file-select .file-select-button{background:#3fa46a;color:#FFFFFF;transition:all .2s ease-in-out;-moz-transition:all .2s ease-in-out;-webkit-transition:all .2s ease-in-out;-o-transition:all .2s ease-in-out;}
+.file-upload .file-select input[type=file]{z-index:100;cursor:pointer;position:absolute;height:100%;width:100%;top:0;left:0;opacity:0;filter:alpha(opacity=0);}
+.file-upload .file-select.file-select-disabled{opacity:0.65;}
+.file-upload .file-select.file-select-disabled:hover{cursor:default;display:block;border: 2px solid #dce4ec;color: #34495e;cursor:pointer;height:40px;line-height:40px;margin-top:5px;text-align:left;background:#FFFFFF;overflow:hidden;position:relative;}
+.file-upload .file-select.file-select-disabled:hover .file-select-button{background:#dce4ec;color:#666666;padding:0 10px;display:inline-block;height:40px;line-height:40px;}
+.file-upload .file-select.file-select-disabled:hover .file-select-name{line-height:40px;display:inline-block;padding:0 10px;}
+
+</style>
+  <!-- Example description and UI -->
+  <div class="containers" >
+    <form id="contact" onSubmit="return initUpload()">
+      
+     <h3>Campaign Upload Form</h3><hr/>
+      {% if res %}
+                            <p style="color: darkgreen;text-align: center;font-size: 15px;font-weight: 500;">{{ res }}</p>
+      {% endif %} 
+  <fieldset>
+  <div class="file-upload">
+     <div class="file-select">
+      <div class="file-select-button" id="fileName">Browse Folder</div>
+       <div class="file-select-name" id="noFile">No campaign chosen...</div>
+      <input type="file" id="campaign_select" onchange="getfolder(event)" webkitdirectory directory multiple />
+
+    </div>
+  </div>
+  <fieldset>
+<p></p>
+   <fieldset>
+    <button name="submit" type="submit" id="submit_btn" class="btn-upper btn btn-primary checkout-page-button" data-submit="...Sending" ><i class="fa fa-cloud-upload" aria-hidden="true"></i> Upload</button>
+    </fieldset>
+
+    </form>
+  </div>
+   
+   <div class="container">
+  <div class="starter-template">
+    <h1>Bootstrap starter template</h1>
+    <p class="lead">Use this document as a way to quickly start any new project.<br> All you get is this text and a mostly barebones HTML document.</p>
+  </div>
+</div><!-- /.container -->
+
+
+
+  <div class="container">
+  <div class="modal fade centered-modal" tabindex="-1" role="dialog" id="busy_dialog">
+
+  <div class="modal-dialog" role="document">
+  
+      <!-- Modal content-->
+      <div class="modal-content">
+        <div class="modal-header" id="busy_dialog_header" style="display:none"> 
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <h4 class="modal-title" display = "none"></h4>
+        </div>
+        <div class="modal-body">
+          <!--initiate busy spinner -->
+           <div id="init_upload_busy_dialg_div" align="center" style="display:none">
+            <div class="loader" > </div>
+            <p>Initiating Please Wait...</p>
+            </div>
+          
+
+          <!-- file upload progress -->
+          <div style="clear: both;display:none" id="uploading_file_info_div">
+              <h4 style="float: left" id="uploading_file_name_elm"></h2>
+              <h6 style="float: right" id="uploading_file_count_elm"></h3>
+          </div>
+
+          <!-- init file upload progress bar -->
+          <div id="init_file_upload_busy_dialg_div"class="progress" style="display:none">
+          <div class="indeterminate"></div>
+          </div>
+          
+          <div class="progress" id="file_upload_progress_dialg_parent_div" style="display:none">
+
+          <div class="progress-bar progress-bar-striped active" role="progressbar" aria-valuemin="0" aria-valuemax="100" style="width:0%;" id="file_upload_progress_dialg_div">0 
+      
+          </div>
+
+          <p>.</p>
+        </div>
+        </div>
+        
+      </div>
+      
+    </div>
+  </div>
+  
+</div>
+
+
+
+  <script>
+
+  var uploadFiles = [];var campaignInfoFile=null;
+  var info = null; var campaignName = null;
+  var uploadPath = null; var uploadingFilePos =0; var size = 0;
+  var uploadState = {
+    chunkSize: 1024 * 1024,
+    cursor: undefined,
+    current_chunk: 0,//churrent chunk uploading
+    total_chunks: 0,//total chunks to upload
+    file: null,
+    session_id:null,blob:null
+  };
+  const maxBlob = 8 * 1000 * 1000; // 8Mb - Dropbox JavaScript API suggested max file / chunk size
+  const UPLOAD_FILE_SIZE_LIMIT = 150 * 1024 * 1024;
+  function clearGlobalVaribles()
+  {
+    uploadFiles.length =0;
+    campaignInfoFile = null;
+    info=null;campaignName=null;uploadPath=null;uploadingFilePos=0;size=0;
+    
+    uploadState = {chunkSize: 1024 * 1024,
+    cursor: undefined,current_chunk: undefined,
+    total_chunks: 0,file: null,session_id:null,blob:null };
+  }
+
+function formatBytes(bytes,decimals) {
+   if(bytes == 0) return '0 Bytes';
+   var k = 1024,
+       dm = decimals <= 0 ? 0 : decimals || 2,
+       sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB'],
+       i = Math.floor(Math.log(bytes) / Math.log(k));
+   return parseFloat((bytes / Math.pow(k, i)).toFixed(dm)) + '' + sizes[i];
+}
+
+ 
+
+  function uploadFile(file) {
+    
+    //init upload file dialog
+    initUploadFileBusyDialg();
+    //init update state
+    uploadState.file = file;
+
+    
+      var ACCESS_TOKEN = '{{ DROP_BOX_ACCESS_TOKEN }}';
+      var dbx = new Dropbox.Dropbox({ accessToken: ACCESS_TOKEN });
+      
+      if (file.size < UPLOAD_FILE_SIZE_LIMIT) { 
+           uploadViaHttp(file,ACCESS_TOKEN);
+
+         } else { // File is bigger than 150  Mb - use filesUploadSession* API
+        
+        var workItems = [];     
+      
+        var offset = 0;
+        while (offset < file.size) {
+          var chunkSize = Math.min(maxBlob, file.size - offset);
+          workItems.push(file.slice(offset, offset + chunkSize));
+          offset += chunkSize;
+        } 
+        
+        uploadState.total_chunks = workItems.length;
+
+        const task = workItems.reduce((acc, blob, idx, items) => {
+
+         
+
+          if (idx == 0) {
+            // Starting multipart upload of file
+            console.log("file upload session starting");
+            return acc.then(function() {
+              return dbx.filesUploadSessionStart({ close: false, contents: blob})
+                        .then(response => response.session_id)
+            });          
+          } else if (idx < items.length-1) {  
+            // Append part to the upload session
+            
+            return acc.then(function(sessionId) {
+            
+            if(idx==1)
+            {
+              dismissInitFileUploadBusyDiag();
+            }
+
+            //update current chunk
+            uploadState.current_chunk = idx;
+
+            updatePercentageForlargeFile();
+
+             var cursor = { session_id: sessionId, offset: idx * maxBlob };
+
+             uploadState.session_id = sessionId;
+             uploadState.cursor = cursor;
+
+             return dbx.filesUploadSessionAppendV2({ cursor: cursor, close: false, contents: blob }).then(() => sessionId); 
+
+            });
+          } else {
+          	
+            // Last chunk of data, close session
+            return acc.then(function(sessionId) {
+            	console.log("uploading last chunk");
+              //update current chunk
+            uploadState.current_chunk = idx;
+
+            updatePercentageForlargeFile();
+
+              var cursor = { session_id: sessionId, offset: file.size - blob.size };
+
+              uploadState.session_id = sessionId;
+              uploadState.cursor = cursor;
+
+              var commit = { path: '/' + file.name, mode: 'add', autorename: true, mute: false };              
+              return dbx.filesUploadSessionFinish({ cursor: cursor, commit: commit, contents: blob });           
+            });
+          }          
+        }, Promise.resolve());
+        
+        task.then(function(result) {
+         /* var results = document.getElementById('results');
+          results.appendChild(document.createTextNode('File uploaded!'));*/
+
+          checkAndUploadNextFile();
+
+        }).catch(function(error) {
+          console.error(error);
+          //alert("Unable to upload error "+error);
+          uploadInterrupt("Unable to upload error "+error);
+        });
+        
+      }
+      return false;
+    }
+  
+  function updatePercentageForlargeFile()
+  {
+    var percentComplete = parseFloat((uploadState.current_chunk/
+      uploadState.total_chunks)*100.0);
+
+    
+
+    updateFileProgressBusyDialog(percentComplete,formatBytes(maxBlob*uploadState.current_chunk,3)+"/"+formatBytes(maxBlob*uploadState.total_chunks,3));
+
+  }
+
+  function uploadViaHttp(file,accessToken)
+  {
+  	var xhr = new XMLHttpRequest();
+    var isInitial = true;
+    var totalSizeInstr = formatBytes(file.size,3);
+		xhr.upload.onprogress = function(evt) {
+
+      
+		    var percentComplete = parseInt(100.0 * evt.loaded / evt.total);
+		    // Upload in progress. Do something here with the percent complete.
+        updateFileProgressBusyDialog(percentComplete,formatBytes(evt.loaded,3)+"/"+totalSizeInstr);
+
+        if(isInitial)
+        {
+          dismissInitFileUploadBusyDiag();
+          isInitial = false;
+        }
+		   
+		};
+
+	xhr.onload = function() {
+	    if (xhr.status === 200) {
+	        var fileInfo = JSON.parse(xhr.response);
+	        // Upload succeeded. Do something here with the file info.
+	        console.log("uploaded - ");
+          checkAndUploadNextFile();
+	    }
+	    else {
+	        var errorMessage = xhr.response || 'Unable to upload file';
+	        // Upload failed. Do something here with the error.
+	        console.log("unable to upload - "+errorMessage);
+          
+          uploadInterrupt("Upload failed"+errorMessage);
+	    }
+	};
+  xhr.onerror = function()
+  {
+    
+    //alert('Unable to upload, please check your connections');
+    uploadInterrupt('Unable to upload, please check your connections');
+  };
+	xhr.open('POST', 'https://content.dropboxapi.com/2/files/upload');
+	xhr.setRequestHeader('Authorization', 'Bearer ' + accessToken);
+
+	xhr.setRequestHeader('Content-Type', 'application/octet-stream');
+	xhr.setRequestHeader('Dropbox-API-Arg', JSON.stringify({
+	    path: '/'+uploadPath+  file.name,
+	    mode: 'add',
+	    autorename: true,
+	    mute: false
+	}));
+
+	xhr.send(file);
+  }
+
+  
+  function invalidCampaign()
+  {
+    //clear global varaibales
+    clearGlobalVaribles();
+    document.getElementById('campaign_select').value='';
+      alert("Invalid campaign");
+
+    $(".file-upload").removeClass('active');
+    $("#noFile").text("No file chosen...");
+  }
+
+  
+
+  function getfolder(e) {
+    clearGlobalVaribles();
+
+    var files = e.target.files;
+    var path = files[0].webkitRelativePath;
+    campaignName = (path.split("/"))[0];
+    console.log("campaignName - "+campaignName)
+    //get campaign info file
+    for(var i=0; i<files.length;i++)
+    {
+      var fileNameInfo = (files[i].name).split(".");
+      console.log(fileNameInfo[0]+"size-"+files[i].size+"extension"+fileNameInfo[fileNameInfo.length-1].toUpperCase());
+      if(fileNameInfo[0] == campaignName && 
+        (fileNameInfo[fileNameInfo.length-1].toUpperCase() === "TXT"))
+      {
+        campaignInfoFile = files[i];
+        break;
+      }
+    	
+    }
+
+    if(campaignInfoFile==null)
+    {
+      invalidCampaign();
+    }else
+    {
+      //read info file 
+     readTextFile(campaignInfoFile);
+    }
+
+   function readTextFile(file)
+{
+    var reader = new FileReader();
+
+    reader.onload = function(e) {
+     info = reader.result;
+     console.log("info --"+info);
+     checkForCorrectInfoFile(info);
+    }
+
+    reader.readAsText(file);    
+}
+
+function checkForCorrectInfoFile(result)
+{
+  try
+  {
+    var resultJSON = JSON.parse(result);
+    if(resultJSON.hasOwnProperty("type"))
+    {
+      console.log("success");
+      //success,, prepare uploadable files
+      var type = resultJSON.type;
+      if(type == "multi_region")
+      {
+         //process multi region files and add to list
+         processMultiRegFilesToUpload(resultJSON.regions);
+      }else
+      {
+        addForRegion(resultJSON,"Single");
+      }
+      
+      //check for bg audio file
+      if(resultJSON.hasOwnProperty("bg_audio"))
+      {
+        uploadFiles.push(resultJSON.bg_audio);
+      }
+
+      verifyAndPrepareUploadFiles();
+      console.log("total uploadable files - "+uploadFiles.length);
+      if(uploadFiles.length>=1)
+      {
+        $(".file-upload").addClass('active');
+        $("#noFile").text(campaignName);
+      }else
+      {
+        invalidCampaign();
+      }
+       
+    }else
+    {
+      invalidCampaign();
+    }
+  }catch(err)
+  {
+    console.log(err.message);
+     invalidCampaign();
+  }
+}
+
+function processMultiRegFilesToUpload(regions)
+{
+  for(var i=0;i<regions.length;i++){
+    addForRegion(regions[i],"multi");
+  }
+}
+
+function addForRegion(region,type)
+{
+  if(region.type != "text" && region.type != "Url")
+  {
+    if(type=="Single")
+    {
+     uploadFiles.push(region.resource);
+    }else
+    {
+      uploadFiles.push(region.media_name);
+    }
+     
+  }
+}
+ 
+ function verifyAndPrepareUploadFiles()
+ {
+   var tempUploadFiles = uploadFiles;
+   uploadFiles = [];
+   var selectedFiles = Object.values((document.getElementById('campaign_select').files));
+  
+   for(var i=0;i<tempUploadFiles.length;i++)
+   {
+     var tempFileName = tempUploadFiles[i];
+     //iterate through the selected files to check for the origin file
+     for(var j=0;j<selectedFiles.length;j++)
+     {
+
+       if(tempFileName == selectedFiles[j].name)
+       {
+        //remove the file from selected, so it wont come in next iterate ,, before that add to upload files
+         size = size+selectedFiles[j].size;
+         uploadFiles.push(selectedFiles[j]);
+         //selectedFiles.splice(j,1);
+         break;
+       }
+     }
+   }
+
+   //at the end add info file 
+  uploadFiles.push(campaignInfoFile);
+ } 
+}
+
+function displayInitUploadBusyDialog()
+{
+  $("#busy_dialog").modal();
+  
+  document.getElementById("busy_dialog_header").style.display = "none";
+
+  document.getElementById("init_upload_busy_dialg_div").style.display = "block"; 
+  
+}
+
+function dismissInitBusyDialog()
+{
+  document.getElementById("init_upload_busy_dialg_div").style.display = "none"; 
+
+  //$('#busy_dialog').modal('toggle');
+}
+
+function dismissBusyDialog()
+{
+  $('#busy_dialog').modal('hide');
+}
+
+function displayInitFileUploadBusyDiag()
+{
+  var progressBusyDilagParent = document.getElementById("init_file_upload_busy_dialg_div");
+  
+   if (progressBusyDilagParent.style.display === "none") {
+    progressBusyDilagParent.style.display = "block";
+    }
+
+}
+
+function dismissInitFileUploadBusyDiag()
+{
+  var progressBusyDilagParent = document.getElementById("init_file_upload_busy_dialg_div");
+  
+   if (progressBusyDilagParent.style.display === "block") {
+    progressBusyDilagParent.style.display = "none";
+    }
+}
+
+function checkAndDisplayBusyModel()
+{
+  if($('#busy_dialog').is(':visible'))
+  {
+    console.log("busy dialog is in active state");
+  }else
+  {
+    console.log("busy dialog is in hidden state");
+    $('#busy_dialog').modal('toggle');
+  }
+}
+
+function initUploadFileBusyDialg()
+{
+   checkAndDisplayBusyModel();
+   
+   displayInitFileUploadBusyDiag();
+   /**/
+  
+  //set uploading file info
+  setUploadingFileInfo();
+
+   var progressBusyDilagParent = document.getElementById("file_upload_progress_dialg_parent_div");
+  
+   if (progressBusyDilagParent.style.display === "block") {
+    progressBusyDilagParent.style.display = "none";
+    }
+
+    //update the progress,, reset to zero
+ 
+   var progressBusyDilag = document.getElementById("file_upload_progress_dialg_div");
+    progressBusyDilag.style.width = 0 + '%'; 
+    progressBusyDilag.innerHTML = 0 * 1  + '%';
+
+}
+
+function setUploadingFileInfo()
+{
+  var uploadingFileInfoDiv = document.getElementById("uploading_file_info_div");
+  
+   if (uploadingFileInfoDiv.style.display === "none") {
+    uploadingFileInfoDiv.style.display = "block";
+    }
+    
+    
+    document.getElementById("uploading_file_name_elm").innerHTML = uploadFiles[uploadingFilePos].name;
+    document.getElementById("uploading_file_count_elm").innerHTML=(uploadingFilePos+1)+"/"+uploadFiles.length;
+
+}
+
+function updateFileProgressBusyDialog(progress, updatedBytes = null)
+{
+  //$("#busy_dialog").modal();
+
+ /*var initBusyDilag = document.getElementById("init_file_upload_busy_dialg_div");
+  if (initBusyDilag.style.display === "block") {
+    initBusyDilag.style.display = "none";
+    } */
+  
+  var progressBusyDilagParent = document.getElementById("file_upload_progress_dialg_parent_div");
+   if (progressBusyDilagParent.style.display === "none") {
+    progressBusyDilagParent.style.display = "block";
+    }
+
+    //update the progress
+ var progressBusyDilag = document.getElementById("file_upload_progress_dialg_div");
+
+    progressBusyDilag.style.width = progress + '%';
+    if(updatedBytes== null)
+    {
+      progressBusyDilag.innerHTML = progress * 1  + '%';
+    }else
+    {
+      progressBusyDilag.innerHTML = ""+updatedBytes;
+    } 
+    
+
+    console.log("progress inside progress"+progress);
+}
+
+function initUpload()
+{
+  if(info!=null && campaignInfoFile!=null)
+  {
+    document.getElementById("submit_btn").disabled = true;
+    displayInitUploadBusyDialog();
+  
+
+    var xhr = new XMLHttpRequest();
+    var params = 'accessToken=web&info='+info+'&campaign='+campaignName+'&size='+size;
+    
+    xhr.onload = function() {
+        if (xhr.status === 200) {
+            var responseObj = JSON.parse(xhr.response);
+            // Upload succeeded. Do something here with the file info.
+            dismissInitBusyDialog();
+
+            if(responseObj.statusCode == 0)
+            {
+               uploadPath = responseObj.save_path;
+               
+               uploadFile(uploadFiles[0]);
+            }else
+            {
+              dismissBusyDialog();
+              alert(responseObj.status);
+            }
+            console.log("uploaded - "+xhr.response);
+        }
+        else {
+            var errorMessage = xhr.response || 'Unable to upload file';
+            // Upload failed. Do something here with the error.
+            console.log("unable to upload - "+errorMessage);
+            alert("unable to upload - "+errorMessage);
+        }
+    };
+
+    xhr.open('POST', '{{ API_HOST }}'+'/campaigns/init/');
+     
+    xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+
+    xhr.setRequestHeader("X-CSRFToken", '{{ csrf_token }}');
+    xhr.send(params);
+  }else
+  {
+    alert("Please select campaign");
+  }
+  return false;
+}
+
+function checkAndUploadNextFile()
+{
+  ++uploadingFilePos;
+  console.log("next check uploading file position");
+  if(uploadFiles.length > uploadingFilePos)
+  {
+    uploadFile(uploadFiles[uploadingFilePos]);
+  }else
+  {
+    dismissBusyDialog();
+    alert("Files have been uploaded success");
+    location.reload();
+  }
+}
+
+function uploadInterrupt(warningMsg)
+{
+
+   var isConfirm = confirm(warningMsg+"\n"+"\t Would you like to retry?");
+  if(isConfirm)
+  {
+     //retry uploading
+     console.log("isConfirm"+isConfirm);
+     retryUpload();
+  }else{
+    dismissBusyDialog();
+    location.reload();
+  }
+}
+
+function retryUpload()
+{
+  var uploadingFile = uploadState.file;
+  if(uploadingFile==null || uploadingFile == undefined)
+  {
+   reUploadFile();
+
+  }else if(uploadingFile.size < UPLOAD_FILE_SIZE_LIMIT)
+  {
+    reUploadFile();
+  }else{
+     reUploadLargeFileChunks(uploadingFile);
+  }
+}
+
+function reUploadFile()
+{
+   
+    if(uploadFiles.length > uploadingFilePos)
+    {
+      uploadFile(uploadFiles[uploadingFilePos]);
+    }
+}
+
+function reUploadLargeFileChunks(file)
+{
+  if(uploadState.current_chunk <= 0)
+  {
+    //upload from begining
+    reUploadFile()
+  }else if(uploadState.current_chunk == uploadState.total_chunks)
+  {
+     //upload last chunk of file
+     uploadLastChunkOfFile(uploadState.cursor,uploadState.blob);
+  }else
+  {
+    checkAndReUploadchunks(uploadState.session_id,uploadState.file);
+  }
+}
+
+function checkAndReUploadchunks(sessionId,file)
+{
+  console.log("Inside checkAndReUploadchunks - "+sessionId);
+
+  var ACCESS_TOKEN = '{{ DROP_BOX_ACCESS_TOKEN }}';
+      var dbx = new Dropbox.Dropbox({ accessToken: ACCESS_TOKEN });
+
+  var workItems = [];     
+      
+       var offset = 0;
+        while (offset < file.size) {
+          var chunkSize = Math.min(maxBlob, file.size - offset);
+          workItems.push(file.slice(offset, offset + chunkSize));
+          offset += chunkSize;
+        } 
+        
+        uploadState.total_chunks = workItems.length;
+
+        const task = workItems.reduce((acc, blob, idx, items) => {
+
+         
+          if (idx < items.length-1) {  
+            // Append part to the upload session
+            if(idx<uploadState.current_chunk)
+            {
+              return acc;
+            }
+            else
+            {
+            return acc.then(function() {
+            
+            if(idx==1)
+            {
+              dismissInitFileUploadBusyDiag();
+            }
+
+            //update current chunk
+            uploadState.current_chunk = idx;
+
+            updatePercentageForlargeFile();
+
+             var cursor = { session_id: sessionId, offset: idx * maxBlob };
+            
+            console.log("Inside checkAndReUploadchunks - "+JSON.stringify(cursor));
+            
+             uploadState.cursor = cursor;
+
+             return dbx.filesUploadSessionAppendV2({ cursor: cursor, close: false, contents: blob }).then(() => sessionId); 
+
+            });
+            }
+          } else {
+            
+            // Last chunk of data, close session
+            return acc.then(function(sessionId) {
+              console.log("uploading last chunk");
+              //update current chunk
+            uploadState.current_chunk = idx;
+
+            updatePercentageForlargeFile();
+
+              var cursor = { session_id: sessionId, offset: file.size - blob.size };
+
+              uploadState.session_id = sessionId;
+              uploadState.cursor = cursor;
+              uploadState.blob = blob;
+
+              var commit = { path: '/' + file.name, mode: 'add', autorename: true, mute: false };              
+              return dbx.filesUploadSessionFinish({ cursor: cursor, commit: commit, contents: blob });           
+            });
+          }          
+        }, Promise.resolve());
+        
+        task.then(function(result) {
+         /* var results = document.getElementById('results');
+          results.appendChild(document.createTextNode('File uploaded!'));*/
+
+          checkAndUploadNextFile();
+
+        }).catch(function(error) {
+          console.error(error);
+          //alert("Unable to upload error "+error);
+          uploadInterrupt("Unable to upload error "+error);
+        });
+        
+      }
+
+
+function uploadLastChunkOfFile(cursor,blob)
+{
+  var ACCESS_TOKEN = '{{ DROP_BOX_ACCESS_TOKEN }}';
+      var dbx = new Dropbox.Dropbox({ accessToken: ACCESS_TOKEN });
+
+            
+   var commit = { path: '/' + file.name, mode: 'add', autorename: true, mute: false };    
+
+     dbx.filesUploadSessionFinish({ cursor: cursor, commit: commit, contents: blob })           
+          .then(function(response) {
+            checkAndUploadNextFile();
+
+        }).catch(function(error) {
+          console.error(error);
+          //alert("Unable to upload error "+error);
+          uploadInterrupt("Unable to upload error "+error);
+        });
+}
+
+
+
+</script>
+
+</body>
+</html>

@@ -121,12 +121,20 @@ class Single_campaign_upload(models.Model):
 
 
 class Multiple_campaign_upload(models.Model):
-    campaign_uploaded_by = models.CharField(max_length=10)
+    campaign_uploaded_by = models.BigIntegerField()
     campaign_name = models.CharField(max_length=50)
     text_file = models.FileField(upload_to="campaigns/",blank=True,null=True)
     created_date = models.DateTimeField()
     updated_date = models.DateTimeField()
+    is_skip = models.SmallIntegerField(default=0)
+    camp_type = models.SmallIntegerField(default=-1)
+    stor_location = models.SmallIntegerField(default=1)
+    campaign_size = models.CharField(max_length=50,default=0)
 
+    class Meta(object):
+        unique_together = [
+        ['campaign_uploaded_by', 'campaign_name']
+        ]
 
 class Multiple_campaign_files(models.Model):
     Multiple_campaign = models.CharField(max_length=10)
@@ -136,9 +144,19 @@ class User_unique_id(models.Model):
     user_id = models.CharField(max_length=10)
     user_unique_key = models.CharField(max_length=50)
 
-
-
-
+    def getUserId(uniqueId):       
+       try:
+        userId = User_unique_id.objects.get(user_unique_key=uniqueId);
+        return userId.user_id
+       except User_unique_id.DoesNotExist:
+        return False
+    
+    def getUniqueKey(userId):
+       try:
+        uniqueKey = User_unique_id.objects.get(user_id=userId);
+        return uniqueKey.user_unique_key
+       except User_unique_id.DoesNotExist:
+        return False
 #class Campaign_files(models.Model):
    # camp_files = models.FileField(blank=True,null=True,upload_to="campaigns")
 

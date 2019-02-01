@@ -19,17 +19,19 @@ from django.conf.urls import url, include
 from django.conf.urls.static import static
 from django.contrib import admin
 from cmsapp import views
+from django.urls import path
 
 
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'^signagecms/', include('cmsapp.urls')),
-    url(r'^',include('cmsapp.urls')),
+    
     url(r'^mycontent/upload/', views.upload, name='upload'),
     url(r'^upload_api/', views.upload_api, name='upload_api'),
-
+    path('campaigns/',include('campaign.urls')),
     url(r'^accounts/',include('accounts.urls')),
+    url(r'^',include('cmsapp.urls')),
 
 ]
 
