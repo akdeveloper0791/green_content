@@ -329,10 +329,6 @@ fieldset {
     </form>
   </div>
    
-   
-
-
-
   <div class="container">
   <div class="modal fade centered-modal" tabindex="-1" role="dialog" id="busy_dialog">
 
@@ -495,7 +491,7 @@ function formatBytes(bytes,decimals) {
               uploadState.session_id = sessionId;
               uploadState.cursor = cursor;
 
-              var commit = { path: '/' + file.name, mode: 'add', autorename: true, mute: false };              
+              var commit = { path: '/' +uploadPath+file.name, mode: 'add', autorename: true, mute: false };              
               return dbx.filesUploadSessionFinish({ cursor: cursor, commit: commit, contents: blob });           
             });
           }          
@@ -896,7 +892,7 @@ function initUpload()
         }
     };
 
-    xhr.open('POST', '{{ API_HOST }}'+'/campaigns/init/');
+    xhr.open('POST', '/campaigns/init/');
      
     xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
 

@@ -1,0 +1,371 @@
+{% load static %}
+<html lang="en">
+<head>
+{% block header %}
+{% include 'header.html' %}
+{% endblock %}
+
+<link type="text/css" rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css" />
+
+ <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
+
+<script  src="{% static 'scripts/Dropbox-sdk.min.js' %}"></script>
+
+<script  src="{% static 'upload_file_anim/upload_file_anim.js' %}"></script>
+
+<link rel="stylesheet" href="{% static 'upload_file_anim/upload_file_anim.css' %}">
+
+</head>
+
+{% block body %}
+<body onload="WriteToFile()">
+
+ <style>
+.h4,h4{
+    margin:0px;
+}
+
+.actives{
+    background:green;
+
+}
+a.btn:active{
+    background:green;
+}
+</style>
+
+
+<br/> <br/><br/><br/>
+
+<div class='container' style="border: solid 2px lightblue;
+    border-radius: 10px;" id="listemail">
+<div class='rows'>
+<div class='panel panel-default'>
+	<div class='panel-heading' style='background: cornflowerblue;color: white;'>Download Campaign</div>
+
+	<ul class='list-group'>
+	
+	{% for campaign in res.campaigns %}
+
+	 <li class='list-group-item'>
+	 	<div class='row toggle' id='lead_contact_details' style='cursor:pointer'>
+	 		<div class='col-xs-10'>{{ campaign.campaign_name }}</div>
+
+      <div class='col-xs-2'><i class='fa fa-download pull-right' style='color:darkgreen;' onclick='download("{{campaign.id}}","{{campaign.stor_location}}","{{campaign.campaign_name}}");'></i></div>
+
+	 	  </div>
+
+      <div id="results" style="margin-top: 30px"></div>
+	 	
+	 </li>
+	{% endfor %}
+
+
+	</ul>
+</div>  
+</div> 
+</div> 
+
+<div class="container">
+  <div class="modal fade centered-modal" tabindex="-1" role="dialog" id="busy_dialog">
+
+  <div class="modal-dialog" role="document">
+  
+      <!-- Modal content-->
+      <div class="modal-content">
+        <div class="modal-header" id="busy_dialog_header" style="display:none"> 
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <h4 class="modal-title" display = "none"></h4>
+        </div>
+        <div class="modal-body">
+          <!--initiate busy spinner -->
+           <div id="init_upload_busy_dialg_div" align="center" style="display:none">
+            <div class="loader" > </div>
+            <p>Initiating Please Wait...</p>
+            </div>
+          
+
+          <!-- file upload progress -->
+          <div style="clear: both;display:none" id="uploading_file_info_div">
+              <h4 style="float: left" id="uploading_file_name_elm"></h2>
+              <h6 style="float: right" id="uploading_file_count_elm"></h3>
+          </div>
+
+          <!-- init file upload progress bar -->
+          <div id="init_file_upload_busy_dialg_div"class="progress" style="display:none">
+          <div class="indeterminate"></div>
+          </div>
+          
+          <div class="progress" id="file_upload_progress_dialg_parent_div" style="display:none">
+
+          <div class="progress-bar progress-bar-striped active" role="progressbar" aria-valuemin="0" aria-valuemax="100" style="width:0%;" id="file_upload_progress_dialg_div">0 
+      
+          </div>
+
+          <p>.</p>
+        </div>
+        </div>
+        
+      </div>
+      
+    </div>
+  </div>
+  
+</div>
+
+<script type="text/javascript">
+//downlod campaign
+    function download(id,storeLocation,
+    	campaignName){
+    	
+    	console.log("id-"+id);
+    	console.log("storeLocation"+storeLocation);
+    	console.log("campaign name"+campaignName);
+    	if(storeLocation==2)//download from drop box
+    	{
+    		//downloadFromDropBox(campaignName);
+        checkForFilesInDropBox(campaignName);
+    	}else
+    	{
+    		//download FROM GC 
+    	}
+        //console.log("text_file "+text_file);
+        //console.log(":campaign"+(campaign));
+  /*var str =JSON.stringify(media_file);
+        var arr = str.replace(/(?!\s|:)((u)(?='))/g, "");
+        var str1 = arr.replace('"[','');
+        var str = str1.replace(']"','');
+        var lower = str.toLowerCase();
+    var upper = str.toUpperCase();
+
+    var res = "";
+    for(var i=0; i<lower.length; ++i) {
+        if(lower[i].trim() != "'")
+            res += str[i];
+    }
+    console.log(res);
+    var myarray = res.split(',');
+var result = [];
+for(var i = 0; i < myarray.length; i++)
+{
+   result.push(myarray[i]);
+}
+result.push(text_file);
+ console.log(result);
+/*for(var i = 0; i < result.length; i += 1) {
+    var a = document.createElement("a");
+  a.href = result[i];
+a.download = result[i].split('/').pop();
+a.click();*/
+}
+
+function downloadFromDropBox(campaignName)
+{
+	var array = {'path':'/f98175087ade475dad8a351341f6eefc/test single reg/test single reg.txt'};
+	console.log(JSON.stringify(array));
+	  var ACCESS_TOKEN = '{{ DROP_BOX_ACCESS_TOKEN }}';
+      var SHARED_LINK = "/f98175087ade475dad8a351341f6eefc/test single reg/test single reg.txt";
+       
+       var SHARED_LINK = "https://www.dropbox.com/s/ip3320idaxczqpr/test%20single%20reg.txt?dl=0";
+
+      console.log("ACCESS_TOKEN - "+ACCESS_TOKEN);
+     
+      console.log("SHARED_LINK"+SHARED_LINK);
+     
+      var dbx = new Dropbox.Dropbox({ accessToken: ACCESS_TOKEN });
+      dbx.sharingGetSharedLinkFile({url:SHARED_LINK})
+        .then(function(data) {
+          var downloadUrl = URL.createObjectURL(data.fileBlob);
+          var downloadButton = document.createElement('a');
+          downloadButton.setAttribute('href', downloadUrl);
+          downloadButton.setAttribute('download', "/campaign/"+data.name);
+          downloadButton.setAttribute('class', 'button');
+          downloadButton.innerText = 'Download: ' + data.name;
+          document.getElementById('results').appendChild(downloadButton);
+          downloadButton.click();
+
+          document.body.removeChild(downloadButton);
+        })
+        .catch(function(error) {
+          console.error(error);
+        });
+
+      return false;
+}
+
+function checkForFilesInDropBox(campaignName)
+{
+   displayInitUploadBusyDialog();
+
+   var xhr = new XMLHttpRequest();
+   
+   xhr.onload = function() {
+      if (xhr.status === 200) {
+         
+          var fileInfo = JSON.parse(xhr.response);
+          // Upload succeeded. Do something here with the file info.
+          console.log("uploaded - "+xhr.response);
+          downloadDropboxCamp(campaignName);
+         // checkAndUploadNextFile();
+      }
+      else {
+          var errorMessage = xhr.response;
+           ;
+          // Upload failed. Do something here with the error.
+          if(errorMessage)
+          {
+            try
+            {
+              var jsonObj = JSON.parse(errorMessage);
+
+              if(jsonObj.error_summary.indexOf("path/not_found") !== -1)
+              {
+                interrupt("No campaign files found");
+              }else{
+                interrupt('Unable to download please try again later -'+errorMessage);
+              }
+            }catch(exception)
+            {
+              interrupt('Unable to download please try again later -'+errorMessage);
+            }
+            
+            
+          }else{
+            interrupt('Unable to download please try again later');
+          }
+         
+          
+         // uploadInterrupt("Upload failed"+errorMessage);
+      }
+  };
+  
+  xhr.onerror = function()
+  {
+    
+    
+    interrupt('Unable to upload, please check your connections');
+  };
+
+  xhr.open('POST', 'https://api.dropboxapi.com/2/files/get_metadata');
+  xhr.setRequestHeader('Authorization', 'Bearer ' + '{{ DROP_BOX_ACCESS_TOKEN }}');
+
+  xhr.setRequestHeader('Content-Type', 'application/json');
+
+  // xhr.setRequestHeader('Dropbox-API-Arg', JSON.stringify({
+  //     path: '/'+uploadPath+  file.name,
+  //     mode: 'add',
+  //     autorename: true,
+  //     mute: false
+  // }));
+  var params = JSON.stringify({"path":"/campaigns/"+ "{{ secretKey }}"+"/"+campaignName+"/"+
+    campaignName+".txt",
+    "include_media_info": false,
+    "include_deleted": false,
+    "include_has_explicit_shared_members": false})
+console.log("params - "+params);
+  xhr.send(params);
+}
+
+function interrupt(errorMsg)
+{
+  dismissBusyDialog();
+  alert(errorMsg);
+}
+
+function str2bytes (str) {
+   var bytes = new Uint8Array(str.length);
+   for (var i=0; i<str.length; i++) {
+      bytes[i] = str.charCodeAt(i);
+    }
+    return bytes;
+}
+
+function downloadDropboxCamp(campaignName)
+{
+   var params = JSON.stringify({"path":"/campaigns/"+ "{{ secretKey }}"+"/"+campaignName,
+   })
+  var xhr = new XMLHttpRequest();
+  
+   xhr.open('POST', 'https://content.dropboxapi.com/2/files/download_zip');
+   xhr.setRequestHeader('Authorization', 'Bearer ' + '{{ DROP_BOX_ACCESS_TOKEN }}');
+
+   xhr.setRequestHeader('Dropbox-API-Arg', params);
+
+    xhr.onload = function() {
+      if (xhr.status === 200) {
+        
+           var blob = new Blob([xhr.response], {type: "octet/stream"});
+        var fileName = campaignName+".zip";
+        var a = document.createElement("a");
+            document.body.appendChild(a);
+            a.style = "display:none";
+            var url = window.URL.createObjectURL(blob);
+            a.href = url;
+            a.download = fileName;
+            a.click();
+
+            window.URL.revokeObjectURL(url);
+            a.remove();
+          dismissBusyDialog();
+      }
+      else {
+          var errorMessage = xhr.response;
+           ;
+          // Upload failed. Do something here with the error.
+          if(errorMessage)
+          {
+            try
+            {
+             
+                interrupt('Unable to download please try again later -'+errorMessage);
+              
+            }catch(exception)
+            {
+              interrupt('Unable to download please try again later -'+errorMessage);
+            }
+            
+            
+          }else{
+            interrupt('Unable to download please try again later');
+          }
+         
+          
+         // uploadInterrupt("Upload failed"+errorMessage);
+      }
+  };
+  
+  xhr.onerror = function()
+  {
+    
+    
+    interrupt('Unable to upload, please check your connections');
+  };
+  
+ xhr.upload.onprogress = function(evt) {
+
+       console.log("Percentage");
+        var percentComplete = parseInt(100.0 * evt.loaded / evt.total);
+
+        console.log("Percentage-"+percentComplete);
+      };
+
+console.log("params - "+params);
+ xhr.responseType = "arraybuffer";
+  xhr.send();
+
+}
+
+</script>
+{% endblock %}
+
+<br/><br/><br/>
+{% block footer %}
+{% include 'footer.html' %}
+{% endblock %}
+
+
+</body>
+
+
+</html>
+

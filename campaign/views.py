@@ -1,9 +1,10 @@
 from django.shortcuts import render
 from django.http import HttpResponse,JsonResponse
-from cmsapp.models import Multiple_campaign_upload
+from cmsapp.models import Multiple_campaign_upload,User_unique_id
 from rest_framework.decorators import api_view
 from django.contrib.auth.decorators import login_required
 from .models import CampaignInfo
+
 # Create your views here.
 @login_required
 def upload_camp_web(request):
@@ -42,3 +43,15 @@ def initCampaignUpload(request):
     else :
         return JsonResponse({'statusCode':1,
             'status':"Invalid request"});
+
+@login_required
+def listCampaignsWeb(request):
+    if request.user.is_authenticated:
+        response = CampaignInfo.getUserCampaigns(request.user.id,True);
+        #get access token
+        secretKey = User_unique_id.getUniqueKey(request.user.id);
+        return render(request,'campaign/list.html',{'res':response,
+            'secretKey':secretKey});
+    else:
+        return JsonResponse({'statusCode':2,
+                    'status':'Invalid session, please login'});
