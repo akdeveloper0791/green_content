@@ -55,3 +55,9 @@ def listCampaignsWeb(request):
     else:
         return JsonResponse({'statusCode':2,
                     'status':'Invalid session, please login'});
+
+@api_view(['POST'])
+def listMyCampaignsAPI(request):
+    if(request.method == 'POST'):
+        result = CampaignInfo.getUserCampaignsWithInfo(request.POST.get("secretKey"));
+        return JsonResponse(result);

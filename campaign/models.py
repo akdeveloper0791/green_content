@@ -3,7 +3,16 @@ from cmsapp.models import Multiple_campaign_upload
 import json
 from cmsapp.models import User_unique_id
 import datetime
-from django.db import transaction
+from django.db import transaction, connection
+
+
+def dictfetchall(cursor):
+    
+    columns = [col[0] for col in cursor.description]
+    return [
+        dict(zip(columns, row))
+        for row in cursor.fetchall()
+    ]
 
 # Create your models here.
 class CampaignInfo(models.Model):
@@ -93,3 +102,24 @@ class CampaignInfo(models.Model):
             'No campaigns Found'};
         else:
             return {'statusCode':0,'campaigns':list(campaigns.values())};
+
+    def getUserCampaignsWithInfo(userId,isUserId=False):
+        if(isUserId==False):
+            userId = User_unique_id.getUserId(userId);
+            if(userId == False):
+                return {'statusCode':1,'status':
+                "Invalid session, please login"};
+        
+        with connection.cursor() as cursor:
+            conditionQuery = '''SELECT campaigns.*, camInfo.info  FROM cmsapp_multiple_campaign_upload as campaigns 
+                LEFT JOIN campaign_campaigninfo as camInfo ON campaigns.id = camInfo.campaign_id_id WHERE (campaigns.campaign_uploaded_by =  %s)'''
+            cursor.execute(conditionQuery,[userId])
+            campaigns = dictfetchall(cursor);
+            cursor.close();
+        
+        #campaigns = Multiple_campaign_upload.objects.filter(campaign_uploaded_by=userId);
+        if(len(campaigns)<=0):
+            return {'statusCode':2,'status':
+            'No campaigns Found'};
+        else:
+            return {'statusCode':0,'campaigns':campaigns};
