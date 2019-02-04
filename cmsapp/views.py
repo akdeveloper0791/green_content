@@ -1461,37 +1461,6 @@ def gc_login_api(request):
     else:
         return JsonResponse({'status': False, 'res': "Invalid request"});
 
-@api_view(['GET','POST'])
-
-def gc_login_api1(request):
-    if request.method == 'POST':
-        result = json.loads(request.body)
-        x = User.objects.filter(username= result["email"])
-        if x:
-
-            user=authenticate(request,username=result["email"],password=result["password"])
-            d={}
-            if user is not None :
-                for i in x:
-                    d["id"] = i.id
-                    d["first_name"] = i.first_name
-                    d["last_name"] = i.last_name
-                    d["email"] = i.username
-
-                    unique_key = User_unique_id.objects.get(user_id = i.id)
-
-                    d["user_unique_key"] = unique_key.user_unique_key
-
-                r = JsonResponse({'status': True, 'res': d})
-                return r
-
-            else:
-                r = JsonResponse({'status': False, 'res': "Please Enter Correct Password "})
-                return r
-        else:
-            r = JsonResponse({'status': False, 'res': "Please Enter Valid Email Address "})
-            return r
-
 
 def my_campaigns(request):
     multiple_campaign = {}
