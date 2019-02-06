@@ -4,7 +4,8 @@ import json
 from cmsapp.models import User_unique_id
 import datetime
 from django.db import transaction, connection
-
+from signagecms import constants
+import requests 
 
 def dictfetchall(cursor):
     
@@ -48,7 +49,7 @@ class CampaignInfo(models.Model):
             info,campaignSize);
         
         if(isSave == True):
-            savePath = 'campaigns/{}/{}/'.format(secretKey,campaignName);
+            savePath = '/campaigns/{}/{}/'.format(secretKey,campaignName);
             return {'isSave':isSave,'statusCode':0,'status':
             "success",'save_path':savePath}
         else:
@@ -123,3 +124,18 @@ class CampaignInfo(models.Model):
             'No campaigns Found'};
         else:
             return {'statusCode':0,'campaigns':campaigns};
+
+    def deleteMyCampaign(campaignId,accessToken):
+        userId = User_unique_id.getUserId(accessToken);
+        if(userId == False):
+            return {'statusCode':1,'status':
+                "Invalid session, please login"};
+
+        post_data = {'name': 'Gladys'}
+        headers = {'Authorization': 'Bearer {}'.format(constants.API_HOST),
+        'Content-Type': 'application/json'}
+        response = requests.post('https://api.dropboxapi.com/2/files/delete_v2', data=post_data,
+            headers=headers);
+        #print(response);
+        content = response.content        
+        return response;

@@ -491,7 +491,7 @@ function formatBytes(bytes,decimals) {
               uploadState.session_id = sessionId;
               uploadState.cursor = cursor;
 
-              var commit = { path: '/' +uploadPath+file.name, mode: 'add', autorename: true, mute: false };              
+              var commit = { path: uploadPath+file.name, mode: 'add', autorename: true, mute: false };              
               return dbx.filesUploadSessionFinish({ cursor: cursor, commit: commit, contents: blob });           
             });
           }          
@@ -570,7 +570,7 @@ function formatBytes(bytes,decimals) {
 
 	xhr.setRequestHeader('Content-Type', 'application/octet-stream');
 	xhr.setRequestHeader('Dropbox-API-Arg', JSON.stringify({
-	    path: '/'+uploadPath+  file.name,
+	    path: uploadPath+  file.name,
 	    mode: 'add',
 	    autorename: true,
 	    mute: false
