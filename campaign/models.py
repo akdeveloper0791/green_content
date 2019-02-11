@@ -113,7 +113,8 @@ class CampaignInfo(models.Model):
         
         with connection.cursor() as cursor:
             conditionQuery = '''SELECT campaigns.*, camInfo.info  FROM cmsapp_multiple_campaign_upload as campaigns 
-                LEFT JOIN campaign_campaigninfo as camInfo ON campaigns.id = camInfo.campaign_id_id WHERE (campaigns.campaign_uploaded_by =  %s)'''
+                LEFT JOIN campaign_campaigninfo as camInfo ON campaigns.id = camInfo.campaign_id_id WHERE (campaigns.campaign_uploaded_by =  %s) 
+                ORDER BY campaigns.updated_date DESC'''
             cursor.execute(conditionQuery,[userId])
             campaigns = dictfetchall(cursor);
             cursor.close();
