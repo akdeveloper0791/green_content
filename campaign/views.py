@@ -64,6 +64,7 @@ def listMyCampaignsAPI(request):
     else:
         return JsonResponse({'statusCode':1,
             'status':"Invalid request"});
+        
 @api_view(['POST'])
 def deleteMyCampaign(request):
     if(request.method == 'POST'):
