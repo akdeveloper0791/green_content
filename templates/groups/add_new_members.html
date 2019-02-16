@@ -1,0 +1,119 @@
+{% load static %}
+<html>
+<body>
+<!-- div to display group info -->
+    <!-- The Modal -->
+  <div class="modal" id="anm_members">
+    <div class="modal-dialog">
+      <div class="modal-content">
+      
+        <!-- Modal Header -->
+        <div class="modal-header">
+          <h4 class="modal-title" >Add New members</h4>
+          
+        </div>
+        
+        <!-- Modal body -->
+        <div class="modal-body">
+        	<input type="text" id="anm_add_member_input" onkeypress="verifyMember(event)"/>
+          <div id="anm_members_list">
+          </div>
+        </div>
+        
+        <!-- Modal footer -->
+        <div class="modal-footer">
+          <button type="button" class="btn btn-success" data-dismiss="modal" id
+          ="lmcb_success" onclick="sendANMNewMember()">Submit</button>
+
+          <button type="button" class="btn btn-danger" data-dismiss="modal" id
+          ="lmcb_close" onclick="closeANMCreation()">Close</button>
+        </div>
+        
+      </div>
+    </div>
+  </div>
+
+  <script type="text/javascript">
+  var anmNewMembers = [];
+  function closeANMCreation()
+  {
+    document.getElementById('anm_members').style.display = "none";
+  }
+  function clearVariables()
+  {
+  	anmNewMembers =[];
+  	anmRefreshMembers();
+  }
+
+  function anmDisplayCreation()
+  {
+  	clearVariables();
+     var modal = document.getElementById('anm_members');
+    modal.style.display = "block";
+    
+
+  }
+
+  function verifyMember(event)
+  {
+    var x = event.which || event.keyCode;
+    if(x==32)
+    {
+      var email = document.getElementById("anm_add_member_input").value;
+      email = email.trim();
+      var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+       if(re.test(String(email).toLowerCase()))
+       {
+       	console.log("valid Email");
+         var index = anmNewMembers.indexOf(email);
+         if(index<0)
+         {
+         	anmNewMembers.push(email);
+         	console.log(JSON.stringify(anmNewMembers));
+         	//reset 
+         	document.getElementById("anm_add_member_input").value = "";
+         	anmRefreshMembers();
+         }
+       }
+    }
+
+   
+  }
+
+  function anmRefreshMembers()
+  {
+  	var dvTable = document.getElementById("anm_members_list");
+  	dvTable.innerHTML="";
+  	 var table = document.createElement("TABLE");
+  	 table.id = "anm_members_list_table";
+      
+        //Get the count of columns.
+        var columnCount = 1;
+     
+        //Add the header row.
+       // var row = table.insertRow(-1);
+
+        for (var i = 0; i < anmNewMembers.length; i++) 
+        {
+             row = table.insertRow(-1);
+             row.style.height = "25px";
+             for (var j = 0; j < columnCount; j++) 
+             {
+
+              var cell = row.insertCell(-1);
+              /*cell.innerHTML = campaigns[i]['campaign_name'];*/
+              cell.innerHTML = "<input type='text' value = "+anmNewMembers[i]+"></input>";
+              /* 
+                */
+             }
+        }
+ 
+         
+         dvTable.innerHTML = "";
+         dvTable.appendChild(table);
+  }
+
+
+  </script>
+</body>
+</html>

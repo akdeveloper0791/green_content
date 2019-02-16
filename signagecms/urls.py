@@ -30,6 +30,7 @@ urlpatterns = [
     url(r'^mycontent/upload/', views.upload, name='upload'),
     url(r'^upload_api/', views.upload_api, name='upload_api'),
     path('campaigns/',include('campaign.urls')),
+    path('groups/',include('group.urls')),
     url(r'^accounts/',include('accounts.urls')),
     url(r'^',include('cmsapp.urls')),
 

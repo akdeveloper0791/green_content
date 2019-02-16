@@ -59,7 +59,16 @@ def listCampaignsWeb(request):
 @api_view(['POST'])
 def listMyCampaignsAPI(request):
     if(request.method == 'POST'):
-        result = CampaignInfo.getUserCampaignsWithInfo(request.POST.get("secretKey"));
+        isUserId = False;
+        secretKey = request.POST.get("secretKey")
+        if(secretKey=='web'):
+            isUserId = True;
+            if(request.user.is_authenticated):
+                secretKey = request.user.id;
+            else:
+                return JsonResponse(
+                    {'statusCode':2,'status':"Invalid accessToken please login"});
+        result = CampaignInfo.getUserCampaignsWithInfo(secretKey,isUserId);
         return JsonResponse(result);
     else:
         return JsonResponse({'statusCode':1,

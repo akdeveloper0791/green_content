@@ -1,0 +1,183 @@
+{% load static %}
+<html>
+<body>
+ <!-- div to display group info -->
+    <!-- The Modal -->
+  <div class="modal" id="lmcb_campaigns">
+    <div class="modal-dialog">
+      <div class="modal-content">
+      
+        <!-- Modal Header -->
+        <div class="modal-header">
+          <h4 class="modal-title" >Campaigns</h4>
+          
+        </div>
+        
+        <!-- Modal body -->
+        <div class="modal-body">
+          <div id="lmcb_campaigns_list">
+          </div>
+         
+
+        </div>
+        
+        <!-- Modal footer -->
+        <div class="modal-footer">
+          <button type="button" class="btn btn-success" data-dismiss="modal" id
+          ="lmcb_success" onclick="sendLMCBselectedCampaigns()">Submit</button>
+
+          <button type="button" class="btn btn-danger" data-dismiss="modal" id
+          ="lmcb_close" onclick="closeLmcbCampaigns()">Close</button>
+        </div>
+        
+      </div>
+    </div>
+  </div>
+
+  <script>
+  var lmcbselectedCampaigns=[];
+  function closeLmcbCampaigns()
+  {
+    document.getElementById('lmcb_campaigns').style.display = "none";
+  }
+
+  function lmcbGetCampaigns()
+  {
+    try {
+        ajaxindicatorstart("<img src='{% static "images/ajax-loader.gif" %}'><br/> Please wait...!");
+
+    $.ajax(
+    {
+
+      type:'POST',
+      url: '/campaigns/list_my_campaigns/',
+      headers: {            
+            'X-CSRFToken':'{{ csrf_token }}'
+        },
+      data:{
+                secretKey: 'web',
+                
+      },
+      
+      success: function(data)
+       {
+         ajaxindicatorstop();
+        console.log("data result==="+JSON.stringify(data));
+      
+
+        if(data['statusCode']==0)
+        {
+             
+            lmcbDisplayCampaigns(data['campaigns']);
+            
+        }
+       else
+       {
+
+             swal(data['status']);
+                                    
+       }
+
+        
+
+       },
+    
+     error: function (jqXHR, exception) {
+      ajaxindicatorstop();
+      console.log(jqXHR.responseText);
+
+      alert(exception+jqXHR.responseText);
+     }
+
+    });
+    }
+      catch(Exception)
+      {
+        alert(Exception.message);
+        }
+  }
+
+  function lmcbListCampaigns()
+  {
+    /*var modal = document.getElementById('lmcb_campaigns');
+    modal.style.display = "block";*/
+    lmcbGetCampaigns();
+
+  }
+
+  function lmcbDisplayCampaigns(campaigns)
+  {
+    lmcbselectedCampaigns = [];
+    var dvTable = document.getElementById("lmcb_campaigns_list");
+
+    if(campaigns.length>=0)
+    {
+            //Create a HTML Table element.
+        var table = document.createElement("TABLE");
+        table.border = "0";
+        table.style.borderSpacing = "20px"
+        table.style.padding = "50px 10px 20px 30px"
+        //Get the count of columns.
+        var columnCount = 1;
+     
+        //Add the header row.
+       // var row = table.insertRow(-1);
+
+        for (var i = 0; i < campaigns.length; i++) 
+        {
+             row = table.insertRow(-1);
+             row.style.height = "25px";
+             for (var j = 0; j < columnCount; j++) 
+             {
+
+              var cell = row.insertCell(-1);
+              /*cell.innerHTML = campaigns[i]['campaign_name'];*/
+              cell.innerHTML = "<input type='checkbox' name='name1' onchange='lmcbonchange(this,"+campaigns[i]['id']+")'>"+campaigns[i]['campaign_name'];+"</input>";
+              /* 
+                */
+             }
+        }
+ 
+         
+         dvTable.innerHTML = "";
+         dvTable.appendChild(table);
+    }else
+    {
+      //no members
+      dvTable.innerHTML = "No Campaigns";
+    }
+
+    var modal = document.getElementById('lmcb_campaigns');
+    modal.style.display = "block";
+  }
+
+  function lmcbonchange(cb,campaignId)
+  {
+    console.log("campaignId"+"campaignId"+
+      "isChecked");
+    var index = lmcbselectedCampaigns.indexOf(campaignId);
+    if(cb.checked == true)
+    {
+      if(index<0)
+      {
+          lmcbselectedCampaigns.push(campaignId);
+      }
+    }else
+    {
+      if(index>=0)
+      {
+        lmcbselectedCampaigns.splice(index,1);
+      }
+    }
+    
+  }
+
+  /*function sendLMCBselectedCampaigns()
+  {
+    console.log(JSON.stringify(lmcbselectedCampaigns));
+  }*/
+
+  </script>
+   
+  <body>
+  </html>

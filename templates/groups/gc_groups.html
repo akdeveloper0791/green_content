@@ -1,0 +1,684 @@
+{% load static %}
+<html lang="en">
+<head>
+{% block header %}
+{% include 'header.html' %}
+{% endblock %}
+
+
+</head>
+
+{% block body %}
+
+
+<body>
+
+<link type="text/css" rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css" />
+	<link type="text/css" rel="stylesheet" href="{% static 'multiple_emails/multiple-emails.css' %}" />
+     <script type="text/javascript" src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
+        <script type="text/javascript" src='http://code.jquery.com/jquery-latest.min.js'></script>
+    	<script type="text/javascript" src="{% static 'multiple_emails/multiple-emails.js' %}"></script>
+    <script type="text/javascript">
+
+		      var useremail_list;
+
+		//Plug-in function for the bootstrap version of the multiple email
+		$(function() {
+			//To render the input device to multiple email input using BootStrap icon
+			$('#example_emailBS').multiple_emails({position: "bottom"});
+			//OR $('#example_emailBS').multiple_emails("Bootstrap");
+
+			//Shows the value of the input device, which is in JSON format
+			$('#current_emailsBS').text($('#example_emailBS').val());
+			$('#example_emailBS').change( function(){
+				
+				$('#current_emailsBS').text($(this).val());
+			});
+		});
+
+
+	function submit()
+	{
+		var gname = document.getElementById('group_name').value;
+        var multi_emails = document.getElementById('current_emailsBS').innerHTML;
+        if(gname=="" || gname=="null" || gname==" " || gname=="undefined"){
+                swal("Please enter email group name");
+                return false;
+            }
+        if(multi_emails=="[]" || multi_emails==undefined || multi_emails==null || multi_emails=="")
+        {
+                swal("please enter email id(s)");
+                return false;
+        }
+        testEmail = [];
+        testEmail.push("vineethkumar0791@gmail.com");
+
+        var members = JSON.parse( multi_emails)
+         console.log("members-"+members);
+         console.log("testEmail"+JSON.stringify(testEmail)); 
+        try {
+        ajaxindicatorstart("<img src='{% static "images/ajax-loader.gif" %}'><br/> Please wait...!");
+
+		$.ajax(
+		{
+
+		  type:'POST',
+		  url: '/groups/createGroupApi/',
+		  headers: {		        
+		        'X-CSRFToken':'{{ csrf_token }}'
+		    },
+		  data:{
+                accessToken: 'web',
+                members: multi_emails,
+                name:gname,
+		  },
+		  
+		  success: function(data)
+		   {
+		   	 ajaxindicatorstop();
+			  console.log("data result==="+JSON.stringify(data));
+			
+
+            if(data['statusCode']==0)
+		    {
+             setTimeout(function() {
+              swal({
+                    title: "success",
+                    text: "New group created successfully.",
+                    type: "success"
+                    }, function() {
+                    window.location = "{% url 'gcGroups' %}";});}, 500);
+
+            
+			}
+			else
+			{
+
+             swal(data['status']);
+                                    
+			}
+
+		    
+
+		   },
+		
+		 error: function (jqXHR, exception) {
+		 	ajaxindicatorstop();
+		 	alert(exception+jqXHR.responseText);
+		 }
+
+		});
+		}
+			catch(Exception)
+			{
+				alert(Exception.message);
+		    }
+
+	}
+
+	function getGroupInfo(groupId)
+	{
+		try {
+        ajaxindicatorstart("<img src='{% static "images/ajax-loader.gif" %}'><br/> Please wait...!");
+
+		$.ajax(
+		{
+
+		  type:'POST',
+		  url: '/groups/groupInfoApi/',
+		  headers: {		        
+		        'X-CSRFToken':'{{ csrf_token }}'
+		    },
+		  data:{
+                accessToken: 'web',
+                gId: groupId,
+                
+		  },
+		  
+		  success: function(data)
+		   {
+		   	 ajaxindicatorstop();
+			  console.log("data result==="+JSON.stringify(data));
+			
+
+            if(data['statusCode']==0)
+		    {
+             
+             displayInfo(data);
+            
+			}
+			else
+			{
+
+             swal(data['status']);
+                                    
+			}
+
+		    
+
+		   },
+		
+		 error: function (jqXHR, exception) {
+		 	ajaxindicatorstop();
+		 	alert(exception+jqXHR.responseText);
+		 }
+
+		});
+		}
+			catch(Exception)
+			{
+				alert(Exception.message);
+		    }
+	}
+
+	function displayInfo(info)
+	{
+      var groupInfo = (JSON.parse(info['gInfo']));
+      
+      document.getElementById('group_info_name').innerHTML = groupInfo[0]['fields']['name'];
+      
+      document.getElementById('group_info_created_at').innerHTML = groupInfo[0]['fields']['created_date'];
+     document.getElementById('group_info_id')
+     .value = groupInfo[0]['pk']
+      //group_info_members
+      displayGroupMembers(info['members']);
+      //group_info_campaigns
+      displayGroupCampaigns(info['campaigns']);
+
+	  var modal = document.getElementById('group_info');
+	  modal.style.display = "block";
+ 
+		
+	}
+
+	function closeGroupInfo()
+	{
+          document.getElementById('group_info').style.display = "none";
+     
+	}
+
+	function displayGroupMembers(members)
+	{
+		var dvTable = document.getElementById("group_info_members");
+
+		if(members.length>=0)
+		{
+            //Create a HTML Table element.
+		    var table = document.createElement("TABLE");
+		    table.id = "group_info_members_table";
+
+		    table.border = "0";
+		 
+		    //Get the count of columns.
+		    var columnCount = 1;
+		 
+		    //Add the header row.
+		   // var row = table.insertRow(-1);
+
+		    for (var i = 0; i < members.length; i++) 
+		    {
+		     var member = members[i];
+             row = table.insertRow(-1);
+             row.id = "member_row_"+member['member_id']
+            
+             var cell = row.insertCell(-1);
+             if(member.status == 1)//active
+             {
+             	cell.innerHTML = "<img src="+"{% static 'images/ic_group_member_active.png' %}"+" alt='active' title='active' >";
+             }else if(member.status == -1)
+             {
+             	//blocked 
+             	cell.innerHTML = "<img src="+"{% static 'images/ic_group_member_blocked.png' %}"+" alt='blocked' title='blocked' >";
+             }else
+             {
+             	//in progress
+             	cell.innerHTML = "<img src="+"{% static 'images/ic_group_member_pending.png' %}"+" alt='pending' title='pending' >";
+             }
+             
+
+              var cell = row.insertCell(-1);
+              cell.innerHTML = member['memberName'];
+
+              var deleteCell = row.insertCell(-1);
+              deleteCell.innerHTML = "<input type='image' src='{% static "images/ic_remove.png" %}' alt='remove' title='remove' onclick='removeMember("+member.member_id+")'>"
+            }
+ 
+         
+         dvTable.innerHTML = "";
+         dvTable.appendChild(table);
+		}else
+		{
+			//no members
+			dvTable.innerHTML = "No members";
+		}
+	}
+
+	function displayGroupCampaigns(campaigns)
+	{
+	  var dvTable = document.getElementById("group_info_campaigns");
+        
+      if(campaigns.length>=1)
+      {
+        //Create a HTML Table element.
+		 var table = document.createElement("TABLE");
+		 table.id="group_info_campaigns_TABLE";
+		 table.border = "0";
+		 table.style.borderSpacing = "20px";
+		 //Get the count of columns.
+		  var columnCount = 5;
+		 
+		    //Add the header row.
+		   // var row = table.insertRow(-1);
+
+		    for (var i = 0; i < campaigns.length; i++) 
+		    {
+		     campaign = campaigns[i];
+             row = table.insertRow(-1);
+             row.id = "campaign_row_"+campaign.campaign_id;
+             {
+
+              var cell = row.insertCell(-1);
+              cell.innerHTML =campaign.campaign_name;
+              
+              var deleteCell = row.insertCell(-1);
+              deleteCell.innerHTML = "<input type='image' src='{% static "images/ic_remove.png" %}' alt='remove' title='remove' onclick='removeCampaign("+campaign.campaign_id+")'>"
+             }
+            }
+ 
+         
+         dvTable.innerHTML = "";
+         dvTable.appendChild(table);
+      }else
+      {
+      	 //no campaigns
+      	 dvTable.innerHTML = "No campaigns";
+      }
+	}
+
+	function sendLMCBselectedCampaigns()
+	{
+		closeLmcbCampaigns();
+
+		assignCampaignsApi(lmcbselectedCampaigns);
+	}
+
+	function displayCampaignsToAdd()
+	{
+		closeGroupInfo();
+       lmcbListCampaigns();
+      
+	 
+	}
+
+   function assignCampaignsApi(campaigns)
+	{
+		
+	  try {
+        ajaxindicatorstart("<img src='{% static "images/ajax-loader.gif" %}'><br/> Please wait...!");
+
+		$.ajax(
+		{
+
+		  type:'POST',
+		  url: '/groups/assignCampaigns/',
+		  headers: {		        
+		        'X-CSRFToken':'{{ csrf_token }}'
+		    },
+
+		  data:{
+                accessToken: 'web',
+                gId: document.getElementById('group_info_id').value,
+                campaigns:JSON.stringify(campaigns)
+                
+		  },
+		  
+		  success: function(data)
+		   {
+		   	 ajaxindicatorstop();
+			  console.log("data result==="+JSON.stringify(data));
+			 
+              swal(data['status']);
+              if(data['statusCode']==0)
+              {
+              	lmcbselectedCampaigns =[];
+              	getGroupInfo(document.getElementById('group_info_id').value);
+              }
+
+		   },
+		
+		 error: function (jqXHR, exception) {
+		 	ajaxindicatorstop();
+		 	alert(exception+jqXHR.responseText);
+		 }
+
+		});
+		}
+		 catch(Exception)
+		 {
+		 	  ajaxindicatorstop();
+
+				alert(Exception.message);
+		 }
+	}
+
+	function removeCampaign(campaignId)
+	{
+		campaigns = [campaignId];
+		
+		try {
+        ajaxindicatorstart("<img src='{% static "images/ajax-loader.gif" %}'><br/> Please wait...!");
+
+		$.ajax(
+		{
+
+		  type:'POST',
+		  url: '/groups/removeCampaigns/',
+		  headers: {		        
+		        'X-CSRFToken':'{{ csrf_token }}'
+		    },
+
+		  data:{
+                accessToken: 'web',
+                gId: document.getElementById('group_info_id').value,
+                campaigns:JSON.stringify(campaigns)
+                
+		  },
+		  
+		  success: function(data)
+		   {
+		   	 ajaxindicatorstop();
+			  console.log("data result==="+JSON.stringify(data));
+			 
+              swal(data['status']);
+              if(data['statusCode']==0)
+              {
+              	var table = document.getElementById("group_info_campaigns_TABLE");
+
+              	//after delete ,, check and delete rows
+              	for(var i=0;i<campaigns.length;i++)
+              	try
+              	{
+                  var row = document.getElementById("campaign_row_"+campaigns[i]);
+                  console.log("Row id-"+"campaign_row_"+campaigns[i]);
+
+                  table.deleteRow(row.rowIndex);
+              	}catch(Exception)
+              	{
+                  console.log(Exception.message);
+              	}
+              }
+
+		   },
+		
+		 error: function (jqXHR, exception) {
+		 	ajaxindicatorstop();
+		 	alert(exception+jqXHR.responseText);
+		 }
+
+		});
+		}
+		 catch(Exception)
+		 {
+		 	  ajaxindicatorstop();
+
+				alert(Exception.message);
+		 }
+		
+	}
+
+	function displayMembersToAdd()
+	{
+	   closeGroupInfo();
+       anmDisplayCreation();
+      
+	 
+	}
+
+	function sendANMNewMember()
+	{
+		closeANMCreation();
+
+		assignMembersApi(anmNewMembers);
+	}
+
+	  function assignMembersApi(members)
+	{
+		
+	  try {
+        ajaxindicatorstart("<img src='{% static "images/ajax-loader.gif" %}'><br/> Please wait...!");
+
+		$.ajax(
+		{
+
+		  type:'POST',
+		  url: '/groups/assignMembers/',
+		  headers: {		        
+		        'X-CSRFToken':'{{ csrf_token }}'
+		    },
+
+		  data:{
+                accessToken: 'web',
+                gId: document.getElementById('group_info_id').value,
+                members:JSON.stringify(members)
+                
+		  },
+		  
+		  success: function(data)
+		   {
+		   	 ajaxindicatorstop();
+			  console.log("data result==="+JSON.stringify(data));
+			 
+              swal(data['status']);
+              if(data['statusCode']==0)
+              {
+              	anmNewMembers =[];
+              	getGroupInfo(document.getElementById('group_info_id').value);
+              }
+
+		   },
+		
+		 error: function (jqXHR, exception) {
+		 	ajaxindicatorstop();
+		 	alert(exception+jqXHR.responseText);
+		 }
+
+		});
+		}
+		 catch(Exception)
+		 {
+		 	  ajaxindicatorstop();
+
+				alert(Exception.message);
+		 }
+	}
+
+	function removeMember(memberId)
+	{
+	  var members = [memberId];
+	  
+	  try {
+        ajaxindicatorstart("<img src='{% static "images/ajax-loader.gif" %}'><br/> Please wait...!");
+
+		$.ajax(
+		{
+
+		  type:'POST',
+		  url: '/groups/removeMembers/',
+		  headers: {		        
+		        'X-CSRFToken':'{{ csrf_token }}'
+		    },
+
+		  data:{
+                accessToken: 'web',
+                gId: document.getElementById('group_info_id').value,
+                members:JSON.stringify(members)
+                
+		  },
+		  
+		  success: function(data)
+		   {
+		   	 ajaxindicatorstop();
+			  console.log("data result==="+JSON.stringify(data));
+			 
+              swal(data['status']);
+              if(data['statusCode']==0)
+              {
+              	var table = document.getElementById("group_info_members_table");
+
+              	//after delete ,, check and delete rows
+              	for(var i=0;i<members.length;i++)
+              	try
+              	{
+                  var row = document.getElementById("member_row_"+members[i]);
+                  console.log("Row id-"+"member_row_"+members[i]);
+
+                  table.deleteRow(row.rowIndex);
+              	}catch(Exception)
+              	{
+                  console.log(Exception.message);
+              	}
+              }
+
+		   },
+		
+		 error: function (jqXHR, exception) {
+		 	ajaxindicatorstop();
+		 	alert(exception+jqXHR.responseText);
+		 }
+
+		});
+		}
+		 catch(Exception)
+		 {
+		 	  ajaxindicatorstop();
+
+				alert(Exception.message);
+		 }
+	}
+	  
+	</script> 
+
+	 <style>
+.h4,h4{
+    margin:0px;
+}
+
+.actives{
+    background:green;
+
+}
+a.btn:active{
+    background:green;
+}
+</style>
+
+	<br/> <br/><br/>
+   <!-- div to add groups -->
+	<div class='container' style="display:block;border: solid 2px lightblue;
+    border-radius: 10px;" id="add_gc_group">
+		<div class='rows'>
+			<h3 style="text-align:center;">Create GC Group</h3>
+			<div class='form-group'>
+				<div class='col-md-12'>
+					<h5 for='example_emailBS'>Input GC Group Name :</h5>
+					<input type='text' id='group_name'  class='form-control' autofocus>
+				</div>
+
+			</div>
+
+			<div class='form-group'>
+				<div class='col-md-12'>
+					<h5 for='example_emailBS'>Input Group Mail Id :</h5>
+					<input type='text' id='example_emailBS' name='example_emailBS' class='form-control' value=''>
+				</div>
+					<pre id='current_emailsBS' style="display:none;"></pre>
+			</div>
+			<div class='form-group'>
+			    <div class='col-md-12' style="text-align: center;margin: 10px;">
+			    <button class="btn btn-success" onclick="submit();">Submit</button>
+			    </div>
+			</div>
+
+		</div>
+	</div>
+	<!--end add gmail-->
+   <!-- list of groups -->
+   <div class='container' style="border: solid 2px lightblue;
+    border-radius: 10px;" id="list_groups">
+    <div class='rows'>
+			<br/>
+	<div class='panel panel-default'>
+		<div class='panel-heading' style='background: cornflowerblue;color: white;'>List of My GC Groups </div>
+		{% if res.statusCode == 0 %}
+		 {% for group in res.groups %}
+           <ul class='list-group'>
+           	 <li class='list-group-item'>
+               <div class='col-xs-10' style='cursor:pointer' onclick='getGroupInfo("{{ group.id }}")'>
+               	 {{ group.name }} </div>
+
+           	 </li>
+           </ul>
+
+		 {% endfor %}
+		 
+		{% else %}
+		  <h1>No groups found<h1>
+		{% endif %}
+	</div>
+	</div>
+   </div>
+
+   <!-- div to display group info -->
+    <!-- The Modal -->
+  <div class="modal" id="group_info">
+    <div class="modal-dialog">
+      <div class="modal-content">
+      
+        <!-- Modal Header -->
+        <div class="modal-header">
+          <h4 class="modal-title" id="group_info_name">Modal Heading</h4>
+          <h6 id="group_info_created_at">createdAt</h6>
+          <input type="hidden" id="group_info_id" />
+        </div>
+        
+        <!-- Modal body -->
+        <div class="modal-body">
+          <div id="members_info">
+          	<h5 style="color:blue"> Members</h5> <button type="button" style="float: right;"  onclick="displayMembersToAdd()">Add </button>
+          	
+          	<div id="group_info_members">
+            </div>
+          </div>
+         <hr>
+          <div id="campaigns_info">
+          	<h5 style="color:blue"> Campaigns</h5> <button type="button" style="float: right;"  onclick="displayCampaignsToAdd()">Add </button>
+          	
+          	<div id="group_info_campaigns">
+            </div>
+          </div>
+
+        </div>
+        
+        <!-- Modal footer -->
+        <div class="modal-footer">
+          <button type="button" class="btn btn-danger" data-dismiss="modal" id
+          ="group_info_close" onclick="closeGroupInfo()">Close</button>
+        </div>
+        
+      </div>
+    </div>
+  </div>
+
+  {% include 'campaign/list_mycampaigns_cb.html' %}
+
+  {% include 'groups/add_new_members.html' %}
+
+
+
+	<br/> <br/>
+{% endblock %}
+<br/><br/><br/>
+{% block footer %}
+{% include 'footer.html' %}
+{% endblock %}
+</body>
