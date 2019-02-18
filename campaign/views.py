@@ -78,7 +78,7 @@ def listMyCampaignsAPI(request):
 def deleteMyCampaign(request):
     if(request.method == 'POST'):
         result = CampaignInfo.deleteMyCampaign(request.POST.get('camp_id'),
-            request.POST.get('accessToken'));
+            request.POST.get('accessToken'),request.POST.get('mac'));
         return JsonResponse(result);
     else:
         return JsonResponse({'statusCode':1,

@@ -8,6 +8,7 @@ from signagecms import constants
 import requests 
 from django.core import serializers
 from django.http import JsonResponse
+from django.conf import settings
 
 def dictfetchall(cursor):
     
@@ -133,20 +134,42 @@ class CampaignInfo(models.Model):
         else:
             return {'statusCode':0,'campaigns':campaigns};
 
-    def deleteMyCampaign(campaignId,accessToken):
+    def deleteMyCampaign(campaignId,accessToken,mac):
         userId = User_unique_id.getUserId(accessToken);
         if(userId == False):
             return {'statusCode':1,'status':
                 "Invalid session, please login"};
+        with transaction.atomic():
+            #get campaign info
+            try:
+                campaign = Multiple_campaign_upload.objects.get(id=campaignId,campaign_uploaded_by=userId)
+                #check and delete campaign from dropbox
+                if(campaign.source==0):
+                    #deleteCampaignFromDropBox
+                    savePath = campaign.save_path;
+                    savePath = savePath[:-1]
+                    post_data = JsonResponse({ "path": savePath })
+                    headers = {'Authorization': 'Bearer {}'.format(constants.DROP_BOX_ACCESS_TOKEN),
+                    'Content-Type': 'application/json'}
+                    response = requests.post('https://api.dropboxapi.com/2/files/delete_v2', data=post_data,
+                     headers=headers);
+                
+                #save deleted 
+                deletedInfo = Deleted_Campaigns(user_id=userId,
+                    campaign_name=campaign.campaign_name,mac=mac);
 
-        post_data = JsonResponse({ "path": "/campaigns/471f5bd2bcd24c5ab63e64ccd107e380/best tik tok" })
-        headers = {'Authorization': 'Bearer {}'.format(constants.DROP_BOX_ACCESS_TOKEN),
-        'Content-Type': 'application/json'}
-        response = requests.post('https://api.dropboxapi.com/2/files/delete_v2', data=post_data,
-            headers=headers);
-        #print(response);
-        content = response.content        
-        return {'response':response.text};
+                deletedInfo.save();
+
+                #delete campaign 
+                campaign.delete();
+            
+                return {'statusCode':0,'status':'Campaign has been deleted successfully'};
+            except Multiple_campaign_upload.DoesNotExist:
+                return {'statusCode':2,'status':'Invalid campaign'}
+            except Exception as e:
+                return {'statusCode':3,'status':'Error -'+str(e)};
+
+        
 
     def listCampaigns1():
     
@@ -173,3 +196,9 @@ class CampaignInfo(models.Model):
 
         return {'path':newPath,'userId':userId,'total':len(campaigns),
         'updated':i};
+
+class Deleted_Campaigns(models.Model):
+    user = models.ForeignKey(settings.AUTH_USER_MODEL,on_delete=models.CASCADE)
+    campaign_name = models.CharField(max_length=50)
+    mac = models.CharField(max_length=50)
+    deleted_at = models.DateTimeField(default=datetime.datetime.now())
