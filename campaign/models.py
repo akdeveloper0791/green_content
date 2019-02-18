@@ -163,7 +163,7 @@ class CampaignInfo(models.Model):
             newPath = "/campaigns/{}/{}/".format(accessToken,campaign.campaign_name)
             campaign.save_path = newPath;
             campaign.save();
-            ++i;
+            i+=1;
            
 
         return {'path':newPath,'userId':userId,'total':len(campaigns),
