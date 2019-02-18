@@ -131,6 +131,7 @@ class Multiple_campaign_upload(models.Model):
     stor_location = models.SmallIntegerField(default=1)#1 is local storage, else dropbox
     campaign_size = models.CharField(max_length=50,default=0)
     source = models.SmallIntegerField(default=0)#0 is self created or else added from groups or other source
+    save_path = models.TextField(default="")
 
     class Meta(object):
         unique_together = [
