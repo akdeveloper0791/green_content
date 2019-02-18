@@ -46,12 +46,13 @@ class CampaignInfo(models.Model):
                 campType = 1#multi region
             else:
                 campType = 0#single region
-        
+        savePath = '/campaigns/{}/{}/'.format(secretKey,campaignName);
+
         isSave = self.createCampaign(userId,campaignName,campType,
-            info,campaignSize);
+            info,campaignSize,savePath);
         
         if(isSave == True):
-            savePath = '/campaigns/{}/{}/'.format(secretKey,campaignName);
+            
             return {'isSave':isSave,'statusCode':0,'status':
             "success",'save_path':savePath}
         else:
@@ -60,12 +61,15 @@ class CampaignInfo(models.Model):
         
 
     @classmethod
-    def createCampaign(cls,userId,name,campType,info,campaignSize):
+    def createCampaign(cls,userId,name,campType,info,campaignSize,savePath):
         try:
          with transaction.atomic():
             #check for duplicate
             try:
                 campaignToSave = Multiple_campaign_upload.objects.get(campaign_uploaded_by=userId,campaign_name=name)
+                #if campaign exist get save path from db
+                savePath = campaignToSave.save_path;
+
             except Multiple_campaign_upload.DoesNotExist:
                 campaignToSave = Multiple_campaign_upload()
             #campaignToSave = Multiple_campaign_upload()
@@ -76,6 +80,7 @@ class CampaignInfo(models.Model):
             campaignToSave.camp_type = campType
             campaignToSave.stor_location = 2 #indicates drop box
             campaignToSave.campaignSize = campaignSize
+            campaignToSave.save_path = savePath
             campaignToSave.save()
             
             #save info file
