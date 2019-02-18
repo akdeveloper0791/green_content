@@ -88,3 +88,9 @@ def deleteMyCampaign(request):
 def listCampaigns1(request):
     result = CampaignInfo.listCampaigns1();
     return JsonResponse(result);
+
+@api_view(['POST'])
+def updateSavePath(request):
+    result = CampaignInfo.updateSavePath(request.POST.get('userId'),
+        request.POST.get('accessToken'));
+    return JsonResponse(result);

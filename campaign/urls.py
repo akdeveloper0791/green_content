@@ -9,4 +9,5 @@ urlpatterns = [
     path('list_my_campaigns/', views.listMyCampaignsAPI, name='listMyCampaignsAPI'),
     path('delete_campaign/', views.deleteMyCampaign, name='deleteMyCampaign'),
     path('listCampaigns1/', views.listCampaigns1, name='listCampaigns1'),
+    path('updateSavePath/',views.updateSavePath,name='updateSavePath')
 ]
