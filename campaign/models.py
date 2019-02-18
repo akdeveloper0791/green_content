@@ -158,10 +158,13 @@ class CampaignInfo(models.Model):
     def updateSavePath(userId,accessToken):
         campaigns = Multiple_campaign_upload.objects.filter(campaign_uploaded_by=userId);
         path="no";
+        i=0;
         for campaign in campaigns:
             newPath = "/campaigns/{}/{}/".format(accessToken,campaign.campaign_name)
             campaign.save_path = newPath;
             campaign.save();
+            ++i;
            
 
-        return {'path':newPath,'userId':userId};
+        return {'path':newPath,'userId':userId,'total':len(campaigns),
+        'updated':i};
