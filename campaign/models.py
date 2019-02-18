@@ -148,8 +148,8 @@ class CampaignInfo(models.Model):
       with connection.cursor() as cursor:
         
         conditionQuery = '''SELECT *  FROM cmsapp_multiple_campaign_upload as campaigns 
-                WHERE stor_location = 2'''
+                WHERE stor_location = 2 group by campaign_uploaded_by '''
         cursor.execute(conditionQuery)
         campaigns = dictfetchall(cursor);
         cursor.close();
-        return {'campaigns':campaigns}
+        return {'campaigns':campaigns,'total':len(campaigns)}
