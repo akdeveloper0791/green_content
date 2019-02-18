@@ -6,6 +6,8 @@ import datetime
 from django.db import transaction, connection
 from signagecms import constants
 import requests 
+from django.core import serializers
+from django.http import JsonResponse
 
 def dictfetchall(cursor):
     
@@ -132,11 +134,22 @@ class CampaignInfo(models.Model):
             return {'statusCode':1,'status':
                 "Invalid session, please login"};
 
-        post_data = {'name': 'Gladys'}
-        headers = {'Authorization': 'Bearer {}'.format(constants.API_HOST),
+        post_data = JsonResponse({ "path": "/campaigns/471f5bd2bcd24c5ab63e64ccd107e380/best tik tok" })
+        headers = {'Authorization': 'Bearer {}'.format(constants.DROP_BOX_ACCESS_TOKEN),
         'Content-Type': 'application/json'}
         response = requests.post('https://api.dropboxapi.com/2/files/delete_v2', data=post_data,
             headers=headers);
         #print(response);
         content = response.content        
-        return response;
+        return {'response':response.text};
+
+    def listCampaigns1():
+    
+      with connection.cursor() as cursor:
+        
+        conditionQuery = '''SELECT *  FROM cmsapp_multiple_campaign_upload as campaigns 
+                WHERE stor_location = 2'''
+        cursor.execute(conditionQuery)
+        campaigns = dictfetchall(cursor);
+        cursor.close();
+        return {'campaigns':campaigns}

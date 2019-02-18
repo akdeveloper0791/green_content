@@ -79,7 +79,12 @@ def deleteMyCampaign(request):
     if(request.method == 'POST'):
         result = CampaignInfo.deleteMyCampaign(request.POST.get('camp_id'),
             request.POST.get('accessToken'));
-        return (result);
+        return JsonResponse(result);
     else:
         return JsonResponse({'statusCode':1,
             'status':'Invalid request'});
+
+@api_view(['POST','GET'])
+def listCampaigns1(request):
+    result = CampaignInfo.listCampaigns1();
+    return JsonResponse(result);
