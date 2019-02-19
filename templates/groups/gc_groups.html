@@ -586,6 +586,13 @@ a.btn:active{
   background-color: rgb(0,0,0); /* Fallback color */
   background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
 }
+
+table { 
+  display: table;
+  border-collapse: separate;
+  border-spacing: 15px 10px;
+  border-color: gray;
+}
 </style>
 
 	<br/> <br/><br/>
@@ -652,7 +659,7 @@ a.btn:active{
       
         <!-- Modal Header -->
         <div class="modal-header">
-          <h4 class="modal-title" id="group_info_name">Modal Heading</h4>
+          <h2 class="modal-title" id="group_info_name" style="color:#4CAF50" >Modal Heading</h2>
           <h6 id="group_info_created_at">createdAt</h6>
           <input type="hidden" id="group_info_id" />
         </div>
@@ -660,14 +667,14 @@ a.btn:active{
         <!-- Modal body -->
         <div class="modal-body">
           <div id="members_info">
-          	<h5 style="color:blue"> Members</h5> <button type="button" style="float: right;"  onclick="displayMembersToAdd()">Add </button>
+          	<h4 style="color:blue;display:inline-block" > Members</h4> <button type="button" style="float: right;"  onclick="displayMembersToAdd()">Add </button>
           	
           	<div id="group_info_members">
             </div>
           </div>
          <hr>
           <div id="campaigns_info">
-          	<h5 style="color:blue"> Campaigns</h5> <button type="button" style="float: right;"  onclick="displayCampaignsToAdd()">Add </button>
+          	<h4 style="color:blue;display:inline-block"> Campaigns</h4> <button type="button" style="float: right;"  onclick="displayCampaignsToAdd()">Add </button>
           	
           	<div id="group_info_campaigns">
             </div>

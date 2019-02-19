@@ -15,7 +15,10 @@
         
         <!-- Modal body -->
         <div class="modal-body">
-        	<input type="text" id="anm_add_member_input" onkeypress="verifyMember(event)"/>
+        	<input type="text" id="anm_add_member_input" oninput="verifyMember()" onkeydown="anmAddMemberOnKeyDown()" placeholder="Enter User GC Email"/> 
+          
+           <input type='hidden' src='{% static "images/ic_group_member_active.png" %}' alt='add' title='add' onclick='anmVerifyAndAddMember()' id="anm_valid_email_true">
+
           <div id="anm_members_list">
           </div>
         </div>
@@ -23,7 +26,7 @@
         <!-- Modal footer -->
         <div class="modal-footer">
           <button type="button" class="btn btn-success" data-dismiss="modal" id
-          ="lmcb_success" onclick="sendANMNewMember()">Submit</button>
+          ="anm_success" onclick="sendANMNewMember()">Submit</button>
 
           <button type="button" class="btn btn-danger" data-dismiss="modal" id
           ="lmcb_close" onclick="closeANMCreation()">Close</button>
@@ -54,30 +57,62 @@
 
   }
 
+  function anmAddMemberOnKeyDown()
+  {
+    var keynum = event.which || event.keyCode;
+    if(keynum == 9 || keynum == 32 || keynum == 188 || keynum == 13)
+    {
+
+      anmVerifyAndAddMember()
+    }
+  }
+
   function verifyMember(event)
   {
-    var x = event.which || event.keyCode;
-    if(x==32)
-    {
-      var email = document.getElementById("anm_add_member_input").value;
+    /**/
+
+    var email = document.getElementById("anm_add_member_input").value;
       email = email.trim();
       var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
        if(re.test(String(email).toLowerCase()))
        {
-       	console.log("valid Email");
+            document.getElementById('anm_valid_email_true').type='image';
+       }else
+       {
+        document.getElementById('anm_valid_email_true').type='hidden';
+       }
+
+   
+  }
+
+  function anmVerifyAndAddMember()
+  {
+    var email = document.getElementById("anm_add_member_input").value;
+      email = email.trim();
+      var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+       if(re.test(String(email).toLowerCase()))
+       {
+        console.log("valid Email");
          var index = anmNewMembers.indexOf(email);
          if(index<0)
          {
-         	anmNewMembers.push(email);
-         	console.log(JSON.stringify(anmNewMembers));
-         	//reset 
-         	document.getElementById("anm_add_member_input").value = "";
-         	anmRefreshMembers();
+          anmNewMembers.push(email);
+          console.log(JSON.stringify(anmNewMembers));
+          //reset 
+          document.getElementById("anm_add_member_input").value = "";
+          anmRefreshMembers();
          }
        }
-    }
+  }
 
-   
+  function adnmRemoveMember(memberEmail)
+  {
+    var index = anmNewMembers.indexOf(memberEmail);
+         if(index>=0)
+         {
+          anmNewMembers.splice(index,1);
+          anmRefreshMembers();
+        }
   }
 
   function anmRefreshMembers()
@@ -101,10 +136,13 @@
              {
 
               var cell = row.insertCell(-1);
-              /*cell.innerHTML = campaigns[i]['campaign_name'];*/
-              cell.innerHTML = "<input type='text' value = "+anmNewMembers[i]+"></input>";
-              /* 
-                */
+              
+
+              cell.innerHTML = anmNewMembers[i];
+
+              var deleteCell = row.insertCell(-1);
+              deleteCell.innerHTML = "<input type='image' src='{% static "images/ic_remove.png" %}' alt='remove' title='remove' onclick='adnmRemoveMember(\""+anmNewMembers[i]+"\")'>"
+              
              }
         }
  
