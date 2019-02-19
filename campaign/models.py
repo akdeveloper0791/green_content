@@ -9,6 +9,9 @@ import requests
 from django.core import serializers
 from django.http import JsonResponse
 from django.conf import settings
+from .Notifications import SendCampDeleteNotification
+
+
 
 def dictfetchall(cursor):
     
@@ -143,6 +146,7 @@ class CampaignInfo(models.Model):
             #get campaign info
             try:
                 campaign = Multiple_campaign_upload.objects.get(id=campaignId,campaign_uploaded_by=userId)
+                campaignName = campaign.campaign_name;
                 #check and delete campaign from dropbox
                 if(campaign.source==0):
                     #deleteCampaignFromDropBox
@@ -154,15 +158,19 @@ class CampaignInfo(models.Model):
                     response = requests.post('https://api.dropboxapi.com/2/files/delete_v2', data=post_data,
                      headers=headers);
                 
+                #delete campaign 
+                campaign.delete();
+
                 #save deleted 
                 deletedInfo = Deleted_Campaigns(user_id=userId,
-                    campaign_name=campaign.campaign_name,mac=mac);
+                    campaign_name=campaignName,mac=mac);
 
                 deletedInfo.save();
 
-                #delete campaign 
-                campaign.delete();
-            
+                #send delete confirmation mail
+                message = ''' Dear user your campaign {} has been deleted by {}'''.format(campaignName,mac);
+                SendCampDeleteNotification(userId, message).start()
+                
                 return {'statusCode':0,'status':'Campaign has been deleted successfully'};
             except Multiple_campaign_upload.DoesNotExist:
                 return {'statusCode':2,'status':'Invalid campaign'}
@@ -170,7 +178,7 @@ class CampaignInfo(models.Model):
                 return {'statusCode':3,'status':'Error -'+str(e)};
 
         
-
+   
     def listCampaigns1():
     
       with connection.cursor() as cursor:
