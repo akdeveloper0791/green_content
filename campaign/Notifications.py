@@ -1,5 +1,6 @@
 from django.core.mail import send_mail
 import threading
+from django.core import mail
 from django.contrib.auth.models import User
 
 class SendCampDeleteNotification(threading.Thread):
@@ -10,9 +11,21 @@ class SendCampDeleteNotification(threading.Thread):
 
     def run (self):
         #get user email and send email 
-        try:
          user = User.objects.get(id=self.userId);
-         send_mail("Campaign delete notification", self.message, "contact@adskite.com", [user.email],
-            fail_silently=True)
+         with mail.get_connection() as connection:
+            mail.EmailMessage(
+            "Campaign delete notification", self.message, "adskitedeveloper@gmail.com", [user.email],
+            connection=connection,
+            ).send()
+         #send_mail("Campaign delete notification", self.message, "contact@adskite.com", [user.email])
+        
+class SendEmail:
+    def sendEmail(userId,message):
+        try:
+         user = User.objects.get(id=userId);
+         return send_mail("Campaign delete notification", message, "adskitedeveloper@gmail.com", [user.email],
+          )
+         ''''''
+            
         except User.DoesNotExist as e:
-            ''' user not found ''';
+           return ''' user not found ''';

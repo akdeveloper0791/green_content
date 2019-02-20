@@ -9,7 +9,7 @@ import requests
 from django.core import serializers
 from django.http import JsonResponse
 from django.conf import settings
-from .Notifications import SendCampDeleteNotification
+from .Notifications import SendCampDeleteNotification,SendEmail
 
 
 
@@ -170,7 +170,7 @@ class CampaignInfo(models.Model):
                 #send delete confirmation mail
                 message = ''' Dear user your campaign {} has been deleted by {}'''.format(campaignName,mac);
                 SendCampDeleteNotification(userId, message).start()
-                
+                #res = SendEmail.sendEmail(userId,message);
                 return {'statusCode':0,'status':'Campaign has been deleted successfully'};
             except Multiple_campaign_upload.DoesNotExist:
                 return {'statusCode':2,'status':'Invalid campaign'}
