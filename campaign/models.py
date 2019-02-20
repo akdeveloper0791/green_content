@@ -210,3 +210,10 @@ class Deleted_Campaigns(models.Model):
     campaign_name = models.CharField(max_length=50)
     mac = models.CharField(max_length=50)
     deleted_at = models.DateTimeField(default=datetime.datetime.now())
+
+class Approved_Group_Campaigns(models.Model):
+    user = models.ForeignKey(settings.AUTH_USER_MODEL,on_delete=models.CASCADE)
+    group = models.ForeignKey('group.GcGroups',on_delete=models.CASCADE)
+    campaign = models.ForeignKey('cmsapp.Multiple_campaign_upload',on_delete=models.CASCADE)
+    group_campaign = models.ForeignKey('group.GroupCampaigns',on_delete=models.CASCADE)
+    created_at = models.DateTimeField(default=datetime.datetime.now())

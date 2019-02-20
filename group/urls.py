@@ -10,4 +10,6 @@ urlpatterns = [
     path('removeCampaigns/',views.removeCampaigns,name='removeCampaigns'),
     path('assignMembers/',views.assignMembers,name='assignMembers'),
     path('removeMembers/',views.removeMembers,name='removeMembers'),
+    path('getAssignedGroups/',views.getAssignedGroups,name='getAssignedGroups'),
+    path('updateMemberGroupStatus/',views.updateMemberGroupStatus,name='updateMemberGroupStatus'),
    ]

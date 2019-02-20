@@ -1,0 +1,360 @@
+{% load static %}
+<html>
+<style>
+.mg_tablink {
+  background-color: #555;
+  color: white;
+  float: left;
+  border: none;
+  outline: none;
+  cursor: pointer;
+  padding: 14px 16px;
+  font-size: 17px;
+  width: 33.2%;
+}
+</style>
+
+<body>
+    <div class='tabcontent' id="member_groups" style="display:none">
+     <div class='container'> 
+  		<button class="mg_tablink" onclick="mgDisplayPendingList(this)" id="mg_pending_list_btn">Pending</button>
+  	   <button class="mg_tablink" onclick="mgDisplayActiveList(this)" id="mg_active_list_btn">Active</button>
+  	   <button class="mg_tablink" onclick="mgDisplayBlockedList(this)" id="mg_blocked_list_btn">Blocked</button>
+     </div>
+	
+ 
+  <div class='container' style="margin-top:20px;border: solid 2px lightblue;
+    border-radius: 10px;">
+    <div id="mg_pending_group_request" style="display:none" class="mg_tabcontent">
+    </div>
+    <div id="mg_active_group_request" style="display:none" class="mg_tabcontent">
+    </div>
+    <div id="mg_blocked_group_request" style="display:none" class="mg_tabcontent">
+    </div>
+  </div>
+   </div>
+   
+ <script type="text/javascript">
+  mgListGroups=[];var tabColor="#5D8AA8";
+  function mgListGroupsfunc()
+  {
+    try {
+        ajaxindicatorstart("<img src='{% static "images/ajax-loader.gif" %}'><br/> Please wait...!");
+
+    $.ajax(
+    {
+
+      type:'POST',
+      url: '/groups/getAssignedGroups/',
+      headers: {            
+            'X-CSRFToken':'{{ csrf_token }}'
+        },
+      data:{
+                accessToken: 'web'
+      },
+      
+      success: function(data)
+       {
+         ajaxindicatorstop();
+        console.log("data result==="+JSON.stringify(data));
+      
+        var statusCode = data['statusCode'];
+        if(statusCode==0 || statusCode==1)
+        {
+             if(statusCode==0)
+             {
+              mgListGroups=data['info'];
+             }else
+             {
+              mgListGroups=[];
+             }
+        document.getElementById('member_groups').style.display="block";
+            //refresh list
+            mgDisplayPendingList(document.getElementById('mg_pending_list_btn'))
+            
+        }
+       else
+       {
+
+             swal(data['status']);
+                                    
+       }
+
+        
+
+       },
+    
+     error: function (jqXHR, exception) {
+      ajaxindicatorstop();
+      alert(exception+jqXHR.responseText);
+     }
+
+    });
+    }
+    catch(Exception)
+    {
+        alert(Exception.message);
+    }
+
+  }
+  function refreshTabs()
+  {
+    var tablinks = document.getElementsByClassName("mg_tablink");
+    for (i = 0; i < tablinks.length; i++) {
+      tablinks[i].style.backgroundColor = "";
+    }
+
+    tabcontent = document.getElementsByClassName("mg_tabcontent");
+    for (i = 0; i < tabcontent.length; i++) {
+      tabcontent[i].style.display = "none";
+    }
+
+  }
+
+  function mgDisplayPendingList(element)
+  {
+    
+     refreshTabs();
+
+    var dvTable = document.getElementById("mg_pending_group_request");
+
+    if(mgListGroups.length>0)
+    {
+            //Create a HTML Table element.
+        var table = document.createElement("TABLE");
+        table.border = "0";
+        var isGroupFound = false;
+        for (var i = 0; i < mgListGroups.length; i++) 
+        {
+
+          var info = mgListGroups[i];
+          if(info.status==0)//only pending
+          {
+            isGroupFound= true;
+            row = table.insertRow(-1);
+            row.style.height = "25px";
+            var cell = row.insertCell(-1);
+                
+            cell.innerHTML = info['g_name']
+            cell.style.width='100%';
+
+            var approveCell = row.insertCell(-1);
+            approveCell.innerHTML = "<input type='image' src='{% static "images/ic_group_member_active.png" %}' onclick='mgUpdateGroupStatus("+i+","+info['g_id']+",1)' title='Approve' alt='Approve'/>";
+            approveCell.align='left';
+            console.log('gName - '+info['g_name']); 
+
+            var blockCell = row.insertCell(-1);
+            blockCell.innerHTML = "<input type='image' src='{% static "images/ic_group_member_blocked.png" %}' onchange='lmcbonchange(this,"+info['g_name']+")' title='Block' alt='Block'/>";
+            
+            console.log('gName - '+info['g_name']); 
+          }  
+        }
+ 
+         console.log('mgListGroups.length'+mgListGroups.length);
+         if(isGroupFound)
+         {
+          dvTable.innerHTML = "";
+          dvTable.appendChild(table);
+         }else
+         {
+           dvTable.innerHTML = "No pending groups";
+         }
+         
+    }else
+    {
+      //no members
+      dvTable.innerHTML = "No pending groups";
+    }
+
+    
+    dvTable.style.display = "block";
+    element.style.backgroundColor = tabColor;
+  }
+
+  function mgDisplayActiveList(element)
+  {
+    refreshTabs();
+     
+
+    var dvTable = document.getElementById("mg_active_group_request");
+
+    if(mgListGroups.length>0)
+    {
+            //Create a HTML Table element.
+        var table = document.createElement("TABLE");
+        table.border = "0";
+        var isGroupFound = false;
+        for (var i = 0; i < mgListGroups.length; i++) 
+        {
+
+          var info = mgListGroups[i];
+          if(info.status==1)//only pending
+          {
+            isGroupFound= true;
+            row = table.insertRow(-1);
+            row.style.height = "25px";
+            var cell = row.insertCell(-1);
+                
+            cell.innerHTML = info['g_name']
+            cell.style.width='100%';
+
+            var blockCell = row.insertCell(-1);
+            blockCell.innerHTML = "<input type='image' src='{% static "images/ic_group_member_blocked.png" %}' onclick='mgUpdateGroupStatus("+i+","+info['g_id']+",-1)' title='block',alt='block'/>";
+             
+            
+          }  
+        }
+ 
+         
+         if(isGroupFound)
+         {
+          dvTable.innerHTML = "";
+          dvTable.appendChild(table);
+         }else
+         {
+           dvTable.innerHTML = "No active groups";
+         }
+         
+    }else
+    {
+      //no members
+      dvTable.innerHTML = "No active groups";
+    }
+
+    
+    dvTable.style.display = "block";
+    element.style.backgroundColor = tabColor;
+  }
+
+  function mgDisplayBlockedList(element)
+  {
+     refreshTabs();
+
+   
+
+    var dvTable = document.getElementById("mg_blocked_group_request");
+
+    if(mgListGroups.length>0)
+    {
+            //Create a HTML Table element.
+        var table = document.createElement("TABLE");
+        table.border = "0";
+        var isGroupFound = false;
+        for (var i = 0; i < mgListGroups.length; i++) 
+        {
+
+          var info = mgListGroups[i];
+          if(info.status==-1)//only pending
+          {
+            isGroupFound= true;
+            row = table.insertRow(-1);
+            row.style.height = "25px";
+            var cell = row.insertCell(-1);
+            cell.innerHTML = info['g_name']
+            cell.style.width='100%';
+
+            var approveCell = row.insertCell(-1);
+            approveCell.innerHTML = "<input type='image' src='{% static "images/ic_group_member_active.png" %}' onclick='mgUpdateGroupStatus("+i+","+info['g_id']+",1)'/>";
+            approveCell.align='left';
+            console.log('gName - '+info['g_name']); 
+
+            
+            
+          }  
+        }
+ 
+         
+         if(isGroupFound)
+         {
+          dvTable.innerHTML = "";
+          dvTable.appendChild(table);
+         }else
+         {
+           dvTable.innerHTML = "No groups";
+         }
+         
+    }else
+    {
+      //no members
+      dvTable.innerHTML = "No groups";
+    }
+
+    
+    dvTable.style.display = "block";
+    element.style.backgroundColor = tabColor;
+  }
+
+  function mgUpdateGroupStatus(listPosition,gId,status)
+  {
+    try {
+        ajaxindicatorstart("<img src='{% static "images/ajax-loader.gif" %}'><br/> Please wait...!");
+
+    $.ajax(
+    {
+
+      type:'POST',
+      url: '/groups/updateMemberGroupStatus/',
+      headers: {            
+            'X-CSRFToken':'{{ csrf_token }}'
+        },
+      data:{
+                accessToken: 'web',
+                status:status,
+                g_id:gId
+      },
+      
+      success: function(data)
+       {
+         ajaxindicatorstop();
+        console.log("data result==="+JSON.stringify(data));
+      
+        var statusCode = data['statusCode'];
+        if(statusCode==0)
+        {
+          info = mgListGroups[listPosition];
+          info.status=status;
+          mgListGroups[listPosition]=info;
+
+         if(document.getElementById('mg_active_group_request').style.display == 'block')
+         {
+          mgDisplayActiveList(document.getElementById('mg_active_list_btn'));
+         }else if(document.getElementById('mg_blocked_group_request').style.display == 'block')
+         {
+          mgDisplayBlockedList(document.getElementById('mg_blocked_list_btn'));
+         }else{
+          mgDisplayPendingList(document.getElementById('mg_pending_list_btn'));
+         }
+          
+             
+
+
+        
+            
+            
+        }
+       else
+       {
+
+             swal(data['status']);
+                                    
+       }
+
+        
+
+       },
+    
+     error: function (jqXHR, exception) {
+      ajaxindicatorstop();
+      alert(exception+jqXHR.responseText);
+     }
+
+    });
+    }
+    catch(Exception)
+    {
+        alert(Exception.message);
+    }
+  }
+ </script>
+</body>
+</html>

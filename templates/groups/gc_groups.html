@@ -20,7 +20,7 @@
     	<script type="text/javascript" src="{% static 'multiple_emails/multiple-emails.js' %}"></script>
     <script type="text/javascript">
 
-		      var useremail_list;
+	var useremail_list;var tabSelectedColor = "cornflowerblue";
 
 		//Plug-in function for the bootstrap version of the multiple email
 		$(function() {
@@ -555,10 +555,36 @@
 				alert(Exception.message);
 		 }
 	}
+
+	function openPage(pageName,elmnt) 
+	{
+	  var i, tabcontent, tablinks;
+	  tabcontent = document.getElementsByClassName("tabcontent");
+	  for (i = 0; i < tabcontent.length; i++) {
+	    tabcontent[i].style.display = "none";
+	  }
+	  tablinks = document.getElementsByClassName("tablink");
+	  for (i = 0; i < tablinks.length; i++) {
+	    tablinks[i].style.backgroundColor = "#CFCFC4";
+	  }
+	  if(pageName == "member_groups")
+	  {
+        mgListGroupsfunc();
+	  }else{
+	  	document.getElementById(pageName).style.display = "block";
+	   
+	  }
+	  elmnt.style.backgroundColor = tabSelectedColor;
+	  
+    }
+
+
 	  
 	</script> 
 
-	 <style>
+<style>
+
+
 .h4,h4{
     margin:0px;
 }
@@ -593,6 +619,25 @@ table {
   border-spacing: 15px 10px;
   border-color: gray;
 }
+
+/* tabs style*/
+/* Style tab links */
+.tablink {
+  background-color: #555;
+  color: white;
+  float: left;
+  border: none;
+  outline: none;
+  cursor: pointer;
+  padding: 14px 16px;
+  font-size: 17px;
+  width: 50%;
+}
+
+.tablink:hover {
+  background-color: #777;
+}
+
 </style>
 
 	<br/> <br/><br/>
@@ -625,13 +670,19 @@ table {
 		</div>
 	</div>
 	<!--end add gmail-->
+   <div class='container' style="margin-top: 25px;margin-bottom:4px">
+	<button class="tablink" onclick="openPage('my_groups_tab', this, 'green')" id="my_groups_tab_button" style="background-color:cornflowerblue">My Groups</button>
+   <button class="tablink" onclick="openPage('member_groups', this, 'green')" id="member_groups_tab_button" style="background-color:#CFCFC4">Member Groups</button>
+  </div>
+
    <!-- list of groups -->
+  <div class='tabcontent' id="my_groups_tab">
    <div class='container' style="border: solid 2px lightblue;
     border-radius: 10px;" id="list_groups">
     <div class='rows'>
 			<br/>
 	<div class='panel panel-default'>
-		<div class='panel-heading' style='background: cornflowerblue;color: white;'>List of My GC Groups </div>
+		<div class='panel-heading' style='background: cornflowerblue;color: white;display:none' >List of My GC Groups </div>
 		{% if res.statusCode == 0 %}
 		 {% for group in res.groups %}
            <ul class='list-group'>
@@ -650,6 +701,7 @@ table {
 	</div>
 	</div>
    </div>
+  </div>
 
    <!-- div to display group info -->
     <!-- The Modal -->
@@ -691,6 +743,8 @@ table {
       </div>
     </div>
   </div>
+
+  {% include 'groups/member_groups.html' %}
 
   {% include 'campaign/list_mycampaigns_cb.html' %}
 

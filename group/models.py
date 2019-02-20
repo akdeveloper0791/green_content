@@ -262,6 +262,48 @@ class GcGroupMembers(models.Model):
             return {'statusCode':3,'status':
                 "Invalid request parameters"};
 
+    def getAssignedGroups(userId,isWeb):
+        if(isWeb == False):
+            userId = User_unique_id.getUserId(userId);
+            if(userId == False):
+                return {'statusCode':1,'status':
+                "Invalid session, please login"};
+        try:
+            with connection.cursor() as cursor:
+                query = '''SELECT gc_group.id as g_id,gc_group.name as g_name,user.email as user_name,member.status as status FROM 
+                group_gcgroupmembers as member INNER JOIN group_gcgroups as gc_group ON member.gc_group_id = gc_group.id 
+                INNER JOIN auth_user as user on gc_group.user_id = user.id WHERE (member.member_id = %s)'''
+                cursor.execute(query,[userId]);
+                info = dictfetchall(cursor);
+                cursor.close();
+                connection.close();
+                if(len(info)>=1):
+                    return {'statusCode':0,'info':info};
+                else:
+                    return {'statusCode':1,'status':"No info found"}
+        except Exception as e:
+            return {'statusCode':2,'status':'Error - '+str(e)}
+
+    def updateMemberGroupStatus(userId,groupId,status,isWeb):
+        if(isWeb == False):
+            userId = User_unique_id.getUserId(userId);
+            if(userId == False):
+                return {'statusCode':1,'status':
+                "Invalid session, please login"};
+        try:
+            with transaction.atomic():
+                gcGroupMember = GcGroupMembers.objects.get(gc_group_id=groupId,member_id=userId);
+                gcGroupMember.status=status;
+                gcGroupMember.save();
+                if(status==-1):
+                    approvedCampaigns = Approved_Group_Campaigns.objects.filter(user_id=userId,group_id=groupId);
+                    approvedCampaigns.delete();
+                return {'statusCode':0,'status':'Group has been updated successfully'};
+        except GcGroupMembers.DoesNotExist:
+            return {'statusCode':2,'status':'Group not found'};
+        except Exception as e:
+            return {'statusCode':3,'status':'Error -'+str(e)};
+
 class GroupCampaigns(models.Model):
     gc_group = models.ForeignKey('group.GcGroups',on_delete=models.CASCADE)
     campaign = models.ForeignKey('cmsapp.Multiple_campaign_upload',on_delete=models.CASCADE)
