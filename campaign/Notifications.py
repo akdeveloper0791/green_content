@@ -14,7 +14,7 @@ class SendCampDeleteNotification(threading.Thread):
          user = User.objects.get(id=self.userId);
          with mail.get_connection() as connection:
             mail.EmailMessage(
-            "Campaign delete notification", self.message, "adskitedeveloper@gmail.com", [user.email],
+            "Campaign delete notification", self.message, "contact@adskite.com", [user.email],
             connection=connection,
             ).send()
          #send_mail("Campaign delete notification", self.message, "contact@adskite.com", [user.email])
