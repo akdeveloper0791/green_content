@@ -7,6 +7,7 @@ from django.db import transaction, connection
 import datetime
 from django.db import IntegrityError
 from django.core import serializers
+from campaign.models import Approved_Group_Campaigns
 
 def dictfetchall(cursor):
     
@@ -138,6 +139,7 @@ class GcGroups(models.Model):
                 campaigns = dictfetchall(cursor);
 
                 cursor.close();
+                connection.close();
         
         
             return {'statusCode':0,'gInfo':serializers.serialize('json', [ grouInfo, ]),'members':members,
@@ -408,3 +410,55 @@ class GroupCampaigns(models.Model):
         else:
             return {'statusCode':3,'status':
                 "Invalid request parameters"};
+
+    def getMemberGroupCampaigns(userId,gId,isWeb):
+        if(isWeb == False):
+            userId = User_unique_id.getUserId(userId);
+            if(userId == False):
+                return {'statusCode':1,'status':
+                "Invalid session, please login"};
+        try:
+            groupMemeber = GcGroupMembers.objects.get(gc_group_id=gId,member_id=userId);
+            if(groupMemeber.status==1):
+                query = '''SELECT groupCampaign.id as g_camp_id,campaignInfo.campaign_name FROM group_groupcampaigns as groupCampaign INNER JOIN 
+                cmsapp_multiple_campaign_upload as campaignInfo ON groupCampaign.campaign_id = campaignInfo.id 
+                WHERE (groupCampaign.gc_group_id= %s)'''
+                with connection.cursor() as cursor:
+                    cursor.execute(query,[gId]);
+                    campaigns = dictfetchall(cursor);
+                    if(len(campaigns)>=1):
+                        return {'statusCode':0,'campaigns':campaigns};
+                    else:
+                        return {'statusCode':3,'status':"No campaigns found"};
+            else:
+                return {'statusCode':2,'status':"Invalid Member or Group"};
+        except GcGroupMembers.DoesNotExist:
+            return {'statusCode':2,'status':'Invalid details'};
+
+    def approveGroupCampaign(userId,gCampId,isWeb):
+        if(isWeb == False):
+            userId = User_unique_id.getUserId(userId);
+            if(userId == False):
+                return {'statusCode':1,'status':
+                "Invalid session, please login"};
+        query='''SELECT groupCampaign.campaign_id,groupMember.gc_group_id FROM group_groupcampaigns as groupCampaign 
+        INNER JOIN group_gcgroupmembers as groupMember on groupCampaign.gc_group_id = groupMember.gc_group_id WHERE 
+        (groupCampaign.id = %s AND ( groupMember.member_id = %s AND groupMember.status = %s ) )'''
+        try:
+            with connection.cursor() as cursor:
+                 cursor.execute(query,[gCampId,userId,1])
+                 info = cursor.fetchone();
+                 if info == None:
+                    return {'statusCode':2,'status':'Invalid details'};
+                 else:
+                    #add to approved campaigns
+                    Approved_Group_Campaigns(user_id=userId,campaign_id=info[0],group_id=info[1],group_campaign_id=gCampId).save();
+                    return {'statusCode':0,'status':'Campaign has been added to your campaigns'};
+
+        except IntegrityError as e:
+            return {'statusCode':5,'status':
+            "Campaign is already there in your list"};
+
+        except Exception as e:
+            return {'statusCode':3,'status':
+                "Error --"+str(e)};

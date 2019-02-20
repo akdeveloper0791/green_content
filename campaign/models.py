@@ -129,6 +129,7 @@ class CampaignInfo(models.Model):
             cursor.execute(conditionQuery,[userId])
             campaigns = dictfetchall(cursor);
             cursor.close();
+            connection.close();
         
         #campaigns = Multiple_campaign_upload.objects.filter(campaign_uploaded_by=userId);
         if(len(campaigns)<=0):
@@ -189,6 +190,7 @@ class CampaignInfo(models.Model):
         cursor.execute(conditionQuery)
         campaigns = dictfetchall(cursor);
         cursor.close();
+        connection.close();
         return {'campaigns':campaigns,'total':len(campaigns)}
 
     def updateSavePath(userId,accessToken):
@@ -217,3 +219,8 @@ class Approved_Group_Campaigns(models.Model):
     campaign = models.ForeignKey('cmsapp.Multiple_campaign_upload',on_delete=models.CASCADE)
     group_campaign = models.ForeignKey('group.GroupCampaigns',on_delete=models.CASCADE)
     created_at = models.DateTimeField(default=datetime.datetime.now())
+
+    class Meta(object):
+        unique_together = [
+        ['user','campaign','group','group_campaign']
+        ]

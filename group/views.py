@@ -182,3 +182,45 @@ def updateMemberGroupStatus(request):
     else:
         return JsonResponse({'statusCode':1,
             'status':'Invalid method'});
+
+@api_view(['POST'])
+def getMemberGroupCampaigns(request):
+    if(request.method == 'POST'):
+        isWeb = False;
+        accessToken = request.POST.get('accessToken');
+        if(accessToken == 'web'):
+            if(request.user.is_authenticated):
+                accessToken = request.user.id;
+                isWeb = True;
+            else:
+                return JsonResponse({'status':2,
+                    'status':"Invalid accessToken please login and try"});
+        
+        result = GroupCampaigns.getMemberGroupCampaigns(
+            accessToken,request.POST.get('g_id'),isWeb);
+
+        return JsonResponse(result);
+    else:
+        return JsonResponse({'statusCode':1,
+            'status':'Invalid method'});
+
+@api_view(['POST'])
+def approveGroupCampaign(request):
+    if(request.method == 'POST'):
+        isWeb = False;
+        accessToken = request.POST.get('accessToken');
+        if(accessToken == 'web'):
+            if(request.user.is_authenticated):
+                accessToken = request.user.id;
+                isWeb = True;
+            else:
+                return JsonResponse({'status':2,
+                    'status':"Invalid accessToken please login and try"});
+        
+        result = GroupCampaigns.approveGroupCampaign(
+            accessToken,request.POST.get('g_camp_id'),isWeb);
+
+        return JsonResponse(result);
+    else:
+        return JsonResponse({'statusCode':1,
+            'status':'Invalid method'});

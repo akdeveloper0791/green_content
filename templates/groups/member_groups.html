@@ -33,6 +33,36 @@
     </div>
   </div>
    </div>
+
+  <!-- div to display group info -->
+    <!-- The Modal -->
+  <div class="modal" id="mg_assigned_campaigns">
+    <div class="modal-dialog">
+      <div class="modal-content">
+      
+        <!-- Modal Header -->
+        <div class="modal-header">
+          <h4 class="modal-title" >Campaigns</h4>
+          
+        </div>
+        
+        <!-- Modal body -->
+        <div class="modal-body">
+          <div id="mg_assigned_campaigns_list">
+          </div>
+         
+
+        </div>
+        
+        <!-- Modal footer -->
+        <div class="modal-footer">
+          
+          <button type="button" class="btn btn-danger" data-dismiss="modal"  onclick="closeMGAssignedCampaigns()">Close</button>
+        </div>
+        
+      </div>
+    </div>
+  </div>
    
  <script type="text/javascript">
   mgListGroups=[];var tabColor="#5D8AA8";
@@ -188,6 +218,7 @@
         {
 
           var info = mgListGroups[i];
+          var cells = [];
           if(info.status==1)//only pending
           {
             isGroupFound= true;
@@ -195,8 +226,16 @@
             row.style.height = "25px";
             var cell = row.insertCell(-1);
                 
-            cell.innerHTML = info['g_name']
+            //cell.innerHTML = info['g_name']
             cell.style.width='100%';
+            cell.style.cursor="pointer";
+            //cells.push(cell);
+            /*cell.id="mg_active_group_"+info['g_id']
+            cell.onclick=function(){
+              cellClicked(info['g_id']);
+            };*/
+
+            cell.innerHTML = "<h4 onclick='mgGetMemberGroupInfo("+info['g_id']+")' >"+info['g_name']+"</h4>";
 
             var blockCell = row.insertCell(-1);
             blockCell.innerHTML = "<input type='image' src='{% static "images/ic_group_member_blocked.png" %}' onclick='mgUpdateGroupStatus("+i+","+info['g_id']+",-1)' title='block',alt='block'/>";
@@ -208,6 +247,8 @@
          
          if(isGroupFound)
          {
+          
+
           dvTable.innerHTML = "";
           dvTable.appendChild(table);
          }else
@@ -286,6 +327,7 @@
 
   function mgUpdateGroupStatus(listPosition,gId,status)
   {
+    
     try {
         ajaxindicatorstart("<img src='{% static "images/ajax-loader.gif" %}'><br/> Please wait...!");
 
@@ -352,6 +394,156 @@
     }
     catch(Exception)
     {
+      ajaxindicatorstop();
+        alert(Exception.message);
+    }
+  }
+
+  function mgGetMemberGroupInfo(groupId)
+  {
+    
+     try {
+        ajaxindicatorstart("<img src='{% static "images/ajax-loader.gif" %}'><br/> Please wait...!");
+
+    $.ajax(
+    {
+
+      type:'POST',
+      url: '/groups/getMemberGroupCampaigns/',
+      headers: {            
+            'X-CSRFToken':'{{ csrf_token }}'
+        },
+      data:{
+                accessToken: 'web',
+                g_id:groupId
+      },
+      
+      success: function(data)
+       {
+         ajaxindicatorstop();
+        console.log("data result==="+JSON.stringify(data));
+      
+        var statusCode = data['statusCode'];
+        if(statusCode==0)
+        {
+          displayMGAssignedCampaigns(data['campaigns']);
+        }
+       else
+       {
+
+             swal(data['status']);
+                                    
+       }
+
+       },
+    
+     error: function (jqXHR, exception) {
+      ajaxindicatorstop();
+      alert(exception+jqXHR.responseText);
+     }
+
+    });
+    }
+    catch(Exception)
+    {
+      ajaxindicatorstop();
+        alert(Exception.message);
+    }
+  }
+
+  function displayMGAssignedCampaigns(campaigns)
+  {
+    var dvTable = document.getElementById("mg_assigned_campaigns_list");
+
+    if(campaigns.length>0)
+    {
+            //Create a HTML Table element.
+        var table = document.createElement("TABLE");
+        table.border = "0";
+        
+        for (var i = 0; i < campaigns.length; i++) 
+        {
+
+          var info = campaigns[i];
+          {
+            isGroupFound= true;
+            row = table.insertRow(-1);
+            row.style.height = "25px";
+            var cell = row.insertCell(-1);
+                
+            cell.innerHTML = info['campaign_name']
+            cell.style.width='100%';
+
+            var approveCell = row.insertCell(-1);
+            /*approveCell.innerHTML = "<input type='image' src='{% static "images/ic_group_member_active.png" %}' onclick='mgUpdateGroupStatus("+i+","+info['c_id']+",1)' title='Approve' alt='Approve'/>";*/
+            approveCell.innerHTML = "<input type='button' value='Approve' onclick='mgApproveAssignedCamp("+info.g_camp_id+")'>";
+            /*
+            var blockCell = row.insertCell(-1);
+            blockCell.innerHTML = "<input type='image' src='{% static "images/ic_group_member_blocked.png" %}' onchange='lmcbonchange(this,"+info['g_name']+")' title='Block' alt='Block'/>";
+            
+            console.log('gName - '+info['g_name']); */
+          }  
+        }
+ 
+        
+          dvTable.innerHTML = "";
+          dvTable.appendChild(table);
+        
+         
+    }else
+    {
+
+      //no members
+      dvTable.innerHTML = "No Campaigns";
+    }
+
+    
+    dvTable.style.display = "block";
+    document.getElementById("mg_assigned_campaigns").style.display="block";
+  }
+
+  function closeMGAssignedCampaigns(){
+    document.getElementById("mg_assigned_campaigns").style.display="none";
+  }
+
+  function mgApproveAssignedCamp(gCampId)
+  {
+    
+     try {
+        ajaxindicatorstart("<img src='{% static "images/ajax-loader.gif" %}'><br/> Please wait...!");
+
+    $.ajax(
+    {
+
+      type:'POST',
+      url: '/groups/approveGroupCampaign/',
+      headers: {            
+            'X-CSRFToken':'{{ csrf_token }}'
+        },
+      data:{
+                accessToken: 'web',
+                g_camp_id:gCampId
+      },
+      
+      success: function(data)
+       {
+         ajaxindicatorstop();
+        
+         swal(data['status']);
+      
+
+       },
+    
+     error: function (jqXHR, exception) {
+      ajaxindicatorstop();
+      alert(exception+jqXHR.responseText);
+     }
+
+    });
+    }
+    catch(Exception)
+    {
+      ajaxindicatorstop();
         alert(Exception.message);
     }
   }
