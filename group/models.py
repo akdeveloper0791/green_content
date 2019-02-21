@@ -297,7 +297,7 @@ class GcGroupMembers(models.Model):
                 gcGroupMember = GcGroupMembers.objects.get(gc_group_id=groupId,member_id=userId);
                 gcGroupMember.status=status;
                 gcGroupMember.save();
-                if(status==-1):
+                if(status=="-1"):
                     approvedCampaigns = Approved_Group_Campaigns.objects.filter(user_id=userId,group_id=groupId);
                     approvedCampaigns.delete();
                 return {'statusCode':0,'status':'Group has been updated successfully'};
@@ -420,11 +420,12 @@ class GroupCampaigns(models.Model):
         try:
             groupMemeber = GcGroupMembers.objects.get(gc_group_id=gId,member_id=userId);
             if(groupMemeber.status==1):
-                query = '''SELECT groupCampaign.id as g_camp_id,campaignInfo.campaign_name FROM group_groupcampaigns as groupCampaign INNER JOIN 
-                cmsapp_multiple_campaign_upload as campaignInfo ON groupCampaign.campaign_id = campaignInfo.id 
+                query = '''SELECT approvedCampaign.id as status, groupCampaign.id as g_camp_id,campaignInfo.campaign_name FROM group_groupcampaigns as groupCampaign INNER JOIN 
+                cmsapp_multiple_campaign_upload as campaignInfo ON groupCampaign.campaign_id = campaignInfo.id LEFT JOIN 
+                campaign_approved_group_campaigns as approvedCampaign ON (groupCampaign.gc_group_id = approvedCampaign.group_id AND groupCampaign.campaign_id = approvedCampaign.campaign_id AND approvedCampaign.user_id = %s)
                 WHERE (groupCampaign.gc_group_id= %s)'''
                 with connection.cursor() as cursor:
-                    cursor.execute(query,[gId]);
+                    cursor.execute(query,[userId,gId]);
                     campaigns = dictfetchall(cursor);
                     if(len(campaigns)>=1):
                         return {'statusCode':0,'campaigns':campaigns};
@@ -434,6 +435,8 @@ class GroupCampaigns(models.Model):
                 return {'statusCode':2,'status':"Invalid Member or Group"};
         except GcGroupMembers.DoesNotExist:
             return {'statusCode':2,'status':'Invalid details'};
+        except Exception as e:
+            return {'statusCode':2,'status':'Error '+str(e)};
 
     def approveGroupCampaign(userId,gCampId,isWeb):
         if(isWeb == False):
@@ -452,8 +455,9 @@ class GroupCampaigns(models.Model):
                     return {'statusCode':2,'status':'Invalid details'};
                  else:
                     #add to approved campaigns
-                    Approved_Group_Campaigns(user_id=userId,campaign_id=info[0],group_id=info[1],group_campaign_id=gCampId).save();
-                    return {'statusCode':0,'status':'Campaign has been added to your campaigns'};
+                    approvedCampaignToSave = Approved_Group_Campaigns(user_id=userId,campaign_id=info[0],group_id=info[1],group_campaign_id=gCampId);
+                    approvedCampaignToSave.save();
+                    return {'statusCode':0,'status':'Campaign has been added to your campaigns',"rec_id":approvedCampaignToSave.id};
 
         except IntegrityError as e:
             return {'statusCode':5,'status':

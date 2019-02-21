@@ -3,7 +3,7 @@ from django.http import HttpResponse,JsonResponse
 from cmsapp.models import Multiple_campaign_upload,User_unique_id
 from rest_framework.decorators import api_view
 from django.contrib.auth.decorators import login_required
-from .models import CampaignInfo
+from .models import CampaignInfo,Approved_Group_Campaigns
 
 # Create your views here.
 @login_required
@@ -94,3 +94,24 @@ def updateSavePath(request):
     result = CampaignInfo.updateSavePath(request.POST.get('userId'),
         request.POST.get('accessToken'));
     return JsonResponse(result);
+
+@api_view(['POST'])
+def removeApprovedCampaign(request):
+    if(request.method == 'POST'):
+        isWeb = False;
+        accessToken = request.POST.get('accessToken');
+        if(accessToken == 'web'):
+            if(request.user.is_authenticated):
+                accessToken = request.user.id;
+                isWeb = True;
+            else:
+                return JsonResponse({'status':2,
+                    'status':"Invalid accessToken please login and try"});
+        
+        result = Approved_Group_Campaigns.removeApprovedCampaign(
+            accessToken,request.POST.get('rec_id'),isWeb);
+
+        return JsonResponse(result);
+    else:
+        return JsonResponse({'statusCode':1,
+            'status':'Invalid method'});

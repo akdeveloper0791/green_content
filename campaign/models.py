@@ -124,9 +124,10 @@ class CampaignInfo(models.Model):
         
         with connection.cursor() as cursor:
             conditionQuery = '''SELECT campaigns.*, camInfo.info  FROM cmsapp_multiple_campaign_upload as campaigns 
-                LEFT JOIN campaign_campaigninfo as camInfo ON campaigns.id = camInfo.campaign_id_id WHERE (campaigns.campaign_uploaded_by =  %s) 
-                ORDER BY campaigns.updated_date DESC'''
-            cursor.execute(conditionQuery,[userId])
+                LEFT JOIN campaign_campaigninfo as camInfo ON campaigns.id = camInfo.campaign_id_id WHERE (campaigns.campaign_uploaded_by =  %s OR campaigns.id IN ( 
+                    SELECT campaign_id FROM campaign_approved_group_campaigns WHERE user_id=%s )) 
+                group by campaigns.id ORDER BY campaigns.updated_date DESC'''
+            cursor.execute(conditionQuery,[userId,userId])
             campaigns = dictfetchall(cursor);
             cursor.close();
             connection.close();
@@ -224,3 +225,18 @@ class Approved_Group_Campaigns(models.Model):
         unique_together = [
         ['user','campaign','group','group_campaign']
         ]
+
+    def removeApprovedCampaign(userId,recId,isWeb):
+        if(isWeb == False):
+            userId = User_unique_id.getUserId(userId);
+            if(userId == False):
+                return {'statusCode':1,'status':
+                "Invalid session, please login"};
+        try:
+            approvedCampaign = Approved_Group_Campaigns.objects.get(id=recId,user_id=userId);
+            approvedCampaign.delete();
+            return {'statusCode':0,'status':'Campaign has been removed successfully'};
+        except Approved_Group_Campaigns.DoesNotExist:
+            return {'statusCode':3,'status':'Campaign not found'};
+        
+ 

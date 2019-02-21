@@ -8,5 +8,6 @@ urlpatterns = [
     path('list_camp_web/', views.listCampaignsWeb, name='listCampaignsWeb'),
     path('list_my_campaigns/', views.listMyCampaignsAPI, name='listMyCampaignsAPI'),
     path('delete_campaign/', views.deleteMyCampaign, name='deleteMyCampaign'),
+    path('removeApprovedCampaign/', views.removeApprovedCampaign, name='removeApprovedCampaign'),
     
 ]
