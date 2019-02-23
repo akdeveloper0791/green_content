@@ -51,7 +51,12 @@ a.btn:active{
 	 	<div class='row toggle' id='lead_contact_details' style='cursor:pointer'>
 	 		<div class='col-xs-10'>{{ campaign.campaign_name }}</div>
 
-      <div class='col-xs-2'><i class='fa fa-download pull-right' style='color:darkgreen;' onclick='download("{{campaign.id}}","{{campaign.stor_location}}","{{campaign.campaign_name}}");'></i></div>
+      <div class='col-xs-2'>
+        <i class='fa fa-download pull-right' style='color:darkgreen;margin:5px;' onclick='download("{{campaign.id}}","{{campaign.stor_location}}","{{campaign.campaign_name}}","{{campaign.save_path}}");'></i>
+
+        <a href="/campaigns/previewCampaign/{{campaign.id}}" target='_blank'><img border='0' alt='preview' src='{% static 'images/ic_preview.png' %}' style='float:right;margin:5px;'></a>
+
+      </div>
 
 	 	  </div>
 
@@ -113,16 +118,16 @@ a.btn:active{
   
 </div>
 
-<script type="text/javascript">
+<script>
 //downlod campaign
     function download(id,storeLocation,
-    	campaignName){
+    	campaignName,savePath){
     	
     	
     	if(storeLocation==2)//download from drop box
     	{
     		//downloadFromDropBox(campaignName);
-        checkForFilesInDropBox(campaignName);
+        checkForFilesInDropBox(campaignName,savePath);
     	}else
     	{
     		//download FROM GC 
@@ -189,8 +194,10 @@ function downloadFromDropBox(campaignName)
       return false;
 }
 
-function checkForFilesInDropBox(campaignName)
+function checkForFilesInDropBox(campaignName,savePath)
 {
+
+
    displayInitUploadBusyDialog();
 
    var xhr = new XMLHttpRequest();
@@ -200,7 +207,7 @@ function checkForFilesInDropBox(campaignName)
          
           var fileInfo = JSON.parse(xhr.response);
          
-          downloadDropboxCamp(campaignName);
+          downloadDropboxCamp(campaignName,savePath);
          // checkAndUploadNextFile();
       }
       else {
@@ -252,7 +259,7 @@ function checkForFilesInDropBox(campaignName)
   //     autorename: true,
   //     mute: false
   // }));
-  var params = JSON.stringify({"path":"/campaigns/"+ "{{ secretKey }}"+"/"+campaignName+"/"+
+  var params = JSON.stringify({"path":savePath+
     campaignName+".txt",
     "include_media_info": false,
     "include_deleted": false,
@@ -274,10 +281,12 @@ function str2bytes (str) {
     return bytes;
 }
 
-function downloadDropboxCamp(campaignName)
+function downloadDropboxCamp(campaignName,savePath)
 {
-   var params = JSON.stringify({"path":"/campaigns/"+ "{{ secretKey }}"+"/"+campaignName,
-   })
+  
+   var params = JSON.stringify({"path":savePath,
+   });
+   
   var xhr = new XMLHttpRequest();
   
    xhr.open('POST', 'https://content.dropboxapi.com/2/files/download_zip');
