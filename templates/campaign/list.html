@@ -18,7 +18,7 @@
 </head>
 
 {% block body %}
-<body onload="WriteToFile()">
+<body>
 
  <style>
 .h4,h4{
@@ -243,7 +243,7 @@ function checkForFilesInDropBox(campaignName)
   {
     
     
-    interrupt('Unable to upload, please check your connections');
+    interrupt('Unable to download, please check your connections');
   };
 
   xhr.open('POST', 'https://api.dropboxapi.com/2/files/get_metadata');
@@ -262,7 +262,6 @@ function checkForFilesInDropBox(campaignName)
     "include_media_info": false,
     "include_deleted": false,
     "include_has_explicit_shared_members": false})
-console.log("params - "+params);
   xhr.send(params);
 }
 

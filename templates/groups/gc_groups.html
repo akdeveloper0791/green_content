@@ -54,8 +54,7 @@
         testEmail.push("vineethkumar0791@gmail.com");
 
         var members = JSON.parse( multi_emails)
-         console.log("members-"+members);
-         console.log("testEmail"+JSON.stringify(testEmail)); 
+         
         try {
         ajaxindicatorstart("<img src='{% static "images/ajax-loader.gif" %}'><br/> Please wait...!");
 
@@ -76,8 +75,7 @@
 		  success: function(data)
 		   {
 		   	 ajaxindicatorstop();
-			  console.log("data result==="+JSON.stringify(data));
-			
+			 
 
             if(data['statusCode']==0)
 		    {
@@ -138,7 +136,6 @@
 		  success: function(data)
 		   {
 		   	 ajaxindicatorstop();
-			  console.log("data result==="+JSON.stringify(data));
 			
 
             if(data['statusCode']==0)
@@ -335,7 +332,7 @@
 		  success: function(data)
 		   {
 		   	 ajaxindicatorstop();
-			  console.log("data result==="+JSON.stringify(data));
+			 
 			 
               swal(data['status']);
               if(data['statusCode']==0)
@@ -387,8 +384,7 @@
 		  success: function(data)
 		   {
 		   	 ajaxindicatorstop();
-			  console.log("data result==="+JSON.stringify(data));
-			 
+			  
               swal(data['status']);
               if(data['statusCode']==0)
               {
@@ -399,7 +395,7 @@
               	try
               	{
                   var row = document.getElementById("campaign_row_"+campaigns[i]);
-                  console.log("Row id-"+"campaign_row_"+campaigns[i]);
+                 
 
                   table.deleteRow(row.rowIndex);
               	}catch(Exception)
@@ -466,7 +462,7 @@
 		  success: function(data)
 		   {
 		   	 ajaxindicatorstop();
-			  console.log("data result==="+JSON.stringify(data));
+			  
 			 
               swal(data['status']);
               if(data['statusCode']==0)
@@ -518,7 +514,7 @@
 		  success: function(data)
 		   {
 		   	 ajaxindicatorstop();
-			  console.log("data result==="+JSON.stringify(data));
+			 
 			 
               swal(data['status']);
               if(data['statusCode']==0)
@@ -530,7 +526,7 @@
               	try
               	{
                   var row = document.getElementById("member_row_"+members[i]);
-                  console.log("Row id-"+"member_row_"+members[i]);
+                
 
                   table.deleteRow(row.rowIndex);
               	}catch(Exception)

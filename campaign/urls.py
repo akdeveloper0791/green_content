@@ -9,5 +9,6 @@ urlpatterns = [
     path('list_my_campaigns/', views.listMyCampaignsAPI, name='listMyCampaignsAPI'),
     path('delete_campaign/', views.deleteMyCampaign, name='deleteMyCampaign'),
     path('removeApprovedCampaign/', views.removeApprovedCampaign, name='removeApprovedCampaign'),
+    path('previewCampaign/<int:c_id>', views.previewCampaign, name='previewCampaign'),
     
 ]

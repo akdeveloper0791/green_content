@@ -86,7 +86,7 @@
       success: function(data)
        {
          ajaxindicatorstop();
-        console.log("data result==="+JSON.stringify(data));
+        
       
         var statusCode = data['statusCode'];
         if(statusCode==0 || statusCode==1)
@@ -171,17 +171,17 @@
             var approveCell = row.insertCell(-1);
             approveCell.innerHTML = "<input type='image' src='{% static "images/ic_group_member_active.png" %}' onclick='mgUpdateGroupStatus("+i+","+info['g_id']+",1)' title='Approve' alt='Approve'/>";
             approveCell.align='left';
-            console.log('gName - '+info['g_name']); 
+            
 
            
             var blockCell = row.insertCell(-1);
             blockCell.innerHTML = "<input type='image' src='{% static "images/ic_group_member_blocked.png" %}' onclick='mgUpdateGroupStatus("+i+","+info['g_id']+",-1)' title='block',alt='block'/>";
             
-            console.log('gName - '+info['g_name']); 
+           
           }  
         }
  
-         console.log('mgListGroups.length'+mgListGroups.length);
+         
          if(isGroupFound)
          {
           dvTable.innerHTML = "";
@@ -296,7 +296,7 @@
             var approveCell = row.insertCell(-1);
             approveCell.innerHTML = "<input type='image' src='{% static "images/ic_group_member_active.png" %}' onclick='mgUpdateGroupStatus("+i+","+info['g_id']+",1)'/>";
             approveCell.align='left';
-            console.log('gName - '+info['g_name']); 
+            
 
             
             
@@ -356,7 +356,7 @@
       success: function(data)
        {
          ajaxindicatorstop();
-        console.log("data result==="+JSON.stringify(data));
+       
       
         var statusCode = data['statusCode'];
         if(statusCode==0)
@@ -429,8 +429,7 @@
       success: function(data)
        {
          ajaxindicatorstop();
-        console.log("data result==="+JSON.stringify(data));
-      
+       
         var statusCode = data['statusCode'];
         if(statusCode==0)
         {
@@ -485,6 +484,8 @@
               isApprovedCell.innerHTML = "";
             }
 
+
+
             var cell = row.insertCell(-1);
                 
             cell.innerHTML = info['campaign_name']
@@ -492,6 +493,10 @@
 
             var approveCell = row.insertCell(-1);
            approveCell.id="mg_assigned_camp_approvecell_id"+i;
+
+           var previewCell = row.insertCell(-1);
+           var previewCellHtml = "<a href='/campaigns/previewCampaign/"+info.camp_id+"'target='_blank'><img border='0' alt='preview' src='{% static "images/ic_preview.png" %}'></a>";
+            previewCell.innerHTML = previewCellHtml;
 
             if(info.status != null && info.status >=1)
             {

@@ -4,7 +4,7 @@ from cmsapp.models import Multiple_campaign_upload,User_unique_id
 from rest_framework.decorators import api_view
 from django.contrib.auth.decorators import login_required
 from .models import CampaignInfo,Approved_Group_Campaigns
-
+import json
 # Create your views here.
 @login_required
 def upload_camp_web(request):
@@ -115,3 +115,14 @@ def removeApprovedCampaign(request):
     else:
         return JsonResponse({'statusCode':1,
             'status':'Invalid method'});
+
+def previewCampaign(request,c_id):
+    if(request.user.is_authenticated):
+        if(request.method=='GET'):
+            info = CampaignInfo.getPreviewCampaignInfo(request.user.id,c_id);
+        else:
+            info = {"statusCode":1,"status":"Invalid method"};
+    else:
+        info = {"statusCode":1,"status":"Invalid access token please login and try"};
+
+    return render(request,'campaign/preview_campaign.html',{"info":json.dumps(info)});

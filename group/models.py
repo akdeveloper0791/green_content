@@ -420,7 +420,7 @@ class GroupCampaigns(models.Model):
         try:
             groupMemeber = GcGroupMembers.objects.get(gc_group_id=gId,member_id=userId);
             if(groupMemeber.status==1):
-                query = '''SELECT approvedCampaign.id as status, groupCampaign.id as g_camp_id,campaignInfo.campaign_name FROM group_groupcampaigns as groupCampaign INNER JOIN 
+                query = '''SELECT approvedCampaign.id as status, groupCampaign.id as g_camp_id,campaignInfo.campaign_name,campaignInfo.id as camp_id FROM group_groupcampaigns as groupCampaign INNER JOIN 
                 cmsapp_multiple_campaign_upload as campaignInfo ON groupCampaign.campaign_id = campaignInfo.id LEFT JOIN 
                 campaign_approved_group_campaigns as approvedCampaign ON (groupCampaign.gc_group_id = approvedCampaign.group_id AND groupCampaign.campaign_id = approvedCampaign.campaign_id AND approvedCampaign.user_id = %s)
                 WHERE (groupCampaign.gc_group_id= %s)'''
