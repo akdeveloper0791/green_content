@@ -14,9 +14,16 @@ var campaignName;var savePath;
 var downloadResources= [];
 
  info = JSON.parse(info.replace(/&quot;/g,'"'));
-var screenInfo = {'width':screen.width,'height':screen.availHeight};
+
+ var w = window,
+    d = document,
+    e = d.documentElement,
+    g = d.getElementsByTagName('body')[0],
+    x = w.innerWidth || e.clientWidth || g.clientWidth,
+    y = w.innerHeight|| e.clientHeight|| g.clientHeight;
 
 
+var screenInfo = {'width':x,'height':y};
 
 
 if(info.statusCode != 0)
