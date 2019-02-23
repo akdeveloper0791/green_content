@@ -118,9 +118,7 @@ a.btn:active{
     function download(id,storeLocation,
     	campaignName){
     	
-    	console.log("id-"+id);
-    	console.log("storeLocation"+storeLocation);
-    	console.log("campaign name"+campaignName);
+    	
     	if(storeLocation==2)//download from drop box
     	{
     		//downloadFromDropBox(campaignName);
@@ -162,15 +160,13 @@ a.click();*/
 function downloadFromDropBox(campaignName)
 {
 	var array = {'path':'/f98175087ade475dad8a351341f6eefc/test single reg/test single reg.txt'};
-	console.log(JSON.stringify(array));
+	
 	  var ACCESS_TOKEN = '{{ DROP_BOX_ACCESS_TOKEN }}';
       var SHARED_LINK = "/f98175087ade475dad8a351341f6eefc/test single reg/test single reg.txt";
        
        var SHARED_LINK = "https://www.dropbox.com/s/ip3320idaxczqpr/test%20single%20reg.txt?dl=0";
 
-      console.log("ACCESS_TOKEN - "+ACCESS_TOKEN);
      
-      console.log("SHARED_LINK"+SHARED_LINK);
      
       var dbx = new Dropbox.Dropbox({ accessToken: ACCESS_TOKEN });
       dbx.sharingGetSharedLinkFile({url:SHARED_LINK})
@@ -203,8 +199,7 @@ function checkForFilesInDropBox(campaignName)
       if (xhr.status === 200) {
          
           var fileInfo = JSON.parse(xhr.response);
-          // Upload succeeded. Do something here with the file info.
-          console.log("uploaded - "+xhr.response);
+         
           downloadDropboxCamp(campaignName);
          // checkAndUploadNextFile();
       }
@@ -342,13 +337,13 @@ function downloadDropboxCamp(campaignName)
   
  xhr.upload.onprogress = function(evt) {
 
-       console.log("Percentage");
+      
         var percentComplete = parseInt(100.0 * evt.loaded / evt.total);
 
-        console.log("Percentage-"+percentComplete);
+       
       };
 
-console.log("params - "+params);
+
  xhr.responseType = "arraybuffer";
   xhr.send();
 
