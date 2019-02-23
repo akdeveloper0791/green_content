@@ -116,6 +116,7 @@ def removeApprovedCampaign(request):
         return JsonResponse({'statusCode':1,
             'status':'Invalid method'});
 
+
 def previewCampaign(request,c_id):
     if(request.user.is_authenticated):
         if(request.method=='GET'):

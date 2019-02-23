@@ -1,6 +1,10 @@
 {% load static %}
 <html lang="en">
 <head>
+<style>
+div.generic {border: groove;}
+  
+</style>
 </head>
 {% block body %}
 <body>
@@ -117,6 +121,7 @@ if(info.statusCode != 0)
  	{
  		info = regionsInfo[i];
  		var parentDiv = document.createElement('div');
+        parentDiv.class='generic';
         parentDiv.id = 'reg_div_'+i;
         parentDiv.style.position="fixed";
         parentDiv.style.top=getPixels(screenInfo['height'],info.top_margin);
