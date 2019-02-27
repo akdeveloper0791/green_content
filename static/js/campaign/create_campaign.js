@@ -45,7 +45,7 @@ function constructDivs()
         parentDiv.style.position="absolute";
         parentDiv.style.top=getPixels(screenInfo['height'],info.top_margin);
         parentDiv.style.left=getPixels(screenInfo['width'],info.left_margin);
-        parentDiv.style.border = "groove #4de4c0";
+        parentDiv.style.border = "thick solid #0000FF";
        
         //document.getElementsByTagName('body')[0].appendChild(parentDiv);
         document.getElementById('parent_div').appendChild(parentDiv);
@@ -222,12 +222,6 @@ function constructDivs()
   	while (node.hasChildNodes()) {
     node.removeChild(node.lastChild);
     } 
-  }
-
-  function removeParentDiv(idPosition)
-  {
-    elem = document.getElementById('reg_div_'+idPosition);
-    elem.parentNode.removeChild(elem);
   }
 
   function displayRegSelectOption(idPosition)
@@ -576,7 +570,8 @@ function onSelectTableReg()
       if (newTableArray.length > 0)
       {
              
-       
+        
+        regionsInfo.splice(idPosition,1);
 
         for (var i =0 ;newTableArray.length>i;i++)
         {
@@ -584,7 +579,7 @@ function onSelectTableReg()
           regionsInfo.push(newRegion);
         }
 
-        //constructTableDiv(idPosition,newTableArray);
+        
           console.log("New Regions--"+
             JSON.stringify(regionsInfo));
         
@@ -595,37 +590,6 @@ function onSelectTableReg()
   else{
     alert("Please enter valid rows and coloumns");
   }
-}
-
-function constructTableDiv(idPosition,newTableArray)
-{
-   //remove tables parent div
-   regionsInfo.splice(idPosition,1);
-   removeParentDiv(idPosition);
-   //delete parent resource
-   regionsResourceFiles[idPosition]=null;
-
-  for(var i=0;i<newTableArray.length;i++)
-  {
-    info = newTableArray[i];
-    regionsInfo.push(info);
-
-    var parentDiv = document.createElement('div');
-        parentDiv.class='generic';
-        parentDiv.id = 'reg_div_'+i;
-        parentDiv.style.position="absolute";
-        parentDiv.style.top=getPixels(screenInfo['height'],info.top_margin);
-        parentDiv.style.left=getPixels(screenInfo['width'],info.left_margin);
-        parentDiv.style.border = "thick solid #0000FF";
-       
-        //document.getElementsByTagName('body')[0].appendChild(parentDiv);
-        document.getElementById('parent_div').appendChild(parentDiv);
-        addImgReg(i,null);
-
-       
-       
-  }
-
 }
 
 function clearParentDiv()
@@ -761,6 +725,4 @@ function getUploadMediaName(selectedFileName)
 
   return tempName;
 }
-
-
 
