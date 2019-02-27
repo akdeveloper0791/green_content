@@ -280,7 +280,7 @@ div.generic {border: groove;}
       
         <!-- Modal Header -->
         <div class="modal-header">
-          <h4 class="modal-title" style="text-align:center;">Template Name
+          <h4 class="modal-title" style="text-align:center;">Campaign Name
           <span type="button" class="close" data-dismiss="modal" onclick="dismissCreateCampaignDialog();">&times;</span></h4>
            <center><img id="loading" src="../images/ajax-loader.gif" alt="Updating ..." style="display: none;" /></center>
         </div>
@@ -293,8 +293,8 @@ div.generic {border: groove;}
           <!-- <form class="feedback" name="feedback"> -->
     
                <div class="form-group">
-                  <label for="exampleInputPassword1" style="font-weight:bold">Media Name : *</label>
-                  <input type="text" class="form-control" placeholder="Enter Media Name" name="media_name" id="file_media_name" size="100">  <br> 
+                  <label for="exampleInputPassword1" style="font-weight:bold">Campaign Name : *</label>
+                  <input type="text" class="form-control" placeholder="Enter Campaign Name" name="media_name" id="file_media_name" size="100">  <br> 
                   <input type="checkbox" onchange="setDefaultCampaignName(this);">Set default Campaign name   
                 </div>
 
@@ -302,7 +302,7 @@ div.generic {border: groove;}
               <br>
               <div class="col-md-6" style="padding-left:0px;padding-right:0px;">
                  <div class="form-group">
-                    <label style="font-weight:bold">Play Duration (sec):</label>
+                    <label style="font-weight:bold">Campaign Duration (sec):</label>
                     <input type="number" class="form-control" value="10" placeholder="Enter Duration(Sec)" name="duration" id="file_duration" size="100">
                   </div> 
                    </div>
@@ -359,14 +359,6 @@ div.generic {border: groove;}
        
 	})();
 
- function initCampaign()
- {
-   
- }
-
-
-
- 
 
  </script>
 </body>
