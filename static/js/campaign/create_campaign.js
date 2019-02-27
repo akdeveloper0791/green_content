@@ -45,89 +45,12 @@ function constructDivs()
         parentDiv.style.position="absolute";
         parentDiv.style.top=getPixels(screenInfo['height'],info.top_margin);
         parentDiv.style.left=getPixels(screenInfo['width'],info.left_margin);
-        parentDiv.style.border = "thick solid #0000FF";
+        parentDiv.style.border = "groove #4de4c0";
        
         //document.getElementsByTagName('body')[0].appendChild(parentDiv);
         document.getElementById('parent_div').appendChild(parentDiv);
         addImgReg(i,null);
-        /*var childTag = null;
-        //check and add child div's
-        if(info.type.toLowerCase()=='image')
-        {
-        	childTag = document.createElement('IMG');
-        	
-        	if(info.media_name!=null && 
-        		info.media_name.toLowerCase != 'default')
-        	{
-        		resource = {};
-        		resource[i]=info.media_name;
-
-        		downloadResources.push(resource);
-
-        		childBusyTag = document.createElement('IMG');
-                childBusyTag.id="reg_div_busy_child_"+i;
-        		childBusyTag.src = '{% static "images/ajax-loader.gif" %}';
-
-        		parentDiv.appendChild(childBusyTag);
-        		
-        	}
-        	
-        }else if(info.type.toLowerCase()=="video")
-        {
-           childTag = document.createElement('iframe');
-
-           if(info.media_name!=null && 
-        		info.media_name.toLowerCase != 'default')
-        	{
-        		resource = {};
-        		resource[i]=info.media_name;
-        		
-        		downloadResources.push(resource);
-
-        		childTag.src = '{% static "images/ajax-loader.gif" %}';
-        	}
-
-          
-        }else if(info.type.toLowerCase()=="url")
-        {
-        	childTag = document.createElement('iframe');
-        	childTag.src=info.media_name;
-        }else if(info.type.toLowerCase()=="text")
-        {
-        	childTag = document.createElement('p');
-        	mediaName=info.media_name;
-        	var properties = info.properties;
-        	parentDiv.style.backgroundColor =properties.textBgColor;
-        	childTag.style.color=properties.textColor;
-        	if(properties.isBold==true)
-        	{
-        		childTag.style.fontWeight = 'bold';
-        	}
-        	if(properties.isItalic == true)
-        	{
-        		childTag.style.fontStyle = "italic";
-        	}
-        	if(properties.isUnderLine == true)
-        	{
-        		childTag.style.textDecoration = "underline";
-        	}
-            
-            textAllignMent(childTag,properties.textAlignment);
-            
-        	childTag.innerHTML= mediaName;
-
-        	
-        }
-
-        if(childTag!=null)
-        {
-           childTag.id='reg_div_child_'+i;
-           childTag.style.width = getPixels(screenInfo['width'],info.width);
-           childTag.style.height = getPixels(screenInfo['height'],info.width);
-
-           parentDiv.appendChild(childTag);
-        }*/
-
+        
         
  	}
  }
