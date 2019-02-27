@@ -8,6 +8,6 @@ def getGDbxxx(request):
         host = request.META['HTTP_HOST'];
         #REMOTE_USER = request.META['REMOTE_USER'];
         #return JsonResponse({'status':'true','full_path':full_path});
-        return JsonResponse({'full_path':(host),'REMOTE_HOST':request.META['REMOTE_HOST'],"SERVER_NAME":request.META['SERVER_NAME']});
+        return JsonResponse({'full_path':(host),"SERVER_NAME":request.META['SERVER_NAME']});
     else:
         return JsonResponse({'status':'false'});
