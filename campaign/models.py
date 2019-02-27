@@ -10,7 +10,8 @@ from django.core import serializers
 from django.http import JsonResponse
 from django.conf import settings
 from .Notifications import SendCampDeleteNotification,SendEmail
-
+import uuid 
+import time
 
 
 def dictfetchall(cursor):
@@ -50,18 +51,19 @@ class CampaignInfo(models.Model):
                 campType = 1#multi region
             else:
                 campType = 0#single region
-        savePath = '/campaigns/{}/{}/'.format(secretKey,campaignName);
-
-        isSave = self.createCampaign(userId,campaignName,campType,
+        #savePath = '/campaigns/{}/{}/'.format(secretKey,campaignName);
+        uniqueKey = str(uuid.uuid4().hex[:6].upper())+str(round(time.time() * 1000))+uuid.uuid4().hex[:6];
+        savePath = '/campaigns/{}/{}/'.format(uniqueKey,campaignName);
+        saveInfo = self.createCampaign(userId,campaignName,campType,
             info,campaignSize,savePath);
         
-        if(isSave == True):
+        if(saveInfo['status'] == True):
             
-            return {'isSave':isSave,'statusCode':0,'status':
-            "success",'save_path':savePath}
+            return {'isSave':True,'statusCode':0,'status':
+            "success",'save_path':saveInfo['savePath']}
         else:
             return {'statusCode':3,'status':
-            "Unable to upload campaign "+''.join(isSave)}
+            "Unable to upload campaign "+''.join(saveInfo['error'])}
         
 
     @classmethod
@@ -95,10 +97,10 @@ class CampaignInfo(models.Model):
                 campInfo.campaign_id_id = campaignToSave.id
             campInfo.info = info
             campInfo.save()
-         return True
+         return {'status':True,'savePath':savePath}
         except Exception as e:
             
-            return e.args
+            return {'status':False,'error':e.args}
     
     #get campaigns created by user
     def getUserCampaigns(userId,isUserId=False):
