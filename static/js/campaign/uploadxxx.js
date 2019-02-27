@@ -67,7 +67,7 @@ function formatBytes(bytes,decimals) {
 
           if (idx == 0) {
             // Starting multipart upload of file
-            console.log("file upload session starting");
+            
             return acc.then(function() {
               return dbx.filesUploadSessionStart({ close: false, contents: blob})
                         .then(response => response.session_id)
@@ -99,7 +99,7 @@ function formatBytes(bytes,decimals) {
           	
             // Last chunk of data, close session
             return acc.then(function(sessionId) {
-            	console.log("uploading last chunk");
+            	
               //update current chunk
             uploadState.current_chunk = idx;
 
@@ -123,7 +123,7 @@ function formatBytes(bytes,decimals) {
           checkAndUploadNextFile();
 
         }).catch(function(error) {
-          console.error(error);
+        
           //alert("Unable to upload error "+error);
           uploadInterrupt("Unable to upload error "+error);
         });
@@ -140,7 +140,7 @@ function formatBytes(bytes,decimals) {
     
 
     xhr.onload = function() {
-      console.log("initUploadDxxx"+xhr.response);
+      
         if (xhr.status === 200) {
             uploadDXXX = JSON.parse(xhr.response);
             
@@ -202,14 +202,13 @@ function formatBytes(bytes,decimals) {
 	    if (xhr.status === 200) {
 	        var fileInfo = JSON.parse(xhr.response);
 	        // Upload succeeded. Do something here with the file info.
-	        console.log("uploaded - ");
+	        
           checkAndUploadNextFile();
 	    }
 	    else {
 	        var errorMessage = xhr.response || 'Unable to upload file';
 	        // Upload failed. Do something here with the error.
-	        console.log("unable to upload - "+errorMessage);
-          
+	        
           uploadInterrupt("Upload failed"+errorMessage);
 	    }
 	};
@@ -282,10 +281,10 @@ function checkAndDisplayBusyModel()
   var busyDialog = document.getElementById('busy_dialog');
   if(busyDialog.style.display=="block")
   {
-    console.log("busy dialog is in active state");
+    
   }else
   {
-    console.log("busy dialog is in hidden state");
+    
     busyDialog.style.display = "block";
   }
 }
@@ -355,7 +354,7 @@ function updateFileProgressBusyDialog(progress, updatedBytes = null)
     } 
     
 
-    console.log("progress inside progress"+progress);
+    
 }
 
 function initUpload()
@@ -387,12 +386,12 @@ function initUpload()
               dismissBusyDialog();
               alert(responseObj.status);
             }
-            console.log("uploaded - "+xhr.response);
+            
         }
         else {
             var errorMessage = xhr.response || 'Unable to upload file';
             // Upload failed. Do something here with the error.
-            console.log("unable to upload - "+errorMessage);
+            
             alert("unable to upload - "+errorMessage);
         }
     };
@@ -417,14 +416,14 @@ function initUpload()
 function checkAndUploadNextFile()
 {
   ++uploadingFilePos;
-  console.log("next check uploading file position");
+  
   if(uploadFiles.length > uploadingFilePos)
   {
     uploadFile(uploadFiles[uploadingFilePos]);
   }else
   {
     dismissBusyDialog();
-    alert("Files have been uploaded success");
+    alert("Campaign has been uploaded successfully");
     location.reload();
   }
 }
@@ -443,7 +442,7 @@ function uploadInterrupt(warningMsg)
   if(isConfirm)
   {
      //retry uploading
-     console.log("isConfirm"+isConfirm);
+     
      retryUpload();
   }else{
     dismissBusyDialog();
@@ -493,8 +492,7 @@ function reUploadLargeFileChunks(file)
 
 function checkAndReUploadchunks(sessionId,file)
 {
-  console.log("Inside checkAndReUploadchunks - "+sessionId);
-
+  
   
       var dbx = new Dropbox.Dropbox({ accessToken: uploadDXXX['xxdd'] });
 
@@ -534,7 +532,6 @@ function checkAndReUploadchunks(sessionId,file)
 
              var cursor = { session_id: sessionId, offset: idx * maxBlob };
             
-            console.log("Inside checkAndReUploadchunks - "+JSON.stringify(cursor));
             
              uploadState.cursor = cursor;
 
@@ -546,7 +543,7 @@ function checkAndReUploadchunks(sessionId,file)
             
             // Last chunk of data, close session
             return acc.then(function(sessionId) {
-              console.log("uploading last chunk");
+              
               //update current chunk
             uploadState.current_chunk = idx;
 
@@ -571,7 +568,7 @@ function checkAndReUploadchunks(sessionId,file)
           checkAndUploadNextFile();
 
         }).catch(function(error) {
-          console.error(error);
+          
           //alert("Unable to upload error "+error);
           uploadInterrupt("Unable to upload error "+error);
         });
@@ -592,7 +589,7 @@ function uploadLastChunkOfFile(cursor,blob)
             checkAndUploadNextFile();
 
         }).catch(function(error) {
-          console.error(error);
+          
           //alert("Unable to upload error "+error);
           uploadInterrupt("Unable to upload error "+error);
         });

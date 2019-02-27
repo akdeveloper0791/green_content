@@ -9,7 +9,7 @@ var w = window,
 
 var uploadFilesTempNames = new Object();
 var screenInfo = {'width':x,'height':(y-50)};//50 pixels for submit button
-console.log("screenInfo"+JSON.stringify(screenInfo));
+
 //get pixels from percentage
  function getPixels(totalPixels,percentage)
  {
@@ -20,8 +20,7 @@ function prepareView(selectedTemplate)
 {
   try{
 	  cctDismissTemplates();
-    console.log("regionsInfo"+selectedTemplate);
-  
+   
   	var templateInfo = JSON.parse(selectedTemplate);
     regionsInfo = templateInfo.regions;
     constructDivs();
@@ -31,7 +30,7 @@ function prepareView(selectedTemplate)
   	alert("Unable to create view"+err.message);
   }
 	
-	console.log("regionsInfo"+JSON.stringify(regionsInfo));
+	
 }
 
 function constructDivs()
@@ -140,7 +139,7 @@ function constructDivs()
 
   function removeChildElement(idPosition)
   {
-  	console.log('reg_div_'+idPosition);
+  	
   	node = document.getElementById('reg_div_'+idPosition);
   	while (node.hasChildNodes()) {
     node.removeChild(node.lastChild);
@@ -172,7 +171,7 @@ function constructDivs()
   }
   function onSelectImgReg(input)
   {
-    console.log("Inside onSelectImgReg");
+    
   	if (input.files && input.files[0]) 
   	{
        var selectedFile = input.files[0];
@@ -199,9 +198,9 @@ function constructDivs()
        }
 
         dismissSelectRegOption();
-        console.log("selected file name"+input.files[0].name+", size"+input.files[0].size);
+        
     }else{
-      console.log("Unable to select file");
+      
     }
   }
 
@@ -239,9 +238,6 @@ function constructDivs()
   		}
 
   		dismissSelectRegOption();
-
-       
-        console.log("selected file name"+selectedFile.name+", size"+selectedFile.size);
     }
   }
 
@@ -267,7 +263,7 @@ function constructDivs()
 
        alert('Please enter your text');
     }else{
-      console.log(mediaName);
+      
        var idPosition = document.getElementById('select_media_reg_id').value;
       regionsResourceFiles[idPosition] = null;//no resource file 
        
@@ -399,7 +395,7 @@ function constructDivs()
 
        alert('Please enter URL');
     }else{
-      console.log(mediaName);
+     
        var idPosition = document.getElementById('select_media_reg_id').value;
       regionsResourceFiles[idPosition] = null;//no resource file 
        
@@ -453,8 +449,7 @@ function dismissCreateTableRegion()
 
 function onSelectTableReg()
 {
-  console.log("New Regions Before--"+
-            JSON.stringify(regionsInfo));
+
   var rows = document.getElementById('create_table_reg_rows').value;
   var coloumns = document.getElementById('create_table_reg_coloumns').value;
   
@@ -503,8 +498,7 @@ function onSelectTableReg()
         }
 
         
-          console.log("New Regions--"+
-            JSON.stringify(regionsInfo));
+          
         
         reconstructDivs();
       }
@@ -561,7 +555,7 @@ function createCampaign()
     alert("Please enter valid details");
   }else{
     dismissCreateCampaignDialog();
-    console.log("regionsResourceFiles"+JSON.stringify(regionsResourceFiles));
+    
     for (key in regionsResourceFiles) {
         if (regionsResourceFiles.hasOwnProperty(key))
         {
@@ -570,7 +564,7 @@ function createCampaign()
           {
             size += file.size;
             uploadFiles.push(file);
-            console.log("regionsResourceFiles"+file.name+"File size"+file.size);
+            
           }
           
         }
@@ -623,10 +617,10 @@ function prepareInfoFile(mediaName)
   //var blob = new Blob([info], {type: "text/plain;charset=utf-8"});
   campaignName = mediaName;
   campaignInfoFile = new File([info], mediaName+".txt");
-  console.log(campaignInfoFile.name+"size"+campaignInfoFile.size);
+  
   size += campaignInfoFile.size;
   uploadFiles.push(campaignInfoFile);
-  console.log("total upload files"+uploadFiles.length);
+ 
   
   clearParentDiv();
   
