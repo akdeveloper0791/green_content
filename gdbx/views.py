@@ -1,13 +1,14 @@
 from django.shortcuts import render
 from django.http import HttpResponse,JsonResponse
+from signagecms.constants import DROP_BOX_ACCESS_TOKEN;
 # Create your views here.
 def getGDbxxx(request):
-    if(request.user.is_authenticated):
-        #full_path = ('http', ('', 's')[request.is_secure], '://', request.META[0], );
-        #full_path = ''.join(full_path);
+    if(request.method == "POST" and request.user.is_authenticated):       
         host = request.META['HTTP_HOST'];
-        #REMOTE_USER = request.META['REMOTE_USER'];
-        #return JsonResponse({'status':'true','full_path':full_path});
-        return JsonResponse({'full_path':(host),"SERVER_NAME":request.META['SERVER_NAME']});
+        server = request.META['SERVER_NAME'];
+        if((server=="www.greencontent.in" and host=="www.greencontent.in") or server=="DESKTOP-HARKF96"):
+            return JsonResponse({'xxdd':DROP_BOX_ACCESS_TOKEN});
+        else:
+            return JsonResponse({'host':server});
     else:
-        return JsonResponse({'status':'false'});
+        return JsonResponse({});

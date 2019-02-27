@@ -1,3 +1,8 @@
+{% load static %}
+<link type="text/css" rel="stylesheet" href="{% static 'css/campaign/upload.css' %}" />
+
+<link type="text/css" rel="stylesheet" href="{% static 'css/w3css.css' %}">
+
 <div class="container">
  <div class="modal fade centered-modal" tabindex="-1" role="dialog" id="busy_dialog">
 
@@ -23,16 +28,26 @@
               <h6 style="float: right" id="uploading_file_count_elm"></h3>
           </div>
 
+          
+
           <!-- init file upload progress bar -->
           <div id="init_file_upload_busy_dialg_div"class="progress" style="display:none">
           <div class="indeterminate"></div>
           </div>
+         
+         <div class="w3-container" id="file_upload_progress_dialg_parent_div">
+          <div class="w3-light-grey w3-round-xlarge">
+              <div class="w3-container w3-green w3-round" style="width:0%" id="file_upload_progress_dialg_div">0%</div>
+            </div>
+         </div>
           
-          <div class="progress" id="file_upload_progress_dialg_parent_div" style="display:none">
+          <div class="progress" id="file_upload_progress_dialg_parent_div1" style="display:none">
 
-          <div class="progress-bar progress-bar-striped active" role="progressbar" aria-valuemin="0" aria-valuemax="100" style="width:0%;" id="file_upload_progress_dialg_div">0 
+          <div class="progress-bar progress-bar-striped active" role="progressbar" aria-valuemin="0" aria-valuemax="100" style="width:0%;" id="file_upload_progress_dialg_div1">0 
       
           </div>
+
+           
 
           <p>.</p>
         </div>

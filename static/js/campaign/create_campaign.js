@@ -7,7 +7,7 @@ var w = window,
     x = w.innerWidth || e.clientWidth || g.clientWidth,
     y = w.innerHeight|| e.clientHeight|| g.clientHeight;
 
-
+var uploadFilesTempNames = new Object();
 var screenInfo = {'width':x,'height':(y-50)};//50 pixels for submit button
 console.log("screenInfo"+JSON.stringify(screenInfo));
 //get pixels from percentage
@@ -45,7 +45,7 @@ function constructDivs()
         parentDiv.style.position="absolute";
         parentDiv.style.top=getPixels(screenInfo['height'],info.top_margin);
         parentDiv.style.left=getPixels(screenInfo['width'],info.left_margin);
-        parentDiv.style.border = "thick solid #0000FF";
+        parentDiv.style.border = "groove #4de4c0";
        
         //document.getElementsByTagName('body')[0].appendChild(parentDiv);
         document.getElementById('parent_div').appendChild(parentDiv);
@@ -148,7 +148,7 @@ function constructDivs()
   		
   		info.media_name = "default";	
   	}else{
-      info.media_name = "DNDM-"+file.name;
+      info.media_name = getUploadMediaName(file.name);
       var reader = new FileReader();    
         reader.onload = function (e) {
           
@@ -185,7 +185,7 @@ function constructDivs()
   	    childTag.src= '/static/images/campaign/campaign_default.png';
 
   	}else{
-  		info.media_name = "DNDM-"+file.name;
+  		info.media_name = getUploadMediaName(file.name);
   		var fileUrl = window.URL.createObjectURL(file);
   		childTag.src= fileUrl;
 
@@ -224,6 +224,12 @@ function constructDivs()
     } 
   }
 
+  function removeParentDiv(idPosition)
+  {
+    elem = document.getElementById('reg_div_'+idPosition);
+    elem.parentNode.removeChild(elem);
+  }
+
   function displayRegSelectOption(idPosition)
   {
     regInfo = regionsInfo[idPosition];
@@ -259,6 +265,9 @@ function constructDivs()
        info = regionsInfo[idPosition];
        if(info.type.toLowerCase()=='image')
        {
+        info.media_name = getUploadMediaName(selectedFile.name);
+        regionsInfo[idPosition] = info;
+
         var reader = new FileReader();    
         reader.onload = function (e) {
         	childTag = document.getElementById('reg_div_child_'+
@@ -297,6 +306,8 @@ function constructDivs()
 
   		if(info.type.toLowerCase == 'video')
   		{
+         info.media_name = getUploadMediaName(selectedFile.name);
+         regionsInfo[idPosition] = info;
 
   			var fileUrl = window.URL.createObjectURL(selectedFile);
   		    childTag = document.getElementById('reg_div_child_'+
@@ -565,8 +576,7 @@ function onSelectTableReg()
       if (newTableArray.length > 0)
       {
              
-        
-        regionsInfo.splice(idPosition,1);
+       
 
         for (var i =0 ;newTableArray.length>i;i++)
         {
@@ -574,7 +584,7 @@ function onSelectTableReg()
           regionsInfo.push(newRegion);
         }
 
-        
+        //constructTableDiv(idPosition,newTableArray);
           console.log("New Regions--"+
             JSON.stringify(regionsInfo));
         
@@ -585,6 +595,37 @@ function onSelectTableReg()
   else{
     alert("Please enter valid rows and coloumns");
   }
+}
+
+function constructTableDiv(idPosition,newTableArray)
+{
+   //remove tables parent div
+   regionsInfo.splice(idPosition,1);
+   removeParentDiv(idPosition);
+   //delete parent resource
+   regionsResourceFiles[idPosition]=null;
+
+  for(var i=0;i<newTableArray.length;i++)
+  {
+    info = newTableArray[i];
+    regionsInfo.push(info);
+
+    var parentDiv = document.createElement('div');
+        parentDiv.class='generic';
+        parentDiv.id = 'reg_div_'+i;
+        parentDiv.style.position="absolute";
+        parentDiv.style.top=getPixels(screenInfo['height'],info.top_margin);
+        parentDiv.style.left=getPixels(screenInfo['width'],info.left_margin);
+        parentDiv.style.border = "thick solid #0000FF";
+       
+        //document.getElementsByTagName('body')[0].appendChild(parentDiv);
+        document.getElementById('parent_div').appendChild(parentDiv);
+        addImgReg(i,null);
+
+       
+       
+  }
+
 }
 
 function clearParentDiv()
@@ -603,6 +644,7 @@ function reconstructDivs()
   clearParentDiv();
   //clear resource files
   regionsResourceFiles = new Object();
+  uploadFilesTempNames = new Object();
   //call construct divs again
   constructDivs();
 }
@@ -639,6 +681,7 @@ function createCampaign()
           var file = regionsResourceFiles[key];
           if(file!=null)
           {
+            size += file.size;
             uploadFiles.push(file);
             console.log("regionsResourceFiles"+file.name+"File size"+file.size);
           }
@@ -691,12 +734,33 @@ function prepareInfoFile(mediaName)
   
   info = JSON.stringify(infoJSON);
   //var blob = new Blob([info], {type: "text/plain;charset=utf-8"});
-
+  campaignName = mediaName;
   campaignInfoFile = new File([info], mediaName+".txt");
   console.log(campaignInfoFile.name+"size"+campaignInfoFile.size);
+  size += campaignInfoFile.size;
   uploadFiles.push(campaignInfoFile);
   console.log("total upload files"+uploadFiles.length);
-
+  
+  clearParentDiv();
+  
   initUpload();
 }
+
+function getUploadMediaName(selectedFileName)
+{
+  if(selectedFileName.startsWith("DNDM-"))
+  {
+    tempName = selectedFileName;
+  }else{
+    //add DNDM
+    tempName = "DNDM-"+selectedFileName;
+  }
+
+  //save to array
+  uploadFilesTempNames[selectedFileName] = tempName;
+
+  return tempName;
+}
+
+
 

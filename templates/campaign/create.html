@@ -2,13 +2,14 @@
 <html lang="en">
 <head>
    
-  <link type="text/css" rel="stylesheet" href="{% static 'css/campaign/upload.css' %}" />
-
 	<script Language='Javascript' src="{% static 'js/campaign/create_campaign_templates.js' %}"></script>
   <script Language='Javascript' src="{% static 'js/jscolor.js' %}"></script>
   <script src="/testJS.js"> </script>
 	
    <script  src="{% static 'scripts/Dropbox-sdk.min.js' %}"></script>
+
+
+
 
 <style>
 
@@ -92,7 +93,7 @@ div.generic {border: groove;}
           <h4 class="modal-title" style="text-align:center;">Select Media
           <span type="button" class="close" data-dismiss="modal" onclick="dismissSelectRegOption();">&times;</span></h4>
 
-          <input type="text" id="select_media_reg_id">
+          <input type="hidden" id="select_media_reg_id">
 
         </div>
         
@@ -326,7 +327,7 @@ div.generic {border: groove;}
 
  <script id="hide2">
    var csrf_token = '{{ csrf_token }}';
-   var ACCESS_TOKEN = '{{ DROP_BOX_ACCESS_TOKEN }}';
+   
 	// self executing function here
 	(function() {
 	   // your page initialization code here

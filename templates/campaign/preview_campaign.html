@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <style>
-div.generic {border: groove;}
+
   
 </style>
 </head>
@@ -133,6 +133,7 @@ if(info.statusCode != 0)
         parentDiv.style.position="fixed";
         parentDiv.style.top=getPixels(screenInfo['height'],info.top_margin);
         parentDiv.style.left=getPixels(screenInfo['width'],info.left_margin);
+        parentDiv.style.border = "groove #4de4c0";
         document.getElementsByTagName('body')[0].appendChild(parentDiv);
         
         var childTag = null;

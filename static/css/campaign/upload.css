@@ -27,18 +27,18 @@
   height: 2px; /* initial 4px*/
   display: block;
   width: 100%;
-  background-color: #acece6;
+  background-color: #000000;
   border-radius: 2px;
   background-clip: padding-box;
   margin: 0.5rem 0 1rem 0;
   overflow: hidden; }
  
   .progress .indeterminate {
-    background-color: #26a69a; }
+    background-color: "white"; }
     .progress .indeterminate:before {
       content: '';
       position: absolute;
-      background-color: inherit;
+      background-color: "white";
       top: 0;
       left: 0;
       bottom: 0;
@@ -48,7 +48,7 @@
     .progress .indeterminate:after {
       content: '';
       position: absolute;
-      background-color: inherit;
+      background-color: "white";
       top: 0;
       left: 0;
       bottom: 0;
@@ -101,10 +101,10 @@
 
 
   /* to display the busy dialog in center of the screen 
-  */
+  
   .centered-modal.in {
     display: flex !important;
 }
 .centered-modal .modal-dialog {
     margin: auto;
-}
+}*/
