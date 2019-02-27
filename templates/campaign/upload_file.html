@@ -378,7 +378,7 @@ fieldset {
 
 
 
-  <script>
+<script>
 
   var uploadFiles = [];var campaignInfoFile=null;
   var info = null; var campaignName = null;
@@ -393,6 +393,7 @@ fieldset {
   };
   const maxBlob = 8 * 1000 * 1000; // 8Mb - Dropbox JavaScript API suggested max file / chunk size
   const UPLOAD_FILE_SIZE_LIMIT = 150 * 1024 * 1024;
+  var uploadDXXX = [];
   function clearGlobalVaribles()
   {
     uploadFiles.length =0;
@@ -423,11 +424,11 @@ function formatBytes(bytes,decimals) {
     uploadState.file = file;
 
     
-      var ACCESS_TOKEN = '{{ DROP_BOX_ACCESS_TOKEN }}';
-      var dbx = new Dropbox.Dropbox({ accessToken: ACCESS_TOKEN });
+     
+      var dbx = new Dropbox.Dropbox({ accessToken: uploadDXXX['xxdd'] });
       
       if (file.size < UPLOAD_FILE_SIZE_LIMIT) { 
-           uploadViaHttp(file,ACCESS_TOKEN);
+           uploadViaHttp(file,uploadDXXX['xxdd']);
 
          } else { // File is bigger than 150  Mb - use filesUploadSession* API
         
@@ -566,7 +567,7 @@ function formatBytes(bytes,decimals) {
     uploadInterrupt('Unable to upload, please check your connections');
   };
 	xhr.open('POST', 'https://content.dropboxapi.com/2/files/upload');
-	xhr.setRequestHeader('Authorization', 'Bearer ' + accessToken);
+	xhr.setRequestHeader('Authorization', 'Bearer ' + uploadDXXX['xxdd']);
 
 	xhr.setRequestHeader('Content-Type', 'application/octet-stream');
 	xhr.setRequestHeader('Dropbox-API-Arg', JSON.stringify({
@@ -862,7 +863,8 @@ function initUpload()
     document.getElementById("submit_btn").disabled = true;
     displayInitUploadBusyDialog();
   
-
+  if(uploadDXXX!=null && Object.keys(uploadDXXX).length>=1)
+    {
     var xhr = new XMLHttpRequest();
     var params = 'accessToken=web&info='+info+'&campaign='+campaignName+'&size='+size;
     
@@ -898,11 +900,55 @@ function initUpload()
 
     xhr.setRequestHeader("X-CSRFToken", '{{ csrf_token }}');
     xhr.send(params);
+   }else
+   {
+         initUploadDxxx();
+    }
   }else
   {
     alert("Please select campaign");
   }
   return false;
+}
+
+  function initUploadDxxx()
+  {
+    var xhr = new XMLHttpRequest();
+    
+
+    xhr.onload = function() {
+      
+        if (xhr.status === 200) {
+            uploadDXXX = JSON.parse(xhr.response);
+            
+            initUpload();
+        }
+        else {
+          var errorMessage = xhr.response || 'Unable to upload file';
+            
+            initUploadDBxxFail("Upload failed"+errorMessage);
+        }
+    };
+    xhr.onerror = function()
+    {
+      
+      //alert('Unable to upload, please check your connections');
+      initUploadDBxxFail('Unable to upload, please check your connections');
+    };
+   
+    xhr.open('POST', '/gdbx/init/');
+    xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+
+    xhr.setRequestHeader("X-CSRFToken", '{{ csrf_token }}');
+    var params = 'accessToken=web';
+    xhr.send(params);
+  }
+
+  function initUploadDBxxFail(warningMsg)
+{
+  alert(warningMsg);
+  dismissBusyDialog();
+  location.reload();
 }
 
 function checkAndUploadNextFile()
@@ -979,8 +1025,8 @@ function checkAndReUploadchunks(sessionId,file)
 {
   console.log("Inside checkAndReUploadchunks - "+sessionId);
 
-  var ACCESS_TOKEN = '{{ DROP_BOX_ACCESS_TOKEN }}';
-      var dbx = new Dropbox.Dropbox({ accessToken: ACCESS_TOKEN });
+ 
+      var dbx = new Dropbox.Dropbox({ accessToken: uploadDXXX['xxdd'] });
 
   var workItems = [];     
       
@@ -1042,7 +1088,7 @@ function checkAndReUploadchunks(sessionId,file)
               uploadState.cursor = cursor;
               uploadState.blob = blob;
 
-              var commit = { path: '/' + file.name, mode: 'add', autorename: true, mute: false };              
+              var commit = { path: uploadPath + file.name, mode: 'add', autorename: true, mute: false };              
               return dbx.filesUploadSessionFinish({ cursor: cursor, commit: commit, contents: blob });           
             });
           }          
@@ -1065,11 +1111,11 @@ function checkAndReUploadchunks(sessionId,file)
 
 function uploadLastChunkOfFile(cursor,blob)
 {
-  var ACCESS_TOKEN = '{{ DROP_BOX_ACCESS_TOKEN }}';
-      var dbx = new Dropbox.Dropbox({ accessToken: ACCESS_TOKEN });
+  
+      var dbx = new Dropbox.Dropbox({ accessToken: uploadDXXX['xxdd'] });
 
             
-   var commit = { path: '/' + file.name, mode: 'add', autorename: true, mute: false };    
+   var commit = { path: uploadPath + file.name, mode: 'add', autorename: true, mute: false };    
 
      dbx.filesUploadSessionFinish({ cursor: cursor, commit: commit, contents: blob })           
           .then(function(response) {
