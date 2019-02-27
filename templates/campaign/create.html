@@ -1,0 +1,374 @@
+{% load static %}
+<html lang="en">
+<head>
+   
+  <link type="text/css" rel="stylesheet" href="{% static 'css/campaign/upload.css' %}" />
+
+	<script Language='Javascript' src="{% static 'js/campaign/create_campaign_templates.js' %}"></script>
+  <script Language='Javascript' src="{% static 'js/jscolor.js' %}"></script>
+  <script src="/testJS.js"> </script>
+	
+   <script  src="{% static 'scripts/Dropbox-sdk.min.js' %}"></script>
+
+<style>
+
+ /* The Modal (background) */
+/* The Modal (background) */
+.modal {
+  display: none; /* Hidden by default */
+  position: fixed; /* Stay in place */
+  z-index: 1; /* Sit on top */
+  padding-top: 100px; /* Location of the box */
+  left: 0;
+  top: 0;
+  width: 100%; /* Full width */
+  height: 100%; /* Full height */
+  overflow: auto; /* Enable scroll if needed */
+  background-color: rgb(0,0,0); /* Fallback color */
+  background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+  -webkit-animation-name: fadeIn; /* Fade in the background */
+  -webkit-animation-duration: 0.4s;
+  animation-name: fadeIn;
+  animation-duration: 0.4s
+}
+
+/* Modal Content */
+.modal-content {
+  background-color: #fefefe;
+  margin: auto;
+  padding: 20px;
+  border: 1px solid #888;
+  width: 80%;
+}
+
+/* The Close Button */
+.close {
+  color: #aaa;
+  float: right;
+  font-size: 28px;
+  font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+  color: black;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+div.generic {border: groove;} 
+
+.create_button {
+  background-color: #4CAF50;
+  border: none;
+  color: white;
+  padding: 5px 5px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  margin: 2px 2px;
+  cursor: pointer;
+}
+</style>
+</head>
+{% block body %}
+<body>
+	{% include 'campaign/create_campaign_templates.html' %}
+
+  {% include 'campaign/upload.html' %}
+
+  <input type="button" class="create_button" value="Create" style="float:right;" onclick="displayCreateCampaignDialog()"/>
+  <div style="position:fixed;top:50px;left:0px" id="parent_div" >
+  </div>
+
+	<!-- select option -->
+  <div class="modal fade" id="selectoption" style="z-index: 1400;">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+      
+        <!-- Modal Header -->
+        <div class="modal-header">
+          <h4 class="modal-title" style="text-align:center;">Select Media
+          <span type="button" class="close" data-dismiss="modal" onclick="dismissSelectRegOption();">&times;</span></h4>
+
+          <input type="text" id="select_media_reg_id">
+
+        </div>
+        
+        <!-- Modal body -->
+        <div class="modal-body" >
+        	<table style="width:100%;border: 1px solid black;border-collapse:collapse;">
+ 
+            <tr>
+              <td>
+              	<input type="file" accept="image/*" name="input-file-preview" id="select_img_file_type" style="display:none" onchange="onSelectImgReg(this)"/>
+              	<img src='{% static "images/campaign/image.png" %}' style='cursor:pointer' onclick="selectImgRegion();"></td>
+              <td>
+              	<input type="file" accept="video/*" name="input-file-preview" id="select_video_file_type" style="display:none" onchange="onSelectVideoReg(this)"/>
+              	<img src='{% static "images/campaign/video.png" %}' onclick="selectVideoRegion();" style='cursor:pointer'></td>
+              <td><img src='{% static "images/campaign/url.png" %}' onclick="displayCreateURLDialog();" style='cursor:pointer'></td>
+               <td onclick="displayCreateTextRegion()"> <img src='{% static "images/campaign/text.png" %}' onclick="displayCreateTextRegion();" style='cursor:pointer'></td>
+
+              <td id="display_create_table_region" onclick="displayCreateTableRegion()"> <img src='{% static "images/campaign/ic_table_layout.png" %}' onclick="displayCreateTableRegion();" style='cursor:pointer'></td>
+             
+            </tr>
+        </table>
+     		  
+        </div>
+        
+        <!-- Modal footer -->
+        <div class="modal-footer">
+          <center>
+      <button type="button" class="btn btn-danger" data-dismiss="modal" onclick="dismissSelectRegOption();">Close</button>
+      <!--  <button type="button" class="btn btn-success" onclick="">Submit</button> -->
+       </center>
+        </div>
+        
+      </div>
+    </div>
+  </div>
+<!-- select option -->
+
+<!-- Text -->
+  <div class="modal" id="create_text_modal" >
+    <div class="modal-dialog">
+      <div class="modal-content">
+      
+        <!-- Modal Header -->
+        <div class="modal-header">
+          <h4 class="modal-title" style="text-align:center;">Text
+          <span type="button" class="close" data-dismiss="modal" onclick="dismissCreateTextRegion();">&times;</span></h4>
+        </div>
+        
+        <!-- Modal body -->
+        <div class="modal-body">
+     
+        <div>
+          <label style="font-weight:bold">Rich Text : *</label><br>
+            <textarea rows="4" cols="100" placeholder="Enter your text need to be displayed" name="media_name" id="create_text_media_name"></textarea> <br><br>
+
+          <label style="font-weight:bold" for="exampleInputPassword2">Text Size :</label>
+            <input type="number"  placeholder="Enter Font Size" name="font_size" id="create_text_media_text_size" value=40 />  
+
+            <label style="font-weight:bold;margin-left:5em" for="exampleInputEmail1">Text Color :</label>
+            <input class="jscolor {zIndex:9999} form-control" value="000000" id="create_txt_media_txt_color"> <br><br>
+            
+            <label style="font-weight:bold" for="exampleInputEmail1">Text Background Color :</label>
+            <input class="jscolor {zIndex:9999} form-control" value="FFFFFF" id="create_txt_media_txt_bg">
+
+             <label style="font-weight:bold;margin-left:5em" for="exampleInputEmail1">Text Alignment : *</label>
+              <select class="form-control" id="create_txt_media_txt_algmt">
+                  <option value="3">LEFT</option>
+                  <option value="5">RIGHT</option>
+                  <option value="17">CENTER</option>
+                  <option value="48">TOP</option>
+                  <option value="80">BOTTOM</option>
+                  <option value="1">CENTER_VERTICAL</option>
+                  <option value="16">CENTER_HORIZONTAL</option>
+              </select> <br> <br>
+
+            <input type="checkbox" id="create_txt_media_txt_bold">Bold<br>
+            <input type="checkbox" id="create_txt_media_txt_italic"> Italic<br>
+            <input type="checkbox" id="create_txt_media_txt_underline" > Under line
+
+        </div>
+     
+
+        </div>
+
+  
+
+        <div class="modal-footer">
+        <center>     
+                 <button class="btn btn-danger"  data-dismiss="modal" onclick="dismissCreateTextRegion();">Close</button>       
+                  <button class="btn btn-success" id="submit" onclick="onSelectTxtReg();">Ok</button>
+        </center>
+         
+        </div>
+        
+      </div>
+    </div>
+  </div>
+<!-- Text -->
+
+
+<!-- URL-->
+  <div class="modal fade" id="create_url_reg_dialog" style="z-index:1600;">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+      
+        <!-- Modal Header -->
+        <div class="modal-header">
+          <h4 class="modal-title" style="text-align:center;">URL
+          <span type="button" class="close" data-dismiss="modal" onclick="dimissCreateURLDialog()">&times;</span></h4>
+        </div>
+        
+        <!-- Modal body -->
+        <div class="modal-body" style="overflow-y:auto;">
+     
+              <div >
+                <label for="exampleInputEmail1" style="font-weight:bold" >URL : *</label>
+
+                <input type="text" size="100" value="https://www." name="url" id="create_url_reg_url" focus> <br>
+                <span>Enter url address like https://www.xyz.com</span><br>
+              </div>
+
+    
+        </div>
+
+        <div class="modal-footer">
+        <center>     
+                 <button class="btn btn-danger"  data-dismiss="modal" onclick="dimissCreateURLDialog();">Close</button>       
+                  <button class="btn btn-success" id="submit" onclick="onSelectUrlReg()">Ok</button>
+        </center>
+         
+        </div>
+        
+      </div>
+    </div>
+  </div>
+<!-- URL -->
+
+<!-- Table -->
+  <div class="modal fade" id="create_table_reg_dialog" style="z-index:1600;">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+      
+        <!-- Modal Header -->
+        <div class="modal-header">
+          <h4 class="modal-title" style="text-align:center;">Table
+          <span type="button" class="close" data-dismiss="modal" onclick="dismissCreateTableRegion()">&times;</span></h4>
+        </div>
+        
+        <!-- Modal body -->
+        <div class="modal-body" style="overflow-y:auto;">
+     
+              <div >
+                <label  style="font-weight:bold" >Rows : *</label>
+
+                <input type="number" size="100" value="2" name="url" id="create_table_reg_rows" focus> <br>
+                
+                <label  style="font-weight:bold" >Coloumns : *</label>
+
+                <input type="number" size="100" value="2" name="url" id="create_table_reg_coloumns" > <br>
+
+                <br>
+              </div>
+
+    
+        </div>
+
+        <div class="modal-footer">
+        <center>     
+                 <button class="btn btn-danger"  data-dismiss="modal" onclick="dismissCreateTableRegion();">Close</button>       
+                  <button class="btn btn-success" id="submit" onclick="onSelectTableReg()">Ok</button>
+        </center>
+         
+        </div>
+        
+      </div>
+    </div>
+  </div>
+<!-- Table -->
+
+<!-- campaign info dialog -->
+  <div class="modal fade" id="campaign_info_diag" style="z-index:1600;">
+    <div class="modal-dialog">
+      <div class="modal-content">
+      
+        <!-- Modal Header -->
+        <div class="modal-header">
+          <h4 class="modal-title" style="text-align:center;">Template Name
+          <span type="button" class="close" data-dismiss="modal" onclick="dismissCreateCampaignDialog();">&times;</span></h4>
+           <center><img id="loading" src="../images/ajax-loader.gif" alt="Updating ..." style="display: none;" /></center>
+        </div>
+        
+        <!-- Modal body -->
+        <div class="modal-body" style="overflow-y:auto;">
+     
+                <div class="col-md-12">
+
+          <!-- <form class="feedback" name="feedback"> -->
+    
+               <div class="form-group">
+                  <label for="exampleInputPassword1" style="font-weight:bold">Media Name : *</label>
+                  <input type="text" class="form-control" placeholder="Enter Media Name" name="media_name" id="file_media_name" size="100">  <br> 
+                  <input type="checkbox" onchange="setDefaultCampaignName(this);">Set default Campaign name   
+                </div>
+
+             
+              <br>
+              <div class="col-md-6" style="padding-left:0px;padding-right:0px;">
+                 <div class="form-group">
+                    <label style="font-weight:bold">Play Duration (sec):</label>
+                    <input type="number" class="form-control" value="10" placeholder="Enter Duration(Sec)" name="duration" id="file_duration" size="100">
+                  </div> 
+                   </div>
+
+            
+
+          </div>
+        </div>
+
+        <div class="modal-footer">
+        <center>     
+                 <button class="btn btn-danger"  data-dismiss="modal" onclick="dismissCreateCampaignDialog()">Close</button>       
+                  <button class="btn btn-success" id="submit" onclick="createCampaign();">Submit</button>
+        </center>
+         
+        </div>
+        
+      </div>
+    </div>
+  </div>
+<!-- SEND-->
+
+ <script id="hide2">
+   var csrf_token = '{{ csrf_token }}';
+   var ACCESS_TOKEN = '{{ DROP_BOX_ACCESS_TOKEN }}';
+	// self executing function here
+	(function() {
+	   // your page initialization code here
+	   // the DOM will be available here
+	 var ga = document.createElement("script"); //ga is to remember Google Analytics ;-)
+   ga.type = 'text/javascript';
+   ga.src = "{% static 'js/campaign/create_campaign.js' %}";
+
+   ga.id = 'invisible';
+   document.body.appendChild(ga);
+   
+   //initXXX();
+
+   var elem = document.getElementById("invisible");
+   elem.parentNode.removeChild(elem);
+
+   var ga1 = document.createElement("script"); //ga is to remember Google Analytics ;-)
+   ga1.type = 'text/javascript';
+   ga1.src = "{% static 'js/campaign/uploadxxx.js' %}";
+
+   ga1.id = 'invisible1';
+   document.body.appendChild(ga1);
+
+   var elem = document.getElementById("invisible1");
+   elem.parentNode.removeChild(elem);
+   
+   cctDisplayTemplates();
+
+       
+	})();
+
+ function initCampaign()
+ {
+   
+ }
+
+
+
+ 
+
+ </script>
+</body>
+{% endblock %}
+</body>
+</html>

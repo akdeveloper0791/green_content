@@ -53,6 +53,7 @@ INSTALLED_APPS = [
     'accounts',
     'campaign',
     'group',
+    'gdbx',
 ]
 
 MIDDLEWARE = [

@@ -127,3 +127,7 @@ def previewCampaign(request,c_id):
         info = {"statusCode":1,"status":"Invalid access token please login and try"};
 
     return render(request,'campaign/preview_campaign.html',{"info":json.dumps(info)});
+
+@login_required
+def create(request):
+    return render(request,'campaign/create.html');

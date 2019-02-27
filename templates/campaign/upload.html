@@ -1,0 +1,46 @@
+<div class="container">
+ <div class="modal fade centered-modal" tabindex="-1" role="dialog" id="busy_dialog">
+
+  <div class="modal-dialog" role="document">
+  
+      <!-- Modal content-->
+      <div class="modal-content">
+        <div class="modal-header" id="busy_dialog_header" style="display:none"> 
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <h4 class="modal-title" display = "none"></h4>
+        </div>
+        <div class="modal-body">
+          <!--initiate busy spinner -->
+           <div id="init_upload_busy_dialg_div" align="center" style="display:none">
+            <div class="loader" > </div>
+            <p>Initiating Please Wait...</p>
+            </div>
+          
+
+          <!-- file upload progress -->
+          <div style="clear: both;display:none" id="uploading_file_info_div">
+              <h4 style="float: left" id="uploading_file_name_elm"></h2>
+              <h6 style="float: right" id="uploading_file_count_elm"></h3>
+          </div>
+
+          <!-- init file upload progress bar -->
+          <div id="init_file_upload_busy_dialg_div"class="progress" style="display:none">
+          <div class="indeterminate"></div>
+          </div>
+          
+          <div class="progress" id="file_upload_progress_dialg_parent_div" style="display:none">
+
+          <div class="progress-bar progress-bar-striped active" role="progressbar" aria-valuemin="0" aria-valuemax="100" style="width:0%;" id="file_upload_progress_dialg_div">0 
+      
+          </div>
+
+          <p>.</p>
+        </div>
+        </div>
+        
+      </div>
+      
+    </div>
+  </div>
+  
+</div>
