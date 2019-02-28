@@ -9,6 +9,7 @@ var w = window,
 
 var uploadFilesTempNames = new Object();
 var screenInfo = {'width':x,'height':(y-50)};//50 pixels for submit button
+var duration = 10;//seconds  
 
 //get pixels from percentage
  function getPixels(totalPixels,percentage)
@@ -105,13 +106,24 @@ function constructDivs()
   		
   		info.media_name = "default";
   		
-  	    childTag.src= '/static/images/campaign/campaign_default.png';
+  	  childTag.src= '/static/images/campaign/campaign_default.png';
 
   	}else{
   		info.media_name = getUploadMediaName(file.name);
   		var fileUrl = window.URL.createObjectURL(file);
-  		childTag.src= fileUrl;
-
+  		
+      //get duration
+      childTag.preload = 'metadata';
+      childTag.onloadedmetadata = function() {
+      
+       var tempDuration = parseInt(childTag.duration);
+       
+       if(tempDuration>duration)
+       {
+        duration = tempDuration;
+       }
+      }
+     childTag.src= fileUrl;
   	}
   	childTag.id='reg_div_child_'+idPosition;
     childTag.style.width = '100%';
@@ -231,12 +243,23 @@ function constructDivs()
          
          regionsInfo[idPosition] = info;
 
-  			var fileUrl = window.URL.createObjectURL(selectedFile);
+  			 var fileUrl = window.URL.createObjectURL(selectedFile);
   		    childTag = document.getElementById('reg_div_child_'+
         		idPosition);
-
-  		    childTag.src= fileUrl;
-          childTag.autoplay=true;
+         
+         //get duration
+          childTag.preload = 'metadata';
+          childTag.onloadedmetadata = function() {
+          
+           var tempDuration = parseInt(childTag.duration);
+           
+           if(tempDuration>duration)
+           {
+            duration = tempDuration;
+           }
+          }
+         childTag.src= fileUrl;
+         childTag.autoplay=true;
 
   		}else{
   			//add video region
@@ -544,6 +567,7 @@ function displayCreateCampaignDialog()
 {
   if(Object.keys(regionsResourceFiles).length>=1)
   {
+    document.getElementById("file_duration").value = duration;
    document.getElementById('campaign_info_diag').style.display="block";
   } else{
     alert("Nothing selected");

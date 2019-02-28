@@ -322,7 +322,8 @@ function setUploadingFileInfo()
     }
     
     
-    document.getElementById("uploading_file_name_elm").innerHTML = uploadFiles[uploadingFilePos].name;
+    //document.getElementById("uploading_file_name_elm").innerHTML = uploadFiles[uploadingFilePos].name;
+    document.getElementById("uploading_file_name_elm").innerHTML = "Uploading Campaign ("+campaignName+")";
     document.getElementById("uploading_file_count_elm").innerHTML=(uploadingFilePos+1)+"/"+uploadFiles.length;
 
 }
@@ -403,9 +404,9 @@ function initUpload()
     xhr.setRequestHeader("X-CSRFToken", csrf_token);
     xhr.send(params);
   }else
-     {
+   {
          initUploadDxxx();
-     }
+    }
   }else
   {
     alert("Please select campaign");
