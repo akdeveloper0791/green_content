@@ -279,8 +279,8 @@ function constructDivs()
        info.is_self_path = true;
 
        //set properties
-       info.properties = {'textBgColor':document.getElementById('create_txt_media_txt_bg').value,
-       'textColor':document.getElementById('create_txt_media_txt_color').value,
+       info.properties = {'textBgColor':"#"+document.getElementById('create_txt_media_txt_bg').value,
+       'textColor':"#"+document.getElementById('create_txt_media_txt_color').value,
        'textSize':document.getElementById('create_text_media_text_size').value,
        'isScrollAnim':false,'isBold':document.getElementById('create_txt_media_txt_bold').checked,
        'isItalic':document.getElementById('create_txt_media_txt_italic').checked,
@@ -324,7 +324,7 @@ function constructDivs()
     var properties = info.properties;
 
     childTag.style.color = properties.textColor;
-    childTag.style.backgroundColor = properties.textBgColor;
+    childTag.style.backgroundColor =properties.textBgColor;
     childTag.style.fontSize = properties.textSize+"px";
     if(properties.isBold)
     {
