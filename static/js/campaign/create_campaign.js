@@ -64,6 +64,7 @@ function constructDivs()
   	info.type="Image";
     info.properties = {"scaleType":"fillScreen"};
         childTag.src= '/static/images/campaign/campaign_default.png';
+    info.is_self_path = true;
 
     if(file==null)
   	{
@@ -123,6 +124,7 @@ function constructDivs()
 
     info.properties = {"isStretch":true,"volume":100};
     info.type="Video";
+    info.is_self_path = true;
     
     childTag.onclick=function(){
         	displayRegSelectOption(idPosition);
@@ -182,6 +184,8 @@ function constructDivs()
        if(info.type.toLowerCase()=='image')
        {
         info.media_name = getUploadMediaName(selectedFile.name);
+        info.is_self_path = true;
+        
         regionsInfo[idPosition] = info;
 
         var reader = new FileReader();    
@@ -223,6 +227,8 @@ function constructDivs()
   		if(info.type.toLowerCase == 'video')
   		{
          info.media_name = getUploadMediaName(selectedFile.name);
+         info.is_self_path = true;
+         
          regionsInfo[idPosition] = info;
 
   			var fileUrl = window.URL.createObjectURL(selectedFile);
@@ -270,6 +276,8 @@ function constructDivs()
        //get the region info
        info = regionsInfo[idPosition];
        info.media_name = mediaName;
+       info.is_self_path = true;
+
        //set properties
        info.properties = {'textBgColor':document.getElementById('create_txt_media_txt_bg').value,
        'textColor':document.getElementById('create_txt_media_txt_color').value,
@@ -415,6 +423,8 @@ function constructDivs()
          childTag.src = mediaName;
        }else{
         info.type = 'url';
+        info.is_self_path = true;
+
         removeChildElement(idPosition);
         //create new text child tag
          childTag = document.createElement('iframe');
