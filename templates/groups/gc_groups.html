@@ -463,7 +463,8 @@
 		   {
 		   	 ajaxindicatorstop();
 			  
-			 
+			  console.log("Response-"+JSON.stringify(data));
+			  
               swal(data['status']);
               if(data['statusCode']==0)
               {

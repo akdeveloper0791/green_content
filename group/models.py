@@ -8,6 +8,9 @@ import datetime
 from django.db import IntegrityError
 from django.core import serializers
 from campaign.models import Approved_Group_Campaigns
+from django.template.loader import render_to_string, get_template
+from django.core.mail import EmailMessage
+from .GroupNotifications import SendGroupAssignNotifications
 
 def dictfetchall(cursor):
     
@@ -184,6 +187,26 @@ class GcGroupMembers(models.Model):
             return {'statusCode':3,'status':
                 "Invalid request parameters --"+str(e)};
     
+    
+    
+    def testGroupNotificationMsg(members,gId,gName,userId):
+        try:
+            user = User.objects.get(id=userId);
+            ctx = {
+            'creator_name': user.username,
+            'group_name': gName,
+            'url':'http://127.0.0.1:8000/groups/approve/{}'.format(gId)
+            } 
+            message = get_template('groups/assign_new_member_email_notification.html').render({'info':ctx})
+            to = members;
+            from_email = "contact@adskite.com"
+            msg = EmailMessage("Test html", message, to=to, from_email=from_email)
+            msg.content_subtype = 'html'
+            response = msg.send();
+            return response;
+        except User.DoesNotExist:
+          return "Creator info not found";  
+
     def addMember(userId,gId,members):
         if(members and len(members)>=1 and gId):
             userEmails = User.objects.filter(email__in=members);
@@ -216,6 +239,8 @@ class GcGroupMembers(models.Model):
                       gcGroupMembers.append(gcGroupMember);
                     #save group members
                     GcGroupMembers.objects.bulk_create(gcGroupMembers);
+                    #emailResponse = GcGroupMembers.testGroupNotificationMsg();
+                    SendGroupAssignNotifications(members,gId,groupInfo.name,userId).start();
                     return {'statusCode':0,"status":
                      "Members have been assigned successfully"};
                 except GcGroups.DoesNotExist:

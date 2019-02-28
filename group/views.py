@@ -224,3 +224,12 @@ def approveGroupCampaign(request):
     else:
         return JsonResponse({'statusCode':1,
             'status':'Invalid method'});
+
+@login_required
+def approveFromMemer(request,gId):
+    if(request.user.is_authenticated):
+        result = GcGroupMembers.updateMemberGroupStatus(
+            request.user.id,gId,"1",True);
+        return render(request,'groups/approve_member_email.html',{'res':result});
+    else:
+        return JsonResponse({'statusCode':1,'status':'Please login'});

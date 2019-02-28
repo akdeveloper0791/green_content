@@ -1,0 +1,39 @@
+<html lang="en">
+<head>
+{% block header %}
+{% include 'header.html' %}
+{% endblock %}
+</head>
+{% block body %}
+<body>
+
+	<br /><br /><br />
+ 
+ {% if res.statusCode == 0 %}
+   <h1 align="center">Added successfully </h1>
+
+    <a class="nav-link" href="{% url 'gcGroups' %}" style="float:right;margin-right:10em;font-weight:bold" target="_blank">Explore Groups</a><br/><br/>
+{% else %}
+   <h1 align="center">res.status </h1>
+{% endif %}
+
+ {% if res.statusCode == "0" %}
+   <h1>Approval success </h1>
+   <% else %>
+    <h1>Approval Fail </h1>
+ {% endif %}
+
+ {% endblock %}
+
+<br/><br/><br/>
+
+{% block footer %}
+{% include 'footer.html' %}
+{% endblock %}
+
+
+</body>
+
+
+</html>
+

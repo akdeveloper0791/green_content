@@ -1,6 +1,7 @@
 from django.core.mail import send_mail
 import threading
 from django.core import mail
+from django.core.mail import EmailMessage
 from django.contrib.auth.models import User
 
 class SendCampDeleteNotification(threading.Thread):
