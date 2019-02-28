@@ -105,11 +105,11 @@ function checkForCampaignInDB()
 
  function constructDivs()
  {
+   var hasVideo = false;
  	for(var i=0;i<regionsInfo.length;i++)
  	{
  		info = regionsInfo[i];
  		var parentDiv = document.createElement('div');
-        parentDiv.class='generic';
         parentDiv.id = 'reg_div_'+i;
         parentDiv.style.position="fixed";
         parentDiv.style.top=getPixels(screenInfo['height'],info.top_margin);
@@ -141,8 +141,9 @@ function checkForCampaignInDB()
         	
         }else if(info.type.toLowerCase()=="video")
         {
+           hasVideo=true;
            childTag = document.createElement('iframe');
-
+           childTag.allowfullscreen = true;
            if(info.media_name!=null && 
         		info.media_name.toLowerCase != 'default')
         	{
@@ -153,6 +154,8 @@ function checkForCampaignInDB()
 
         		childTag.src = '/static/images/ajax-loader.gif';
         	}
+
+         
 
           
         }else if(info.type.toLowerCase()=="url")
@@ -190,18 +193,32 @@ function checkForCampaignInDB()
         if(childTag!=null)
         {
            childTag.id='reg_div_child_'+i;
-           childTag.style.width = getPixels(screenInfo['width'],info.width);
-           childTag.style.height = getPixels(screenInfo['height'],info.width);
-
+           parentDiv.style.width = getPixels(screenInfo['width'],info.width);
+           parentDiv.style.height = getPixels(screenInfo['height'],info.width);
+          
+           childTag.style.width = "100%";
+           childTag.style.height = "100%";
            parentDiv.appendChild(childTag);
+           
         }
 
         
  	}
+  
+  if(regionsInfo.length==1 && hasVideo)
+  {
+     if(childTag!=null)
+     {
+       
+       document.onkeydown = function(){fullscreen(childTag)};
+       alert("Prese \"Down\" key to go to full screen");
+     }
+
+     
+  }
     
-  
-  
- 	checkAndDownloadResourceFile();
+    
+ 	 checkAndDownloadResourceFile();
  }
 
  function textAllignMent(textUi,allignMent)

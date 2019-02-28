@@ -7,7 +7,44 @@
 </head>
 {% block body %}
 <body>
+
 <script >
+
+function fullscreen(iframe) {
+  // check if fullscreen mode is available
+  if (document.fullscreenEnabled || 
+    document.webkitFullscreenEnabled || 
+    document.mozFullScreenEnabled ||
+    document.msFullscreenEnabled) {
+      
+    // Do fullscreen
+   if (iframe.requestFullscreen) {
+      iframe.requestFullscreen();
+    } else if (iframe.webkitRequestFullscreen) {
+      iframe.webkitRequestFullscreen();
+    } else if (iframe.mozRequestFullScreen) {
+      iframe.mozRequestFullScreen();
+    } else if (iframe.msRequestFullscreen) {
+      iframe.msRequestFullscreen();
+    }
+  }
+  else {
+   alert('Your browser is not supported');
+  }
+}
+
+function fullscreenChange() {
+  if (document.fullscreenEnabled ||
+       document.webkitIsFullScreen || 
+       document.mozFullScreen ||
+       document.msFullscreenElement) {
+    console.log('enter fullscreen');
+  }
+  else {
+    console.log('exit fullscreen');
+  }
+}
+
 var csrf_token = '{{ csrf_token }}';
 
 var info = "{{info}}"; regionsInfo=[];
