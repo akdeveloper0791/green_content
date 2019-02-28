@@ -194,7 +194,7 @@ function checkForCampaignInDB()
         {
            childTag.id='reg_div_child_'+i;
            parentDiv.style.width = getPixels(screenInfo['width'],info.width);
-           parentDiv.style.height = getPixels(screenInfo['height'],info.width);
+           parentDiv.style.height = getPixels(screenInfo['height'],info.height);
           
            childTag.style.width = "100%";
            childTag.style.height = "100%";
