@@ -8,6 +8,7 @@
 {% block body %}
 <body>
 
+
 <script >
 
 function fullscreen(iframe) {
@@ -28,7 +29,7 @@ function fullscreen(iframe) {
       iframe.msRequestFullscreen();
     }
 
-    setTimeout(function(){getScreenSize(iframe)},3000);
+  
   }
   else {
    alert('Your browser is not supported');
@@ -66,24 +67,6 @@ var downloadResources= [];
 var screenInfo = {'width':x,'height':y};
 console.log("screenInfo"+JSON.stringify(screenInfo));
 
-function getScreenSize(iframe)
-{
-  //alert(getScreenSize);
-  var w = window,
-    d = document,
-    e = d.documentElement,
-    g = d.getElementsByTagName('body')[0],
-    x = w.innerWidth || e.clientWidth || g.clientWidth,
-    y = w.innerHeight|| e.clientHeight|| g.clientHeight;
-
-
-  var screenInfo = {'width':x,'height':y};
-
-  console.log("screenInfo"+JSON.stringify(screenInfo));
-  //iframe.parentElement.style.height = 
-  iframe.parentElement.style.width = getPixels(screenInfo['width'],100);
-  iframe.parentElement.style.height = getPixels(screenInfo['width'],100);
-}
 
 if(info.statusCode != 0)
 {
