@@ -671,7 +671,7 @@ function createThumb()
     //document.body.appendChild(canvas)
       ////
     canvas.toBlob(function(blob) {
-      var thumbFile = new File([blob], "DNDM-THUMB-"+campaignName+".jpeg");
+      var thumbFile = new File([blob], "DNDM-THUMB-"+campaignName+".jpg");
       size += thumbFile.size;
       
       uploadFiles.push(thumbFile);
