@@ -187,26 +187,7 @@ class GcGroupMembers(models.Model):
             return {'statusCode':3,'status':
                 "Invalid request parameters --"+str(e)};
     
-    
-    
-    def testGroupNotificationMsg(members,gId,gName,userId):
-        try:
-            user = User.objects.get(id=userId);
-            ctx = {
-            'creator_name': user.username,
-            'group_name': gName,
-            'url':'http://127.0.0.1:8000/groups/approve/{}'.format(gId)
-            } 
-            message = get_template('groups/assign_new_member_email_notification.html').render({'info':ctx})
-            to = members;
-            from_email = "contact@adskite.com"
-            msg = EmailMessage("Test html", message, to=to, from_email=from_email)
-            msg.content_subtype = 'html'
-            response = msg.send();
-            return response;
-        except User.DoesNotExist:
-          return "Creator info not found";  
-    
+ 
     def addMember(userId,gId,members):
         if(members and len(members)>=1 and gId):
             userEmails = User.objects.filter(email__in=members);
@@ -239,10 +220,12 @@ class GcGroupMembers(models.Model):
                       gcGroupMembers.append(gcGroupMember);
                     #save group members
                     GcGroupMembers.objects.bulk_create(gcGroupMembers);
-                    #emailResponse = GcGroupMembers.testGroupNotificationMsg();
-                    SendGroupAssignNotifications(members,gId,groupInfo.name,userId).start();
+                    #enable in localhost
+                    #SendGroupAssignNotifications(members,gId,groupInfo.name,userId).start();
+                    #enable in server
+                    response = GroupMemberAssignNotification.saveAssignNotifications(members,gId,groupInfo.name,userId);
                     return {'statusCode':0,"status":
-                     "Members have been assigned successfully"};
+                     "Members have been assigned successfully","response":response};
                 except GcGroups.DoesNotExist:
                     return {'statusCode':4,
                     'status':"Group not found please check and try again"};
@@ -494,6 +477,21 @@ class GroupCampaigns(models.Model):
 
 class GroupMemberAssignNotification(models.Model):
     gc_group = models.ForeignKey('group.GcGroups',on_delete=models.CASCADE)
-    g_name = models.CharField(max_length=20)
-    creator_name = models.CharField(max_length=20)
     member = models.TextField()
+    message = models.TextField()
+    
+    def saveAssignNotifications(members,gId,gName,userId):
+        try:
+            user = User.objects.get(id=userId);
+            ctx = {
+            'creator_name': user.username,
+            'group_name': gName,
+            'url':'http://127.0.0.1:8000/groups/approve/{}'.format(gId)
+            } 
+            message = get_template('groups/assign_new_member_email_notification.html').render({'info':ctx})
+            notification = GroupMemberAssignNotification(gc_group_id=gId,
+            member=json.dumps(members),message=message);
+            notification.save();
+            return notification.id;
+        except User.DoesNotExist:
+          return "Creator info not found";
