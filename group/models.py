@@ -8,7 +8,7 @@ import datetime
 from django.db import IntegrityError
 from django.core import serializers
 from campaign.models import Approved_Group_Campaigns
-from django.template.loader import render_to_string, get_template
+from django.template.loader import  get_template
 from django.core.mail import EmailMessage
 from .GroupNotifications import SendGroupAssignNotifications
 
@@ -206,7 +206,7 @@ class GcGroupMembers(models.Model):
             return response;
         except User.DoesNotExist:
           return "Creator info not found";  
-
+    
     def addMember(userId,gId,members):
         if(members and len(members)>=1 and gId):
             userEmails = User.objects.filter(email__in=members);
@@ -491,3 +491,9 @@ class GroupCampaigns(models.Model):
         except Exception as e:
             return {'statusCode':3,'status':
                 "Error --"+str(e)};
+
+class GroupMemberAssignNotification(models.Model):
+    gc_group = models.ForeignKey('group.GcGroups',on_delete=models.CASCADE)
+    g_name = models.CharField(max_length=20)
+    creator_name = models.CharField(max_length=20)
+    member = models.TextField()
