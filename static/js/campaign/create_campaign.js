@@ -40,7 +40,7 @@ function constructDivs()
  	{
  		info = regionsInfo[i];
  		var parentDiv = document.createElement('div');
-        parentDiv.class='generic';
+        //parentDiv.class='generic';
         parentDiv.id = 'reg_div_'+i;
         parentDiv.style.position="absolute";
         parentDiv.style.top=getPixels(screenInfo['height'],info.top_margin);
@@ -338,7 +338,7 @@ function constructDivs()
 
   function styleTextChild(childTag,isNew,idPosition)
   {
-    info = regionsInfo[idPosition];
+    var info = regionsInfo[idPosition];
     childTag.id='reg_div_child_'+idPosition;
     childTag.style.width = getPixels(screenInfo['width'],info.width);
     childTag.style.height = getPixels(screenInfo['height'],info.height);
@@ -655,10 +655,120 @@ function prepareInfoFile(mediaName)
   size += campaignInfoFile.size;
   uploadFiles.push(campaignInfoFile);
  
+ displayInitUploadBusyDialog();
+   clearParentDiv();
+   prepareThumbView(0);
+  //clearParentDiv();
   
-  clearParentDiv();
+  //initUpload();
+}
+
+function createThumb()
+{
   
-  initUpload();
+  html2canvas(document.getElementById("parent_div")).then(canvas => {
+    //clearParentDiv();
+    //document.body.appendChild(canvas)
+      ////
+    canvas.toBlob(function(blob) {
+      var thumbFile = new File([blob], "DNDM-THUMB-"+campaignName+".jpeg");
+      size += thumbFile.size;
+      
+      uploadFiles.push(thumbFile);
+      dismissInitBusyDialog();
+      clearParentDiv();
+      initUpload();
+    },'image/jpg', 0.95); 
+      ////
+  });
+   
+    
+}
+
+
+function prepareThumbView(i)
+{
+  if(regionsInfo.length>i)
+  {
+    var info = regionsInfo[i];
+    var file = null;
+    var childTag = null;
+    var isPrepare = false;
+    if(info.type=="Image")
+    {
+      childTag = document.createElement('IMG');
+      
+      if(regionsResourceFiles.hasOwnProperty(i) )
+      {
+        file= regionsResourceFiles[i];
+        
+        var reader = new FileReader();    
+          reader.onload = function (e) {
+            
+            childTag.src = e.target.result;
+            prepareThumbView(++i);
+            
+          };     
+          reader.readAsDataURL(file);
+      }
+      
+    }else if(info.type=="Video")
+    {
+      if(regionsResourceFiles.hasOwnProperty(i) )
+      {
+        file= regionsResourceFiles[i];
+        var fileUrl = window.URL.createObjectURL(file);
+        videoTag = document.createElement('VIDEO');
+        //document.getElementById('parent_div').appendChild(videoTag);
+        childTag1 = document.createElement("CANVAS");
+        childTag = document.createElement("IMG");
+        //document.getElementById('parent_div').appendChild(childTag1);
+        ctx = childTag1.getContext("2d");
+        videoTag.addEventListener("loadedmetadata", function()
+         {i = window.setTimeout(function() {
+          ctx.drawImage(videoTag,5,5,260,125)
+          childTag.src=childTag1.toDataURL();
+          
+          prepareThumbView(++i);
+        },500);}, false);
+        
+        
+        videoTag.src= fileUrl;
+
+        isPrepare = false;
+    
+      }
+    }else if(info.type=="text")
+    {
+      childTag = document.createElement("TEXTAREA");
+      styleTextChild(childTag,false,i);
+    }else if(info.type=="URL")
+    {
+      childTag = document.createElement('iframe');
+      childTag.src = info.media_name;
+    }
+    
+    if(childTag!=null)
+    {  
+      childTag.id=i;  
+      childTag.style.width = getPixels(screenInfo['width'],info.width);
+      childTag.style.height = getPixels(screenInfo['height'],info.height);
+      
+      
+      //childTag.style.position="fixed";
+      childTag.style.top=getPixels(screenInfo['height'],info.top_margin);
+      childTag.style.left=getPixels(screenInfo['width'],info.left_margin);
+      childTag.style.border = "groove #4de4c0";
+      document.getElementById('parent_div').appendChild(childTag);
+    }
+
+    if(file==null || isPrepare)
+    {
+      prepareThumbView(++i);
+    }
+  }else{
+    createThumb();
+  }
 }
 
 function getUploadMediaName(selectedFileName)

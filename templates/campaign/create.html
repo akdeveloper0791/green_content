@@ -6,8 +6,9 @@
   <script Language='Javascript' src="{% static 'js/jscolor.js' %}"></script>
   <script src="/testJS.js"> </script>
 	
-   <script  src="{% static 'scripts/Dropbox-sdk.min.js' %}"></script>
+  <script  src="{% static 'scripts/Dropbox-sdk.min.js' %}"></script>
 
+ <script  src="{% static 'scripts/html2canvas.js' %}"></script>
 
 
 
@@ -80,6 +81,8 @@ div.generic {border: groove;}
   {% include 'campaign/upload.html' %}
 
   <input type="button" class="create_button" value="Create" style="float:right;" onclick="displayCreateCampaignDialog()"/>
+
+  
   <div style="position:fixed;top:50px;left:0px" id="parent_div" >
   </div>
 
