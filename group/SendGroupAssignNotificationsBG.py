@@ -3,6 +3,8 @@ from time import sleep
 from django.core.mail import EmailMessage
 from django.db import connection
 
+print("INside Send Group Assign notifications",flush=True);
+
 # +++++++++++ DJANGO +++++++++++
 # To use your own django app use code like this:
 import os
@@ -23,9 +25,6 @@ with connection.cursor() as cursor:
     values = cursor.fetchAll();
 print(query,flush=True);
 
-'''pendingList = GroupMemberAssignNotification.objects.all().order_by(id)[:100];
-for notification `in pendingList.iterator():
-    print(notification.members)
 
-print("INside Send Group Assign notifications",flush=True);
-sleep(300);#sleep for 5 mintes'''
+
+#sleep(300);#sleep for 5 mintes'''
