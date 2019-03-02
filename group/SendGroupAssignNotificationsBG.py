@@ -17,7 +17,7 @@ if path not in sys.path:
 os.environ['DJANGO_SETTINGS_MODULE'] = 'signagecms.settings'
 
 #list latest 100 pending email requests
-query = "SELECT * FROM group_groupmemberassignnotification LIMIT 100 order by id ASC";
+query = "SELECT * FROM group_groupmemberassignnotification LIMIT 100";
 with connection.cursor() as cursor:
     cursor.execute(query);
     values = cursor.fetchAll();
