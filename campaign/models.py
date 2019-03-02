@@ -24,7 +24,7 @@ def dictfetchall(cursor):
 
 # Create your models here.
 class CampaignInfo(models.Model):
-    campaign_id = models.ForeignKey('cmsapp.Multiple_campaign_upload',on_delete=models.CASCADE,unique=True)
+    campaign_id = models.OneToOneField('cmsapp.Multiple_campaign_upload',on_delete=models.CASCADE,primary_key=True)
     info = models.TextField()
 
     def processInfoAndSaveCampaign(info,requestFrom,user_sessionId,
