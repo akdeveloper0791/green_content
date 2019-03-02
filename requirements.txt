@@ -1,9 +1,9 @@
+Django==1.11.13
 AST==0.0.2
 beautifulsoup4==4.6.0
 bs4==0.0.1
 certifi==2018.4.16
 chardet==3.0.4
-Django==1.11.13
 django-cleanup==3.0.1
 djangorestframework==3.8.2
 idna==2.7
