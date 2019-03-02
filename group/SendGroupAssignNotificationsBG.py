@@ -21,7 +21,7 @@ query = "SELECT * FROM group_groupmemberassignnotification LIMIT 100";
 with connection.cursor() as cursor:
     cursor.execute(query);
     values = cursor.fetchAll();
-print(query);
+print(query,flush=True);
 
 '''pendingList = GroupMemberAssignNotification.objects.all().order_by(id)[:100];
 for notification `in pendingList.iterator():
