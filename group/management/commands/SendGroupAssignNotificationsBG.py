@@ -4,6 +4,7 @@ from group.models import GroupMemberAssignNotification
 from django.core import mail
 from django.core.mail import EmailMessage
 import json
+import time
 
 class Command(BaseCommand):
     help = 'Sends Group assign notifications'
@@ -30,3 +31,6 @@ class Command(BaseCommand):
             
         else:
             print("No notifications found",flush=True);
+
+        #sleep 
+        time.sleep(5)
