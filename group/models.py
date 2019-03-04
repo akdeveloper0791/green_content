@@ -486,7 +486,7 @@ class GroupMemberAssignNotification(models.Model):
             ctx = {
             'creator_name': user.username,
             'group_name': gName,
-            'url':'http://127.0.0.1:8000/groups/approve/{}'.format(gId)
+            'url':'https://www.greencontent.in/groups/approve/{}'.format(gId)
             } 
             message = get_template('groups/assign_new_member_email_notification.html').render({'info':ctx})
             notification = GroupMemberAssignNotification(gc_group_id=gId,
