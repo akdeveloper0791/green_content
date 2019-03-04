@@ -11,8 +11,8 @@ class Command(BaseCommand):
     	thread2 = Thread2();
     	thread2.start();
     	
-    	thread1.join();
-    	thread2.join();
+    	#thread1.join();
+    	#thread2.join();
 
 
 
