@@ -6,11 +6,13 @@ class Command(BaseCommand):
     def handle(self, *args, **kwargs):
     	thread1 = Thread1();
     	thread1.start();
-    	#thread1.join();
+    	
 
     	thread2 = Thread2();
     	thread2.start();
-    	#thread2.join();
+    	
+    	thread1.join();
+    	thread2.join();
 
 
 
