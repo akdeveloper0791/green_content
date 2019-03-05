@@ -10,11 +10,11 @@ class Command(BaseCommand):
     help = 'Sends Group assign notifications'
 
     def handle(self, *args, **kwargs):
-        thread1 = Thread1();
+        thread1 = GroupMemberAssignNotifications();
         thread1.start();
         
 
-        thread2 = Thread2();
+        thread2 = GroupCampaignAssignNotifications();
         thread2.start();
         
         #thread1.join();
@@ -22,7 +22,7 @@ class Command(BaseCommand):
 
 
 
-class Thread1(threading.Thread):
+class GroupMemberAssignNotifications(threading.Thread):
     def __init__(self):
         threading.Thread.__init__(self)
 
@@ -49,8 +49,11 @@ class Thread1(threading.Thread):
         else:
             print("No notifications found",flush=True);
 
+        #sleep 
+        time.sleep(60)
 
-class Thread2(threading.Thread):
+
+class GroupCampaignAssignNotifications(threading.Thread):
     def __init__(self):
         threading.Thread.__init__(self)
 
@@ -81,3 +84,6 @@ class Thread2(threading.Thread):
             
         else:
             print("No campaign notifications found",flush=True);
+
+        #sleep 
+        time.sleep(60)
