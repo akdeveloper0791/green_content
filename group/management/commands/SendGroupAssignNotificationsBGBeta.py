@@ -42,7 +42,8 @@ class GroupMemberAssignNotifications(threading.Thread):
                         response = msg.send();
                         print(notification.member,flush=True);
                         print(response,flush=True);
-                        notification.delete();
+                        if(response==1):
+                            notification.delete();
             except Exception as e:
                 print("Error in sending notifications to assigned"+str(e),flush=True);
             
@@ -78,7 +79,8 @@ class GroupCampaignAssignNotifications(threading.Thread):
                         response = msg.send();
                         print(notification.member,flush=True);
                         print(response,flush=True);
-                        notification.delete();
+                        if(response==1):
+                            notification.delete();
             except Exception as e:
                 print("Error in sending campaign notifications to assigned"+str(e),flush=True);
             
