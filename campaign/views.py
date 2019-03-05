@@ -5,6 +5,7 @@ from rest_framework.decorators import api_view
 from django.contrib.auth.decorators import login_required
 from .models import CampaignInfo,Approved_Group_Campaigns
 import json
+from group.models import GroupCampaigns
 # Create your views here.
 @login_required
 def upload_camp_web(request):
@@ -131,3 +132,18 @@ def previewCampaign(request,c_id):
 @login_required
 def create(request):
     return render(request,'campaign/create.html');
+
+@login_required
+#two - group id , #one- campaign id
+def approveCampaignNotif(request,one,two):
+    if(request.user.is_authenticated):
+        gCampId = GroupCampaigns.getGroupCampaignKey(two,one);
+        if(gCampId==False):
+            result = {'statusCode':2,'status':"Invalid details"};
+        else:
+            result = GroupCampaigns.approveGroupCampaign(
+                request.user.id,gCampId,True);
+        #return JsonResponse(result);
+        return render(request,'groups/approve_member_email.html',{'res':result});
+    else:
+        return JsonResponse({'statusCode':1,'status':'Please login'});

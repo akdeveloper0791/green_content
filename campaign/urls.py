@@ -11,5 +11,6 @@ urlpatterns = [
     path('removeApprovedCampaign/', views.removeApprovedCampaign, name='removeApprovedCampaign'),
     path('previewCampaign/<int:c_id>', views.previewCampaign, name='previewCampaign'),
     path('create/', views.create, name='create'),
+    path('approve/<int:one>/<int:two>', views.approveCampaignNotif, name='approveCampaignNotif')
     
 ]

@@ -323,6 +323,14 @@ class GroupCampaigns(models.Model):
         unique_together=[
         ['gc_group','campaign']
         ]
+    
+    def getGroupCampaignKey(gId,campaignId):
+        try:
+            groupCampaign = GroupCampaigns.objects.get(gc_group_id=gId,campaign_id=campaignId);
+            return groupCampaign.id;
+        
+        except GroupCampaigns.DoesNotExist:
+            return False;
 
     def assignNewCampaigns(userId,gId,campaigns,isWeb):
         if(isWeb == False):
@@ -366,8 +374,9 @@ class GroupCampaigns(models.Model):
                             GroupCampaigns(gc_group_id=gId,campaign_id=campaignId));
 
                     GroupCampaigns.objects.bulk_create(gcGroupCampaignsBulk);
+                    response = GroupCampaignAssignNotification.saveCampaignAssignNotifications(campaigns,groupInfo.name,userId,gId);
                     return {'statusCode':0,'status':
-                    'Campaigns have been assigned successfully'};
+                    'Campaigns have been assigned successfully','response':response};
                 else:
                     return {'statusCode':5,'status':
                     'Some of the campaigns are not found, please refresh and try again later'};
@@ -490,6 +499,34 @@ class GroupMemberAssignNotification(models.Model):
             } 
             message = get_template('groups/assign_new_member_email_notification.html').render({'info':ctx})
             notification = GroupMemberAssignNotification(gc_group_id=gId,
+            member=json.dumps(members),message=message);
+            notification.save();
+            return notification.id;
+        except User.DoesNotExist:
+          return "Creator info not found";
+
+class GroupCampaignAssignNotification(models.Model):
+    gc_group = models.ForeignKey('group.GcGroups',on_delete=models.CASCADE)
+    member = models.TextField()
+    message = models.TextField()
+    
+    def saveCampaignAssignNotifications(campaigns,gName,userId,gId):
+        members = User.objects.filter(gcgroupmembers__gc_group_id=gId,gcgroupmembers__status=1).values('email')
+        members = list(members);
+        campaigns = Multiple_campaign_upload.objects.filter(id__in=campaigns).values('id','campaign_name');
+        campaigns =  list(campaigns);
+        
+        try:
+            user = User.objects.get(id=userId);
+            ctx = {
+            'creator_name': user.username,
+            'group_name': gName,
+            'url':'https://www.greencontent.in/groups/approve/{}'.format(gId),
+            'campaigns':campaigns,
+            'gId':gId
+            } 
+            message = get_template('groups/assign_new_campaign_email_notification.html').render({'info':ctx})
+            notification = GroupCampaignAssignNotification(gc_group_id=gId,
             member=json.dumps(members),message=message);
             notification.save();
             return notification.id;

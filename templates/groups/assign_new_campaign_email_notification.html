@@ -1,0 +1,20 @@
+<html>
+<body>
+<style>
+a {font-size: 30px}
+</style>
+
+<h3> Dear user, {{info.creator_name}} added following campaign(s) to group " {{info.group_name}} "</h3>
+ </br>
+
+ {% for campaign in info.campaigns%}
+   {{ campaign.campaign_name }} &nbsp;&nbsp; <a href= 'http://127.0.0.1:8000/campaigns/approve/{{ campaign.id }}/{{info.gId}}'> Approve Campaign </a> &nbsp;&nbsp; 
+
+  <a href= 'http://127.0.0.1:8000/campaigns/previewCampaign/{{ campaign.id }}'> Preview Campaign </a> &nbsp; </br> <br /> <br />
+
+ {% endfor %}
+
+ </br> </br >
+ <p>... </p>
+</body>
+ <html>
