@@ -8,9 +8,9 @@ a {font-size: 30px}
  </br>
 
  {% for campaign in info.campaigns%}
-   {{ campaign.campaign_name }} &nbsp;&nbsp; <a href= 'http://127.0.0.1:8000/campaigns/approve/{{ campaign.id }}/{{info.gId}}'> Approve Campaign </a> &nbsp;&nbsp; 
+   {{ campaign.campaign_name }} &nbsp;&nbsp; <a href= 'https://www.greencontent.in/campaigns/approve/{{ campaign.id }}/{{info.gId}}'> Approve Campaign </a> &nbsp;&nbsp; 
 
-  <a href= 'http://127.0.0.1:8000/campaigns/previewCampaign/{{ campaign.id }}'> Preview Campaign </a> &nbsp; </br> <br /> <br />
+  <a href= 'https://www.greencontent.in/campaigns/previewCampaign/{{ campaign.id }}'> Preview Campaign </a> &nbsp; </br> <br /> <br />
 
  {% endfor %}
 
