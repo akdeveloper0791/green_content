@@ -219,9 +219,11 @@
              row.id = "member_row_"+member['member_id']
             
              var cell = row.insertCell(-1);
+             var deleteMemberInnerHtml=null;
              if(member.status == 1)//active
              {
              	cell.innerHTML = "<img src="+"{% static 'images/ic_group_member_active.png' %}"+" alt='active' title='active' >";
+             	deleteMemberInnerHtml = "<input type='image' src='{% static "images/ic_remove.png" %}' alt='remove' title='remove' onclick='removeMember("+member.member_id+")'>";
              }else if(member.status == -1)
              {
              	//blocked 
@@ -230,14 +232,20 @@
              {
              	//in progress
              	cell.innerHTML = "<img src="+"{% static 'images/ic_group_member_pending.png' %}"+" alt='pending' title='pending' >";
+
+             	//delete member inner html 
+             	deleteMemberInnerHtml = "<input type='image' src='{% static "images/ic_remove.png" %}' alt='remove' title='remove' onclick='removeMember("+member.member_id+")'>";
              }
              
 
               var cell = row.insertCell(-1);
               cell.innerHTML = member['memberName'];
 
+             if(deleteMemberInnerHtml!=null)
+             {
               var deleteCell = row.insertCell(-1);
-              deleteCell.innerHTML = "<input type='image' src='{% static "images/ic_remove.png" %}' alt='remove' title='remove' onclick='removeMember("+member.member_id+")'>"
+              deleteCell.innerHTML = deleteMemberInnerHtml;
+             }
             }
  
          
