@@ -37,8 +37,8 @@ def register(request):
                     userId = info.id;
                     break;
                 result = Player.registerPlayer(postParams.get('data'),userId);
-                if(result==True):
-                    return JsonResponse({'statusCode':0,'status':'Success','info':userInfo,'result':result});
+                if(result['statusCode']==0):
+                    return JsonResponse({'statusCode':0,'status':'Success','info':userInfo,'d_status':result['status']});
                 else:
                     return JsonResponse(result);
             else:
