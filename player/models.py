@@ -1,6 +1,9 @@
 from django.db import models
 from django.conf import settings
 import datetime
+from datetime import datetime as dt
+import json
+
 
 # Create your models here.
 class Player(models.Model):
@@ -20,3 +23,25 @@ class Player(models.Model):
 
     def __str__(self):
         return self.mac
+
+    def registerPlayer(data,userId):
+        try:
+           data =  json.loads(data);
+           try:
+            player = Player.objects.get(user_id=userId,mac=data['mac'])
+            
+           except Player.DoesNotExist:
+            player = Player(user_id=userId,mac=data['mac']);
+            player.expiry_date = dt.now() + datetime.timedelta(days=15);
+           player.name = data["name"];
+           player.fcm_id = data['fcm_id'];
+           player.save();
+           return True;
+        except Exception as ex:
+           return {'statusCode':5,'status':'unable to register - '+str(ex)};
+
+
+           
+        except ValueError as ex:
+            return {'statusCode':3,'status':
+                "Invalid request parameters, campaigns should not be zero - "+str(ex)};
