@@ -54,6 +54,7 @@ INSTALLED_APPS = [
     'campaign',
     'group',
     'gdbx',
+    'player',
 ]
 
 MIDDLEWARE = [
