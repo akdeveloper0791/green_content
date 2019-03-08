@@ -57,7 +57,7 @@ def metrics(request):
         player = request.POST.get('player');
         fileObj = request.FILES['file'];
         #folder='C:/Users/Jitendra/python_projects/greencontent/media/player_metrics/{}'.format(str(player))
-        folder='/home/adskite/myproject/signagecms/media/player_metrics/{}/{}'.format(str(player),fileObj.name)
+        folder='/home/adskite/myproject/signagecms/media/player_metrics/{}'.format(str(player))
         fs = FileSystemStorage(location=folder) #defaults to   MEDIA_ROOT
         saveResponse = fs.save(fileObj.name, fileObj)
         file_location = '/player_metrics/{}/{}'.format(str(player),fs);
