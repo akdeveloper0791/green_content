@@ -44,4 +44,17 @@ class Player(models.Model):
            
         except ValueError as ex:
             return {'statusCode':3,'status':
-                "Invalid request parameters, campaigns should not be zero - "+str(ex)};
+                "Invalid request parameters, campaigns should not be zero - "+str(ex)}
+
+#metrics modal
+class Metrics(models.Model):
+  player = models.ForeignKey('player.Player',on_delete=models.CASCADE)
+  file_path=models.FileField(upload_to="player_metrics/")
+
+  def saveRec(player,file_path):
+    try:
+      record = Metrics(player_id=player,file_path=file_path)
+      record.save();
+      return True
+    except Exception as e:
+      return False;

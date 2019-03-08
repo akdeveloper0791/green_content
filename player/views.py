@@ -5,7 +5,9 @@ from django.contrib.auth.models import User
 from django.http import JsonResponse
 from cmsapp.models import User_unique_id
 from signagecms import constants
-from .models import Player
+from .models import Player, Metrics
+from django.core.files.storage import FileSystemStorage
+
 # Create your views here.
 @api_view(['POST'])
 def register(request):
@@ -47,3 +49,22 @@ def register(request):
         else:
             return JsonResponse({'statusCode':2,'status':
                 'Invalid user info, no user found with the email, please register','userEmail':request.POST.get('user_email')})
+
+@api_view(['POST'])
+def metrics(request):
+    
+    if('file' in request.FILES):
+        player = request.POST.get('player');
+        fileObj = request.FILES['file'];
+        #folder='C:/Users/Jitendra/python_projects/greencontent/media/player_metrics/{}'.format(str(player))
+        folder='/home/adskite/myproject/signagecms/media/player_metrics/{}/{}'.format(str(player,fileObj.name))
+        fs = FileSystemStorage(location=folder) #defaults to   MEDIA_ROOT
+        saveResponse = fs.save(fileObj.name, fileObj)
+        file_location = '/player_metrics/{}/{}'.format(str(player),fs);
+        response = Metrics.saveRec(player,file_location);
+        if(response==False):
+            fs.delete(saveResponse);
+            return JsonResponse({'statusCode':1,'status':'Invalid player'})
+        return JsonResponse({'files':fileObj.size,'saveResponse':saveResponse})
+
+    return JsonResponse({'status':"Invalid file"})
