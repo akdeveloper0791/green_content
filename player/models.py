@@ -18,7 +18,7 @@ class Player(models.Model):
 
     class Meta(object):
         unique_together=[
-        ['user','mac']
+        ['mac']
         ]
 
     def __str__(self):
@@ -28,7 +28,7 @@ class Player(models.Model):
         try:
            data =  json.loads(data);
            try:
-            player = Player.objects.get(user_id=userId,mac=data['mac'])
+            player = Player.objects.get(mac=data['mac'])
             
            except Player.DoesNotExist:
             player = Player(user_id=userId,mac=data['mac']);
