@@ -59,11 +59,11 @@ def metrics(request):
         #folder='C:/Users/Jitendra/python_projects/greencontent/media/player_metrics/{}'.format(str(player))
         folder='/home/adskite/myproject/signagecms/media/player_metrics/{}'.format(str(player))
         fs = FileSystemStorage(location=folder) #defaults to   MEDIA_ROOT
-        saveResponse = fs.save(fileObj.name, fileObj)
+        #saveResponse = fs.save(fileObj.name, fileObj)
         file_location = '/player_metrics/{}/{}'.format(str(player),fs);
         response = Metrics.saveRec(player,file_location);
         if(response==False):
-            fs.delete(saveResponse);
+            #fs.delete(saveResponse);
             return JsonResponse({'statusCode':1,'status':'Invalid player'})
         return JsonResponse({'statusCode':0,'files':fileObj.size,'saveResponse':saveResponse})
 
