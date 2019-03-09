@@ -65,7 +65,7 @@ def metrics(request):
         if(response==False):
             fs.delete(saveResponse);
             return JsonResponse({'statusCode':1,'status':'Invalid player'})
-        return JsonResponse({'files':fileObj.size,'saveResponse':saveResponse})
+        return JsonResponse({'statusCode':0,'files':fileObj.size,'saveResponse':saveResponse})
 
     return JsonResponse({'status':"Invalid file"})
 
