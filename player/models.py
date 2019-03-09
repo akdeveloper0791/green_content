@@ -36,7 +36,7 @@ class Player(models.Model):
            player.name = data["name"];
            player.fcm_id = data['fcm_id'];
            player.save();
-           return {'statusCode':0,'status':player.status,'player':player.id};
+           return {'statusCode':0,'status':player.status,'player':player.id,'mac':data['mac']};
         except Exception as ex:
            return {'statusCode':5,'status':'unable to register - '+str(ex)};
          
