@@ -39,12 +39,21 @@ class Player(models.Model):
            return {'statusCode':0,'status':player.status,'player':player.id};
         except Exception as ex:
            return {'statusCode':5,'status':'unable to register - '+str(ex)};
-
-
-           
+         
         except ValueError as ex:
             return {'statusCode':3,'status':
-                "Invalid request parameters, campaigns should not be zero - "+str(ex)}
+                "Invalid request parameters,  - "+str(ex)}
+
+    def refreshFCM(playerId,playerMac,fcm):
+      try:
+        player = Player.objects.get(id=playerId,
+          mac=playerMac);
+        player.fcm_id = fcm;
+        player.save();
+        return True;
+      except Player.DoesNotExist:
+        return False;
+
 
 #metrics modal
 class Metrics(models.Model):

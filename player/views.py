@@ -51,8 +51,7 @@ def register(request):
                 'Invalid user info, no user found with the email, please register','userEmail':request.POST.get('user_email')})
 
 @api_view(['POST'])
-def metrics(request):
-    
+def metrics(request):    
     if('file' in request.FILES):
         player = request.POST.get('player');
         fileObj = request.FILES['file'];
@@ -68,3 +67,19 @@ def metrics(request):
         return JsonResponse({'files':fileObj.size,'saveResponse':saveResponse})
 
     return JsonResponse({'status':"Invalid file"})
+
+@api_view(['POST'])
+def refreshFCM(request):
+    if(request.method != 'POST'):
+        return JsonResponse({'statusCode':1,'status':
+            'Invalid method'});
+    else:
+        params = request.POST;
+        result = Player.refreshFCM(params.get('player'),
+            params.get('p_mac'),params.get('fcm'));
+        if(result==True):
+            return JsonResponse({'statusCode':0,
+                'status':'Updated successfully'});
+        else:
+            return JsonResponse({'statusCode':0,
+                'status':'Invalid details'});

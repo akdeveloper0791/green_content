@@ -5,5 +5,6 @@ urlpatterns = [
     #url(r'^first/',csrf_exempt(views.first),name='first'),
     path('register',views.register,name='register'),
     path('metrics',views.metrics,name='metrics'),
+    path('refresh_fcm_api',views.refreshFCM,name='refreshFCM'),
     
     ]
