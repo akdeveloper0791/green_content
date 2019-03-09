@@ -67,7 +67,7 @@ def metrics(request):
             return JsonResponse({'statusCode':1,'status':'Invalid player'})
         return JsonResponse({'statusCode':0,'files':fileObj.size,'saveResponse':saveResponse})
 
-    return JsonResponse({'status':"Invalid file"})
+    return JsonResponse({'statusCode':2,'status':"Invalid file"})
 
 @api_view(['POST'])
 def refreshFCM(request):
