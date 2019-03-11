@@ -7,6 +7,8 @@ from cmsapp.models import User_unique_id
 from signagecms import constants
 from .models import Player, Metrics
 from django.core.files.storage import FileSystemStorage
+import numpy as np
+import cv2
 
 # Create your views here.
 @api_view(['POST'])
@@ -54,8 +56,52 @@ def register(request):
 @api_view(['POST'])
 def metrics(request):    
     if('file' in request.FILES):
+        #Init open cv DNN(age and gender) and cascades(face detetion)
+        face_detector = "haarcascade_frontalface_alt.xml"
+        age_net = cv2.dnn.readNetFromCaffe(
+                        "age_gender_model/deploy_age.prototxt", 
+                        "age_gender_model/age_net.caffemodel")
+
+        gender_net = cv2.dnn.readNetFromCaffe(
+                        "age_gender_model/deploy_gender.prototxt", 
+                        "age_gender_model/gender_net.caffemodel")
+
         player = request.POST.get('player');
         fileObj = request.FILES['file'];
+        
+        #detect face 
+        image_to_read = read_cv_image(stream = fileObj)
+        
+        #raw image to detect age and gender
+        image = image_to_read
+
+        image_to_read = cv2.cvtColor(image_to_read, cv2.COLOR_BGR2GRAY)
+        detector_value = cv2.CascadeClassifier(face_detector)
+        faces = detector_value.detectMultiScale(image_to_read,1.1,5);
+        
+        #detect age and gender
+        ages = [];
+        age_list=['(0, 2)','(4, 6)','(8, 12)','(15, 20)','(25, 32)','(38, 43)','(48, 53)','(60, 100)']
+        MODEL_MEAN_VALUES = (78.4263377603, 87.7689143744, 114.895847746)
+        gender_list = ['Male', 'Female']
+        genders = [];
+        for (x,y,w,h) in faces:
+            
+            face_img = image[y:y+h, x:x+w].copy()
+            blob = cv2.dnn.blobFromImage(face_img, 1, (227, 227), MODEL_MEAN_VALUES, swapRB=False)
+            # Predict gender
+            gender_net.setInput(blob)
+            gender_preds = gender_net.forward()
+            gender = gender_list[gender_preds[0].argmax()]
+            genders.append(gender)
+            # Predict age
+            age_net.setInput(blob)
+            age_preds = age_net.forward()
+            age = age_list[age_preds[0].argmax()]
+            #overlay_text = "%s, %s" % (gender, age)
+            #cv2.putText(image, overlay_text ,(x,y), font, 2,(255,255,255),2,cv2.LINE_AA)
+            ages.append(age);
+
         #folder='C:/Users/Jitendra/python_projects/greencontent/media/player_metrics/{}'.format(str(player))
         folder='/home/adskite/myproject/signagecms/media/player_metrics/{}'.format(str(player))
         fs = FileSystemStorage(location=folder) #defaults to   MEDIA_ROOT
@@ -65,9 +111,35 @@ def metrics(request):
         if(response==False):
             #fs.delete(saveResponse);
             return JsonResponse({'statusCode':1,'status':'Invalid player'})
-        return JsonResponse({'statusCode':0,'files':fileObj.size,'saveResponse':saveResponse})
+        return JsonResponse({'statusCode':0,'faces':len(faces),
+            'ages':(ages),'genders':genders})
 
     return JsonResponse({'statusCode':2,'status':"Invalid file"})
+
+def read_cv_image(path=None, stream=None, url=None):
+
+    ##### primarily URL but if the path is None
+    ## load the image from your local repository
+
+    if path is not None:
+        image = cv2.imread(path)
+
+    else:
+        if url is not None:
+
+            response = urllib.request.urlopen(url)
+
+            data_temp = response.read()
+
+        elif stream is not None:
+            #implying image is now streaming
+            data_temp = stream.read()
+
+        image = np.asarray(bytearray(data_temp), dtype="uint8")
+
+        image = cv2.imdecode(image, cv2.IMREAD_COLOR)
+
+    return image
 
 @api_view(['POST'])
 def refreshFCM(request):
