@@ -59,14 +59,14 @@ def metrics(request):
      player = Player.getPlayer(request.POST.get('player'),request.POST.get('p_mac'))
      if(player!=False):
         #Init open cv DNN(age and gender) and cascades(face detetion)
-        face_detector = "haarcascade_frontalface_alt.xml"
+        face_detector = "/home/adskite/myproject/signagecms/haarcascade_frontalface_alt.xml"
         age_net = cv2.dnn.readNetFromCaffe(
                         "/home/adskite/myproject/signagecms/age_gender_model/deploy_age.prototxt", 
-                        "age_gender_model/age_net.caffemodel")
+                        "/home/adskite/myproject/signagecms/age_gender_model/age_net.caffemodel")
 
         gender_net = cv2.dnn.readNetFromCaffe(
-                        "age_gender_model/deploy_gender.prototxt", 
-                        "age_gender_model/gender_net.caffemodel")
+                        "/home/adskite/myproject/signagecms/age_gender_model/deploy_gender.prototxt", 
+                        "/home/adskite/myproject/signagecms/age_gender_model/gender_net.caffemodel")
 
         player = request.POST.get('player');
         fileObj = request.FILES['file'];
