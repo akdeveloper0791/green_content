@@ -87,45 +87,47 @@ def metrics(request):
         MODEL_MEAN_VALUES = (78.4263377603, 87.7689143744, 114.895847746)
         gender_list = ['Male', 'Female']
         genders = {};
-        for (x,y,w,h) in faces:
-            
-            face_img = image[y:y+h, x:x+w].copy()
-            blob = cv2.dnn.blobFromImage(face_img, 1, (227, 227), MODEL_MEAN_VALUES, swapRB=False)
-            # Predict gender
-            gender_net.setInput(blob)
-            gender_preds = gender_net.forward()
-            gender = gender_list[gender_preds[0].argmax()]
-            if gender in genders:
-                genders[gender] = genders[gender]+1;
-            else:
-                genders[gender]=1;
-            # Predict age
-            age_net.setInput(blob)
-            age_preds = age_net.forward()
-            #age = age_list[age_preds[0].argmax()]
-            age=str(age_preds[0].argmax());
-            #overlay_text = "%s, %s" % (gender, age)
-            #cv2.putText(image, overlay_text ,(x,y), font, 2,(255,255,255),2,cv2.LINE_AA)
-            if age in ages:
-                ages[age]=ages[age]+1;
-            else:
-                ages[age]=1
+        if faces.any():
+            for (x,y,w,h) in faces:        
+                face_img = image[y:y+h, x:x+w].copy()
+                blob = cv2.dnn.blobFromImage(face_img, 1, (227, 227), MODEL_MEAN_VALUES, swapRB=False)
+                # Predict gender
+                gender_net.setInput(blob)
+                gender_preds = gender_net.forward()
+                gender = gender_list[gender_preds[0].argmax()]
+                if gender in genders:
+                    genders[gender] = genders[gender]+1;
+                else:
+                    genders[gender]=1;
+                # Predict age
+                age_net.setInput(blob)
+                age_preds = age_net.forward()
+                #age = age_list[age_preds[0].argmax()]
+                age=str(age_preds[0].argmax());
+                #overlay_text = "%s, %s" % (gender, age)
+                #cv2.putText(image, overlay_text ,(x,y), font, 2,(255,255,255),2,cv2.LINE_AA)
+                if age in ages:
+                    ages[age]=ages[age]+1;
+                else:
+                    ages[age]=1
             
 
-        '''#folder='C:/Users/Jitendra/python_projects/greencontent/media/player_metrics/{}'.format(str(player))
-        folder='/home/adskite/myproject/signagecms/media/player_metrics/{}'.format(str(player))
-        fs = FileSystemStorage(location=folder) #defaults to   MEDIA_ROOT
-        #saveResponse = fs.save(fileObj.name, fileObj)
-        file_location = '/player_metrics/{}/{}'.format(str(player),fs);'''
-        response = Age_Geder_Metrics.saveMetrics(player,genders,ages);
-        if(response['statusCode']==0):
-              
-            return JsonResponse({'statusCode':0,'faces':len(faces),
-            'ages':(ages),'genders':genders})
+            '''#folder='C:/Users/Jitendra/python_projects/greencontent/media/player_metrics/{}'.format(str(player))
+            folder='/home/adskite/myproject/signagecms/media/player_metrics/{}'.format(str(player))
+            fs = FileSystemStorage(location=folder) #defaults to   MEDIA_ROOT
+            #saveResponse = fs.save(fileObj.name, fileObj)
+            file_location = '/player_metrics/{}/{}'.format(str(player),fs);'''
+            response = Age_Geder_Metrics.saveMetrics(player,genders,ages);
+            if(response['statusCode']==0):
+                  
+                return JsonResponse({'statusCode':0,'faces':len(faces),
+                'ages':(ages),'genders':genders})
+            else:
+                #fs.delete(saveResponse);
+                return JsonResponse({'statusCode':5,
+                    'status':response['status']})
         else:
-            #fs.delete(saveResponse);
-            return JsonResponse({'statusCode':5,
-                'status':response['status']})
+            return JsonResponse({'statusCode':6,'status':'No faces detected'})
      else:
         return JsonResponse({'statusCode':1,'status':'Invalid player'})
 
