@@ -1,11 +1,12 @@
 from django.conf.urls import url
 
 from cmsapp import views
+from campaign import views as cView
 
 
 urlpatterns = [
 
-        url(r'^$',views.home,name='home'),
+        url(r'^$',cView.listCampaignsWeb,name='listCampaignsWeb'),
         url(r'^mycontent/$',views.home,name='home'),
         url(r'^web_search/$',views.web_search,name='web_search'),
 
@@ -78,9 +79,9 @@ urlpatterns = [
 
         url(r'^campaign_downloads_api/(\d+)/$', views.campaign_downloads_api, name='campaign_downloads_api'),
 
-        url(r'^forget_password/', views.forget_password, name='forget_password'),
+        url(r'^forgot_password/', views.forgot_password, name='forgot_password'),
 
-        url(r'^change_password/(\d+)/$', views.change_password, name='change_password'),
+        url(r'^reset_password/(\d+)/$', views.reset_password, name='reset_password'),
 
         url(r'^all_user_emails_api/', views.all_user_emails_api, name='all_user_emails'),
 

@@ -10,7 +10,26 @@
 
  <script  src="{% static 'scripts/html2canvas.js' %}"></script>
 
+  <!--alert style-->
+        <link rel="stylesheet" href="{% static 'css/sweetalert.css' %}">
+        <script src="{% static 'js/sweetalert.js' %}"></script>
 
+  <style>
+table {
+  border-collapse: collapse;
+  border-spacing: 0;
+  width: 100%;
+  border: 1px solid #ddd;
+}
+
+th, td {
+  text-align: center;
+  padding: 8px;
+}
+
+
+/*td:nth-child(even){background-color: #f2f2f2}*/
+</style>
 
 <style>
 
@@ -80,21 +99,21 @@ div.generic {border: groove;}
 
   {% include 'campaign/upload.html' %}
 
-  <input type="button" class="create_button" value="Create" style="float:right;" onclick="displayCreateCampaignDialog()"/>
+  <input type="button" class="create_button" value="Upload" style="float:right;" onclick="displayCreateCampaignDialog()"/>
 
   
   <div style="position:fixed;top:50px;left:0px" id="parent_div" >
   </div>
 
 	<!-- select option -->
-  <div class="modal fade" id="selectoption" style="z-index: 1400;">
+  <div class="modal" id="selectoption">
     <div class="modal-dialog modal-lg">
       <div class="modal-content">
       
         <!-- Modal Header -->
         <div class="modal-header">
-          <h4 class="modal-title" style="text-align:center;">Select Media
-          <span type="button" class="close" data-dismiss="modal" onclick="dismissSelectRegOption();">&times;</span></h4>
+          <h4 class="modal-title" style="text-align:center;">Select Media Type
+         <!--  <span type="button" class="close" data-dismiss="modal" onclick="dismissSelectRegOption();">&times;</span> --></h4>
 
           <input type="hidden" id="select_media_reg_id">
 
@@ -102,29 +121,39 @@ div.generic {border: groove;}
         
         <!-- Modal body -->
         <div class="modal-body" >
-        	<table style="width:100%;border: 1px solid black;border-collapse:collapse;">
+          <div style="overflow-x:auto;">
+        	<table >
  
             <tr>
               <td>
               	<input type="file" accept="image/*" name="input-file-preview" id="select_img_file_type" style="display:none" onchange="onSelectImgReg(this)"/>
-              	<img src='{% static "images/campaign/image.png" %}' style='cursor:pointer' onclick="selectImgRegion();"></td>
+              	<img src='{% static "images/campaign/image.png" %}' style='cursor:pointer' onclick="selectImgRegion();">
+                <p>Image</p>
+              </td>
               <td>
               	<input type="file" accept="video/*" name="input-file-preview" id="select_video_file_type" style="display:none" onchange="onSelectVideoReg(this)"/>
-              	<img src='{% static "images/campaign/video.png" %}' onclick="selectVideoRegion();" style='cursor:pointer'></td>
-              <td><img src='{% static "images/campaign/url.png" %}' onclick="displayCreateURLDialog();" style='cursor:pointer'></td>
-               <td onclick="displayCreateTextRegion()"> <img src='{% static "images/campaign/text.png" %}' onclick="displayCreateTextRegion();" style='cursor:pointer'></td>
+              	<img src='{% static "images/campaign/video.png" %}' onclick="selectVideoRegion();" style='cursor:pointer'>
+                <p>Video</p>
+              </td>
+              <td><img src='{% static "images/campaign/url.png" %}' onclick="displayCreateURLDialog();" style='cursor:pointer'>
+               <p>URL</p>
+             </td>
+               <td onclick="displayCreateTextRegion()"> <img src='{% static "images/campaign/text.png" %}' onclick="displayCreateTextRegion();" style='cursor:pointer'>
+                <p>Text</p></td>
 
-              <td id="display_create_table_region" onclick="displayCreateTableRegion()"> <img src='{% static "images/campaign/ic_table_layout.png" %}' onclick="displayCreateTableRegion();" style='cursor:pointer'></td>
+              <td id="display_create_table_region" onclick="displayCreateTableRegion()"> <img src='{% static "images/campaign/ic_table_layout.png" %}' onclick="displayCreateTableRegion();" style='cursor:pointer'>
+                <p>Table</p></td>
              
             </tr>
         </table>
+      </div>
      		  
         </div>
         
         <!-- Modal footer -->
         <div class="modal-footer">
           <center>
-      <button type="button" class="btn btn-danger" data-dismiss="modal" onclick="dismissSelectRegOption();">Close</button>
+      <button  class="btn btn-success" data-dismiss="modal" onclick="dismissSelectRegOption();">Close</button>
       <!--  <button type="button" class="btn btn-success" onclick="">Submit</button> -->
        </center>
         </div>
@@ -278,13 +307,13 @@ div.generic {border: groove;}
 
 <!-- campaign info dialog -->
   <div class="modal fade" id="campaign_info_diag" style="z-index:1600;">
-    <div class="modal-dialog">
+    <div class="modal-dialog modal-lg">
       <div class="modal-content">
       
         <!-- Modal Header -->
         <div class="modal-header">
-          <h4 class="modal-title" style="text-align:center;">Campaign Name
-          <span type="button" class="close" data-dismiss="modal" onclick="dismissCreateCampaignDialog();">&times;</span></h4>
+          <h4 class="modal-title" style="text-align:center;">Campaign
+         <!--  <span type="button" class="close" data-dismiss="modal" onclick="dismissCreateCampaignDialog();">&times;</span> --></h4>
            <center><img id="loading" src="../images/ajax-loader.gif" alt="Updating ..." style="display: none;" /></center>
         </div>
         
@@ -297,7 +326,7 @@ div.generic {border: groove;}
     
                <div class="form-group">
                   <label for="exampleInputPassword1" style="font-weight:bold">Campaign Name : *</label>
-                  <input type="text" class="form-control" placeholder="Enter Campaign Name" name="media_name" id="file_media_name" size="100">  <br> 
+                  <input type="text" class="form-control" placeholder="Enter Campaign Name" name="media_name" id="file_media_name" size="100" style="width: 100%;">  <br> 
                   <input type="checkbox" onchange="setDefaultCampaignName(this);">Set default Campaign name   
                 </div>
 
@@ -310,7 +339,7 @@ div.generic {border: groove;}
                   </div> 
                    </div>
 
-            
+            <br>
 
           </div>
         </div>

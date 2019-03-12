@@ -1,6 +1,9 @@
 {% load static %}
 <html>
 <body>
+    <!--alert style-->
+        <link rel="stylesheet" href="{% static 'css/sweetalert.css' %}">
+        <script src="{% static 'js/sweetalert.js' %}"></script>
  <!-- div to display group info -->
     <!-- The Modal -->
   <div class="modal" id="lmcb_campaigns">
@@ -23,11 +26,13 @@
         
         <!-- Modal footer -->
         <div class="modal-footer">
+          <center>
           <button type="button" class="btn btn-success" data-dismiss="modal" id
           ="lmcb_success" onclick="sendLMCBselectedCampaigns()">Submit</button>
 
           <button type="button" class="btn btn-danger" data-dismiss="modal" id
           ="lmcb_close" onclick="closeLmcbCampaigns()">Close</button>
+          </center>
         </div>
         
       </div>
@@ -86,14 +91,14 @@
       ajaxindicatorstop();
       console.log(jqXHR.responseText);
 
-      alert(exception+jqXHR.responseText);
+      swal(exception+jqXHR.responseText);
      }
 
     });
     }
       catch(Exception)
       {
-        alert(Exception.message);
+        swal(Exception.message);
         }
   }
 

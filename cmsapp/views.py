@@ -34,17 +34,10 @@ from django.contrib.auth.decorators import login_required
 
 @login_required
 def home(request):
-    if request.user.is_authenticated:
-    #data=Youtube_links.objects.filter(pk=request.user.id).order_by('-id')
-    #return render(request,'base.html',{'post':data})
-        x = Upload.objects.filter(file_type = "video",user=request.user).order_by('id')[:10]
-    #y= Upload.objects.filter(file_type = "image",file_access_mode = "public")
-
-    #return render(request,'mycontent_images.html',{'private_result': x,"public_result":y})
-
-        return render(request, 'index.html',{'private_result': x})
-    else:
-        return redirect("/signin/")
+    return JsonResponse({'home':'sweet home'})
+    #if request.user.is_authenticated:
+        #return redirect("/campaigns/list_camp_web/")
+    
 
 def web_search(request):
     return render(request,'webcontent.html')
@@ -1639,25 +1632,26 @@ def campaign_upload_files_api(request):
 
 from django.core.mail import send_mail
 
-def forget_password(request):
+def forgot_password(request):
     if request.method == "POST":
         email_check = User.objects.filter(username = request.POST['email'])
         if email_check:
 
-            subject = 'Gc info'
+            subject = 'GC Password Reset Link'
             message = 'https://www.greencontent.in/change_password/{}/'.format(email_check[0].id)
             from_email = settings.EMAIL_HOST_USER
             to_list= []
             to_list.append(request.POST['email'])
             send_mail(subject, message, from_email,to_list,fail_silently=True)
 
-            return HttpResponse("we have sent a link to your registered email, please check it once ")
+            #return HttpResponse("we have sent a link to your registered email, please check it once ")
+            return render(request,'forgot_password.html',{"success":"We have sent a password link to your registered email, please check it "})
         else:
-            return render(request,'sample.html',{"error":"please enter valid email address "})
+            return render(request,'forgot_password.html',{"error":"Please enter valid email address "})
     else:
-        return render(request,'sample.html')
+        return render(request,'forgot_password.html')
 
-def change_password(request,k):
+def reset_password(request,k):
     user = User.objects.filter(id = k)
     if request.method == "POST":
         if user:
@@ -1665,18 +1659,20 @@ def change_password(request,k):
                 u = User.objects.get(id=k)
                 u.set_password(request.POST["pass"])
                 u.save()
-                return render(request,'forget_password.html',{"success": "your password is updated successfully"})
+                return render(request,'reset_password.html',{"success": "Your password is updated successfully"})
                 #return HttpResponse("your password is updated successfully ")
 
             else:
-                return render(request,'forget_password.html',{"error":" passwords should be same"})
+                return render(request,'reset_password.html',{"error": "Password must be same"})
         else:
-            return HttpResponse("User doesn't Exist ")
+            #return HttpResponse("User doesn't Exist ")
+            return render(request,'reset_password.html',{"error":" User doesn't Exist"})
     else:
         if user:
-            return render(request,'forget_password.html',{"id":k})
+            return render(request,'reset_password.html',{"id":k})
         else:
-            return HttpResponse("User doesn't Exist ")
+            #return HttpResponse("User doesn't Exist ")
+            return render(request,'reset_password.html',{"error":" User doesn't Exist"})
 
 def all_user_emails_api(request):
     emails = []

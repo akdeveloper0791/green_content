@@ -9,12 +9,13 @@
       
         <!-- Modal Header -->
         <div class="modal-header">
-          <h4 class="modal-title" >Add New members</h4>
+          <h4 class="modal-title text-center" >Add New members</h4>
           
         </div>
         
         <!-- Modal body -->
         <div class="modal-body">
+          <p>Note: Enter multiple email id's with enter</p>
         	<input type="text" id="anm_add_member_input" oninput="verifyMember()" onkeydown="anmAddMemberOnKeyDown()" placeholder="Enter User GC Email"/> 
           
            <input type='hidden' src='{% static "images/ic_group_member_active.png" %}' alt='add' title='add' onclick='anmVerifyAndAddMember()' id="anm_valid_email_true">
@@ -25,11 +26,13 @@
         
         <!-- Modal footer -->
         <div class="modal-footer">
+          <center>
           <button type="button" class="btn btn-success" data-dismiss="modal" id
           ="anm_success" onclick="sendANMNewMember()">Submit</button>
 
           <button type="button" class="btn btn-danger" data-dismiss="modal" id
           ="lmcb_close" onclick="closeANMCreation()">Close</button>
+          </center>
         </div>
         
       </div>

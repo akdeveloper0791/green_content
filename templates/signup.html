@@ -1,176 +1,200 @@
 {% load static %}
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-    <meta charset="utf-8">
-    <!-- This file has been downloaded from Bootsnipp.com. Enjoy! -->
-    <title>Green Content</title>
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link href="http://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" type="text/css" href="{% static 'navbar/css/bootstrap.min.css' %}">
-	<link rel="stylesheet" type="text/css" href="{% static 'navbar/css/logo-nav.css' %}">
-	 <style type="text/css">
-/*	     .footer {*/
-/*    position: fixed;*/
-/*    left: 0;*/
-/*    bottom: 0;*/
-/*    width: 100%;*/
-/*    padding: 10px;*/
-/*    font-size: 14px;*/
-/*    background-color: #3D3D3D;*/
-/*    color: white;*/
-/*    text-align: center;*/
-/*}*/
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Green Content</title>
+  <meta name="description" content="green content to have your own account to store media content ">
+  <meta name="keywords" content="green content, campaigns, groups, video, images, text, url">
 
-         .wrapper {
-	margin-top: 80px;
-	margin-bottom: 20px;
-}
+  <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Open+Sans|Candal|Alegreya+Sans">
+  <link rel="stylesheet" type="text/css" href="{% static 'Mentor/css/font-awesome.min.css' %}">
+  <link rel="stylesheet" type="text/css" href="{% static 'Mentor/css/bootstrap.min.css' %}">
+  <link rel="stylesheet" type="text/css" href="{% static 'Mentor/css/imagehover.min.css' %}">
+  <link rel="stylesheet" type="text/css" href="{% static 'Mentor/css/style.css' %}">
 
-.form-signin {
-  max-width: 420px;
-  padding: 30px 38px 66px;
-  margin: 0 auto;
-  background-color: #eee;
-  border: 3px dotted rgba(0,0,0,0.1);
-  }
+</head>
 
-.form-signin-heading {
-  text-align:center;
-  margin-bottom: 30px;
-}
-
-.form-control {
-  position: relative;
-  font-size: 16px;
-  height: auto;
-  padding: 10px;
-}
-
-input[type="text"] {
-  margin-bottom: 0px;
-  border-bottom-left-radius: 0;
-  border-bottom-right-radius: 0;
-}
-
-input[type="password"] {
-  margin-bottom: 20px;
-  border-top-left-radius: 0;
-  border-top-right-radius: 0;
-}
-
-.colorgraph {
-  height: 7px;
-  border-top: 0;
-  background: #c4e17f;
-  border-radius: 5px;
-  background-image: -webkit-linear-gradient(left, #c4e17f, #c4e17f 12.5%, #f7fdca 12.5%, #f7fdca 25%, #fecf71 25%, #fecf71 37.5%, #f0776c 37.5%, #f0776c 50%, #db9dbe 50%, #db9dbe 62.5%, #c49cde 62.5%, #c49cde 75%, #669ae1 75%, #669ae1 87.5%, #62c2e4 87.5%, #62c2e4);
-  background-image: -moz-linear-gradient(left, #c4e17f, #c4e17f 12.5%, #f7fdca 12.5%, #f7fdca 25%, #fecf71 25%, #fecf71 37.5%, #f0776c 37.5%, #f0776c 50%, #db9dbe 50%, #db9dbe 62.5%, #c49cde 62.5%, #c49cde 75%, #669ae1 75%, #669ae1 87.5%, #62c2e4 87.5%, #62c2e4);
-  background-image: -o-linear-gradient(left, #c4e17f, #c4e17f 12.5%, #f7fdca 12.5%, #f7fdca 25%, #fecf71 25%, #fecf71 37.5%, #f0776c 37.5%, #f0776c 50%, #db9dbe 50%, #db9dbe 62.5%, #c49cde 62.5%, #c49cde 75%, #669ae1 75%, #669ae1 87.5%, #62c2e4 87.5%, #62c2e4);
-  background-image: linear-gradient(to right, #c4e17f, #c4e17f 12.5%, #f7fdca 12.5%, #f7fdca 25%, #fecf71 25%, #fecf71 37.5%, #f0776c 37.5%, #f0776c 50%, #db9dbe 50%, #db9dbe 62.5%, #c49cde 62.5%, #c49cde 75%, #669ae1 75%, #669ae1 87.5%, #62c2e4 87.5%, #62c2e4);
-}
-
-    </style>
-	</head>
-<body style="padding-top: 5px;">
-
- <!-- Navigation -->
-   <nav class="navbar navbar-expand-lg navbar-dark fixed-top" style="background-color:forestgreen;border-bottom: 2px solid green;">
-      <div class="container">
-
-        <a class="navbar-brand" href="">
-          <!--<img src="{% static 'images/logo12345.png'%}" width="150" height="30" alt="">-->
-          <h4>Green Content CMS</h4>
-        </a>
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation" style="background-color: seagreen;">
-          <span class="navbar-toggler-icon"></span>
+<body>
+  <!--Navigation bar-->
+  <nav class="navbar navbar-default navbar-fixed-top">
+    <div class="container">
+      <div class="navbar-header">
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
         </button>
-        <div class="collapse navbar-collapse" id="navbarResponsive">
-          <ul class="navbar-nav ml-auto" style="text-align: right;">
-            <li class="nav-item active">
-              <a class="nav-link"  href="{% url 'contact_us' %}">Contact Us</a>
-            </li>
-          </ul>
-        </div>
+        <a class="navbar-brand" href="">Green<span style="color: grey;">Content</span></a>
       </div>
-    </nav>
+      <div class="collapse navbar-collapse" id="myNavbar">
+        <ul class="nav navbar-nav navbar-right">
+        <!--   <li><a href="#feature">Features</a></li>
+          <li><a href="#organisations">Organisations</a></li>
+          <li><a href="#courses">Courses</a></li>
+          <li><a href="#pricing">Pricing</a></li> -->
+          <li><a href="{% url 'contact_us' %}" >Contact us</a></li>
+          <li class="btn-trial"><a href="{% url 'signin' %}">Sign In</a></li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+  <!--/ Navigation bar-->
 
+
+{% if request.user.is_authenticated %}
+
+{% include 'index.html' %}
+
+{% else %}
 
     {% if result %}
     <p> {{ result }}</p>
     {% endif %}
 
-	<div class="container">
-       <div class="wrapper">
-			 			<form action= "{% url 'signup' %}" method = "post" name="Login_Form" class="form-signin" style="padding-bottom:20px;">
-			    		      {% csrf_token %}
-			    		       <h3 class="form-signin-heading">Please Sign Up</h3>
-			    		       <hr class="colorgraph"><br>
-                			   {% if error %}
-                                    <div class="alert alert-error" style="color: indianred;">
-                                        <a class="close" data-dismiss="alert" href="#">×</a>{{ error }}
-                                    </div>
-                				{% endif %}
-			    			<div class="row">
+
+  <!--Modal box-->
+  <div class="model" id="login" role="dialog" style="display: block;">
+    <div class="modal-dialog modal-sm">
+
+      <!-- Modal content no 1-->
+      <div class="modal-content">
+        <div class="modal-header">
+         <!--  <button type="button" class="close" data-dismiss="modal">&times;</button> -->
+          <h4 class="modal-title text-center form-title">Register</h4>
+        </div>
+        <div class="modal-body padtrbl">
+
+          <div class="login-box-body">
+                  {% if error %}
+                       <p class="login-box-msg" style="color: indianred;font-weight:bold;text-align: center;">
+                       {{ error }}
+                      </p>
+                      {% else %}
+                       <p class="login-box-msg">Sign up to create new account</p>
+                      {% endif %}
+            <div class="form-group">
+             
+           
+              <form action= "{% url 'signup' %}" method = "post" name="Login_Form" id="loginForm" class="form-signin">
+                 {% csrf_token %}
+
+                 <!-- <div class="row">
 			    				<div class="col-xs-6 col-sm-6 col-md-6">
-			    					<div class="form-group">
+			    					 <div class="form-group has-feedback">
 			                        <input type="text" name="fname" id="first_name" class="form-control input-sm" placeholder="First Name" required="" autofocus="">
 			    					</div>
 			    				</div>
 			    				<div class="col-xs-6 col-sm-6 col-md-6">
-			    					<div class="form-group">
+			    					 <div class="form-group has-feedback">
 			    						<input type="text" name="lname" id="last_name" class="form-control input-sm" placeholder="Last Name"  required="">
 			    					</div>
 			    				</div>
 			    		    </div>
 
-			    			<div class="form-group">
+			    			 <div class="form-group has-feedback">
 			    				<input type="email" name="email" id="email" class="form-control input-sm" placeholder="Email Address"  required="">
 			    			</div>
 
 			    			<div class="row">
 			    				<div class="col-xs-6 col-sm-6 col-md-6">
-			    					<div class="form-group">
+			    					 <div class="form-group has-feedback">
 			    						<input type="password" name="pass" id="password" class="form-control input-sm" placeholder="Password"  required="">
 			    					</div>
 			    				</div>
 			    				<div class="col-xs-6 col-sm-6 col-md-6">
-			    					<div class="form-group">
+			    					 <div class="form-group has-feedback">
 			    						<input type="password" name="confirm_pass" id="password_confirmation" class="form-control input-sm" placeholder="Confirm Password"  required="">
 			    					</div>
 			    				</div>
-			    			</div>
-                            <input type="hidden" name="next" value="{{ request.GET.next }}"/>
-                            <button class="btn btn-lg btn-success btn-block"  name="Submit" value="Register" type="Submit">Register</button>
-			    		<div>
-			       <br/>
-				<p style="text-align: right;">Have an account ? <a href="{% url 'signin' %}" style="text-decoration:none;"> Log In</a></p>
-				</div>
-		</form>
+			    			</div> -->
+
+			    		
+			    					 <div class="form-group has-feedback">
+			                        <input type="text" name="fname" id="first_name" class="form-control" placeholder="First Name" required="" autofocus="">
+			                         <span class="glyphicon glyphicon-user form-control-feedback"></span>
+			    					</div>
+			    			
+			    					 <div class="form-group has-feedback">
+			    						<input type="text" name="lname" id="last_name" class="form-control" placeholder="Last Name"  required="">
+			    						 <span class="glyphicon glyphicon-user form-control-feedback"></span>
+			    					</div>
+			    			
+
+					    			 <div class="form-group has-feedback">
+					    				<input type="email" name="email" id="email" class="form-control" placeholder="Email Address"  required="">
+					    				 <span class="glyphicon glyphicon-user form-control-feedback"></span>
+					    			</div>
+
+			    	
+			    					 <div class="form-group has-feedback">
+			    						<input type="password" name="pass" id="password" class="form-control" placeholder="Password"  required="">
+			    						 <span class="glyphicon glyphicon-user form-control-feedback"></span>
+			    					</div>
+			    			
+			    					 <div class="form-group has-feedback">
+			    						<input type="password" name="confirm_pass" id="password_confirmation" class="form-control" placeholder="Confirm Password"  required="">
+			    						 <span class="glyphicon glyphicon-user form-control-feedback"></span>
+			    					</div>
+			    			
+                 <input type="hidden" name="next" value="{{ request.GET.next }}"/>
+
+                <div class="row">
+                <!--   <div class="col-xs-12">
+                    <div class="checkbox icheck">
+                      <label>
+                                <input type="checkbox" id="loginrem" > Remember Me
+                              </label>
+                    </div>
+                  </div> -->
+                  <div class="col-xs-12">
+                    <button type="Submit" class="btn btn-green btn-block btn-flat" name="Submit">Sign Up</button>
+              
+                  </div>
+                </div>
+              </form>
 
 
-    	</div>
+
+            </div>
+          </div>
+        </div>
+      </div>
+
     </div>
-<br/><br/>
-{% block footer %}
-{% include 'footer.html' %}
-{% endblock %}
+  </div>
+  <!--/ Modal box-->
 
-    <!-- ============================================================= FOOTER ============================================================= -->
-<!--<div class="footer">-->
-<!--    <div class="container">-->
-<!--  <span style="color: white;"><a href="{% url 'about_us' %}">About Us</a> / <a href="{% url 'privacy_services' %}">Privacy Policy</a> / <a href="{% url 'terms_services' %}">Terms and Conditions</a></span>-->
-<!--            <span style="float: right;color: white;">Copyright (c) 2018 Green Content, All Rights Reserved. Powered by AdsKite India Pvt. Ltd.</span>-->
-<!--            </div>-->
-<!--</div>-->
-<!-- ============================================================= FOOTER : END============================================================= -->
+  {% endif %}
 
-<script src="http://code.jquery.com/jquery-1.11.1.min.js"></script>
-<script src="http://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
-<script src="{% static 'navbar/js/bootstrap.bundle.js' %}"></script>
-<script src="{% static 'navbar/js/jquery.min.js' %}"></script>
-<script type="text/javascript">
 
-</script>
+  <!--Footer-->
+  <footer id="footer" class="footer">
+    <div class="container text-center">
+
+      <!-- End newsletter-form -->
+      <ul class="social-links">
+        <li><a href="https://twitter.com/Adskite1/status/664062917726224385" target="_blank"><i class="fa fa-twitter fa-fw"></i></a></li>
+        <li><a href="https://www.facebook.com/Adskite-1659890184252995/" target="_blank"><i class="fa fa-facebook fa-fw"></i></a></li>
+        <li><a href="https://plus.google.com/101115373606937070219/about" target="_blank"><i class="fa fa-google-plus fa-fw"></i></a></li>
+        <li><a href="https://in.linkedin.com/company/adskite-india-pvt-ltd" target="_blank"><i class="fa fa-linkedin fa-fw"></i></a></li>
+      </ul>
+    
+      <div class="credits">
+
+        Copyright (c) 2019, All Rights Reserved. Powered by AdsKite India Pvt. Ltd.
+      </div>
+    </div>
+  </footer>
+  <!--/ Footer-->
+
+  <script src="{% static 'Mentor/js/jquery.min.js' %}"></script>
+  <script src="{% static 'Mentor/js/jquery.easing.min.js' %}"></script>
+  <script src="{% static 'Mentor/js/bootstrap.min.js' %}"></script>
+  <script src="{% static 'Mentor/js/custom.js' %}"></script>
+
 </body>
+
 </html>

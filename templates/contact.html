@@ -1,93 +1,119 @@
 {% load static %}
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-{% block header %}
-{% include 'header.html' %}
-{% endblock %}
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Green Content</title>
+  <meta name="description" content="green content to have your own account to store media content ">
+  <meta name="keywords" content="green content, campaigns, groups, video, images, text, url">
+
+  <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Open+Sans|Candal|Alegreya+Sans">
+  <link rel="stylesheet" type="text/css" href="{% static 'Mentor/css/font-awesome.min.css' %}">
+  <link rel="stylesheet" type="text/css" href="{% static 'Mentor/css/bootstrap.min.css' %}">
+  <link rel="stylesheet" type="text/css" href="{% static 'Mentor/css/imagehover.min.css' %}">
+  <link rel="stylesheet" type="text/css" href="{% static 'Mentor/css/style.css' %}">
 
 </head>
+
 <body>
-{% block body %}
-<br/><br/><br/><br/><br/>
-<div class="body-content">
+  <!--Navigation bar-->
+  <nav class="navbar navbar-default navbar-fixed-top">
     <div class="container">
-    <div class="contact-page">
-        <div class="row">
+      <div class="navbar-header">
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="">Green<span style="color: grey;">Content</span></a>
+      </div>
+      <div class="collapse navbar-collapse" id="myNavbar">
+        <ul class="nav navbar-nav navbar-right">
+        <!--   <li><a href="#feature">Features</a></li>
+          <li><a href="#organisations">Organisations</a></li>
+          <li><a href="#courses">Courses</a></li>
+          <li><a href="#pricing">Pricing</a></li> -->
+          <li><a href="{% url 'signup' %}" >Sign up</a></li>
+          <li class="btn-trial"><a href="{% url 'signin' %}">Sign in</a></li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+  <!--/ Navigation bar-->
 
-                <div class="col-md-12 contact-map outer-bottom-vs">
-                    <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3887.52069731808!2d77.71044791460355!3d13.002479117718533!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3bae11bb13f76e4d%3A0xa1555b4b729b1770!2sAdsKite+India+Pvt+Ltd!5e0!3m2!1sen!2sin!4v1540397701037" width="600" height="450"  style="border:0"></iframe>
 
-                </div>
-                <div class="col-md-9 contact-form">
-    <div class="col-md-12 contact-title">
-        <h4>Contact Form</h4>
-    </div>
-    <div class="col-md-12 ">
-        <form class="register-form" role="form">
-            <div class="form-group">
-            <label class="info-title" for="exampleInputName">Your Name <span>*</span></label>
-            <input type="email" class="form-control unicase-form-control text-input" id="exampleInputName" placeholder="">
-          </div>
-        </form>
-    </div>
-    <div class="col-md-12">
-        <form class="register-form" role="form">
-            <div class="form-group">
-            <label class="info-title" for="exampleInputEmail1">Email Address <span>*</span></label>
-            <input type="email" class="form-control unicase-form-control text-input" id="exampleInputEmail1" placeholder="">
-          </div>
-        </form>
-    </div>
-    <div class="col-md-12">
-        <form class="register-form" role="form">
-            <div class="form-group">
-            <label class="info-title" for="exampleInputTitle">Title <span>*</span></label>
-            <input type="email" class="form-control unicase-form-control text-input" id="exampleInputTitle" placeholder="Title">
-          </div>
-        </form>
-    </div>
-    <div class="col-md-12">
-        <form class="register-form" role="form">
-            <div class="form-group">
-            <label class="info-title" for="exampleInputComments">Your Comments <span>*</span></label>
-            <textarea class="form-control unicase-form-control" id="exampleInputComments"></textarea>
-          </div>
-        </form>
-    </div>
-    <div class="col-md-12 outer-bottom-small m-t-20">
-        <button type="submit" class="btn-upper btn btn-primary checkout-page-button">Send Message</button>
-    </div>
-</div>
-<div class="col-md-3 contact-info">
-    <div class="contact-title">
-        <h4>Information</h4>
-    </div>
-    <div class="clearfix address">
-        <span class="contact-i"><i class="fa fa-map-marker"></i></span>
-        <span class="contact-span"><p>AdsKite India Pvt Ltd.,</p>
-2nd Floor, Gokul Mansion, Opposite to Krishna Community Hall, Ayyappa Nagar,K.R Puram, Bengaluru, Karnataka -560036.</span>
-    </div>
-    <div class="clearfix phone-no">
-        <span class="contact-i"><i class="fa fa-mobile"></i></span>
-        <span class="contact-span">+(080) 25617355<br>+(91) 9900819475</span>
-    </div>
-    <div class="clearfix email">
-        <span class="contact-i"><i class="fa fa-envelope"></i></span>
-        <span class="contact-span"><a href="mailto:contact@adskite.com">contact@adskite.com</a></span>
-    </div>
-</div>          </div><!-- /.contact-page -->
+  <!--Contact-->
+  <section id="contact" class="section-padding">
+    <div class="container">
+      <div class="row">
+        <div class="header-section text-center">
+          <h2>Contact Us</h2>
+          <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Exercitationem nesciunt vitae,<br> maiores, magni dolorum aliquam.</p>
+          <hr class="bottom-line">
         </div>
-<!-- ============================================== BRANDS CAROUSEL : END ============================================== -->    </div><!-- /.container -->
-</div><!-- /.body-content -->
-<br/><br/><br/><br/><br/>
+        <div id="sendmessage">Your message has been sent. Thank you!</div>
+        <div id="errormessage"></div>
+        <form action="" method="post" role="form" class="contactForm">
+          <div class="col-md-6 col-sm-6 col-xs-12 left">
+            <div class="form-group">
+              <input type="text" name="name" class="form-control form" id="name" placeholder="Your Name" data-rule="minlen:4" data-msg="Please enter at least 4 chars" />
+              <div class="validation"></div>
+            </div>
+            <div class="form-group">
+              <input type="email" class="form-control" name="email" id="email" placeholder="Your Email" data-rule="email" data-msg="Please enter a valid email" />
+              <div class="validation"></div>
+            </div>
+            <div class="form-group">
+              <input type="text" class="form-control" name="subject" id="subject" placeholder="Subject" data-rule="minlen:4" data-msg="Please enter at least 8 chars of subject" />
+              <div class="validation"></div>
+            </div>
+          </div>
 
-{% endblock %}
+          <div class="col-md-6 col-sm-6 col-xs-12 right">
+            <div class="form-group">
+              <textarea class="form-control" name="message" rows="5" data-rule="required" data-msg="Please write something for us" placeholder="Message"></textarea>
+              <div class="validation"></div>
+            </div>
+          </div>
 
+          <div class="col-xs-12">
+          
+            <button type="submit" id="submit" name="submit" class="form contact-form-button light-form-button oswald light">SEND EMAIL</button>
+          </div>
+        </form>
 
-{% block footer %}
-{% include 'footer.html' %}
-{% endblock %}
+      </div>
+    </div>
+  </section>
+  <!--/ Contact-->
+
+  <!--Footer-->
+  <footer id="footer" class="footer">
+    <div class="container text-center">
+
+      <!-- End newsletter-form -->
+      <ul class="social-links">
+        <li><a href="https://twitter.com/Adskite1/status/664062917726224385" target="_blank"><i class="fa fa-twitter fa-fw"></i></a></li>
+        <li><a href="https://www.facebook.com/Adskite-1659890184252995/" target="_blank"><i class="fa fa-facebook fa-fw"></i></a></li>
+        <li><a href="https://plus.google.com/101115373606937070219/about" target="_blank"><i class="fa fa-google-plus fa-fw"></i></a></li>
+        <li><a href="https://in.linkedin.com/company/adskite-india-pvt-ltd" target="_blank"><i class="fa fa-linkedin fa-fw"></i></a></li>
+      </ul>
+    
+      <div class="credits">
+
+        Copyright (c) 2019, All Rights Reserved. Powered by AdsKite India Pvt. Ltd.
+      </div>
+    </div>
+  </footer>
+  <!--/ Footer-->
+
+  <script src="{% static 'Mentor/js/jquery.min.js' %}"></script>
+  <script src="{% static 'Mentor/js/jquery.easing.min.js' %}"></script>
+  <script src="{% static 'Mentor/js/bootstrap.min.js' %}"></script>
+  <script src="{% static 'Mentor/js/custom.js' %}"></script>
+  <script src="{% static 'Mentor/contactform/contactform.js' %}"></script>
 
 </body>
 

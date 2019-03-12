@@ -1,9 +1,88 @@
 {% load static %}
+<!DOCTYPE html>
 <html lang="en">
+
 <head>
-{% block header %}
-{% include 'header.html' %}
-{% endblock %}
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Green Content</title>
+  <meta name="description" content="green content to have your own account to store media content ">
+  <meta name="keywords" content="green content, campaigns, groups, video, images, text, url">
+
+  <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Open+Sans|Candal|Alegreya+Sans">
+  <link rel="stylesheet" type="text/css" href="{% static 'Mentor/css/font-awesome.min.css' %}">
+  <link rel="stylesheet" type="text/css" href="{% static 'Mentor/css/bootstrap.min.css' %}">
+  <link rel="stylesheet" type="text/css" href="{% static 'Mentor/css/imagehover.min.css' %}">
+  <link rel="stylesheet" type="text/css" href="{% static 'Mentor/css/style.css' %}">
+ <!--alert style-->
+        <link rel="stylesheet" href="{% static 'css/sweetalert.css' %}">
+        <script src="{% static 'js/sweetalert.js' %}"></script>
+
+</head>
+
+{% block body %}
+
+
+<body>
+
+  <!--Navigation bar-->
+  <nav class="navbar navbar-default navbar-fixed-top" style="background-color: #ffffff;">
+    <div class="container">
+      <div class="navbar-header">
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="" style="color:#5FCF80;">Green<span style="color: grey;">Content</span></a>
+      </div>
+      <div class="collapse navbar-collapse" id="myNavbar">
+        <ul class="nav navbar-nav navbar-right">
+              {% if request.user.is_authenticated %}
+           <!--     <li class="nav-item">
+              <a class="nav-link" href="{% url 'mycontent_videos' %}">My Content</a>
+            </li> -->
+           <!--  <li class="nav-item ">
+              <a class="nav-link" href="{% url 'my_wishlist' %}">My Whishlist</a>
+            </li> -->
+            <li class="nav-item">
+              <a class="nav-link" href="{% url 'listCampaignsWeb' %}">Campaign management</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#">Device Management</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="{% url 'gcGroups' %}">GC Groups</a>
+            </li>
+           <!--  <li class="nav-item">
+              <a class="nav-link" href="{% url 'upload_camp_web' %}">Upload Campaign</a>
+            </li> -->
+            <li class="nav-item">
+              <a class="nav-link" href="#">Signage Reports</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#">Viewers Metrics</a>
+            </li>
+         
+           <!--   <li class="nav-item">
+              <a class="nav-link" href="{% url 'web_search' %}">Web Content</a>
+            </li> -->
+           
+            <li class="nav-item active">
+              <a class="nav-link"  href="{% url 'logout' %}">{{ request.user.first_name}}(Logout)</a>
+            </li>
+
+             {% else %}
+
+              <li><a href="{% url 'contact_us' %}" >Contact us</a></li>
+              <li class="btn-trial"><a href="{% url 'signin' %}">Sign In</a></li>
+          
+            {% endif %}
+        </ul>
+      </div>
+    </div>
+  </nav>
+  <!--/ Navigation bar-->
 
 <link type="text/css" rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css" />
 
@@ -15,10 +94,11 @@
 
 <link rel="stylesheet" href="{% static 'upload_file_anim/upload_file_anim.css' %}">
 
-</head>
+  <!--alert style-->
+        <link rel="stylesheet" href="{% static 'css/sweetalert.css' %}">
+        <script src="{% static 'js/sweetalert.js' %}"></script>
 
-{% block body %}
-<body>
+
 
  <style>
 .h4,h4{
@@ -33,22 +113,25 @@ a.btn:active{
     background:green;
 }
 </style>
+<br/><br/>
+
+<section id="contact" class="section-padding">
+  
 
 
-<br/> <br/>
 
-<a class="nav-link" href="{% url 'create' %}" style="float:right;margin-right:10em;font-weight:bold" target="_blank">Create Campaign</a><br/><br/>
 
-<div class='container' style="border: solid 2px lightblue;
-    border-radius: 10px;" id="listemail">
+<div class='container' id="listemail">
 <div class='rows'>
+  <a class="nav-link" href="{% url 'create' %}" style="float:right;font-weight:bold" target="_blank">
+    <button class="btn btn-success"><i class='fa fa-plus'> Create Campaign</i></button></a><br/><br/>
 <div class='panel panel-default'>
-	<div class='panel-heading' style='background: cornflowerblue;color: white;'>Download Campaign</div>
+	<div class='panel-heading' style='background: cornflowerblue;color: white;'>Campaign List</div>
 
-	<ul class='list-group'>
+<!-- 	<ul class='list-group'> -->
 	
 	{% for campaign in res.campaigns %}
-
+<!-- 
 	 <li class='list-group-item'>
 	 	<div class='row toggle' id='lead_contact_details' style='cursor:pointer'>
 	 		<div class='col-xs-10'>{{ campaign.campaign_name }}</div>
@@ -64,15 +147,31 @@ a.btn:active{
 
       <div id="results" style="margin-top: 30px"></div>
 	 	
-	 </li>
+	 </li> -->
+<!-- <li class='list-group-item'> -->
+   <div class="col-md-12 col-xs-12" style="padding:5px 1 0px;border-bottom: 1px solid darkgrey;">
+    <div class="rows">
+      <div class="col-md-10 col-xs-9" style="padding:0px;">
+        <p style="color:blue;">{{ campaign.campaign_name }}</p>
+      </div>
+      <div class="col-md-1 col-xs-1" style="padding:0px;">
+         <i class='fa fa-download pull-right' style='color:darkgreen;margin:5px;cursor: pointer;' alt="download" title="download" onclick='download("{{campaign.id}}","{{campaign.stor_location}}","{{campaign.campaign_name}}","{{campaign.save_path}}");'></i>
+      </div>
+      <div class="col-md-1 col-xs-1" style="padding:0px;">
+        <a href="/campaigns/previewCampaign/{{campaign.id}}" target='_blank'><img border='0' alt='preview' title="preview" src="{% static 'images/ic_preview.png' %}" style='float:right;margin:5px;'></a>
+      </div>
+    </div>
+  </div>
+<!-- </li> -->
 	{% endfor %}
 
-
-	</ul>
+<!-- 
+	</ul> -->
 </div>  
 </div> 
 </div> 
-
+</div>
+</section>
 <div class="container">
   <div class="modal fade centered-modal" tabindex="-1" role="dialog" id="busy_dialog">
 
@@ -138,14 +237,33 @@ var csrf_token = '{{ csrf_token }}';
 </script>
 {% endblock %}
 
-<br/><br/><br/>
-{% block footer %}
-{% include 'footer.html' %}
-{% endblock %}
 
+  <!--Footer-->
+  <footer id="footer" class="footer">
+    <div class="container text-center">
 
+      <!-- End newsletter-form -->
+      <ul class="social-links">
+        <li><a href="https://twitter.com/Adskite1/status/664062917726224385" target="_blank"><i class="fa fa-twitter fa-fw"></i></a></li>
+        <li><a href="https://www.facebook.com/Adskite-1659890184252995/" target="_blank"><i class="fa fa-facebook fa-fw"></i></a></li>
+        <li><a href="https://plus.google.com/101115373606937070219/about" target="_blank"><i class="fa fa-google-plus fa-fw"></i></a></li>
+        <li><a href="https://in.linkedin.com/company/adskite-india-pvt-ltd" target="_blank"><i class="fa fa-linkedin fa-fw"></i></a></li>
+      </ul>
+    
+      <div class="credits">
+
+        Copyright (c) 2019, All Rights Reserved. Powered by AdsKite India Pvt. Ltd.
+      </div>
+    </div>
+  </footer>
+  <!--/ Footer-->
+
+  <script src="{% static 'Mentor/js/jquery.min.js' %}"></script>
+  <script src="{% static 'Mentor/js/jquery.easing.min.js' %}"></script>
+  <script src="{% static 'Mentor/js/bootstrap.min.js' %}"></script>
+  <script src="{% static 'Mentor/js/custom.js' %}"></script>
+<script src="{% static 'js/default_busy_loader.js' %}"></script>
+<!-- <script src="{% static 'assets/js/jquery-1.11.1.min.js' %}"></script> -->
 </body>
 
-
 </html>
-

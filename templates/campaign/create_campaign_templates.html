@@ -1,6 +1,25 @@
 {% load static %}
 <html>
 <body>
+    <!--alert style-->
+        <link rel="stylesheet" href="{% static 'css/sweetalert.css' %}">
+        <script src="{% static 'js/sweetalert.js' %}"></script>
+  <style>
+table {
+  border-collapse: collapse;
+  border-spacing: 0;
+  width: 100%;
+  border: 1px solid #ddd;
+}
+
+th, td {
+  text-align: center;
+  padding: 8px;
+}
+
+
+/*td:nth-child(even){background-color: #f2f2f2}*/
+</style>
 <!-- The Multi region Modal -->
  <div class="modal" id="cct_display_template_modal">
     <div class="modal-dialog modal-lg">
@@ -13,8 +32,9 @@
         </div>
         
         <!-- Modal body -->
-        <div class="modal-body" style="overflow-y:auto;height:330px;">
-         <table style="width:100%;border: 1px solid black;border-collapse:collapse;">
+        <div class="modal-body">
+         <div style="overflow-x:auto;">
+  <table>
  
             <tr>
               <td><img src='{% static "images/campaign/single_100_100.png" %}' style='cursor:pointer' onclick="prepareView('{{ SINGLE_100_100 }}');"></td>
@@ -38,7 +58,7 @@
              
           </table>
         
-     
+     </div>
         </div>
         
         <!-- Modal footer -->

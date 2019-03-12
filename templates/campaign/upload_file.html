@@ -2,7 +2,9 @@
 <!doctype html>
 <html>
 <head>
-
+  <!--alert style-->
+        <link rel="stylesheet" href="{% static 'css/sweetalert.css' %}">
+        <script src="{% static 'js/sweetalert.js' %}"></script>
   {% block header %}
    {% include 'header.html' %}
   {% endblock %}
@@ -586,7 +588,7 @@ function formatBytes(bytes,decimals) {
     //clear global varaibales
     clearGlobalVaribles();
     document.getElementById('campaign_select').value='';
-      alert("Invalid campaign");
+      swal("Invalid campaign");
 
     $(".file-upload").removeClass('active');
     $("#noFile").text("No file chosen...");
@@ -881,7 +883,7 @@ function initUpload()
             }else
             {
               dismissBusyDialog();
-              alert(responseObj.status);
+              swal(responseObj.status);
             }
             
         }
@@ -889,7 +891,7 @@ function initUpload()
             var errorMessage = xhr.response || 'Unable to upload file';
             // Upload failed. Do something here with the error.
             
-            alert("unable to upload - "+errorMessage);
+            swal("unable to upload - "+errorMessage);
         }
     };
 
@@ -905,7 +907,7 @@ function initUpload()
     }
   }else
   {
-    alert("Please select campaign");
+    swal("Please select campaign");
   }
   return false;
 }
@@ -945,7 +947,7 @@ function initUpload()
 
   function initUploadDBxxFail(warningMsg)
 {
-  alert(warningMsg);
+  swal(warningMsg);
   dismissBusyDialog();
   location.reload();
 }
@@ -960,7 +962,7 @@ function checkAndUploadNextFile()
   }else
   {
     dismissBusyDialog();
-    alert("Files have been uploaded success");
+    swal("Files have been uploaded success");
     location.reload();
   }
 }

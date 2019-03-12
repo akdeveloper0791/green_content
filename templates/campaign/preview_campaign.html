@@ -3,7 +3,9 @@
 <head>
  
 <script Language='Javascript' src="{% static 'js/campaign/preview.js' %}"></script>
-
+  <!--alert style-->
+        <link rel="stylesheet" href="{% static 'css/sweetalert.css' %}">
+        <script src="{% static 'js/sweetalert.js' %}"></script>
 </head>
 {% block body %}
 <body>
@@ -32,7 +34,7 @@ function fullscreen(iframe) {
   
   }
   else {
-   alert('Your browser is not supported');
+   swal('Your browser is not supported');
   }
 }
 
