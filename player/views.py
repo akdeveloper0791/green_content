@@ -5,7 +5,7 @@ from django.contrib.auth.models import User
 from django.http import JsonResponse
 from cmsapp.models import User_unique_id
 from signagecms import constants
-from .models import Player, Metrics
+from .models import Player, Age_Geder_Metrics
 from django.core.files.storage import FileSystemStorage
 import numpy as np
 import cv2
@@ -56,6 +56,8 @@ def register(request):
 @api_view(['POST'])
 def metrics(request):    
     if('file' in request.FILES):
+     player = Player.getPlayer(request.POST.get('player'),request.POST.get('p_mac'))
+     if(player!=False):
         #Init open cv DNN(age and gender) and cascades(face detetion)
         face_detector = "haarcascade_frontalface_alt.xml"
         age_net = cv2.dnn.readNetFromCaffe(
@@ -80,11 +82,11 @@ def metrics(request):
         faces = detector_value.detectMultiScale(image_to_read,1.1,5);
         
         #detect age and gender
-        ages = [];
+        ages = {};
         age_list=['(0, 2)','(4, 6)','(8, 12)','(15, 20)','(25, 32)','(38, 43)','(48, 53)','(60, 100)']
         MODEL_MEAN_VALUES = (78.4263377603, 87.7689143744, 114.895847746)
         gender_list = ['Male', 'Female']
-        genders = [];
+        genders = {};
         for (x,y,w,h) in faces:
             
             face_img = image[y:y+h, x:x+w].copy()
@@ -93,26 +95,39 @@ def metrics(request):
             gender_net.setInput(blob)
             gender_preds = gender_net.forward()
             gender = gender_list[gender_preds[0].argmax()]
-            genders.append(gender)
+            if gender in genders:
+                genders[gender] = genders[gender]+1;
+            else:
+                genders[gender]=1;
             # Predict age
             age_net.setInput(blob)
             age_preds = age_net.forward()
-            age = age_list[age_preds[0].argmax()]
+            #age = age_list[age_preds[0].argmax()]
+            age=str(age_preds[0].argmax());
             #overlay_text = "%s, %s" % (gender, age)
             #cv2.putText(image, overlay_text ,(x,y), font, 2,(255,255,255),2,cv2.LINE_AA)
-            ages.append(age);
+            if age in ages:
+                ages[age]=ages[age]+1;
+            else:
+                ages[age]=1
+            
 
-        #folder='C:/Users/Jitendra/python_projects/greencontent/media/player_metrics/{}'.format(str(player))
+        '''#folder='C:/Users/Jitendra/python_projects/greencontent/media/player_metrics/{}'.format(str(player))
         folder='/home/adskite/myproject/signagecms/media/player_metrics/{}'.format(str(player))
         fs = FileSystemStorage(location=folder) #defaults to   MEDIA_ROOT
         #saveResponse = fs.save(fileObj.name, fileObj)
-        file_location = '/player_metrics/{}/{}'.format(str(player),fs);
-        response = Metrics.saveRec(player,file_location);
-        if(response==False):
-            #fs.delete(saveResponse);
-            return JsonResponse({'statusCode':1,'status':'Invalid player'})
-        return JsonResponse({'statusCode':0,'faces':len(faces),
+        file_location = '/player_metrics/{}/{}'.format(str(player),fs);'''
+        response = Age_Geder_Metrics.saveMetrics(player,genders,ages);
+        if(response['statusCode']==0):
+              
+            return JsonResponse({'statusCode':0,'faces':len(faces),
             'ages':(ages),'genders':genders})
+        else:
+            #fs.delete(saveResponse);
+            return JsonResponse({'statusCode':5,
+                'status':response['status']})
+     else:
+        return JsonResponse({'statusCode':1,'status':'Invalid player'})
 
     return JsonResponse({'statusCode':2,'status':"Invalid file"})
 

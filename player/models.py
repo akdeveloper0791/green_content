@@ -55,6 +55,14 @@ class Player(models.Model):
       except Player.DoesNotExist:
         return False;
 
+    def getPlayer(playerId,playerMac):
+      try:
+        player = Player.objects.get(id=playerId,
+          mac=playerMac);
+        return player.id;
+      except Player.DoesNotExist:
+        return False;
+
 
 #metrics modal
 class Metrics(models.Model):
@@ -68,3 +76,53 @@ class Metrics(models.Model):
       return True
     except Exception as e:
       return False;
+
+class Age_Geder_Metrics(models.Model):
+  player = models.ForeignKey('player.Player',on_delete=models.CASCADE)
+  created_at = models.DateTimeField(default=datetime.datetime.now(),blank=False,null=False)
+  g_male=models.IntegerField(default=0)
+  g_female=models.IntegerField(default=0)
+  age_0_2 = models.IntegerField(default=0)
+  age_4_6 = models.IntegerField(default=0)
+  age_8_12 = models.IntegerField(default=0)
+  age_15_20 = models.IntegerField(default=0)
+  age_25_32 = models.IntegerField(default=0)
+  age_38_43 = models.IntegerField(default=0)
+  age_48_53 = models.IntegerField(default=0)
+  age_60_100 = models.IntegerField(default=0)
+  
+  def saveMetrics(player,genders,ages):
+    try:
+      metrics = Age_Geder_Metrics(player_id=player);
+      #save gender metrics
+      if "Female" in genders:
+        metrics.g_female = genders['Female'];
+      if "Male" in genders:
+        metrics.g_male = genders['Male']
+
+      #age metrics 
+      for age in ages:
+        if age == "0":
+          metrics.age_0_2 = ages[age];
+        elif age == "1":
+          metrics.age_4_6 = ages[age];
+        elif age == "2":
+          metrics.age_8_12 = ages[age];
+        elif age == "3":
+          metrics.age_15_20 = ages[age];
+        elif age == "4":
+          metrics.age_25_32 = ages[age];
+        elif age == "5":
+          metrics.age_38_43 = ages[age];
+        elif age == "6":
+          metrics.age_48_53 = ages[age];
+        elif age == "7":
+          metrics.age_60_100 = ages[age];
+
+      metrics.save();
+      if(metrics.id>=1):
+        return {'statusCode':0}
+      else:
+        return {'statusCode':1,'status':"Unable to save metrics"};
+    except Exception as ex:
+      return {'statusCode':1,'status':"Unable to save metrics - "+str(ex)};
