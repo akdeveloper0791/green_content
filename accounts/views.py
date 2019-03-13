@@ -21,13 +21,16 @@ def signin(request):
 
             #return HttpResponse("ok")
             else:
-                return redirect('/mycontent/')
+                return redirect('/home/')
 
         else:
             return render(request,'signin.html',{'error':"Please enter correct credentials"})
 
     else:
-        return render(request,'signin.html')
+        if(request.user.is_authenticated):
+            return redirect('/home/')
+        else:
+            return render(request,'signin.html')
 import uuid
 
 def signup(request):
