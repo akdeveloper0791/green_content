@@ -3,16 +3,24 @@
 <body>
     <!--alert style-->
         <link rel="stylesheet" href="{% static 'css/sweetalert.css' %}">
+       
         <script src="{% static 'js/sweetalert.js' %}"></script>
+
+        <link type="text/css" rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css" />
+
+        <script  src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
+        
+        <script  src='https://code.jquery.com/jquery-latest.min.js'></script>
+
   <style>
-table {
+.table {
   border-collapse: collapse;
   border-spacing: 0;
   width: 100%;
   border: 1px solid #ddd;
 }
 
-th, td {
+.th,.td {
   text-align: center;
   padding: 8px;
 }
@@ -21,39 +29,39 @@ th, td {
 /*td:nth-child(even){background-color: #f2f2f2}*/
 </style>
 <!-- The Multi region Modal -->
- <div class="modal" id="cct_display_template_modal">
-    <div class="modal-dialog modal-lg">
-      <div class="modal-content">
+ <div class="modal" id="cct_display_template_modal" style="display:none">
+    <div class="modal-dialog">
+      <div class="modal-content"> 
       
         <!-- Modal Header -->
         <div class="modal-header"> 
-          <h4 class="modal-title" style="text-align:center;">Choose your layout from the available templates
+          <h4 class="modal-title" style="text-align:center;color:#5FCF80;"> Select Layout  for Campaign
           </h4>
         </div>
         
         <!-- Modal body -->
         <div class="modal-body">
          <div style="overflow-x:auto;">
-  <table>
+         <table class="table">
  
             <tr>
-              <td><img src='{% static "images/campaign/single_100_100.png" %}' style='cursor:pointer' onclick="prepareView('{{ SINGLE_100_100 }}');"></td>
+              <td class="td"><img src='{% static "images/campaign/single_100_100.png" %}' style='cursor:pointer' onclick="prepareView('{{ SINGLE_100_100 }}');"></td>
 
-              <td><img src='{% static "images/campaign/two_reg_vertical.png" %}' onclick="prepareView('{{ two_reg_vertical_json }}');" style='cursor:pointer'></td>
+              <td class="td"><img src='{% static "images/campaign/two_reg_vertical.png" %}' onclick="prepareView('{{ two_reg_vertical_json }}');" style='cursor:pointer'></td>
               
-              <td><img src='{% static "images/campaign/two_reg_horz.png" %}' onclick="prepareView('{{ two_reg_hoirz_json }}');" style='cursor:pointer'></td>
+              <td class="td"><img src='{% static "images/campaign/two_reg_horz.png" %}' onclick="prepareView('{{ two_reg_hoirz_json }}');" style='cursor:pointer'></td>
                 
-               <td> <img src='{% static "images/campaign/two_horiz_one_below.png" %}' onclick="prepareView('{{ two_horiz_one_below_json }}');" style='cursor:pointer'></td>
+               <td class="td"> <img src='{% static "images/campaign/two_horiz_one_below.png" %}' onclick="prepareView('{{ two_horiz_one_below_json }}');" style='cursor:pointer'></td>
              
             </tr>
              <tr>
-              <td><img src='{% static "images/campaign/two_vertical_50_50.png" %}' onclick="prepareView('{{ two_reg_vertical_50_50_json }}');" style='cursor:pointer'></td>
+              <td class="td"><img src='{% static "images/campaign/two_vertical_50_50.png" %}' onclick="prepareView('{{ two_reg_vertical_50_50_json }}');" style='cursor:pointer'></td>
 
-              <td> <img src='{% static "images/campaign/r3_1h_2v_20_50_50.png" %}' onclick="prepareView('{{ two_vertical_20_70_json }}');" style='cursor:pointer'></td>
+              <td class="td"> <img src='{% static "images/campaign/r3_1h_2v_20_50_50.png" %}'onclick="prepareView('{{ r3_1h_2v_20_50_50_json }}');"  style='cursor:pointer'></td>
 
-              <td><img src='{% static "images/campaign/two_vertical_20_70.png" %}' onclick="prepareView('{{ r3_1h_2v_20_50_50_json }}');" style='cursor:pointer'></td>
+              <td class="td"><img src='{% static "images/campaign/two_vertical_20_70.png" %}'  style='cursor:pointer' onclick="prepareView('{{ two_vertical_20_70_json }}');"></td>
 
-              <td><img src='{% static "images/campaign/r4_2h_2v_50_50.png" %}' onclick="prepareView('{{ r4_2h_2v_50_50_json }}');" style='cursor:pointer'></td>
+              <td class="td"><img src='{% static "images/campaign/r4_2h_2v_50_50.png" %}' onclick="prepareView('{{ r4_2h_2v_50_50_json }}');" style='cursor:pointer'></td>
              </tr>
              
           </table>
@@ -69,7 +77,63 @@ th, td {
         </div>
         
       </div>
-    </div>
+    </div> 
   </div>
+
+
+  <!-- The Multi region Modal -->
+ <div class="modal_test" id="cct_display_template_modal_mobile" style="display:none">
+   <!-- <div class="modal-dialog">
+      <div class="modal-content"> -->
+      
+        <!-- Modal Header -->
+        <div class="modal-header_test"> 
+          <h4 class="modal-title" style="text-align:center;color:#5FCF80;"> Select Layout  for Campaign
+          </h4>
+        </div>
+        
+        <!-- Modal body -->
+        <div class="modal-body_test">
+         <div style="overflow-x:auto;">
+          <table>
+ 
+            <tr>
+              <td><img src='{% static "images/campaign/mobile/single_100_100.png" %}' style='cursor:pointer' onclick="prepareView('{{ SINGLE_100_100 }}');"></td>
+
+              <td><img src='{% static "images/campaign/mobile/two_reg_vertical.png" %}' onclick="prepareView('{{ two_reg_vertical_json }}');" style='cursor:pointer'></td>
+              </tr>
+              <tr>
+              <td><img src='{% static "images/campaign/mobile/two_reg_horz.png" %}' onclick="prepareView('{{ two_reg_hoirz_json }}');" style='cursor:pointer'></td>
+                
+               <td> <img src='{% static "images/campaign/mobile/two_horiz_one_below.png" %}' onclick="prepareView('{{ two_horiz_one_below_json }}');" style='cursor:pointer'></td>
+             
+            </tr>
+             <tr>
+              <td><img src='{% static "images/campaign/mobile/two_vertical_50_50.png" %}' onclick="prepareView('{{ two_reg_vertical_50_50_json }}');" style='cursor:pointer'></td>
+
+              <td> <img src='{% static "images/campaign/mobile/r3_1h_2v_20_50_50.png" %}' onclick="prepareView('{{ r3_1h_2v_20_50_50_json }}');"  style='cursor:pointer'></td>
+             </tr>
+             <tr>
+              <td><img src='{% static "images/campaign/mobile/two_vertical_20_70.png" %}' onclick="prepareView('{{ two_vertical_20_70_json }}');" style='cursor:pointer'></td>
+
+              <td><img src='{% static "images/campaign/mobile/r4_2h_2v_50_50.png" %}' onclick="prepareView('{{ r4_2h_2v_50_50_json }}');" style='cursor:pointer'></td>
+             </tr>
+             
+          </table>
+        
+     </div>
+        </div>
+        
+        <!-- Modal footer -->
+        <div class="modal-footer">
+         
+         <!-- <button type="button" class="btn btn-danger" data-dismiss="modal" onclick="">Close</button> -->
+    
+        </div>
+        
+      <!--</div>
+    </div> -->
+  </div>
+
 </body>
 </html>

@@ -427,7 +427,7 @@ function checkAndUploadNextFile()
   {
     dismissBusyDialog();
     alert("Campaign has been uploaded successfully");
-    location.reload();
+    location.href="/campaigns/list_camp_web";
   }
 }
 

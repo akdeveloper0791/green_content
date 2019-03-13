@@ -1,14 +1,29 @@
 
 function cctDisplayTemplates()
 {
+	if(isMobileBrowser())
+	{
+		document.getElementById('cct_display_template_modal_mobile').
+	   style.display="block";
+	}else
+	{
+		document.getElementById('cct_display_template_modal').
+	   style.display="block";
+	}
 	
-	document.getElementById('cct_display_template_modal').
-	style.display="block";
+	
 }
 
 function cctDismissTemplates()
 {
 	
-	document.getElementById('cct_display_template_modal').
-	style.display="none";
+	if(isMobileBrowser())
+	{
+		document.getElementById('cct_display_template_modal_mobile').
+	   style.display="none";
+	}else
+	{
+		document.getElementById('cct_display_template_modal').
+	   style.display="none";
+	}
 }

@@ -17,10 +17,30 @@ var duration = 10;//seconds
  	return Math.round((percentage*totalPixels)/100)+"px";
  }
 
+ function setInfoTitle(msg)
+ {
+   var elem = document.getElementById("info_title");
+   elem.style.display="block";
+   elem.innerHTML=msg;
+   
+ }
+
+ function displayUpload()
+ {
+   document.getElementById("create_button").style.
+   display="block";
+ }
+
+
 function prepareView(selectedTemplate)
 {
   try{
-	  cctDismissTemplates();
+
+    setInfoTitle("Add Content to Campaign");
+
+    displayUpload();
+	  
+    cctDismissTemplates();
    
   	var templateInfo = JSON.parse(selectedTemplate);
     regionsInfo = templateInfo.regions;
@@ -64,7 +84,7 @@ function constructDivs()
     var childTag = document.createElement('IMG');
   	info.type="Image";
     info.properties = {"scaleType":"fillScreen"};
-        childTag.src= '/static/images/campaign/campaign_default.png';
+        childTag.src= '/static/images/campaign/campaign_default2.png';
     info.is_self_path = true;
 
     if(file==null)
@@ -106,7 +126,7 @@ function constructDivs()
   		
   		info.media_name = "default";
   		
-  	  childTag.src= '/static/images/campaign/campaign_default.png';
+  	  childTag.src= '/static/images/campaign/campaign_default2.png';
 
   	}else{
   		info.media_name = getUploadMediaName(file.name);
@@ -170,14 +190,25 @@ function constructDivs()
     }else{
       document.getElementById('display_create_table_region').style.display="block";
     }
-
-  	document.getElementById('selectoption').style.display="block";
+  
+   if(isMobileBrowser())
+   {
+     document.getElementById('selectoption_mobile').style.display="block";
+   }else{
+     document.getElementById('selectoption').style.display="block";
+   }
+  	
   	document.getElementById('select_media_reg_id').value=idPosition;
   }
 
   function dismissSelectRegOption()
   {
-  	document.getElementById('selectoption').style.display="none";
+  	if(isMobileBrowser())
+   {
+     document.getElementById('selectoption_mobile').style.display="none";
+   }else{
+     document.getElementById('selectoption').style.display="none";
+   }
   }
   function selectImgRegion()
   {
@@ -215,6 +246,7 @@ function constructDivs()
 
         dismissSelectRegOption();
         
+        input.value=null;
     }else{
       
     }
@@ -267,6 +299,8 @@ function constructDivs()
   		}
 
   		dismissSelectRegOption();
+
+      input.value=null;
     }
   }
 
@@ -565,12 +599,13 @@ function reconstructDivs()
 
 function displayCreateCampaignDialog()
 {
+  console.log("Inside display create campaign dialog");
   if(Object.keys(regionsResourceFiles).length>=1)
   {
     document.getElementById("file_duration").value = duration;
    document.getElementById('campaign_info_diag').style.display="block";
   } else{
-    alert("Nothing selected");
+    alert("Before proceeding further, please add content to campaign");
   }
 }
 

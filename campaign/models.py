@@ -110,7 +110,7 @@ class CampaignInfo(models.Model):
                 return {'statusCode':1,'status':
                 "Invalid session, please login"};
         
-        campaigns = Multiple_campaign_upload.objects.filter(campaign_uploaded_by=userId);
+        campaigns = Multiple_campaign_upload.objects.filter(campaign_uploaded_by=userId).order_by('-updated_date');
         if(len(campaigns)<=0):
             return {'statusCode':2,'status':
             'No campaigns Found'};
