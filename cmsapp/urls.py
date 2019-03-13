@@ -7,10 +7,10 @@ from campaign import views as cView
 urlpatterns = [
 
         url(r'^$',cView.listCampaignsWeb,name='listCampaignsWeb'),
-        url(r'^mycontent/$',views.home,name='home'),
+        url(r'^mycontent/$',cView.listCampaignsWeb,name='listCampaignsWeb'),
         url(r'^web_search/$',views.web_search,name='web_search'),
 
-        url(r'^search/$',views.home,name='search'),
+        url(r'^search/$',cView.listCampaignsWeb,name='listCampaignsWeb'),
 
 
 
