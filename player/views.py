@@ -87,7 +87,7 @@ def metrics(request):
         MODEL_MEAN_VALUES = (78.4263377603, 87.7689143744, 114.895847746)
         gender_list = ['Male', 'Female']
         genders = {};
-        if faces.any():
+        if len(faces)>=1:
             for (x,y,w,h) in faces:        
                 face_img = image[y:y+h, x:x+w].copy()
                 blob = cv2.dnn.blobFromImage(face_img, 1, (227, 227), MODEL_MEAN_VALUES, swapRB=False)
