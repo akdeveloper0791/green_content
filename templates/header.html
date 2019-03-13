@@ -49,42 +49,14 @@
 
 	<body>
 
-		<!--<nav class="navbar fixed-top navbar-expand-lg navbar-dark" style="background-color: cornflowerblue;">-->
-		<!--	  <a class="navbar-brand" href="{% url 'home' %}" >Welcome To CMS</a>-->
-
-		<!--	  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation" style="background: green;">-->
-		<!--		<span class="navbar-toggler-icon"></span>-->
-		<!--	  </button>-->
-		<!--	  <div class="collapse navbar-collapse" id="navbarNavDropdown">-->
-		<!--		<ul class="navbar-nav w-100">-->
-		<!--		  {% if request.user.is_authenticated %}-->
-		<!--		  <li class="nav-item dropdown ml-auto">-->
-		<!--			<a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">-->
-		<!--			  {{ request.user.first_name}}-->
-		<!--			</a>-->
-		<!--			<div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdownMenuLink">-->
-					  <!--<a class="dropdown-item" href="{% url 'my_wishlist' %}">My Whishlist</a>-->
-		<!--			  <a class="dropdown-item" href="{% url 'mycontent_videos' %}">My content</a>-->
-					  <!--<a class="dropdown-item" href="#">Change password</a>-->
-		<!--			  <a class="dropdown-item" href="{% url 'logout' %}">Logout</a>-->
-
-		<!--			</div>-->
-		<!--		  </li>-->
-
-		<!--		  {% else %}-->
-		<!--		        <a href="{% url 'signin' %}" class="btn btn-info" role="button" id="signup-button" style="position: absolute;right:18px;top:7px;background-color: yellowgreen;"> Login </a>-->
-
-		<!--		  {% endif %}-->
-		<!--		</ul>-->
-		<!--	  </div>-->
-		<!--</nav>-->
+		
 
 
         <!-- Navigation -->
     <nav class="navbar navbar-expand-lg navbar-dark fixed-top" style="background-color:forestgreen;border-bottom: 2px solid green;">
       <div class="container">
-        <a class="navbar-brand" href="{% url 'home' %}">
-          <!--<img src="{% static 'images/logo12345.png'%}" width="150" height="30" alt="">-->
+        <a class="navbar-brand" href="{% url 'listCampaignsWeb' %}">
+          
           <h4>Green Content CMS</h4>
         </a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation" style="background-color: seagreen;">
