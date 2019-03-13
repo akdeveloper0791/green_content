@@ -222,12 +222,14 @@ function formatBytes(bytes,decimals) {
 	xhr.setRequestHeader('Authorization', 'Bearer ' + uploadDXXX['xxdd']);
 
 	xhr.setRequestHeader('Content-Type', 'application/octet-stream');
-	xhr.setRequestHeader('Dropbox-API-Arg', JSON.stringify({
-	    path: uploadPath+  getUploadFileName(file.name),
-	    mode: 'overwrite',
-	    autorename: false,
-	    mute: false
-	}));
+	var params = JSON.stringify({
+      path: uploadPath+  getUploadFileName(file.name),
+      mode: 'overwrite',
+      autorename: false,
+      mute: false
+  });
+  console.log("Upload via http"+params);
+  xhr.setRequestHeader('Dropbox-API-Arg',(params));
 
 	xhr.send(file);
   }
@@ -601,9 +603,9 @@ function getUploadFileName(fileName)
    if(uploadFilesTempNames !== 'undefined' && 
     uploadFilesTempNames.hasOwnProperty(fileName))
    {
-     return uploadFilesTempNames[fileName];
+     return (uploadFilesTempNames[fileName]);
    }else
    {
-    return fileName;
+    return (fileName);
    }
 }
