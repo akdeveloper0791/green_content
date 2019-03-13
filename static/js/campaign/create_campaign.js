@@ -48,7 +48,7 @@ function prepareView(selectedTemplate)
   }catch(err)
   {
 
-  	alert("Unable to create view"+err.message);
+  	swal("Unable to create view"+err.message);
   }
 	
 	
@@ -324,7 +324,7 @@ function constructDivs()
     if(mediaName=='' || mediaName==null)
     {
 
-       alert('Please enter your text');
+       swal('Please enter your text');
     }else{
       
        var idPosition = document.getElementById('select_media_reg_id').value;
@@ -458,7 +458,7 @@ function constructDivs()
     if(mediaName=='' || mediaName==null)
     {
 
-       alert('Please enter URL');
+       swal('Please enter URL');
     }else{
      
        var idPosition = document.getElementById('select_media_reg_id').value;
@@ -572,7 +572,7 @@ function onSelectTableReg()
   }
      
   else{
-    alert("Please enter valid rows and coloumns");
+    swal("Please enter valid rows and coloumns");
   }
 }
 
@@ -605,7 +605,7 @@ function displayCreateCampaignDialog()
     document.getElementById("file_duration").value = duration;
    document.getElementById('campaign_info_diag').style.display="block";
   } else{
-    alert("Before proceeding further, please add content to campaign");
+    swal("Before proceeding further, please add content to campaign");
   }
 }
 
@@ -621,7 +621,7 @@ function createCampaign()
   var playDuration = document.getElementById("file_duration").value;
   if((mediaName==null || mediaName.trim()=='') || playDuration<=0 )
   {
-    alert("Please enter valid details");
+    swal("Please enter valid details");
   }else{
     dismissCreateCampaignDialog();
     

@@ -2,91 +2,13 @@
 <!DOCTYPE html>
 <html lang="en">
 
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Green Content</title>
-  <meta name="description" content="green content to have your own account to store media content ">
-  <meta name="keywords" content="green content, campaigns, groups, video, images, text, url">
-
-  <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Open+Sans|Candal|Alegreya+Sans">
-  <link rel="stylesheet" type="text/css" href="{% static 'Mentor/css/font-awesome.min.css' %}">
-  <link rel="stylesheet" type="text/css" href="{% static 'Mentor/css/bootstrap.min.css' %}">
-  <link rel="stylesheet" type="text/css" href="{% static 'Mentor/css/imagehover.min.css' %}">
-  <link rel="stylesheet" type="text/css" href="{% static 'Mentor/css/style.css' %}">
- <!--alert style-->
-        <link rel="stylesheet" href="{% static 'css/sweetalert.css' %}">
-        <script src="{% static 'js/sweetalert.js' %}"></script>
-
-</head>
-
+  {% block header %} {% include 'header.html' %} {% endblock %}
 {% block body %}
 
 
 <body>
 
-  <!--Navigation bar-->
-  <nav class="navbar navbar-default navbar-fixed-top" style="background-color: #ffffff;">
-    <div class="container">
-      <div class="navbar-header">
-        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
-          <span class="icon-bar"></span>
-          <span class="icon-bar"></span>
-          <span class="icon-bar"></span>
-        </button>
-        <a class="navbar-brand" href="" style="color:#5FCF80;">Green<span style="color: grey;">Content</span></a>
-      </div>
-      <div class="collapse navbar-collapse" id="myNavbar">
-        <ul class="nav navbar-nav navbar-right">
-              {% if request.user.is_authenticated %}
-                 <!--     <li class="nav-item">
-              <a class="nav-link" href="{% url 'mycontent_videos' %}">My Content</a>
-            </li> -->
-           <!--  <li class="nav-item ">
-              <a class="nav-link" href="{% url 'my_wishlist' %}">My Whishlist</a>
-            </li> -->
-            <li class="nav-item">
-              <a class="nav-link" href="{% url 'listCampaignsWeb' %}">Campaign management</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="#">Device Management</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="{% url 'gcGroups' %}">GC Groups</a>
-            </li>
-           <!--  <li class="nav-item">
-              <a class="nav-link" href="{% url 'upload_camp_web' %}">Upload Campaign</a>
-            </li> -->
-            <li class="nav-item">
-              <a class="nav-link" href="#">Signage Reports</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="#">Viewers Metrics</a>
-            </li>
-         
-           <!--   <li class="nav-item">
-              <a class="nav-link" href="{% url 'web_search' %}">Web Content</a>
-            </li> -->
-           
-            <li class="nav-item active">
-              <a class="nav-link"  href="{% url 'logout' %}">{{ request.user.first_name}}(Logout)</a>
-            </li>
-
-             {% else %}
-
-              <li><a href="{% url 'contact_us' %}" >Contact us</a></li>
-              <li class="btn-trial"><a href="{% url 'signin' %}">Sign In</a></li>
-          
-            {% endif %}
-        </ul>
-      </div>
-    </div>
-  </nav>
-  <!--/ Navigation bar-->
-
-<link type="text/css" rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css" />
 	<link type="text/css" rel="stylesheet" href="{% static 'multiple_emails/multiple-emails.css' %}" />
-     <script  src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
     <script  src='https://code.jquery.com/jquery-latest.min.js'></script>
     <script src="{% static 'multiple_emails/multiple-emails.js' %}"></script>
     <script >
@@ -831,33 +753,8 @@ table {
 	<br/> <br/>
 {% endblock %}
 
+  {% block footer %} {% include 'footer.html' %} {% endblock %}
 
-  <!--Footer-->
-  <footer id="footer" class="footer">
-    <div class="container text-center">
-
-      <!-- End newsletter-form -->
-      <ul class="social-links">
-        <li><a href="https://twitter.com/Adskite1/status/664062917726224385" target="_blank"><i class="fa fa-twitter fa-fw"></i></a></li>
-        <li><a href="https://www.facebook.com/Adskite-1659890184252995/" target="_blank"><i class="fa fa-facebook fa-fw"></i></a></li>
-        <li><a href="https://plus.google.com/101115373606937070219/about" target="_blank"><i class="fa fa-google-plus fa-fw"></i></a></li>
-        <li><a href="https://in.linkedin.com/company/adskite-india-pvt-ltd" target="_blank"><i class="fa fa-linkedin fa-fw"></i></a></li>
-      </ul>
-    
-      <div class="credits">
-
-        Copyright (c) 2019, All Rights Reserved. Powered by AdsKite India Pvt. Ltd.
-      </div>
-    </div>
-  </footer>
-  <!--/ Footer-->
-
-<!--   <script src="{% static 'Mentor/js/jquery.min.js' %}"></script>
-  <script src="{% static 'Mentor/js/jquery.easing.min.js' %}"></script> -->
-  <script src="{% static 'Mentor/js/bootstrap.min.js' %}"></script>
-  <script src="{% static 'Mentor/js/custom.js' %}"></script>
-<script src="{% static 'js/default_busy_loader.js' %}"></script>
-<!-- <script src="{% static 'assets/js/jquery-1.11.1.min.js' %}"></script> -->
 </body>
 
 </html>

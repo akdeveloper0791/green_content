@@ -109,7 +109,7 @@ class GcGroups(models.Model):
                 return {'statusCode':1,'status':
                 "Invalid session, please login"};
 
-        groups = GcGroups.objects.filter(user=userId);
+        groups = GcGroups.objects.filter(user=userId).order_by('-created_date');
         if(len(groups)<=0):
             return {'statusCode':2,'status':
             'No campaigns Found'};

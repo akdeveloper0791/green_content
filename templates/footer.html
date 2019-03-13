@@ -1,28 +1,50 @@
-<style>
-#footer {
-   position:fixed;
-   left:0px;
-   bottom:0px;
-   height:55px;
-   width:100%;
-   background:#999;
+  {% load static %}
+
+  <script src="{% static 'Mentor/js/bootstrap.min.js' %}"></script>
+   <script src="{% static 'Mentor/js/custom.js' %}"></script>
+<script src="{% static 'js/default_busy_loader.js' %}"></script>
+  <style type="text/css">/**
+ * Demo Styles
+ */
+
+html {
+  height: 100%;
+  box-sizing: border-box;
 }
 
-/* IE 6 */
-* html #footer {
-   position:absolute;
-   top:expression((0-(footer.offsetHeight)+(document.documentElement.clientHeight ? document.documentElement.clientHeight : document.body.clientHeight)+(ignoreMe = document.documentElement.scrollTop ? document.documentElement.scrollTop : document.body.scrollTop))+'px');
+*,
+*:before,
+*:after {
+  box-sizing: inherit;
 }
-</style>
-<footer id="footer">
+
+body {
+  position: relative;
+  margin: 0;
+  padding-bottom: 6rem;
+  min-height: 100%;
+  font-family: "Helvetica Neue", Arial, sans-serif;
+}
+
+.footer {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  padding: 0;
+  background-color: #efefef;
+  text-align: center;
+}</style>
+<div class="footer">
     <div calss="container" style="background-color:#34363F;">
         <div style="padding:5px;text-align:center;font-size:12px;">
-          <span style="color: aliceblue;"><a href="{% url 'about_us' %}" style="color: cornflowerblue;">About Us</a> / <a href="{% url 'privacy_services' %}" style="color: cornflowerblue;">Privacy Policy</a> / <a href="{% url 'terms_services' %}" style="color: cornflowerblue;">Terms and Conditions</a></span>
-                  <br/>  <span style="color: aliceblue;">Copyright (c) 2018 Green Content, All Rights Reserved. Powered by AdsKite India Pvt. Ltd.</span>
+          <span style="color: aliceblue;"><i class="fa fa-envelope"></i> contact@adskite.com</a> | <i class="fa fa-phone-square"></i> +91 9900819475</span
+            >
+                  <br/>  <span style="color: aliceblue;">Copyright (c) 2019 Green Content, All Rights Reserved. Powered by AdsKite India Pvt. Ltd.</span>
 
                     </div>
     </div>
-</footer>
+  </div>
 
 
 

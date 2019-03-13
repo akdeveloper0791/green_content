@@ -1,134 +1,96 @@
-
 {% load static %}
-<!Doctype html>
-<html>
-	<head>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Green Content</title>
+  <meta name="description" content="green content to have your own account to store media content ">
+  <meta name="keywords" content="green content, campaigns, groups, video, images, text, url">
 
-	    <meta charset="utf-8">
-		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-		<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-		<meta name="description" content="">
-		<meta name="author" content="">
-	    <meta name="keywords" content="video, images, audio, content, adskite, signageserv">
-	    <meta name="robots" content="all">
+  <link rel="stylesheet" type="text/css" href="{% static 'Mentor/css/font-awesome.min.css' %}">
+  <link rel="stylesheet" type="text/css" href="{% static 'Mentor/css/bootstrap.min.css' %}">
+ 
+  <link rel="stylesheet" type="text/css" href="{% static 'Mentor/css/imagehover.min.css' %}">
+  <link rel="stylesheet" type="text/css" href="{% static 'Mentor/css/style.css' %}">
+ <!--alert style-->
+  <link rel="stylesheet" href="{% static 'css/sweetalert.css' %}">
 
-	    <title>Green Content</title>
+    <script src="{% static 'js/sweetalert.js' %}"></script>
 
-		<!-- Bootstrap Core CSS -->
-        <!--<link rel="stylesheet" href="{% static 'assets/css/bootstrap.min.css'%}">-->
-
-        <!-- Navbar css-->
-        <link rel="stylesheet" type="text/css" href="{% static 'navbar/css/bootstrap.min.css' %}">
-    	<link rel="stylesheet" type="text/css" href="{% static 'navbar/css/logo-nav.css' %}">
-
-        <!-- Customizable CSS -->
-        <link rel="stylesheet" href="{% static 'assets/css/main.css'%}">
-        <link rel="stylesheet" href="{% static 'assets/css/blue.css'%}">
-        <!--<link rel="stylesheet" href="{% static 'assets/css/owl.carousel.css'%}">-->
-        <!--<link rel="stylesheet" href="{% static 'assets/css/owl.transitions.css'%}">-->
-        <!--<link rel="stylesheet" href="{% static 'assets/css/animate.min.css'%}">-->
-        <!--<link rel="stylesheet" href="{% static 'assets/css/rateit.css'%}">-->
-        <!--<link rel="stylesheet" href="{% static 'assets/css/bootstrap-select.min.css'%}">-->
+</head>
 
 
-        <!-- Icons/Glyphs -->
-        <link rel="stylesheet" href="{% static 'assets/css/font-awesome.css'%}">
-        <link rel="stylesheet" href="{% static 'assets/css/simple-line-icons.css'%}">
-
-		<!-- Fonts -->
-        <link href='https://fonts.googleapis.com/css?family=Roboto:300,400,500,700' rel='stylesheet' type='text/css'>
-        <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,300,400italic,600,600italic,700,700italic,800' rel='stylesheet' type='text/css'>
-        <link href='https://fonts.googleapis.com/css?family=Montserrat:400,700' rel='stylesheet' type='text/css'>
-
-        <!--alert style-->
-        <link rel="stylesheet" href="{% static 'css/sweetalert.css' %}">
-        <script src="{% static 'js/sweetalert.js' %}"></script>
 
 
-	</head>
+<body>
 
-	<body>
-
-		
-
-
-        <!-- Navigation -->
-    <nav class="navbar navbar-expand-lg navbar-dark fixed-top" style="background-color:forestgreen;border-bottom: 2px solid green;">
-      <div class="container">
-        <a class="navbar-brand" href="{% url 'listCampaignsWeb' %}">
-          
-          <h4>Green Content CMS</h4>
-        </a>
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation" style="background-color: seagreen;">
-          <span class="navbar-toggler-icon"></span>
+  <!--Navigation bar-->
+  <nav class="navbar navbar-default navbar-fixed-top" style="background-color: #ffffff;">
+    <div class="container">
+      <div class="navbar-header">
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
         </button>
-        <div class="collapse navbar-collapse" id="navbarResponsive">
-          <ul class="navbar-nav ml-auto" style="
-    float: right;
-">
+        <a class="navbar-brand" href="" style="color:#5FCF80;">Green<span style="color: grey;">Content</span></a>
+      </div>
+      <div class="collapse navbar-collapse" id="myNavbar">
+        <ul class="nav navbar-nav navbar-right">
               {% if request.user.is_authenticated %}
-               <li class="nav-item">
+                 <!--     <li class="nav-item">
               <a class="nav-link" href="{% url 'mycontent_videos' %}">My Content</a>
-            </li>
-            <li class="nav-item ">
+            </li> -->
+           <!--  <li class="nav-item ">
               <a class="nav-link" href="{% url 'my_wishlist' %}">My Whishlist</a>
+            </li> -->
+            <li class="nav-item">
+              <a class="nav-link" href="{% url 'listCampaignsWeb' %}" style="text-align: center;padding: 0 20px;">Campaign<p>Management</p></a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="{% url 'gcGroups' %}">GC Groups</a>
+              <a class="nav-link" onclick="comming_soon('Device Management');" style="text-align: center;padding: 0 20px;">Device<p>Management</p></a>
             </li>
             <li class="nav-item">
+              <a class="nav-link" href="{% url 'gcGroups' %}" style="text-align: center;padding: 0 20px;">GC<p>Groups</p></a>
+            </li>
+           <!--  <li class="nav-item">
               <a class="nav-link" href="{% url 'upload_camp_web' %}">Upload Campaign</a>
-            </li>
+            </li> -->
             <li class="nav-item">
-              <a class="nav-link" href="{% url 'listCampaignsWeb' %}">Campaigns</a>
+              <a class="nav-link" onclick="comming_soon('Signage Reports');" style="text-align: center;padding: 0 20px;">Signage<p>Reports</p></a>
             </li>
-             <li class="nav-item">
+            <li class="nav-item" onclick="comming_soon('Viewers Metrics');">
+              <a class="nav-link"  style="text-align: center;padding: 0 20px;">Viewers<p>Metrics</p></a>
+            </li>
+         
+           <!--   <li class="nav-item">
               <a class="nav-link" href="{% url 'web_search' %}">Web Content</a>
-            </li>
-            <!--<li class="nav-item">-->
-            <!--  <a class="nav-link" href="#">Products</a>-->
-            <!--</li>-->
+            </li> -->
+           
             <li class="nav-item active">
-              <a class="nav-link"  href="{% url 'logout' %}">{{ request.user.first_name}}(Logout)</a>
+              <a class="nav-link"  href="{% url 'logout' %}" style="text-align: center;padding: 0 20px;">{{ request.user.first_name}}<p>(Logout)</p></a>
             </li>
 
              {% else %}
 
-              <li class="nav-item active">
-              <a class="nav-link"href="{% url 'signin' %}">Login</a>
-            </li>
-
+              <li><a href="{% url 'contact_us' %}" >Contact us</a></li>
+              <li class="btn-trial"><a href="{% url 'signin' %}">Sign In</a></li>
+          
             {% endif %}
-
-          </ul>
-        </div>
+        </ul>
       </div>
-    </nav>
-
-
-<script src="{% static 'assets/js/jquery-1.11.1.min.js' %}"></script>
-<!--<script src="{% static 'assets/js/bootstrap.min.js' %}"></script>-->
-<!--<script src="{% static 'assets/js/bootstrap-hover-dropdown.min.js' %}"></script>-->
-<!--<script src="{% static 'assets/js/owl.carousel.min.js' %}"></script>-->
-<!--<script src="{% static 'assets/js/echo.min.js' %}"></script>-->
-<!--<script src="{% static 'assets/js/jquery.easing-1.3.min.js' %}"></script>-->
-<!--<script src="{% static 'assets/js/bootstrap-slider.min.js' %}"></script>-->
-<!--<script src="{% static 'assets/js/jquery.rateit.min.js' %}"></script>-->
-<!--<script src="{% static 'assets/js/bootstrap-select.min.js' %}"></script>-->
-<!--<script src="{% static 'assets/js/wow.min.js' %}"></script>-->
-<script src="{% static 'assets/js/scripts.js' %}"></script>
-<script src="{% static 'js/default_busy_loader.js' %}"></script>
-
-<!--nav bar-->
-    <script src="{% static 'navbar/js/bootstrap.bundle.js' %}"></script>
-    <script src="{% static 'navbar/js/jquery.min.js' %}"></script>
-
-	</body>
-
-
+    </div>
+  </nav>
+  <!--/ Navigation bar-->
+  <script type="text/javascript">
+    function comming_soon(msg) {
+      swal({
+  title: msg,
+  text: "Comming Soon.",
+  timer: 2000
+});
+    }
+  </script>
+</body>
 </html>
-
-
-
-
-

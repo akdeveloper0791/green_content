@@ -387,7 +387,7 @@ function initUpload()
             }else
             {
               dismissBusyDialog();
-              alert(responseObj.status);
+              swal(responseObj.status);
             }
             
         }
@@ -395,7 +395,7 @@ function initUpload()
             var errorMessage = xhr.response || 'Unable to upload file';
             // Upload failed. Do something here with the error.
             
-            alert("unable to upload - "+errorMessage);
+            swal("unable to upload - "+errorMessage);
         }
     };
 
@@ -411,7 +411,7 @@ function initUpload()
     }
   }else
   {
-    alert("Please select campaign");
+    swal("Please select campaign");
   }
   return false;
 }
@@ -426,14 +426,23 @@ function checkAndUploadNextFile()
   }else
   {
     dismissBusyDialog();
-    alert("Campaign has been uploaded successfully");
-    location.href="/campaigns/list_camp_web";
+    swal({
+  title: "Campaign has been created successfully!",
+  text: "Redirecting in 2 seconds.",
+  type: "success",
+  timer: 2000,
+  showConfirmButton: false
+}, function(){
+      window.location.href = "/campaigns/list_camp_web";
+});
+    // swal("Campaign has been uploaded successfully");
+    // location.href="/campaigns/list_camp_web";
   }
 }
 
 function initUploadDBxxFail(warningMsg)
 {
-  alert(warningMsg);
+  swal(warningMsg);
   dismissBusyDialog();
   location.reload();
 }

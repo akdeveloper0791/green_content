@@ -132,7 +132,7 @@ function initUploadDxxx(campaignName,savePath)
 
   function initUploadDBxxFail(warningMsg)
 {
-  alert(warningMsg);
+  swal(warningMsg);
   dismissBusyDialog();
   
 }
@@ -140,7 +140,7 @@ function initUploadDxxx(campaignName,savePath)
 function interrupt(errorMsg)
 {
   dismissBusyDialog();
-  alert(errorMsg);
+  swal(errorMsg);
 }
 
 function str2bytes (str) {

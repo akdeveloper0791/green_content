@@ -35,7 +35,7 @@ function initUploadDxxx()
 
 function initUploadDBxxFail(warningMsg)
 {
-  alert(warningMsg);
+  swal(warningMsg);
 }
 
 function checkForCampaignInDB()
@@ -62,19 +62,19 @@ function checkForCampaignInDB()
 
               if(jsonObj.error_summary.indexOf("path/not_found") !== -1)
               {
-                alert("No campaign files found");
+                swal("No campaign files found");
 
               }else{
-                alert('Unable to display previews please try again later -'+errorMessage);
+                swal('Unable to display previews please try again later -'+errorMessage);
               }
             }catch(exception)
             {
-              alert('Unable to display preview, please try again later -'+errorMessage);
+              swal('Unable to display preview, please try again later -'+errorMessage);
             }
             
             
           }else{
-            alert('Unable to display preview');
+            swal('Unable to display preview');
           }
          
           
@@ -84,7 +84,7 @@ function checkForCampaignInDB()
   xhr.onerror = function()
   {
     
-    alert('please check your connections');
+    swal('please check your connections');
    
   };
 	xhr.open('POST', 'https://api.dropboxapi.com/2/files/get_metadata');
@@ -211,7 +211,7 @@ function checkForCampaignInDB()
      {
        
        document.onkeydown = function(){fullscreen(childTag)};
-       alert("Prese \"Down\" key to go to full screen");
+       swal("Prese \"Down\" key to go to full screen");
      }
 
      
