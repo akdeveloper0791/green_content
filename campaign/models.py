@@ -141,11 +141,13 @@ class CampaignInfo(models.Model):
         else:
             return {'statusCode':0,'campaigns':campaigns};
 
-    def deleteMyCampaign(campaignId,accessToken,mac):
-        userId = User_unique_id.getUserId(accessToken);
-        if(userId == False):
-            return {'statusCode':1,'status':
-                "Invalid session, please login"};
+    def deleteMyCampaign(campaignId,accessToken,mac,isWeb):
+        userId=accessToken;
+        if(isWeb==False):
+            userId = User_unique_id.getUserId(accessToken);
+            if(userId == False):
+                return {'statusCode':1,'status':
+                         "Invalid session, please login"};
         with transaction.atomic():
             #get campaign info
             try:

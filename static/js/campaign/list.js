@@ -255,10 +255,8 @@ function downloadThumbFile()
     xhr.onload = function() {
       if (xhr.status === 200) {
           
-          console.log("Download thumb response - "+xhr.response);
           var fileInfo = JSON.parse(xhr.response);
-          
-
+        
           try
           {
             var list = fileInfo.links;
@@ -372,4 +370,58 @@ function downloadThumbFile()
    url = res[0]+"?raw=1";
    document.getElementById('thumb_img_'+downloadThumbInfo.id).src = url;
    checkAndDownloadThumbFile();
+ }
+
+ function deleteCampaign(campaignId)
+ {
+  displayInitUploadBusyDialog();
+   var xhr = new XMLHttpRequest();
+   xhr.onload = function() {
+      if (xhr.status === 200) {
+        dismissBusyDialog();
+          console.log(xhr.response);
+          var response = JSON.parse(xhr.response);       
+          try
+          {
+             if(response.statusCode==0)
+             {
+              
+              var div = document.getElementById("campaign_row_"+campaignId);
+               if (div) {
+                    div.parentNode.removeChild(div);
+                }
+             }else{
+              deleteError(response.status);
+             }
+          }catch(exception)
+          {
+
+            deleteError('Unable to delete -'+exception.message);
+          }
+          
+      }
+      else {
+           var errorMessage = xhr.response;
+           deleteError('Unable to delete-'+errorMessage);
+         
+          }
+  };
+  xhr.onerror = function()
+  {
+    deleteError('No internet');
+  };
+  xhr.open('POST', '/campaigns/delete_campaign/');
+  xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+  xhr.setRequestHeader("X-CSRFToken", csrf_token);
+  
+  
+  var params = 'accessToken=web&camp_id='+campaignId+'&mac=web';
+   
+   xhr.send(params);
+ }
+
+ function deleteError(msg)
+ {
+   dismissBusyDialog();
+   alert(msg);
  }

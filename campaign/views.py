@@ -78,8 +78,18 @@ def listMyCampaignsAPI(request):
 @api_view(['POST'])
 def deleteMyCampaign(request):
     if(request.method == 'POST'):
+        isWeb = False;
+        accessToken = request.POST.get('accessToken');
+        if(accessToken=="web"):
+            if(request.user.is_authenticated):
+                accessToken=request.user.id;
+                isWeb=True;
+            else:
+                return JsonResponse({'statusCode':200,
+            'status':'Invalid session'});
+
         result = CampaignInfo.deleteMyCampaign(request.POST.get('camp_id'),
-            request.POST.get('accessToken'),request.POST.get('mac'));
+            accessToken,request.POST.get('mac'),isWeb);
         return JsonResponse(result);
     else:
         return JsonResponse({'statusCode':1,
