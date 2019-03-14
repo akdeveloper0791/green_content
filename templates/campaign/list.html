@@ -6,7 +6,7 @@
 {% block body %}
 
 
-<body>
+<body onload="afterLoad()">
 
 <script  src="{% static 'scripts/Dropbox-sdk.min.js' %}"></script>
 
@@ -50,16 +50,16 @@ a.btn:active{
    <div class="col-md-12 col-xs-12" style="padding:0px;border-bottom: 1px solid darkgrey;">
     <div class="rows">
        <div class="col-md-2 col-xs-2" style="padding:0px;">
-        <img  src="{% static 'images/campaign/default_campaign.png' %}" style="
-    border-radius: 4px;
-    padding: 2px 0px;
-    /* margin: 0px; */
-    width: 75%;
-    height: 85px;
-    display: block;
-    margin-left: auto;
-    margin-right: auto;
-  ">
+        <img id="thumb_img_{{ campaign.id }}" src="{% static 'images/campaign/default_campaign.png' %}" style="
+          border-radius: 4px;
+          padding: 2px 0px;
+          /* margin: 0px; */
+          width: 98px;
+          height: 98px;
+          display: block;
+          margin-left: auto;
+          margin-right: auto;
+        ">
       </div>
       <div class="col-md-8 col-xs-8" style="padding: 20px 2px;">
         <p class="btn-custom" style="color:dodgerblue;margin: 0px;font-weight: 700;">{{ campaign.campaign_name }}</p>
@@ -141,6 +141,13 @@ a.btn:active{
 
 <script>
 var csrf_token = '{{ csrf_token }}';
+var downloadThumbPosition=0;
+var downloadThumbInfo = {
+    id: 0,
+    save_path: null,
+    resourceName: null,//resource name
+  
+  };
 
  (function() {
      // your page initialization code here
@@ -158,6 +165,33 @@ var csrf_token = '{{ csrf_token }}';
 $(".btn-custom").text(function(index, currentText) {
     return currentText.substr(0, 15)+'...';
 });
+
+function getDownloadThumbInfo()
+{
+  var iteratePos = 0;
+  {% for campaign in res.campaigns %}
+      if(downloadThumbPosition==iteratePos)
+      {
+        downloadThumbInfo.id = {{campaign.id}};
+        downloadThumbInfo.save_path= "{{campaign.save_path}}";
+        downloadThumbInfo.resourceName= "{{campaign.campaign_name}}";
+        
+        //increate position to get next thumb
+        ++downloadThumbPosition;
+        return true;
+      }else
+      {
+        ++iteratePos;
+      }
+  {% endfor %}
+   
+   return false;
+}
+
+function afterLoad()
+{  
+   checkAndDownloadThumbFile(); 
+}
 </script>
 {% endblock %}
 

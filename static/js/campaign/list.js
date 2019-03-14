@@ -1,4 +1,5 @@
 var uploadDXXX = [];
+var downloadThumbs = [];
 //downlod campaign
 function download(id,storeLocation,
     	campaignName,savePath){
@@ -92,10 +93,12 @@ function checkForFilesInDropBox(campaignName,savePath)
     "include_has_explicit_shared_members": false})
   xhr.send(params);
  }else
-   {
+  {
          initUploadDxxx(campaignName,savePath);
-    }
+  }
 }
+
+
 
 function initUploadDxxx(campaignName,savePath)
   {
@@ -107,19 +110,19 @@ function initUploadDxxx(campaignName,savePath)
         if (xhr.status === 200) {
             uploadDXXX = JSON.parse(xhr.response);
             
-            checkForFilesInDropBox(campaignName,savePath);
+            downloadThumbFile();
         }
         else {
           var errorMessage = xhr.response || 'Unable to download file';
             
-            initUploadDBxxFail("Downloading failed"+errorMessage);
+            //initUploadDBxxFail("Downloading failed"+errorMessage);
         }
     };
     xhr.onerror = function()
     {
       
       //alert('Unable to upload, please check your connections');
-      initUploadDBxxFail('Unable to download, please check your connections');
+      //initUploadDBxxFail('Unable to download, please check your connections');
     };
    
     xhr.open('POST', '/gdbx/init/');
@@ -227,3 +230,146 @@ function downloadDropboxCamp(campaignName,savePath)
   xhr.send();
 
 }
+
+function checkAndDownloadThumbFile()
+{
+   var hasThumbs = getDownloadThumbInfo();
+   if(hasThumbs)
+   {
+    console.log(JSON.stringify(downloadThumbInfo))
+    downloadThumbFile();
+   }else{
+    console.log("Downloading thumbs finished");
+   }
+}
+
+//download thumb nails
+function downloadThumbFile()
+{
+
+  if(uploadDXXX!=null && Object.keys(uploadDXXX).length>=1)
+  {
+   var resourceFile = "DNDM-THUMB-"+downloadThumbInfo.resourceName+".jpg"
+
+   var xhr = new XMLHttpRequest();
+    xhr.onload = function() {
+      if (xhr.status === 200) {
+          
+          console.log("Download thumb response - "+xhr.response);
+          var fileInfo = JSON.parse(xhr.response);
+          
+
+          try
+          {
+            var list = fileInfo.links;
+            if(list.length>=1)
+            {
+              link = list[0];
+              var url = link['url'];
+              updateThumbPreview(url);
+            }else{
+              
+              generateNewLink(resourceFile);
+            }
+          }catch(exception)
+          {
+
+            checkAndDownloadThumbFile();
+            //childPreviewError(resourceId,'Unable to display preview, please try again later -'+exception.message);
+          }
+          
+      }
+      else {
+          var errorMessage = xhr.response;
+           checkAndDownloadThumbFile();
+                //childPreviewError(resourceId,'Unable to display preview-'+errorMessage);
+         
+          }
+  };
+  xhr.onerror = function()
+  {
+    
+    checkAndDownloadThumbFile();
+   //childPreviewError(resourceId,'No internet');
+  };
+  xhr.open('POST', 'https://api.dropboxapi.com/2/sharing/list_shared_links');
+  
+  xhr.setRequestHeader('Authorization', 'Bearer ' + uploadDXXX['xxdd']);
+
+  xhr.setRequestHeader('Content-Type', 'application/json');
+
+  
+  var params = JSON.stringify({"path":downloadThumbInfo.save_path+resourceFile,
+    })
+   
+     
+
+   xhr.send(params);
+  }else
+   {
+         initUploadDxxx();
+   }
+ }
+
+ //generate new link
+ function generateNewLink(resourceFile)
+ {
+  
+
+   var xhr = new XMLHttpRequest();
+    xhr.onload = function() {
+      if (xhr.status === 200) {
+         
+        var fileInfo = JSON.parse(xhr.response);
+        
+
+          try
+          {
+            var url = fileInfo.url;
+            
+            updateThumbPreview(url);
+            
+          }catch(exception)
+          {
+            checkAndDownloadThumbFile();
+          }
+          
+      }
+      else {
+          var errorMessage = xhr.response;
+           
+           checkAndDownloadThumbFile();
+         
+          }
+  };
+  xhr.onerror = function()
+  {
+    
+    
+   checkAndDownloadThumbFile();
+  };
+  
+  xhr.open('POST', 'https://api.dropboxapi.com/2/sharing/create_shared_link_with_settings');
+  
+  xhr.setRequestHeader('Authorization', 'Bearer ' + uploadDXXX['xxdd']);
+
+  xhr.setRequestHeader('Content-Type', 'application/json');
+
+  
+  var params = JSON.stringify({"path":downloadThumbInfo.save_path+resourceFile,
+     "settings": {
+        "requested_visibility": "public"
+         }
+    });
+   
+  xhr.send(params);
+ }
+
+ function updateThumbPreview(url)
+ {
+   //reform url to display preview
+   var res = url.split("?");
+   url = res[0]+"?raw=1";
+   document.getElementById('thumb_img_'+downloadThumbInfo.id).src = url;
+   checkAndDownloadThumbFile();
+ }
