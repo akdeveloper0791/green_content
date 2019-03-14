@@ -63,6 +63,18 @@ class Player(models.Model):
       except Player.DoesNotExist:
         return False;
 
+    def getMyPlayers(userId):
+      player = Player.objects.filter(user_id=userId);
+      return list(player.values());
+
+    def isMyPlayer(playerId,userId):
+      try:
+        player = Player.objects.get(id=playerId,
+          user_id=userId);
+        return player;
+      except Player.DoesNotExist:
+        return False;
+
 
 #metrics modal
 class Metrics(models.Model):
@@ -126,3 +138,14 @@ class Age_Geder_Metrics(models.Model):
         return {'statusCode':1,'status':"Unable to save metrics"};
     except Exception as ex:
       return {'statusCode':1,'status':"Unable to save metrics - "+str(ex)};
+
+  def getViewerMetrics(secretKey,isUserId,postParams):
+      userId = secretKey;
+      if(isUserId==False):
+            userId = User_unique_id.getUserId(secretKey);
+            if(userId == False):
+                return {'statusCode':1,'status':
+                "Invalid session, please login"};
+      # check for player
+      if(Player.isMyPlayer(postParams.get('player'),secretKey)):
+        return True

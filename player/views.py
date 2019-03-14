@@ -9,6 +9,7 @@ from .models import Player, Age_Geder_Metrics
 from django.core.files.storage import FileSystemStorage
 import numpy as np
 import cv2
+from django.contrib.auth.decorators import login_required
 
 # Create your views here.
 @api_view(['POST'])
@@ -173,3 +174,32 @@ def refreshFCM(request):
         else:
             return JsonResponse({'statusCode':0,
                 'status':'Invalid details'});
+
+@login_required
+def viewerMetrics(request):
+    if request.user.is_authenticated:
+        devices = Player.getMyPlayers(request.user.id);
+        return render(request,'player/viewer_metrics.html',{'devices':devices})
+    else:
+        return render(request,'signin.html');
+
+
+def getViewerMetrics(request):
+    
+    if(request.method == 'POST'):
+        postParams = request.POST;
+        isUserId = False;
+        secretKey = request.POST.get("accessToken")
+        if(secretKey=='web'):
+            isUserId = True;
+            if(request.user.is_authenticated):
+                secretKey = request.user.id;
+            else:
+                return JsonResponse(
+                    {'statusCode':2,'status':"Invalid accessToken please login"});
+        result = Player.getViewerMetrics(secretKey,isUserId,postParams);
+    if request.user.is_authenticated:
+        devices = Player.getMyPlayers(request.user.id);
+        return render(request,'player/viewer_metrics.html',{'devices':devices})
+    else:
+        return render(request,'signin.html');
