@@ -183,9 +183,8 @@ def viewerMetrics(request):
     else:
         return render(request,'signin.html');
 
-
-def getViewerMetrics(request):
-    
+@api_view(['POST'])
+def getViewerMetrics(request):   
     if(request.method == 'POST'):
         postParams = request.POST;
         isUserId = False;
@@ -197,9 +196,5 @@ def getViewerMetrics(request):
             else:
                 return JsonResponse(
                     {'statusCode':2,'status':"Invalid accessToken please login"});
-        result = Player.getViewerMetrics(secretKey,isUserId,postParams);
-    if request.user.is_authenticated:
-        devices = Player.getMyPlayers(request.user.id);
-        return render(request,'player/viewer_metrics.html',{'devices':devices})
-    else:
-        return render(request,'signin.html');
+        result = Age_Geder_Metrics.getViewerMetrics(secretKey,isUserId,postParams);
+        return JsonResponse(result);    

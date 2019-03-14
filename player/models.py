@@ -3,6 +3,7 @@ from django.conf import settings
 import datetime
 from datetime import datetime as dt
 import json
+from cmsapp.models import User_unique_id
 
 
 # Create your models here.
@@ -147,5 +148,10 @@ class Age_Geder_Metrics(models.Model):
                 return {'statusCode':1,'status':
                 "Invalid session, please login"};
       # check for player
-      if(Player.isMyPlayer(postParams.get('player'),secretKey)):
-        return True
+      if(Player.isMyPlayer(postParams.get('player'),userId)):
+        metrics = Age_Geder_Metrics.objects.filter(player_id=postParams.get('player'),
+          created_at__range=[postParams.get('from_date'), postParams.get('to_date')]);
+        if(len(metrics)>=1):
+          return {'statusCode':0,'metrics':list(metrics.values())}
+        else:
+          return {'statusCode':4,'status':"No metrics found for the selected dates"};
