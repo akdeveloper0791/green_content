@@ -374,7 +374,10 @@ function downloadThumbFile()
 
  function deleteCampaign(campaignId)
  {
-  displayInitUploadBusyDialog();
+  var isDelete = confirm("Are you sure to delete this Campaign? Click \"Ok\" to delete.");
+  if(isDelete)
+  {
+    displayInitUploadBusyDialog();
    var xhr = new XMLHttpRequest();
    xhr.onload = function() {
       if (xhr.status === 200) {
@@ -418,6 +421,8 @@ function downloadThumbFile()
   var params = 'accessToken=web&camp_id='+campaignId+'&mac=web';
    
    xhr.send(params);
+  }
+  
  }
 
  function deleteError(msg)
