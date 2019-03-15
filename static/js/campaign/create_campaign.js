@@ -680,7 +680,9 @@ function initXXX()
 
 function prepareInfoFile(mediaName)
 {
-  var infoJSON = { "type": "multi_region", "regions": regionsInfo }; 
+  var playDuration = document.getElementById("file_duration").value;
+  var infoJSON = { "type": "multi_region", "regions": regionsInfo,
+  "duration": playDuration }; 
   
   info = JSON.stringify(infoJSON);
   //var blob = new Blob([info], {type: "text/plain;charset=utf-8"});
