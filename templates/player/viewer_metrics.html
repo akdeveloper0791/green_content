@@ -179,32 +179,31 @@ function dismissBusyDialog()
 }
 
 function display_reports(responseObj){
-	var metrics = responseObj.metrics;
-	//console.log("Adasd"+JSON.stringify(metrics));
+	var m_result = responseObj.metrics;
+	
 	var dvTable = document.createElement("div");
 
 
-	if(metrics.length>=0){
+	if(m_result.length>=0){
 
 
      document.getElementById('metrix_list').innerHTML = "";
      var new_rows="";
-    console.log("metrics length-"+metrics.length);
+    
 
-		for (var i = 0; i < metrics.length; i++) 
-		    {
-		     var metrics = metrics[i];
+		for (var i = 0; i < m_result.length; i++) 
+		{
+		     var metrics = m_result[i];
 
 		      new_rows += '<tr><td>'+metrics.created_at+'</td><td>'+metrics.g_male+'</td><td>'+metrics.g_female+'</td><td>'+metrics.age_0_2+'</td><td>'+metrics.age_4_6+'</td><td>'+metrics.age_8_12+'</td><td>'+metrics.age_15_20+'</td><td>'+metrics.age_25_32+'</td><td>'+metrics.age_38_43+'</td><td>'+metrics.age_48_53+'</td><td>'+metrics.age_60_100+'</td></tr>';  
-
-           console.log("new_rows"+i+"-"+new_rows); 		
-       		}
+		
+    }
 
        		
      //new_rows += new_rows
 			 //document.getElementById('metrix_list').innerHTML += new_rows;
          $("#metrix_list").append(new_rows);
-       console.log("new rows"+new_rows);
+       
 
 	}else{
 
@@ -222,7 +221,7 @@ function display_reports(responseObj){
 		}else if(to_date==null || to_date == ""){
 			swal("please select To_Date");
 		}
-		//console.log(dev_id+"dsfasdf"+from_date+"dsfasd"+to_date);
+		
 		if (Date.parse(from_date) > Date.parse(to_date)) {
 			swal("Invalid Date Range!\nStart Date cannot be after End Date!")
 			return false;
@@ -244,6 +243,8 @@ function display_reports(responseObj){
                display_reports(responseObj);
             }else
             {
+              
+              document.getElementById('metrix_list').innerHTML = responseObj.status;
               dismissBusyDialog();
               swal(responseObj.status);
             }
