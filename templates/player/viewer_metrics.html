@@ -5,7 +5,7 @@
 <head>
 <!-- 	 <script  src='https://code.jquery.com/jquery-latest.min.js'></script> -->
 </head>
-<body onload="mydate()">
+<body >
 {% block header %} {% include 'header.html' %} {% endblock %}
 
 {% block body %}
@@ -180,25 +180,31 @@ function dismissBusyDialog()
 
 function display_reports(responseObj){
 	var metrics = responseObj.metrics;
-	console.log("Adasd"+JSON.stringify(metrics));
+	//console.log("Adasd"+JSON.stringify(metrics));
 	var dvTable = document.createElement("div");
 
 
 	if(metrics.length>=0){
 
 
+     document.getElementById('metrix_list').innerHTML = "";
+     var new_rows="";
+    console.log("metrics length-"+metrics.length);
 
 		for (var i = 0; i < metrics.length; i++) 
 		    {
 		     var metrics = metrics[i];
 
-		     var new_rows;
-	
-		     new_rows = '<tr><td>'+metrics.created_at+'</td><td>'+metrics.g_male+'</td><td>'+metrics.g_female+'</td><td>'+metrics.age_0_2+'</td><td>'+metrics.age_4_6+'</td><td>'+metrics.age_8_12+'</td><td>'+metrics.age_15_20+'</td><td>'+metrics.age_25_32+'</td><td>'+metrics.age_38_43+'</td><td>'+metrics.age_48_53+'</td><td>'+metrics.age_60_100+'</td></tr>';   		
+		      new_rows += '<tr><td>'+metrics.created_at+'</td><td>'+metrics.g_male+'</td><td>'+metrics.g_female+'</td><td>'+metrics.age_0_2+'</td><td>'+metrics.age_4_6+'</td><td>'+metrics.age_8_12+'</td><td>'+metrics.age_15_20+'</td><td>'+metrics.age_25_32+'</td><td>'+metrics.age_38_43+'</td><td>'+metrics.age_48_53+'</td><td>'+metrics.age_60_100+'</td></tr>';  
+
+           console.log("new_rows"+i+"-"+new_rows); 		
        		}
 
-       		 document.getElementById('metrix_list').innerHTML = "";
-			 document.getElementById('metrix_list').innerHTML += new_rows;
+       		
+     //new_rows += new_rows
+			 //document.getElementById('metrix_list').innerHTML += new_rows;
+         $("#metrix_list").append(new_rows);
+       console.log("new rows"+new_rows);
 
 	}else{
 
