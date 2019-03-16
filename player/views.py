@@ -5,7 +5,7 @@ from django.contrib.auth.models import User
 from django.http import JsonResponse
 from cmsapp.models import User_unique_id
 from signagecms import constants
-from .models import Player, Age_Geder_Metrics
+from .models import Player, Age_Geder_Metrics, Auto_Sync_Metrics
 from django.core.files.storage import FileSystemStorage
 import numpy as np
 import cv2
@@ -202,4 +202,14 @@ def getViewerMetrics(request):
             return JsonResponse(result); 
         else:
           return JsonResponse({'statusCode':6,
-            'status':'No data available'})   
+            'status':'No data available'})
+
+@login_required
+def deviceMgmt(request):
+    if(request.user.is_authenticated==False):
+        return render('/signin/');
+    else:
+        #get auto sync metrics
+        metrics = Auto_Sync_Metrics.getMetrics(request.user.id);
+        return render(request,'player/device_mgmt.html',{'res':metrics})
+        return JsonResponse(metrics);

@@ -168,3 +168,10 @@ class Auto_Sync_Metrics(models.Model):
 
     metrics.accessed_at= datetime.datetime.now();
     metrics.save();
+
+  def getMetrics(userId):
+    metrics = Auto_Sync_Metrics.objects.filter(player__user_id = userId);
+    if(len(metrics)>=1):
+      return {'statusCode':0,'metrics':list(metrics.values('player__name','accessed_at'))}
+    else:
+      return {'statusCode':1,'status':'No metrics'}

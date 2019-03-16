@@ -1,0 +1,56 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+	<style>
+table {
+  font-family: arial, sans-serif;
+  border-collapse: collapse;
+  border: 1px solid #dddddd;
+  width: 100%;
+}
+
+td, th {
+  border: 1px solid #dddddd;
+  text-align: center;
+
+}
+
+
+</style>
+
+{% block header %} {% include 'header.html' %} {% endblock %}
+</head>
+
+{% block body %}
+
+
+<body>
+<br /><br /><br />
+ {% if res.statusCode == 0 %}
+  <table>
+  	<tr>
+      <th style="text-align:center">Device Name</th>
+      <th style="text-align:center">License</th> 
+      <th style="text-align:center">Last Contacted At</th>
+    </tr>
+   {% for metrics in res.metrics %}
+    <tr>
+      <td >{{ metrics.player__name }} </td>
+      <td>Approved</td>
+      <td>{{ metrics.accessed_at}}</td>
+    </tr>
+    
+   {% endfor %}
+  </table>
+
+   
+{% else %}
+   <h1 align="center">{{ res.status}} </h1>
+{% endif %}
+
+{% endblock %}
+
+{% block footer %} {% include 'footer.html' %} {% endblock %}
+</body>

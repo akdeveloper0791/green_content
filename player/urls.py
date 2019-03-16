@@ -7,5 +7,6 @@ urlpatterns = [
     path('metrics',views.metrics,name='metrics'),
     path('refresh_fcm_api',views.refreshFCM,name='refreshFCM'),
     path('viewer_metrics',views.viewerMetrics,name="viewerMetrics"),
-    path('get_v_metrics',views.getViewerMetrics,name="getViewerMetrics")
+    path('get_v_metrics',views.getViewerMetrics,name="getViewerMetrics"),
+    path('device_mgmt',views.deviceMgmt,name="deviceMgmt")
     ]
