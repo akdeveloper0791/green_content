@@ -187,14 +187,19 @@ def viewerMetrics(request):
 def getViewerMetrics(request):   
     if(request.method == 'POST'):
         postParams = request.POST;
-        isUserId = False;
-        secretKey = request.POST.get("accessToken")
-        if(secretKey=='web'):
-            isUserId = True;
-            if(request.user.is_authenticated):
-                secretKey = request.user.id;
-            else:
-                return JsonResponse(
-                    {'statusCode':2,'status':"Invalid accessToken please login"});
-        result = Age_Geder_Metrics.getViewerMetrics(secretKey,isUserId,postParams);
-        return JsonResponse(result);    
+        if(postParams.get('player') and postParams.get('from_date') and postParams.get('to_date')
+            and postParams.get('accessToken')):     
+            isUserId = False;
+            secretKey = request.POST.get("accessToken")
+            if(secretKey=='web'):
+                isUserId = True;
+                if(request.user.is_authenticated):
+                    secretKey = request.user.id;
+                else:
+                    return JsonResponse(
+                        {'statusCode':2,'status':"Invalid accessToken please login"});
+            result = Age_Geder_Metrics.getViewerMetrics(secretKey,isUserId,postParams);
+            return JsonResponse(result); 
+        else:
+          return JsonResponse({'statusCode':6,
+            'status':'Invalid parameters'})   
