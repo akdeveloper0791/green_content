@@ -16,7 +16,8 @@ class Player(models.Model):
     expiry_date = models.DateTimeField()
     registered_at = models.DateTimeField(default=datetime.datetime.now())
     activated_by = models.CharField(max_length=25,default=0)#0 is self
-
+    location_desc = models.CharField(max_length=25,default="")
+    
     class Meta(object):
         unique_together=[
         ['mac']
@@ -36,6 +37,9 @@ class Player(models.Model):
             player.expiry_date = dt.now() + datetime.timedelta(days=15);
            player.name = data["name"];
            player.fcm_id = data['fcm_id'];
+           if('location_desc' in data):
+            player.location_desc = data['location_desc'];
+            
            player.save();
            return {'statusCode':0,'status':player.status,'player':player.id,'mac':data['mac'],
            'fcm':player.fcm_id};
