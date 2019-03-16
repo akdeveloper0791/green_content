@@ -6,7 +6,7 @@ from django.contrib.auth.decorators import login_required
 from .models import CampaignInfo,Approved_Group_Campaigns
 import json
 from group.models import GroupCampaigns
-from player.models import Auto_Sync_Metrics;
+from player.models import Last_Seen_Metrics;
 
 # Create your views here.
 @login_required
@@ -74,7 +74,7 @@ def listMyCampaignsAPI(request):
         result = CampaignInfo.getUserCampaignsWithInfo(secretKey,isUserId);
         if(request.POST.get('player')):
             #save auto sync metrics
-            Auto_Sync_Metrics.saveMetrics(request.POST.get('player'));
+            Last_Seen_Metrics.saveMetrics(request.POST.get('player'));
         return JsonResponse(result);
     else:
         return JsonResponse({'statusCode':1,

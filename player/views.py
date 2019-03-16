@@ -5,7 +5,7 @@ from django.contrib.auth.models import User
 from django.http import JsonResponse
 from cmsapp.models import User_unique_id
 from signagecms import constants
-from .models import Player, Age_Geder_Metrics, Auto_Sync_Metrics
+from .models import Player, Age_Geder_Metrics, Last_Seen_Metrics
 from django.core.files.storage import FileSystemStorage
 import numpy as np
 import cv2
@@ -43,6 +43,8 @@ def register(request):
                     break;
                 result = Player.registerPlayer(postParams.get('data'),userId);
                 if(result['statusCode']==0):
+                    #save auto sync metrics
+                    Last_Seen_Metrics.saveMetrics(result['player']);
                     return JsonResponse({'statusCode':0,'status':'Success','info':userInfo,'d_status':result['status'],'player':result['player'],
                         'mac':result['mac'],'fcm':result['fcm']});
                 else:
@@ -210,6 +212,6 @@ def deviceMgmt(request):
         return render('/signin/');
     else:
         #get auto sync metrics
-        metrics = Auto_Sync_Metrics.getMetrics(request.user.id);
+        metrics = Last_Seen_Metrics.getMetrics(request.user.id);
         return render(request,'player/device_mgmt.html',{'res':metrics})
         return JsonResponse(metrics);
