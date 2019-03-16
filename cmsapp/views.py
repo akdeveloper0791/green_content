@@ -1426,6 +1426,11 @@ import json
 @api_view(['GET','POST'])
 def gc_login_api(request):
     if request.method == 'POST':
+        
+        if(request.POST.get('player')):
+            #save auto sync metrics
+            Last_Seen_Metrics.saveMetrics(request.POST.get('player'));
+
         x = User.objects.filter(username= request.POST.get("email"))
         if x:
 
