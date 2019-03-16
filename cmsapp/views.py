@@ -30,7 +30,7 @@ from cmsapp.models import Youtube_links,Images_links,News_links,Searched_videos,
 from django.db.models import Q
 from rest_framework.decorators import api_view
 from django.contrib.auth.decorators import login_required
-
+from player.models import Last_Seen_Metrics;
 
 @login_required
 def home(request):
