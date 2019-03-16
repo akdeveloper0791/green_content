@@ -95,6 +95,7 @@ class GcGroups(models.Model):
                         gcGroupMembers.append(gcGroupMember);
                     #save group members
                     GcGroupMembers.objects.bulk_create(gcGroupMembers);
+                    response = GroupMemberAssignNotification.saveAssignNotifications(members,gcGroup.id,gcGroup.name,userId);
                 return {'statusCode':0,"status":
                 "Group has been created successfully"};
             
