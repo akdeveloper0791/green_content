@@ -202,4 +202,4 @@ def getViewerMetrics(request):
             return JsonResponse(result); 
         else:
           return JsonResponse({'statusCode':6,
-            'status':'Invalid parameters'})   
+            'status':'No data available'})   
