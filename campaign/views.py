@@ -6,6 +6,8 @@ from django.contrib.auth.decorators import login_required
 from .models import CampaignInfo,Approved_Group_Campaigns
 import json
 from group.models import GroupCampaigns
+from player.models import Auto_Sync_Metrics;
+
 # Create your views here.
 @login_required
 def upload_camp_web(request):
@@ -48,7 +50,7 @@ def initCampaignUpload(request):
 @login_required
 def listCampaignsWeb(request):
     if request.user.is_authenticated:
-        response = CampaignInfo.getUserCampaigns(request.user.id,True);
+        response = CampaignInfo.getUserCampaignsWithInfo(request.user.id,True);
         #get access token
         secretKey = User_unique_id.getUniqueKey(request.user.id);
         return render(request,'campaign/list.html',{'res':response,
@@ -70,6 +72,9 @@ def listMyCampaignsAPI(request):
                 return JsonResponse(
                     {'statusCode':2,'status':"Invalid accessToken please login"});
         result = CampaignInfo.getUserCampaignsWithInfo(secretKey,isUserId);
+        if(request.POST.get('player')):
+            #save auto sync metrics
+            Auto_Sync_Metrics.saveMetrics(request.POST.get('player'));
         return JsonResponse(result);
     else:
         return JsonResponse({'statusCode':1,

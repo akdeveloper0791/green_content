@@ -155,3 +155,16 @@ class Age_Geder_Metrics(models.Model):
           return {'statusCode':0,'metrics':list(metrics.values())}
         else:
           return {'statusCode':4,'status':"No metrics found for the selected dates"};
+
+class Auto_Sync_Metrics(models.Model):
+  player = models.OneToOneField('player.Player',on_delete=models.CASCADE,primary_key=True)
+  accessed_at = models.DateTimeField(default=datetime.datetime.now(),blank=False,null=False)
+
+  def saveMetrics(playerId):
+    try:
+      metrics = Auto_Sync_Metrics.objects.get(player_id=playerId);
+    except:
+      metrics = Auto_Sync_Metrics(player_id=playerId);
+
+    metrics.accessed_at= datetime.datetime.now();
+    metrics.save();
