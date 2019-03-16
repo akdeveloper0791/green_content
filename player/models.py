@@ -135,7 +135,8 @@ class Age_Geder_Metrics(models.Model):
           metrics.age_48_53 = ages[age];
         elif age == "7":
           metrics.age_60_100 = ages[age];
-
+     
+      metrics.created_at = datetime.datetime.now();
       metrics.save();
       if(metrics.id>=1):
         return {'statusCode':0}
