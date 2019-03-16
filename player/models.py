@@ -155,7 +155,8 @@ class Age_Geder_Metrics(models.Model):
       # check for player
       if(Player.isMyPlayer(postParams.get('player'),userId)):
         metrics = Age_Geder_Metrics.objects.filter(player_id=postParams.get('player'),
-          created_at__range=[postParams.get('from_date'), postParams.get('to_date')]);
+          created_at__range=[postParams.get('from_date'), postParams.get('to_date')]).order_by('-created_at');
+
         if(len(metrics)>=1):
           return {'statusCode':0,'metrics':list(metrics.values())}
         else:
