@@ -12,7 +12,7 @@ class Player(models.Model):
     mac = models.CharField(max_length=20,blank=False,null=False)
     name = models.CharField(max_length=25,blank=False,null=False)
     status = models.SmallIntegerField(default=0)#0->in trail, 1->activated, -1->expired
-    fcm_id = models.CharField(max_length=125)
+    fcm_id = models.CharField(max_length=250)
     expiry_date = models.DateTimeField()
     registered_at = models.DateTimeField(default=datetime.datetime.now())
     activated_by = models.CharField(max_length=25,default=0)#0 is self
