@@ -43,7 +43,7 @@ def register(request):
                     break;
                 result = Player.registerPlayer(postParams.get('data'),userId);
                 if(result['statusCode']==0):
-                    #save auto sync metrics
+                    #save last seen metrics
                     Last_Seen_Metrics.saveMetrics(result['player']);
                     return JsonResponse({'statusCode':0,'status':'Success','info':userInfo,'d_status':result['status'],'player':result['player'],
                         'mac':result['mac'],'fcm':result['fcm']});
@@ -61,6 +61,9 @@ def metrics(request):
     if('file' in request.FILES):
      player = Player.getPlayer(request.POST.get('player'),request.POST.get('p_mac'))
      if(player!=False):
+        #save auto sync metrics
+        Last_Seen_Metrics.saveMetrics(player);
+
         #Init open cv DNN(age and gender) and cascades(face detetion)
         face_detector = "/home/adskite/myproject/signagecms/haarcascade_frontalface_alt.xml"
         age_net = cv2.dnn.readNetFromCaffe(
