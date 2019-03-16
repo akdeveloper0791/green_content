@@ -179,7 +179,12 @@ class CampaignInfo(models.Model):
                 #res = SendEmail.sendEmail(userId,message);
                 return {'statusCode':0,'status':'Campaign has been deleted successfully'};
             except Multiple_campaign_upload.DoesNotExist:
-                return {'statusCode':2,'status':'Invalid campaign'}
+                #check whether campaign is assigned or not
+                try:
+                    campaign = Approved_Group_Campaigns.objects.get(user_id=userId,campaign_id=campaignId);
+                    return {'statusCode':2,'status':'Dear  User,  This is Campaign is Shared from Group. Please go to My Memberships in GC Groups and Remove'}
+                except:
+                    return {'statusCode':2,'status':'Invalid campaign'}
             except Exception as e:
                 return {'statusCode':3,'status':'Error -'+str(e)};
 
