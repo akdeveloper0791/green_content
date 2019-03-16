@@ -164,7 +164,7 @@ class Age_Geder_Metrics(models.Model):
         metrics = Age_Geder_Metrics.objects.filter(player_id=player,
           created_at__range=[postParams.get('from_date'), postParams.get('to_date')]).order_by('-created_at');
 
-      if(len(metrics)>=1):
+      if(metrics.exists()):
           return {'statusCode':0,'metrics':list(metrics.values('created_at','g_female','g_male','player__name','age_0_2','age_4_6','age_8_12',
             'age_15_20','age_25_32','age_38_43','age_48_53','age_60_100'))}
       else:
@@ -185,7 +185,7 @@ class Last_Seen_Metrics(models.Model):
 
   def getMetrics(userId):
     metrics = Last_Seen_Metrics.objects.filter(player__user_id = userId);
-    if(len(metrics)>=1):
+    if(metrics.exists()):
       return {'statusCode':0,'metrics':list(metrics.values('player__name','accessed_at'))}
     else:
       return {'statusCode':1,'status':'No metrics'}
