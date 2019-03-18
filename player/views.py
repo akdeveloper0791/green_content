@@ -65,14 +65,14 @@ def metrics(request):
         Last_Seen_Metrics.saveMetrics(player);
 
         #Init open cv DNN(age and gender) and cascades(face detetion)
-        face_detector = "/home/adskite/myproject/signagecms/haarcascade_frontalface_alt.xml"
+        face_detector = "haarcascade_frontalface_alt.xml"
         age_net = cv2.dnn.readNetFromCaffe(
-                        "/home/adskite/myproject/signagecms/age_gender_model/deploy_age.prototxt", 
-                        "/home/adskite/myproject/signagecms/age_gender_model/age_net.caffemodel")
+                        "age_gender_model/deploy_age.prototxt", 
+                        "age_gender_model/age_net.caffemodel")
 
         gender_net = cv2.dnn.readNetFromCaffe(
-                        "/home/adskite/myproject/signagecms/age_gender_model/deploy_gender.prototxt", 
-                        "/home/adskite/myproject/signagecms/age_gender_model/gender_net.caffemodel")
+                        "age_gender_model/deploy_gender.prototxt", 
+                        "age_gender_model/gender_net.caffemodel")
 
         player = request.POST.get('player');
         fileObj = request.FILES['file'];
@@ -125,9 +125,10 @@ def metrics(request):
             file_location = '/player_metrics/{}/{}'.format(str(player),fs);'''
             response = Age_Geder_Metrics.saveMetrics(player,genders,ages);
             if(response['statusCode']==0):
-                  
+                #calculate player auto campaign rule
+                auto_campaign_rule = calculateAutoCampaignRule(ages,genders,faces);  
                 return JsonResponse({'statusCode':0,'faces':len(faces),
-                'ages':(ages),'genders':genders})
+                'ages':(ages),'genders':genders,'rule':auto_campaign_rule})
             else:
                 #fs.delete(saveResponse);
                 return JsonResponse({'statusCode':5,
@@ -163,6 +164,45 @@ def read_cv_image(path=None, stream=None, url=None):
         image = cv2.imdecode(image, cv2.IMREAD_COLOR)
 
     return image
+
+def calculateAutoCampaignRule(ages,genders,faces):
+    if("Male" in genders and genders['Male']==len(faces)):
+        return "male";
+    elif("Female" in genders and genders['Female']==len(faces)):
+        return "female";
+    elif(len(faces)==2 and "Female" in genders and "Male" in genders):
+        #check for couples
+        gender_pos=0;femaleAge=0;maleAge=0;
+        for gender in genders:
+            age_pos=0;
+            if(len(ages)==2):
+                for age in ages:
+                    if(age_pos == gender_pos):
+                        if(gender == "Female"):
+                            femaleAge = age;
+                        elif(gender=="Male"):
+                            maleAge = age;
+                        break;
+                    age_pos= age_pos+1;
+                gender_pos = gender_pos+1;
+            else:
+               for age in ages:
+                 femaleAge=age;
+                 maleAge=age; 
+            
+
+        
+        femaleAgeInt = int(femaleAge);
+        maleAgeInt = int(maleAge);
+        
+        if(femaleAgeInt >= 3 and (maleAgeInt==femaleAgeInt)):
+            return "couple";
+        else:
+            return "family";
+    else:
+        return "family";
+            
+
 
 @api_view(['POST'])
 def refreshFCM(request):
