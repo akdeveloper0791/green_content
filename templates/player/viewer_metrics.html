@@ -20,6 +20,7 @@
   <div class="rows">
   	<div class="col-sm-12">
     <div class='col-sm-4'>
+       <label>FROM</label>
       <div class="form-group">
         <div class='input-group date' id='datetimepicker2'>
           <input type='text' class="form-control" id="from_date"/>
@@ -30,6 +31,7 @@
       </div>
     </div>
        <div class='col-sm-4'>
+          <label>TO</label>
       <div class="form-group">
         <div class='input-group date' id='datetimepicker3'>
           <input type='text' class="form-control" id="to_date" />
@@ -41,6 +43,7 @@
     </div>
        <div class='col-sm-4'>
       <!-- <div class="form-group"> -->
+         <label>PLAYERS</label>
          <select name="Item_1" class="form-control" id="dev_id">
           <option value='All'>All</option>
          	{% for dev in devices %}
@@ -61,7 +64,7 @@
 <!-- {{ devices }} -->
 
 <!-- table -->
-<div class="container">
+<div class="container" style="overflow-x: auto;">
 	<table class="testTable table table-hover" >
 		<thead>
 			<tr>
