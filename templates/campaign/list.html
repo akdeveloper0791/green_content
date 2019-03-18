@@ -62,11 +62,15 @@ a.btn:active{
           margin-right: auto;
         ">
       </div>
-      <div class="col-md-8 col-xs-8" style="padding: 20px 2px;">
+      <div class="col-md-7 col-xs-7" style="padding: 20px 2px;">
         <p class="btn-custom" style="color:dodgerblue;margin: 0px;font-weight: 700;">{{ campaign.campaign_name }}</p>
         <p style="color:gray;font-size: 12px;">{{ campaign.created_date }}</p>
       </div>
       <div class="col-md-1 col-xs-1" style="padding:0px;text-align: center;">
+          <i class='fa fa-file-archive-o fa-lg' style='color:deepskyblue;margin:5px;cursor: pointer;padding: 30px 0px;' alt="Archive" title="Archive" onclick='function display(){swal("comming soon")};display()'></i>
+       <!--   <i class='fa fa-download' style='color:darkgreen;margin:5px;cursor: pointer;' alt="download" title="download" onclick='download("{{campaign.id}}","{{campaign.stor_location}}","{{campaign.campaign_name}}","{{campaign.save_path}}");'></i> -->
+      </div>
+        <div class="col-md-1 col-xs-1" style="padding:0px;text-align: center;">
           <i class='fa fa-trash fa-lg' style='color:orangered;margin:5px;cursor: pointer;padding: 30px 0px;' alt="Delete" title="Delete" onclick='deleteCampaign("{{campaign.id}}")'></i>
        <!--   <i class='fa fa-download' style='color:darkgreen;margin:5px;cursor: pointer;' alt="download" title="download" onclick='download("{{campaign.id}}","{{campaign.stor_location}}","{{campaign.campaign_name}}","{{campaign.save_path}}");'></i> -->
       </div>
@@ -164,7 +168,9 @@ var downloadThumbInfo = {
   })();
 
 $(".btn-custom").text(function(index, currentText) {
+  if(currentText.length>15){
     return currentText.substr(0, 15)+'...';
+  }
 });
 
 function getDownloadThumbInfo()
