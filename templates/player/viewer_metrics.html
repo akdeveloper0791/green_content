@@ -140,11 +140,13 @@
 <script type="text/javascript">
 
 $(document).ready(function() {
-   $("#get_date").trigger('click');
-   $("#get_date").trigger('click');
+   // $("#get_date").trigger('click');
+   // $("#get_date").trigger('click');
     $("#set_date").trigger('click');
    $("#set_date").trigger('click');
 });
+
+window.onload=document.getElementById('from_date').value="2019-03-18 06:00:00";
 
 	  $('#datetimepicker2').datetimepicker({
             format: 'YYYY-MM-DD HH:mm:ss'
