@@ -33,10 +33,13 @@ class Player(models.Model):
             player = Player.objects.get(mac=data['mac'])
             
            except Player.DoesNotExist:
-            player = Player(user_id=userId,mac=data['mac']);
+            player = Player(mac=data['mac']);
             player.expiry_date = dt.now() + datetime.timedelta(days=15);
+           
+           player.user_id = userId;
            player.name = data["name"];
            player.fcm_id = data['fcm_id'];
+           
            if('location_desc' in data):
             player.location_desc = data['location_desc'];
             
