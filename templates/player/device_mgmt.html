@@ -2,20 +2,36 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+<script  src="{% static 'js/player/device_mgmt_js.js' %}"></script>
+
+
 
 <style>
-table {
+
+table.info {
   font-family: arial, sans-serif;
   border-collapse: collapse;
   border: 1px solid #dddddd;
   width: 100%;
 }
 
-td, th {
+
+
+table { 
+  display: table;
+  border-collapse: separate;
+  border-spacing: 15px 10px;
+  border-color: gray;
+
+}
+
+
+td.info, th.info {
   border: 1px solid #dddddd;
   text-align: center;
 
 }
+
 
 </style>
 </head>
@@ -24,33 +40,67 @@ td, th {
 {% block header %} {% include 'header.html' %} {% endblock %}
 
 
+
 {% block body %}
+<body>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.15.1/moment.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
-<script  src="{% static 'player/device_mgmt_js.js' %}"></script>
+
+<style>
+
+
+.h4,h4{
+    margin:0px;
+}
+
+.actives{
+    background:green;
+
+}
+a.btn:active{
+    background:green;
+}
+
+
+/* The Modal (background) */
+.modal {
+  display: none; /* Hidden by default */
+  position: fixed; /* Stay in place */
+  z-index: 1; /* Sit on top */
+  padding-top: 95px; /* Location of the box */
+  left: 0;
+  top: 0;
+  width: 100%; /* Full width */
+  height: 100%; /* Full height */
+  overflow: auto; /* Enable scroll if needed */
+  background-color: rgb(0,0,0); /* Fallback color */
+  background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+}
+
+</style>
 
 <br /><br /><br /> <br />
-
+ 
  {% if res.statusCode == 0 %}
-  <table align="center">
+  <table class="info" align="center">
   	<tr>
-      <th style="text-align:center">Device Name</th>
-      <th style="text-align:center">License</th> 
-      <th style="text-align:center">Last Contacted At</th>
-      <th style="text-align:center">Campaign</th>
-      <th style="text-align:center">Rules</th>
-      <th style="text-align:center">Power</th>
+      <th class="info" style="text-align:center">Device Name</th>
+      <th class="info" style="text-align:center">License</th> 
+      <th class="info" style="text-align:center">Last Contacted At</th>
+      <th class="info" style="text-align:center">Campaign</th>
+      <!--<th class="info" style="text-align:center">Rules</th>
+      <th class="info" style="text-align:center">Power</th>-->
     </tr>
    {% for metrics in res.metrics %}
     <tr>
-      <td style="color:#5FCF80;font-weight: bold">{{ metrics.player__name }} </td>
-      <td>Approved</td>
-      <td>{{ metrics.accessed_at}}</td>
-      <td style="cursor:pointer;color:#5D8AA8"><u>Select</u></td>
-      <td style="cursor:pointer;color:#5D8AA8"><u>Edit</u></td>
-      <td style="cursor:pointer;color:#5D8AA8"><u>Schedule</u></td>
+      <td class="info" style="color:#5FCF80;font-weight: bold" id="{{ metrics.player__id }}_player_name">{{ metrics.player__name }} </td>
+      <td class="info" >Approved</td>
+      <td class="info" >{{ metrics.accessed_at}}</td>
+      <td class="info" style="cursor:pointer;color:#5D8AA8" onclick='getCampaignInfo({{ metrics.player__id }});' ><u>Select </u></td> 
+     <!-- <td class="info" style="cursor:pointer;color:#5D8AA8"><u>Edit</u></td>
+      <td class="info" style="cursor:pointer;color:#5D8AA8"><u>Schedule</u></td> -->
     </tr>
     
    {% endfor %}
@@ -60,6 +110,8 @@ td, th {
 {% else %}
    <h1 align="center">{{ res.status}} </h1>
 {% endif %}
+
+{% include 'campaign/list_mycampaigns_cb.html' %}
 
  <!-- div to display campaigns info -->
     <!-- The Modal -->
@@ -77,10 +129,9 @@ td, th {
         
         <!-- Modal body -->
         <div class="modal-body">
-          
-         <hr>
+          <input type="hidden" id="player_campaign_info_id" />
           <div id="campaigns_info">
-            <h4 style="color:cornflowerblue;display:inline-block"> Campaigns</h4> <button type="button" style="float: right;" class="btn btn-green " onclick="displayCampaignsToAdd()">Assign </button>
+            <h4 style="color:cornflowerblue;display:inline-block"> Campaigns</h4> <button type="button" style="float: right;" class="btn btn-green " onclick="displayCampaignsToAdd()">Assign </button> </br></br>
             
             <div id="player_info_campaigns">
             </div>
@@ -97,7 +148,10 @@ td, th {
       </div>
     </div>
   </div>
-
+ 
+ <script>
+  csrf_token = "{{ csrf_token }}"
+ </script>
 {% endblock %}
 
 {% block footer %} {% include 'footer.html' %} {% endblock %}

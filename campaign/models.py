@@ -131,6 +131,7 @@ class CampaignInfo(models.Model):
                 LEFT JOIN campaign_campaigninfo as camInfo ON campaigns.id = camInfo.campaign_id_id WHERE (campaigns.campaign_uploaded_by =  %s OR campaigns.id IN ( 
                     SELECT campaign_id FROM campaign_approved_group_campaigns WHERE user_id=%s )) 
                 group by campaigns.id ORDER BY campaigns.updated_date DESC'''
+            
             cursor.execute(conditionQuery,[userId,userId])
             campaigns = dictfetchall(cursor);
             cursor.close();
@@ -334,7 +335,7 @@ class Player_Campaign(models.Model):
                     Player_Campaign.objects.bulk_create(campaignsBulk);
                     
                     return {'statusCode':0,'status':
-                    'Campaigns have been assigned successfully','response':response};
+                    'Campaigns have been assigned successfully'};
                 else:
                     return {'statusCode':5,'status':
                     'Some of the campaigns are not found, please refresh and try again later'};
@@ -386,3 +387,26 @@ class Player_Campaign(models.Model):
             return {'statusCode':3,'status':
                 "Invalid request parameters"};
     
+    def getPlayerCampaignsWithInfo(player,secretKey):
+        userId = User_unique_id.getUserId(secretKey);
+        if(userId == False):
+            return {'statusCode':1,'status':
+                "Invalid session, please login"};
+        
+        with connection.cursor() as cursor:
+            conditionQuery = '''SELECT campaigns.*, camInfo.info  FROM cmsapp_multiple_campaign_upload as campaigns 
+                LEFT JOIN campaign_campaigninfo as camInfo ON campaigns.id = camInfo.campaign_id_id WHERE (campaigns.id IN ( 
+                    SELECT campaign_id FROM campaign_player_campaign WHERE user_id=%s and player_id= %s)) 
+                group by campaigns.id ORDER BY campaigns.updated_date DESC'''
+            
+            cursor.execute(conditionQuery,[userId,player])
+            campaigns = dictfetchall(cursor);
+            cursor.close();
+            connection.close();
+        
+        #campaigns = Multiple_campaign_upload.objects.filter(campaign_uploaded_by=userId);
+        if(len(campaigns)<=0):
+            return {'statusCode':2,'status':
+            'No campaigns Found'};
+        else:
+            return {'statusCode':0,'campaigns':campaigns};

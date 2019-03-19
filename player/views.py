@@ -325,3 +325,16 @@ def removeCampaigns(request):
     else:
         return JsonResponse({'statusCode':1,
             'status':'Invalid method'});
+
+@api_view(['POST'])
+def getPlayerCampaigns(request):
+    if(request.method == 'POST'):
+        player = request.POST.get('player');
+        result = Player_Campaign.getPlayerCampaignsWithInfo(player,request.POST.get("secretKey"));
+        
+        #save auto sync metrics
+        Last_Seen_Metrics.saveMetrics(player);
+        return JsonResponse(result);
+    else:
+        return JsonResponse({'statusCode':1,
+            'status':"Invalid request"});

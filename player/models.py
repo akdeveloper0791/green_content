@@ -189,6 +189,6 @@ class Last_Seen_Metrics(models.Model):
   def getMetrics(userId):
     metrics = Last_Seen_Metrics.objects.filter(player__user_id = userId);
     if(metrics.exists()):
-      return {'statusCode':0,'metrics':list(metrics.values('player__name','accessed_at'))}
+      return {'statusCode':0,'metrics':list(metrics.values('player__id','player__name','accessed_at'))}
     else:
       return {'statusCode':1,'status':'No metrics'}
