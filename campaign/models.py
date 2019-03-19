@@ -261,12 +261,13 @@ class Approved_Group_Campaigns(models.Model):
             return {'statusCode':3,'status':'Campaign not found'};
 
 class Player_Campaign(models.Model):
+  user = models.ForeignKey(settings.AUTH_USER_MODEL,on_delete=models.CASCADE)
   player = models.ForeignKey('player.Player',on_delete=models.CASCADE)
   campaign = models.ForeignKey('cmsapp.Multiple_campaign_upload',on_delete=models.CASCADE)
   created_at = models.DateTimeField(default=datetime.datetime.now())
 
   class Meta(object):
         unique_together = [
-        ['player','campaign']
+        ['user','player','campaign']
         ]
  
