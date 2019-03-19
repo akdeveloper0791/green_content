@@ -10,6 +10,7 @@ from django.core.files.storage import FileSystemStorage
 import numpy as np
 import cv2
 from django.contrib.auth.decorators import login_required
+from campaign.models import Player_Campaign
 
 # Create your views here.
 @api_view(['POST'])
@@ -258,3 +259,69 @@ def deviceMgmt(request):
         metrics = Last_Seen_Metrics.getMetrics(request.user.id);
         return render(request,'player/device_mgmt.html',{'res':metrics})
         return JsonResponse(metrics);
+
+
+@api_view(['POST'])
+def groupCampaingsInfo(request):
+    if(request.method == 'POST'):
+        accessToken = request.POST.get('accessToken');
+        isWeb = False;
+        if(accessToken == 'web'):
+            if(request.user.is_authenticated):
+                accessToken = request.user.id;
+                isWeb = True;
+            else:
+                return JsonResponse({'statusCode':2,
+                    'status':"Invalid accessToken, please login"});
+
+        response = Player_Campaign.getCampaignsInfo(accessToken,
+            request.POST.get('pId'),isWeb);
+        return JsonResponse(response);
+        
+    else:
+        return JsonResponse({'statusCode':
+            1,'status':'Invalid method'})
+
+@api_view(['POST'])
+def assignCampaigns(request):
+    if(request.method == 'POST'):
+        isWeb = False;
+        accessToken = request.POST.get('accessToken');
+        if(accessToken == 'web'):
+            if(request.user.is_authenticated):
+                accessToken = request.user.id;
+                isWeb = True;
+            else:
+                return JsonResponse({'status':2,
+                    'status':"Invalid accessToken please login and try"});
+        
+        result = Player_Campaign.assignNewCampaigns(
+            accessToken,request.POST.get('pId'),
+            request.POST.get('campaigns'),isWeb);
+
+        return JsonResponse(result);
+    else:
+        return JsonResponse({'statusCode':1,
+            'status':'Invalid method'});
+
+@api_view(['POST'])
+def removeCampaigns(request):
+    if(request.method == 'POST'):
+        isWeb = False;
+        accessToken = request.POST.get('accessToken');
+        if(accessToken == 'web'):
+            if(request.user.is_authenticated):
+                accessToken = request.user.id;
+                isWeb = True;
+            else:
+                return JsonResponse({'status':2,
+                    'status':"Invalid accessToken please login and try"});
+        
+        result = Player_Campaign.removeCampaigns(
+            accessToken,request.POST.get('pId'),
+            request.POST.get('campaigns'),isWeb);
+
+        return JsonResponse(result);
+    else:
+        return JsonResponse({'statusCode':1,
+            'status':'Invalid method'});

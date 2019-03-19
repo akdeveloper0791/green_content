@@ -12,6 +12,8 @@ from django.conf import settings
 from .Notifications import SendCampDeleteNotification,SendEmail
 import uuid 
 import time
+from player.models import Player
+from django.db import IntegrityError
 
 
 def dictfetchall(cursor):
@@ -261,13 +263,126 @@ class Approved_Group_Campaigns(models.Model):
             return {'statusCode':3,'status':'Campaign not found'};
 
 class Player_Campaign(models.Model):
-  user = models.ForeignKey(settings.AUTH_USER_MODEL,on_delete=models.CASCADE)
-  player = models.ForeignKey('player.Player',on_delete=models.CASCADE)
-  campaign = models.ForeignKey('cmsapp.Multiple_campaign_upload',on_delete=models.CASCADE)
-  created_at = models.DateTimeField(default=datetime.datetime.now())
+    user = models.ForeignKey(settings.AUTH_USER_MODEL,on_delete=models.CASCADE)
+    player = models.ForeignKey('player.Player',on_delete=models.CASCADE)
+    campaign = models.ForeignKey('cmsapp.Multiple_campaign_upload',on_delete=models.CASCADE)
+    created_at = models.DateTimeField(default=datetime.datetime.now())
 
-  class Meta(object):
+    class Meta(object):
         unique_together = [
         ['user','player','campaign']
         ]
- 
+  
+    def getCampaignsInfo(userId,playerId,isUserId=False):
+        if(isUserId == False):
+            userId = User_unique_id.getUserId(userId);
+            if(userId == False):
+                return {'statusCode':1,'status':
+                "Invalid session, please login"};
+        
+        #get group info
+        try:
+            #playerInfo = Player.objects.get(id=playerId,user_id=userId);
+            campaigns = Player_Campaign.objects.filter(campaign__campaign_uploaded_by=userId,player_id=playerId).select_related('campaign');
+            campaigns = list(campaigns.values('campaign__id','campaign__campaign_name'));
+            return {'statusCode':0,
+            'campaigns':campaigns};
+
+        except Player.DoesNotExist:
+            return {'statusCode':2,'status':'Player not found'}
+
+    def assignNewCampaigns(userId,pId,campaigns,isWeb):
+        if(isWeb == False):
+            userId = User_unique_id.getUserId(userId);
+            if(userId == False):
+                return {'statusCode':1,'status':
+                "Invalid session, please login"};
+        
+        try:
+           campaigns =  json.loads(campaigns);
+           return Player_Campaign.addCampaign(userId,pId,campaigns);
+           
+        except ValueError as ex:
+            return {'statusCode':3,'status':
+                "Invalid request parameters, campaigns should not be zero - "+str(ex)};
+        
+        except IntegrityError as e:
+            return {'statusCode':5,'status':
+            "Player has already some of the campaigns provided, please check and add again"};
+
+        except Exception as e:
+            return {'statusCode':3,'status':
+                "Invalid request parameters --"+str(e)};
+
+    def addCampaign(userId,pId,campaigns):
+        if(pId and int(pId)>=1 and campaigns and len(campaigns)>=1):
+            #check group info
+            try:
+                playerInfo = Player.objects.get(id=pId,user_id=userId);
+                #check for campaigns (provided campaigns must be user uploaded)
+                multipleCampaigns = Multiple_campaign_upload.objects.filter(
+                    id__in=campaigns,campaign_uploaded_by=userId);
+                multipleCampaignLength = len(multipleCampaigns);
+
+                if(multipleCampaignLength == len(campaigns)):
+                    #prepare object to bulk insert
+                    campaignsBulk = [];
+                    for campaignId in campaigns:
+                        campaignsBulk.append(
+                            Player_Campaign(user_id=userId,player_id=pId,campaign_id=campaignId));
+
+                    Player_Campaign.objects.bulk_create(campaignsBulk);
+                    
+                    return {'statusCode':0,'status':
+                    'Campaigns have been assigned successfully','response':response};
+                else:
+                    return {'statusCode':5,'status':
+                    'Some of the campaigns are not found, please refresh and try again later'};
+            except Player.DoesNotExist:
+                return {'statusCode':4,
+                'status':"Player not found please check and try again"};
+            
+        else:
+            return {'statusCode':3,'status':
+                "Invalid request parameters"};
+
+    def removeCampaigns(userId,pId,campaigns,isWeb):
+        if(isWeb == False):
+            userId = User_unique_id.getUserId(userId);
+            if(userId == False):
+                return {'statusCode':1,'status':
+                "Invalid session, please login"};
+        
+        try:
+           campaigns =  json.loads(campaigns);
+           return Player_Campaign.checkAndRemoveCampaign(userId,pId,campaigns);
+           
+        except ValueError as ex:
+            return {'statusCode':3,'status':
+                "Invalid request parameters, campaigns should not be zero - "+str(ex)};
+        
+        except IntegrityError as e:
+            return {'statusCode':5,'status':
+            "Player has already some of the campaigns provided, please check and add again"};
+
+        except Exception as e:
+            return {'statusCode':3,'status':
+                "Invalid request parameters --"+str(e)};
+
+    def checkAndRemoveCampaign(userId,pId,campaigns):
+        if(pId and int(pId)>=1 and campaigns and len(campaigns)>=1):
+            #check group info
+            try:
+                #groupInfo = GcGroups.objects.get(id=gId,user_id=userId);   
+                Player_Campaign.objects.filter(user_id=userId,player_id=pId,campaign_id__in=campaigns).delete()
+                return {'statusCode':0,'status':
+                    'Campaigns have been removed successfully'};
+                
+            except PLayer.DoesNotExist:
+                return {'statusCode':4,
+                'status':"Player not found please check and try again"};
+            
+        else:
+            return {'statusCode':3,'status':
+                "Invalid request parameters"};
+    

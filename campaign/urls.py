@@ -13,4 +13,5 @@ urlpatterns = [
     path('create/', views.create, name='create'),
     path('approve/<int:one>/<int:two>', views.approveCampaignNotif, name='approveCampaignNotif')
     
+    
 ]
