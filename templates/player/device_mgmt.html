@@ -17,7 +17,6 @@ td, th {
 
 }
 
-
 </style>
 </head>
 
@@ -30,9 +29,7 @@ td, th {
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.15.1/moment.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
-
-
-
+<script  src="{% static 'player/device_mgmt_js.js' %}"></script>
 
 <br /><br /><br /> <br />
 
@@ -42,12 +39,18 @@ td, th {
       <th style="text-align:center">Device Name</th>
       <th style="text-align:center">License</th> 
       <th style="text-align:center">Last Contacted At</th>
+      <th style="text-align:center">Campaign</th>
+      <th style="text-align:center">Rules</th>
+      <th style="text-align:center">Power</th>
     </tr>
    {% for metrics in res.metrics %}
     <tr>
       <td style="color:#5FCF80;font-weight: bold">{{ metrics.player__name }} </td>
       <td>Approved</td>
       <td>{{ metrics.accessed_at}}</td>
+      <td style="cursor:pointer;color:#5D8AA8"><u>Select</u></td>
+      <td style="cursor:pointer;color:#5D8AA8"><u>Edit</u></td>
+      <td style="cursor:pointer;color:#5D8AA8"><u>Schedule</u></td>
     </tr>
     
    {% endfor %}
@@ -57,6 +60,43 @@ td, th {
 {% else %}
    <h1 align="center">{{ res.status}} </h1>
 {% endif %}
+
+ <!-- div to display campaigns info -->
+    <!-- The Modal -->
+  <div class="modal" id="campaigns_info">
+    <div class="modal-dialog">
+      <div class="modal-content">
+      
+        <!-- Modal Header -->
+        <div class="modal-header">
+         <p id="campaigns_info_player" style="color:#4CAF50;text-align: center;font-weight: 700;font-size:26px;">Player</p>
+      
+          </div>
+         <!--  </div>
+        </div> -->
+        
+        <!-- Modal body -->
+        <div class="modal-body">
+          
+         <hr>
+          <div id="campaigns_info">
+            <h4 style="color:cornflowerblue;display:inline-block"> Campaigns</h4> <button type="button" style="float: right;" class="btn btn-green " onclick="displayCampaignsToAdd()">Assign </button>
+            
+            <div id="player_info_campaigns">
+            </div>
+          </div>
+
+        </div>
+        
+        <!-- Modal footer -->
+        <div class="modal-footer"><center>
+          <button type="button" class="btn btn-danger" data-dismiss="modal" id
+          ="player_campaign_info_close" onclick="closePlayerCampaignInfo()">Close</button></center>
+        </div>
+        
+      </div>
+    </div>
+  </div>
 
 {% endblock %}
 

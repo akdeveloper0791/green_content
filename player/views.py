@@ -10,6 +10,7 @@ from django.core.files.storage import FileSystemStorage
 import numpy as np
 import cv2
 from django.contrib.auth.decorators import login_required
+from campaign.models import Player_Campaign
 
 # Create your views here.
 @api_view(['POST'])
@@ -125,9 +126,10 @@ def metrics(request):
             file_location = '/player_metrics/{}/{}'.format(str(player),fs);'''
             response = Age_Geder_Metrics.saveMetrics(player,genders,ages);
             if(response['statusCode']==0):
-                  
+                #calculate player auto campaign rule
+                auto_campaign_rule = calculateAutoCampaignRule(ages,genders,faces);  
                 return JsonResponse({'statusCode':0,'faces':len(faces),
-                'ages':(ages),'genders':genders})
+                'ages':(ages),'genders':genders,'rule':auto_campaign_rule})
             else:
                 #fs.delete(saveResponse);
                 return JsonResponse({'statusCode':5,
@@ -163,6 +165,45 @@ def read_cv_image(path=None, stream=None, url=None):
         image = cv2.imdecode(image, cv2.IMREAD_COLOR)
 
     return image
+
+def calculateAutoCampaignRule(ages,genders,faces):
+    if("Male" in genders and genders['Male']==len(faces)):
+        return "male";
+    elif("Female" in genders and genders['Female']==len(faces)):
+        return "female";
+    elif(len(faces)==2 and "Female" in genders and "Male" in genders):
+        #check for couples
+        gender_pos=0;femaleAge=0;maleAge=0;
+        for gender in genders:
+            age_pos=0;
+            if(len(ages)==2):
+                for age in ages:
+                    if(age_pos == gender_pos):
+                        if(gender == "Female"):
+                            femaleAge = age;
+                        elif(gender=="Male"):
+                            maleAge = age;
+                        break;
+                    age_pos= age_pos+1;
+                gender_pos = gender_pos+1;
+            else:
+               for age in ages:
+                 femaleAge=age;
+                 maleAge=age; 
+            
+
+        
+        femaleAgeInt = int(femaleAge);
+        maleAgeInt = int(maleAge);
+        
+        if(femaleAgeInt >= 3 and (maleAgeInt==femaleAgeInt)):
+            return "couple";
+        else:
+            return "family";
+    else:
+        return "family";
+            
+
 
 @api_view(['POST'])
 def refreshFCM(request):
@@ -218,3 +259,69 @@ def deviceMgmt(request):
         metrics = Last_Seen_Metrics.getMetrics(request.user.id);
         return render(request,'player/device_mgmt.html',{'res':metrics})
         return JsonResponse(metrics);
+
+
+@api_view(['POST'])
+def groupCampaingsInfo(request):
+    if(request.method == 'POST'):
+        accessToken = request.POST.get('accessToken');
+        isWeb = False;
+        if(accessToken == 'web'):
+            if(request.user.is_authenticated):
+                accessToken = request.user.id;
+                isWeb = True;
+            else:
+                return JsonResponse({'statusCode':2,
+                    'status':"Invalid accessToken, please login"});
+
+        response = Player_Campaign.getCampaignsInfo(accessToken,
+            request.POST.get('pId'),isWeb);
+        return JsonResponse(response);
+        
+    else:
+        return JsonResponse({'statusCode':
+            1,'status':'Invalid method'})
+
+@api_view(['POST'])
+def assignCampaigns(request):
+    if(request.method == 'POST'):
+        isWeb = False;
+        accessToken = request.POST.get('accessToken');
+        if(accessToken == 'web'):
+            if(request.user.is_authenticated):
+                accessToken = request.user.id;
+                isWeb = True;
+            else:
+                return JsonResponse({'status':2,
+                    'status':"Invalid accessToken please login and try"});
+        
+        result = Player_Campaign.assignNewCampaigns(
+            accessToken,request.POST.get('pId'),
+            request.POST.get('campaigns'),isWeb);
+
+        return JsonResponse(result);
+    else:
+        return JsonResponse({'statusCode':1,
+            'status':'Invalid method'});
+
+@api_view(['POST'])
+def removeCampaigns(request):
+    if(request.method == 'POST'):
+        isWeb = False;
+        accessToken = request.POST.get('accessToken');
+        if(accessToken == 'web'):
+            if(request.user.is_authenticated):
+                accessToken = request.user.id;
+                isWeb = True;
+            else:
+                return JsonResponse({'status':2,
+                    'status':"Invalid accessToken please login and try"});
+        
+        result = Player_Campaign.removeCampaigns(
+            accessToken,request.POST.get('pId'),
+            request.POST.get('campaigns'),isWeb);
+
+        return JsonResponse(result);
+    else:
+        return JsonResponse({'statusCode':1,
+            'status':'Invalid method'});

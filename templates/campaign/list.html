@@ -33,10 +33,6 @@ a.btn:active{
 
 <section id="contact" class="section-padding">
   
-
-
-
-
 <div class='container' id="listemail">
 <div class='rows'>
   <a class="nav-link" href="{% url 'create' %}" style="float:right;font-weight:bold" >
@@ -66,9 +62,16 @@ a.btn:active{
         <p class="btn-custom" style="color:dodgerblue;margin: 0px;font-weight: 700;">{{ campaign.campaign_name }}</p>
         <p style="color:gray;font-size: 12px;">{{ campaign.created_date }}</p>
       </div>
+<<<<<<< HEAD
    <!--    <div class="col-md-1 col-xs-1" style="padding:0px;text-align: center;">
           <i class='fa fa-file-archive-o fa-lg' style='color:deepskyblue;margin:5px;cursor: pointer;padding: 30px 0px;' alt="Archive" title="Archive" onclick='function display(){swal("comming soon")};display()'></i>
       </div> -->
+=======
+      <div class="col-md-1 col-xs-1" style="padding:0px;text-align: center;">
+          <!--  <i class='fa fa-file-archive-o fa-lg' style='color:deepskyblue;margin:5px;cursor: pointer;padding: 30px 0px;' alt="Archive" title="Archive" onclick='function display(){swal("comming soon")};display()'></i>
+        <i class='fa fa-download' style='color:darkgreen;margin:5px;cursor: pointer;' alt="download" title="download" onclick='download("{{campaign.id}}","{{campaign.stor_location}}","{{campaign.campaign_name}}","{{campaign.save_path}}");'></i> -->
+      </div>
+>>>>>>> master
         <div class="col-md-1 col-xs-1" style="padding:0px;text-align: center;">
           <i class='fa fa-trash fa-lg' style='color:orangered;margin:5px;cursor: pointer;padding: 30px 0px;' alt="Delete" title="Delete" onclick='deleteCampaign("{{campaign.id}}")'></i>
       </div>
