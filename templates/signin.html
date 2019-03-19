@@ -14,7 +14,11 @@
   <link rel="stylesheet" type="text/css" href="{% static 'Mentor/css/bootstrap.min.css' %}">
   <link rel="stylesheet" type="text/css" href="{% static 'Mentor/css/imagehover.min.css' %}">
   <link rel="stylesheet" type="text/css" href="{% static 'Mentor/css/style.css' %}">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
 
+  <link rel="stylesheet" type="text/css" href="{% static 'login/css/util.css' %}">
+  <link rel="stylesheet" type="text/css" href="{% static 'login/css/main.css' %}">
+  <script src="{% static 'login/css/main.js' %}"></script>
 </head>
 
 <body>
@@ -27,7 +31,7 @@
           <span class="icon-bar"></span>
           <span class="icon-bar"></span>
         </button>
-        <a class="navbar-brand" href="">Green<span style="color: grey;">Content</span></a>
+        <a class="navbar-brand" href="/accounts/signin/">Green<span style="color: inherit;">Content</span></a>
       </div>
       <div class="collapse navbar-collapse" id="myNavbar">
         <ul class="nav navbar-nav navbar-right">
@@ -55,53 +59,43 @@
     <p> {{ result }}</p>
     {% endif %}
 
-
-  <!--Modal box-->
-  <div class="model" id="login" role="dialog" style="display: block;">
-    <div class="modal-dialog modal-sm">
-
-      <!-- Modal content no 1-->
-      <div class="modal-content">
-        <div class="modal-header">
-         <!--  <button type="button" class="close" data-dismiss="modal">&times;</button> -->
-          <h4 class="modal-title text-center form-title">Login</h4>
-        </div>
-        <div class="modal-body padtrbl">
-
-          <div class="login-box-body">
-                  {% if error %}
+  <div class="limiter">
+    <div class="container-login100">
+      <div class="wrap-login100">
+        <form class="login100-form validate-form" action= "{% url 'signin' %}" method = "post" name="Login_Form" id="loginForm" >
+          <span class="login100-form-title p-b-20">
+            Welcome
+          </span>
+          <span class="login100-form-title p-b-15">
+             {% if error %}
                        <p class="login-box-msg" style="color: indianred;font-weight:bold;text-align: center;">
                        Incorrect Username or Password!
                       </p>
                       {% else %}
-                       <p class="login-box-msg">Sign in to start your session</p>
+                       <p class="login-box-msg">Sign in to start your account</p>
                       {% endif %}
-            <div class="form-group">
-             
-           
-              <form action= "{% url 'signin' %}" method = "post" name="Login_Form" id="loginForm" class="form-signin">
-                 {% csrf_token %}
+          </span>
+
+           {% csrf_token %}
                    
-                <div class="form-group has-feedback">
+                <div class="wrap-input100">
                   <!----- username -------------->
-                  <input class="form-control" placeholder="Email" id="loginid" type="email" autocomplete="off" name="email" required="" autofocus=""/>
-                  <span style="display:none;font-weight:bold; position:absolute;color: red;position: absolute;padding:4px;font-size: 11px;background-color:rgba(128, 128, 128, 0.26);z-index: 17;  right: 27px; top: 5px;" id="span_loginid"></span>
-                  <!---Alredy exists  ! -->
+                  <input class="form-control" placeholder="Email" id="loginid" type="email" autocomplete="off" name="email" required=""/>
+                 
                   <span class="fa fa-envelope form-control-feedback"></span>
                 </div>
 
-                <div class="form-group has-feedback">
+                <div class="wrap-input100">
                   <!----- password -------------->
                   <input class="form-control" placeholder="Password" name="pass" id="loginpsw" required="" type="password" autocomplete="off" />
                 
-                  <span style="display:none;font-weight:bold; position:absolute;color: grey;position: absolute;padding:4px;font-size: 11px;background-color:rgba(128, 128, 128, 0.26);z-index: 17;  right: 27px; top: 5px;" id="span_loginpsw"></span>
-                  <!---Alredy exists  ! -->
+                
                   <span class="fa fa-lock form-control-feedback"></span>
                 </div>
 
                  <input type="hidden" name="next" value="{{ request.GET.next }}"/>
 
-                <div class="row">
+                        <div class="row">
                   <div class="col-xs-12">
                     <div class="checkbox icheck" style="text-align: right;margin-top: 0px;">
                      <!--  <label> -->
@@ -110,38 +104,31 @@
 
                     </div>
                   </div>
-                  <div class="col-xs-12">
-                    <button type="Submit" class="btn btn-green btn-block btn-flat" name="Submit">Sign In</button>
-              
-                  </div>
-
-
                 </div>
 
-
-              </form>
-
-                  <div class="checkbox icheck">
-                      
-                      <label>
-                        Don’t have an account?
-                      </label>
-
-                      <a href="{% url 'signup' %}" class="txt3">
-                         Sign up now
-                      </a>
-                    </div>
+          <div class="container-login100-form-btn">
+            <div class="wrap-login100-form-btn">
+              <div class="login100-form-bgbtn"></div>
+              <button class="login100-form-btn">
+                Signin
+              </button>
             </div>
           </div>
-        </div>
-      </div>
 
+          <div class="text-center p-t-15">
+            <span class="txt1">
+              Don’t have an account?
+            </span>
+
+            <a class="txt2" href="/accounts/signup/">
+              Sign Up
+            </a>
+          </div>
+        </form>
+      </div>
     </div>
   </div>
-  <!--/ Modal box-->
-
   {% endif %}
-
 {% block footer %} {% include 'footer.html' %} {% endblock %}
 
 </body>
