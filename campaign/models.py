@@ -284,10 +284,18 @@ class Player_Campaign(models.Model):
         #get group info
         try:
             #playerInfo = Player.objects.get(id=playerId,user_id=userId);
-            campaigns = Player_Campaign.objects.filter(campaign__campaign_uploaded_by=userId,player_id=playerId).select_related('campaign');
-            campaigns = list(campaigns.values('campaign__id','campaign__campaign_name'));
-            return {'statusCode':0,
-            'campaigns':campaigns};
+            with connection.cursor() as cursor:
+                conditionQuery = '''SELECT campaigns.*, camInfo.info  FROM cmsapp_multiple_campaign_upload as campaigns 
+                    LEFT JOIN campaign_campaigninfo as camInfo ON campaigns.id = camInfo.campaign_id_id WHERE (campaigns.id IN ( 
+                        SELECT campaign_id FROM campaign_player_campaign WHERE user_id=%s and player_id= %s)) 
+                    group by campaigns.id ORDER BY campaigns.updated_date DESC'''
+                
+                cursor.execute(conditionQuery,[userId,playerId])
+                campaigns = dictfetchall(cursor);
+                cursor.close();
+                connection.close();
+                return {'statusCode':0,
+                'campaigns':campaigns};
 
         except Player.DoesNotExist:
             return {'statusCode':2,'status':'Player not found'}

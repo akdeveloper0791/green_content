@@ -83,14 +83,14 @@ function displayPlayerCampaigns(campaigns)
 		  {
 		     campaign = campaigns[i];
              row = table.insertRow(-1);
-             row.id = "campaign_row_"+campaign.campaign__id;
+             row.id = "campaign_row_"+campaign.id;
              {
 
               var cell = row.insertCell(-1);
-              cell.innerHTML =campaign.campaign__campaign_name;
+              cell.innerHTML =campaign.campaign_name;
               
               var deleteCell = row.insertCell(-1);
-              deleteCell.innerHTML = "<input type='image' src='/static/images/ic_remove.png' alt='remove' title='remove' onclick='removeCampaign("+campaign.campaign__id+")'>"
+              deleteCell.innerHTML = "<input type='image' src='/static/images/ic_remove.png' alt='remove' title='remove' onclick='removeCampaign("+campaign.id+")'>"
              }
             }
  
