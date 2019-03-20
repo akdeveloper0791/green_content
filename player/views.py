@@ -197,7 +197,7 @@ def calculateAutoCampaignRule(ages,genders,faces):
         maleAgeInt = int(maleAge);
         
         if(femaleAgeInt >= 3 and (maleAgeInt==femaleAgeInt)):
-            return "couple";
+            return "family";
         else:
             return "family";
     else:
