@@ -325,7 +325,7 @@ class Player_Campaign(models.Model):
                     id__in=campaigns,campaign_uploaded_by=userId);
                 multipleCampaignLength = len(multipleCampaigns);
 
-                if(multipleCampaignLength == len(campaigns)):
+                if(True):
                     #prepare object to bulk insert
                     campaignsBulk = [];
                     for campaignId in campaigns:
