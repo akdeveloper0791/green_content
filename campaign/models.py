@@ -329,11 +329,8 @@ class Player_Campaign(models.Model):
             try:
                 playerInfo = Player.objects.get(id=pId,user_id=userId);
                 #check for campaigns (provided campaigns must be user uploaded)
-                multipleCampaigns = Multiple_campaign_upload.objects.filter(
-                    id__in=campaigns,campaign_uploaded_by=userId);
-                multipleCampaignLength = len(multipleCampaigns);
-
-                if(True):
+                if(Player_Campaign.checkForvalidCampaigns(campaigns,userId)):
+                    
                     #prepare object to bulk insert
                     campaignsBulk = [];
                     for campaignId in campaigns:
@@ -354,6 +351,24 @@ class Player_Campaign(models.Model):
         else:
             return {'statusCode':3,'status':
                 "Invalid request parameters"};
+    
+    def checkForvalidCampaigns(campaigns,userId):
+        parameters = campaigns.copy();
+        
+        with connection.cursor() as cursor:
+            conditionQuery = '''SELECT count(*)  FROM cmsapp_multiple_campaign_upload as campaigns WHERE id IN ({}) 
+            AND (campaigns.campaign_uploaded_by =  %s OR campaigns.id IN ( 
+                    SELECT campaign_id FROM campaign_approved_group_campaigns WHERE user_id=%s )) 
+                '''.format(','.join(['%s' for _ in range(len(campaigns))]))
+            
+            parameters.append(userId);
+            parameters.append(userId);
+            cursor.execute(conditionQuery,parameters)
+            checkedCampaigns = cursor.fetchone();
+            if(checkedCampaigns == None):
+                return False;
+            else:
+                return (checkedCampaigns[0] == (len(campaigns)))
 
     def removeCampaigns(userId,pId,campaigns,isWeb):
         if(isWeb == False):

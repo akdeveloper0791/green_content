@@ -22,8 +22,7 @@ function getCampaignInfo(playerId)
 		   {
 		   	 ajaxindicatorstop();
 			
-            console.log('data-'+JSON.stringify(data));
-
+            
             if(data['statusCode']==0)
 		    {
              
@@ -147,7 +146,7 @@ function assignCampaignsApi(campaigns)
 		   {
 		   	 ajaxindicatorstop();
 			 
-			 
+			 console.log("data-"+JSON.stringify(data));
               swal(data['status']);
               if(data['statusCode']==0)
               {
