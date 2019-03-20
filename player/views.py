@@ -170,7 +170,7 @@ def calculateAutoCampaignRule(ages,genders,faces):
     if("Male" in genders and genders['Male']==len(faces)):
         return "male";
     elif("Female" in genders and genders['Female']==len(faces)):
-        return "female";
+        return "woman";
     elif(len(faces)==2 and "Female" in genders and "Male" in genders):
         #check for couples
         gender_pos=0;femaleAge=0;maleAge=0;
