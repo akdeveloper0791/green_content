@@ -14,6 +14,11 @@
   <link rel="stylesheet" type="text/css" href="{% static 'Mentor/css/bootstrap.min.css' %}">
   <link rel="stylesheet" type="text/css" href="{% static 'Mentor/css/imagehover.min.css' %}">
   <link rel="stylesheet" type="text/css" href="{% static 'Mentor/css/style.css' %}">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+
+   <link rel="stylesheet" type="text/css" href="{% static 'login/css/util.css' %}">
+  <link rel="stylesheet" type="text/css" href="{% static 'login/css/main.css' %}">
+  <script src="{% static 'login/css/main.js' %}"></script>
 
 </head>
 
@@ -27,7 +32,7 @@
           <span class="icon-bar"></span>
           <span class="icon-bar"></span>
         </button>
-        <a class="navbar-brand" href="">Green<span style="color: grey;">Content</span></a>
+        <a class="navbar-brand" href="/accounts/signin/">Green<span style="color: inherit;">Content</span></a>
       </div>
       <div class="collapse navbar-collapse" id="myNavbar">
         <ul class="nav navbar-nav navbar-right">
@@ -54,118 +59,68 @@
     <p> {{ result }}</p>
     {% endif %}
 
-
-  <!--Modal box-->
-  <div class="model" id="login" role="dialog" style="display: block;">
-    <div class="modal-dialog modal-sm">
-
-      <!-- Modal content no 1-->
-      <div class="modal-content">
-        <div class="modal-header">
-         <!--  <button type="button" class="close" data-dismiss="modal">&times;</button> -->
-          <h4 class="modal-title text-center form-title">Register</h4>
-        </div>
-        <div class="modal-body padtrbl">
-
-          <div class="login-box-body">
-                  {% if error %}
+    <div class="limiter">
+    <div class="container-login100">
+      <div class="wrap-login100">
+        <form class="login100-form validate-form" action= "{% url 'signup' %}" method = "post" name="Login_Form" id="loginForm" >
+          <span class="login100-form-title p-b-20">
+            Register
+          </span>
+          <span class="login100-form-title p-b-15">
+               {% if error %}
                        <p class="login-box-msg" style="color: indianred;font-weight:bold;text-align: center;">
                        {{ error }}
                       </p>
                       {% else %}
                        <p class="login-box-msg">Sign up to create new account</p>
                       {% endif %}
-            <div class="form-group">
-             
-           
-              <form action= "{% url 'signup' %}" method = "post" name="Login_Form" id="loginForm" class="form-signin">
-                 {% csrf_token %}
+          </span>
 
-                 <!-- <div class="row">
-			    				<div class="col-xs-6 col-sm-6 col-md-6">
-			    					 <div class="form-group has-feedback">
-			                        <input type="text" name="fname" id="first_name" class="form-control input-sm" placeholder="First Name" required="" autofocus="">
-			    					</div>
-			    				</div>
-			    				<div class="col-xs-6 col-sm-6 col-md-6">
-			    					 <div class="form-group has-feedback">
-			    						<input type="text" name="lname" id="last_name" class="form-control input-sm" placeholder="Last Name"  required="">
-			    					</div>
-			    				</div>
-			    		    </div>
-
-			    			 <div class="form-group has-feedback">
-			    				<input type="email" name="email" id="email" class="form-control input-sm" placeholder="Email Address"  required="">
-			    			</div>
-
-			    			<div class="row">
-			    				<div class="col-xs-6 col-sm-6 col-md-6">
-			    					 <div class="form-group has-feedback">
-			    						<input type="password" name="pass" id="password" class="form-control input-sm" placeholder="Password"  required="">
-			    					</div>
-			    				</div>
-			    				<div class="col-xs-6 col-sm-6 col-md-6">
-			    					 <div class="form-group has-feedback">
-			    						<input type="password" name="confirm_pass" id="password_confirmation" class="form-control input-sm" placeholder="Confirm Password"  required="">
-			    					</div>
-			    				</div>
-			    			</div> -->
-
-			    		
-			    					 <div class="form-group has-feedback">
-			                        <input type="text" name="fname" id="first_name" class="form-control" placeholder="First Name" required="" autofocus="">
-			                         <span class="fa fa-user form-control-feedback"></span>
-			    					</div>
-			    			
-			    					 <div class="form-group has-feedback">
-			    						<input type="text" name="lname" id="last_name" class="form-control" placeholder="Last Name"  required="">
-			    						 <span class="fa fa-user form-control-feedback"></span>
-			    					</div>
-			    			
-
-					    			 <div class="form-group has-feedback">
-					    				<input type="email" name="email" id="email" class="form-control" placeholder="Email Address"  required="">
-					    				 <span class="fa fa-envelope form-control-feedback"></span>
-					    			</div>
-
-			    	
-			    					 <div class="form-group has-feedback">
-			    						<input type="password" name="pass" id="password" class="form-control" placeholder="Password"  required="">
-			    						 <span class="fa fa-lock form-control-feedback"></span>
-			    					</div>
-			    			
-			    					 <div class="form-group has-feedback">
-			    						<input type="password" name="confirm_pass" id="password_confirmation" class="form-control" placeholder="Confirm Password"  required="">
-			    						 <span class="fa fa-lock form-control-feedback"></span>
-			    					</div>
-			    			
-                 <input type="hidden" name="next" value="{{ request.GET.next }}"/>
-
-                <div class="row">
-                <!--   <div class="col-xs-12">
-                    <div class="checkbox icheck">
-                      <label>
-                                <input type="checkbox" id="loginrem" > Remember Me
-                              </label>
+           {% csrf_token %}
+                   
+                      <div class="wrap-input100">
+                              <input type="text" name="fname" id="first_name" class="form-control" placeholder="First Name" required="">
+                               <span class="fa fa-user form-control-feedback"></span>
                     </div>
-                  </div> -->
-                  <div class="col-xs-12">
-                    <button type="Submit" class="btn btn-green btn-block btn-flat" name="Submit">Sign Up</button>
-              
-                  </div>
-                </div>
-              </form>
+                
+                       <div class="wrap-input100">
+                      <input type="text" name="lname" id="last_name" class="form-control" placeholder="Last Name"  required="">
+                       <span class="fa fa-user form-control-feedback"></span>
+                    </div>
+                
+
+                       <div class="wrap-input100">
+                      <input type="email" name="email" id="email" class="form-control" placeholder="Email Address"  required="">
+                       <span class="fa fa-envelope form-control-feedback"></span>
+                    </div>
+
+            
+                      <div class="wrap-input100">
+                      <input type="password" name="pass" id="password" class="form-control" placeholder="Password"  required="">
+                       <span class="fa fa-lock form-control-feedback"></span>
+                    </div>
+                
+                      <div class="wrap-input100">
+                      <input type="password" name="confirm_pass" id="password_confirmation" class="form-control" placeholder="Confirm Password"  required="">
+                       <span class="fa fa-lock form-control-feedback"></span>
+                    </div>
+
+                   <input type="hidden" name="next" value="{{ request.GET.next }}"/>
 
 
-
+          <div class="container-login100-form-btn">
+            <div class="wrap-login100-form-btn">
+              <div class="login100-form-bgbtn"></div>
+              <button class="login100-form-btn">
+                SignUp
+              </button>
             </div>
           </div>
-        </div>
-      </div>
 
+        </form>
+      </div>
     </div>
   </div>
-  <!--/ Modal box-->
 
   {% endif %}
 

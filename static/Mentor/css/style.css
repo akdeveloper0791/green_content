@@ -143,7 +143,7 @@ Banner
 }
 .modal-dialog {
     width: 600px;
-    margin: 150px auto;
+    margin: 100px auto;
 }
 .mouse {
     width: 25px;
@@ -204,7 +204,7 @@ Banner
 .login-box-msg, .register-box-msg {
     margin: 0px;
     text-align: center;
-    padding: 0px 20px 20px;
+    padding: 0px 2px 20px;
 }
 .modal-sm {
     width: 400px;
