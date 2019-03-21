@@ -338,3 +338,7 @@ def getPlayerCampaigns(request):
     else:
         return JsonResponse({'statusCode':1,
             'status':"Invalid request"});
+
+@api_view(['POST'])
+def saveCampaignReports(request):
+    return JsonResponse({'api':'api'})

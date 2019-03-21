@@ -6,3 +6,4 @@ admin.site.register(CampaignInfo)
 admin.site.register(Deleted_Campaigns)
 admin.site.register(Approved_Group_Campaigns)
 admin.site.register(Player_Campaign)
+

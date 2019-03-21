@@ -192,3 +192,11 @@ class Last_Seen_Metrics(models.Model):
       return {'statusCode':0,'metrics':list(metrics.values('player__id','player__name','accessed_at'))}
     else:
       return {'statusCode':1,'status':'No metrics'}
+
+class Campaign_Reports(models.Model):
+    player = models.ForeignKey('player.Player',on_delete=models.CASCADE)
+    campaign = models.ForeignKey('cmsapp.Multiple_campaign_upload',on_delete=models.CASCADE, default=0)
+    campaign_name = models.CharField(max_length=50)
+    times_played = models.SmallIntegerField(default=1)
+    duration = models.IntegerField(default=1)
+    created_at = models.DateTimeField(default=datetime.datetime.now())
