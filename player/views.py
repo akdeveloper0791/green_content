@@ -339,6 +339,18 @@ def getPlayerCampaigns(request):
         return JsonResponse({'statusCode':1,
             'status':"Invalid request"});
 
+from .models import Campaign_Reports
 @api_view(['POST'])
 def saveCampaignReports(request):
-    return JsonResponse({'api':'api'})
+    if(request.method=="POST"):
+        postParams = request.POST;
+        if('player' in postParams and 'p_mac' in postParams and 
+            'data' in postParams):
+            response = Campaign_Reports.saveCampaignReports(postParams.get('player'),
+                postParams.get('p_mac'),postParams.get('data'));
+            return JsonResponse(response);
+        else:
+            return JsonResponse({'statusCode':1,'status':"Invalid request"})
+    else:
+        return JsonResponse({'statusCode':1,
+            'status':"Invalid request"});

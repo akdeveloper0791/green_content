@@ -12,5 +12,6 @@ urlpatterns = [
     path('campaigns/', views.groupCampaingsInfo, name='groupCampaingsInfo'),
     path('assignCampaigns/', views.assignCampaigns, name='assignCampaigns'),
     path('removeCampaigns/',views.removeCampaigns, name='removeCampaigns'),
-    path('getPlayerCampaigns/',views.getPlayerCampaigns, name='getPlayerCampaigns')
+    path('getPlayerCampaigns/',views.getPlayerCampaigns, name='getPlayerCampaigns'),
+    path('saveCampaignReports/',views.saveCampaignReports, name="saveCampaignReports"),
     ]

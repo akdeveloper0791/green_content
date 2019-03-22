@@ -195,8 +195,33 @@ class Last_Seen_Metrics(models.Model):
 
 class Campaign_Reports(models.Model):
     player = models.ForeignKey('player.Player',on_delete=models.CASCADE)
-    campaign = models.ForeignKey('cmsapp.Multiple_campaign_upload',on_delete=models.CASCADE, default=0)
+    campaign = models.IntegerField(default=0)
     campaign_name = models.CharField(max_length=50)
     times_played = models.SmallIntegerField(default=1)
     duration = models.IntegerField(default=1)
     created_at = models.DateTimeField(default=datetime.datetime.now())
+
+    def saveCampaignReports(player,pMac,data):
+      try:
+        data = json.loads(data);
+        #check for player info,, if found save metrics
+        Player.objects.get(id=player,mac=pMac);
+        metrics=[];
+        for report in data:
+          p_metrics = Campaign_Reports(player_id=1,
+            campaign_name=report['c_name'],times_played=10,
+            duration=report['duration']);
+          if('c_server_id' in report):
+            p_metrics.campaign = report['c_server_id'];
+          
+          metrics.append(p_metrics);
+
+        Campaign_Reports.objects.bulk_create(metrics);
+        return {'statusCode':0,'status':'metrics'};
+
+      except ValueError as ex:
+        return {'statusCode':3,'status':
+                "Invalid request parameters, data should not be zero - "+str(ex)};
+      except Player.DoesNotExist:
+        return {'statusCode':3,'status':
+                "Player not found"};
