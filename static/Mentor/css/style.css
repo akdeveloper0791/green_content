@@ -142,7 +142,7 @@ Banner
     background-color:
 }
 .modal-dialog {
-    width: 600px;
+   /* width: 600px;*/
     margin: 100px auto;
 }
 .mouse {

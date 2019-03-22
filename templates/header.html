@@ -18,6 +18,7 @@
 
     <script src="{% static 'js/sweetalert.js' %}"></script>
 
+
 </head>
 
 
@@ -37,39 +38,30 @@
         <a class="navbar-brand" href="{% url 'listCampaignsWeb' %}" style="color:#5FCF80;">Green<span style="color: grey;">Content</span></a>
       </div>
       <div class="collapse navbar-collapse" id="myNavbar">
-        <ul class="nav navbar-nav navbar-right">
+        <ul class="nav navbar-nav navbar-right col-md-8" id="header">
               {% if request.user.is_authenticated %}
-                 <!--     <li class="nav-item">
-              <a class="nav-link" href="{% url 'mycontent_videos' %}">My Content</a>
-            </li> -->
-           <!--  <li class="nav-item ">
-              <a class="nav-link" href="{% url 'my_wishlist' %}">My Whishlist</a>
-            </li> -->
-            <li class="nav-item">
-              <a class="nav-link" href="{% url 'listCampaignsWeb' %}" style="text-align: center;padding: 0 20px;">Campaign<p>Management</p></a>
+
+            <li class="nav-item col-md-2" id="management">
+              <a class="nav-link" href="{% url 'listCampaignsWeb' %}" style="text-align: center;padding:0px;">Campaign Management</a>
             </li>
-            <li class="nav-item">
-              <a class="nav-link" href="{% url 'deviceMgmt' %}" style="text-align: center;padding: 0 20px;">Device<p>Management</p></a>
+            <li class="nav-item col-md-2" id="device">
+              <a class="nav-link" href="{% url 'deviceMgmt' %}" style="text-align: center;padding: 0px;">Device Management</a>
             </li>
-            <li class="nav-item">
-              <a class="nav-link" href="{% url 'gcGroups' %}" style="text-align: center;padding: 0 20px;">GC<p>Groups</p></a>
+            <li class="nav-item col-md-2" id="gcGroups">
+              <a class="nav-link" href="{% url 'gcGroups' %}" style="text-align: center;padding: 0 20px;">GC Groups</a>
             </li>
-           <!--  <li class="nav-item">
-              <a class="nav-link" href="{% url 'upload_camp_web' %}">Upload Campaign</a>
-            </li> -->
-            <li class="nav-item">
-              <a class="nav-link" onclick="comming_soon('Campaign Reports');" style="text-align: center;padding: 0 20px;">Campaign<p>Reports</p></a>
+           
+            <li class="nav-item col-md-2" id="campaign">
+              <a class="nav-link" onclick="comming_soon('Campaign Reports');" style="text-align: center;padding: 0px;">Campaign Reports</a>
             </li>
-            <li class="nav-item" >
-              <a class="nav-link"  href="{% url 'viewerMetrics' %}" style="text-align: center;padding: 0 20px;">Viewers<p>Metrics</p></a>
+            <li class="nav-item col-md-2" id="viewers">
+              <a class="nav-link"  href="{% url 'viewerMetrics' %}" style="text-align: center;padding: 0px;">Viewers Reports</a>
             </li>
          
-           <!--   <li class="nav-item">
-              <a class="nav-link" href="{% url 'web_search' %}">Web Content</a>
-            </li> -->
+  
            
-            <li class="nav-item active">
-              <a class="nav-link"  href="{% url 'logout' %}" style="text-align: center;padding: 0 20px;">{{ request.user.first_name}}<p>(Logout)</p></a>
+            <li class="nav-item col-md-2">
+              <a class="nav-link"  href="{% url 'logout' %}" style="text-align: center;padding: 0px;">{{ request.user.first_name}} (Logout)</a>
             </li>
 
              {% else %}
@@ -85,12 +77,30 @@
   <!--/ Navigation bar-->
   <script type="text/javascript">
     function comming_soon(msg) {
+
       swal({
   title: msg,
   text: "Comming Soon.",
-  timer: 2000
+  timer: 2000,
+  showConfirmButton: false
+}, function(){
+      window.location.href = "";
 });
     }
+
+
   </script>
 </body>
 </html>
+           <!--     <li class="nav-item">
+              <a class="nav-link" href="{% url 'mycontent_videos' %}">My Content</a>
+            </li> -->
+           <!--  <li class="nav-item ">
+              <a class="nav-link" href="{% url 'my_wishlist' %}">My Whishlist</a>
+            </li> -->
+            <!--  <li class="nav-item">
+              <a class="nav-link" href="{% url 'upload_camp_web' %}">Upload Campaign</a>
+            </li> -->
+                     <!--   <li class="nav-item">
+              <a class="nav-link" href="{% url 'web_search' %}">Web Content</a>
+            </li> -->

@@ -16,11 +16,11 @@
 
 <body>
     <div class='tabcontent' id="member_groups" style="display:none">
-     <div class='container'> 
+     <div class='container' style="padding: 10px 0px;"> 
   		
-  	   <button class="mg_tablink" onclick="mgDisplayActiveList(this)" id="mg_active_list_btn">Active Groups</button>
-       <button class="mg_tablink" onclick="mgDisplayPendingList(this)" id="mg_pending_list_btn">Pending Approval</button>
-  	   <button class="mg_tablink" onclick="mgDisplayBlockedList(this)" id="mg_blocked_list_btn">Block Groups</button>
+  	   <button class="mg_tablink" onclick="mgDisplayActiveList(this)" id="mg_active_list_btn" style="margin-right: 1px;padding: 10px 0px;font-size: 16px;">Active Groups</button>
+       <button class="mg_tablink" onclick="mgDisplayPendingList(this)" id="mg_pending_list_btn" style="margin-right: 1px;padding: 10px 0px;font-size: 16px;">Pending Groups</button>
+  	   <button class="mg_tablink" onclick="mgDisplayBlockedList(this)" id="mg_blocked_list_btn" style="padding: 10px 0px;font-size: 16px;">Block Groups</button>
      </div>
 	
  
@@ -42,8 +42,9 @@
       
         <!-- Modal Header -->
         <div class="modal-header">
+          <center>
           <h4 class="modal-title" >Campaigns</h4>
-          
+          </center>
         </div>
         
         <!-- Modal body -->
@@ -56,8 +57,9 @@
         
         <!-- Modal footer -->
         <div class="modal-footer">
-          
+          <center>
           <button type="button" class="btn btn-danger" data-dismiss="modal"  onclick="closeMGAssignedCampaigns()">Close</button>
+          </center>
         </div>
         
       </div>
@@ -244,7 +246,7 @@
             // var blockCell = row.insertCell(-1);
             // blockCell.innerHTML = "<input type='image' src='{% static "images/ic_group_member_blocked.png" %}' onclick='mgDisplayBlockGroupAlert("+i+","+info['g_id']+",-1)' title='block',alt='block'/>";
 
-             var groupInfoDiv = '<div class="col-md-12 col-xs-12" style="padding:0px;border-bottom: 1px solid darkgrey;"><div class="rows"><div class="col-md-5 col-xs-3" style="padding:0px;"><p onclick="mgGetMemberGroupInfo('+info["g_id"]+')" style="color:blue;">'+info.g_name+'</p></div><div class="col-md-5 col-xs-7" style="padding:0px;"><p>'+info.user_name+'</p></div><div class="col-md-2 col-xs-1" style="padding:0px;"><input type="image" src="{% static 'images/ic_group_member_blocked.png' %}"  onclick="mgDisplayBlockGroupAlert('+i+','+info["g_id"]+',-1)" title="block" alt="block"/></div></div></div>';
+             var groupInfoDiv = '<div class="col-md-12 col-xs-12" style="padding:0px;border-bottom: 1px solid darkgrey;"><div class="rows"><div class="col-md-5 col-xs-3" style="padding:0px;"><a onclick="mgGetMemberGroupInfo('+info["g_id"]+')" >'+info.g_name+'</a></div><div class="col-md-5 col-xs-7" style="padding:0px;"><p>'+info.user_name+'</p></div><div class="col-md-2 col-xs-1" style="padding:0px;"><input type="image" src="{% static 'images/ic_group_member_blocked.png' %}"  onclick="mgDisplayBlockGroupAlert('+i+','+info["g_id"]+',-1)" title="block" alt="block"/></div></div></div>';
 
            
 
