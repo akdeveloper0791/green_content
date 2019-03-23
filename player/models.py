@@ -209,8 +209,8 @@ class Campaign_Reports(models.Model):
         Player.objects.get(id=player,mac=pMac);
         metrics=[];
         for report in data:
-          p_metrics = Campaign_Reports(player_id=1,
-            campaign_name=report['c_name'],times_played=10,
+          p_metrics = Campaign_Reports(player_id=player,
+            campaign_name=report['c_name'],times_played=report['times_played'],
             duration=report['duration']);
           if('c_server_id' in report):
             p_metrics.campaign = report['c_server_id'];
