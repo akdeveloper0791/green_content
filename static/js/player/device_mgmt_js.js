@@ -53,11 +53,11 @@ function getCampaignInfo(playerId)
 
 function displayCampaignInfo(info,pId)
 {
-     
+	 
      document.getElementById('campaigns_info_player').innerHTML=document.getElementById(pId+"_player_name").innerHTML;
      document.getElementById('player_campaign_info_id').value=pId;
      displayPlayerCampaigns(info['campaigns']);
-	  var modal = document.getElementById('campaigns_info');
+	 var modal = document.getElementById('campaigns_info');
 	  modal.style.display = "block";
  
 }
@@ -65,7 +65,10 @@ function displayCampaignInfo(info,pId)
 function displayPlayerCampaigns(campaigns)
 {
 	var dvTable = document.getElementById("player_info_campaigns");
-        
+    
+    //init existing campaigns
+    existedCampaigns=[];
+
     if(campaigns.length>=1)
     {
         //Create a HTML Table element.
@@ -83,6 +86,8 @@ function displayPlayerCampaigns(campaigns)
 		     campaign = campaigns[i];
              row = table.insertRow(-1);
              row.id = "campaign_row_"+campaign.id;
+             existedCampaigns.push(campaign.id);
+
              {
 
               var cell = row.insertCell(-1);
@@ -105,6 +110,7 @@ function displayPlayerCampaigns(campaigns)
 
 function displayCampaignsToAdd()
 {
+	
 	closePlayerCampaignInfo();
     lmcbListCampaigns();	 
 }

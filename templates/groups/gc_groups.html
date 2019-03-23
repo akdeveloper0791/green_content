@@ -246,7 +246,10 @@
 	function displayGroupCampaigns(campaigns)
 	{
 	  var dvTable = document.getElementById("group_info_campaigns");
-        
+      
+      //init existing campaigns
+      existedCampaigns=[];
+
       if(campaigns.length>=1)
       {
         //Create a HTML Table element.
@@ -265,6 +268,9 @@
 		     campaign = campaigns[i];
              row = table.insertRow(-1);
              row.id = "campaign_row_"+campaign.campaign_id;
+
+             existedCampaigns.push(campaign.campaign_id);
+             
              {
 
               var cell = row.insertCell(-1);

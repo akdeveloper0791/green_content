@@ -41,8 +41,10 @@
 
   <script>
   var lmcbselectedCampaigns=[];
+  var existedCampaigns=[];
   function closeLmcbCampaigns()
   {
+    existedCampaigns=[];
     document.getElementById('lmcb_campaigns').style.display = "none";
   }
 
@@ -112,6 +114,7 @@
   function lmcbDisplayCampaigns(campaigns)
   {
     lmcbselectedCampaigns = [];
+
     var dvTable = document.getElementById("lmcb_campaigns_list");
 
     if(campaigns.length>=0)
@@ -135,7 +138,18 @@
 
               var cell = row.insertCell(-1);
               /*cell.innerHTML = campaigns[i]['campaign_name'];*/
-              cell.innerHTML = "<input type='checkbox' name='name1' onchange='lmcbonchange(this,"+campaigns[i]['id']+")'/>";
+              campaignId = campaigns[i]['id'];
+              var isDisable = existedCampaigns.includes(campaignId);
+
+              if(isDisable)
+              {
+                cell.innerHTML = "<input type='checkbox' checked= true disabled= true name='name1' onchange='lmcbonchange(this,"+campaignId+")'/>";
+              }else
+              {
+                cell.innerHTML = "<input type='checkbox'  name='name1' onchange='lmcbonchange(this,"+campaignId+")'/>";
+              }
+              
+
 
               var cell = row.insertCell(-1);
               
