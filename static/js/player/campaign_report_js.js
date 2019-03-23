@@ -63,13 +63,10 @@ function display_reports(responseObj){
          var no_of_times_played = metrics.t_played;
 
          var cell = row.insertCell(-1);
-         cell.innerHTML = duration;
-
-         var cell = row.insertCell(-1);
          cell.innerHTML = no_of_times_played;
 
          var cell = row.insertCell(-1);
-         cell.innerHTML = (duration*no_of_times_played);
+         cell.innerHTML = (duration);
     }
 
        		
