@@ -9,6 +9,13 @@
 {% block header %} {% include 'header.html' %} {% endblock %}
 
 {% block body %}
+<style>
+td,th {
+ 
+  text-align: center;
+
+}
+</style>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.15.1/moment.min.js"></script>
@@ -69,11 +76,11 @@
 	<table class="testTable table table-hover" id="reports_table">
 		<thead>
 			<tr>
-        <th>Device Name</th>
-				<th>Campaign</th>
-				<th>Duration</th>
-				<th>Number Of times played</th>
-				<th>Total duration</th>
+        <th style="text-align:center">Device Name</th>
+				<th style="text-align:center">Campaign</th>
+				<th style="text-align:center">Duration</th>
+				<th style="text-align:center">Number Of times played</th>
+				<th style="text-align:center">Total duration</th>
 				
 			</tr>
 		</thead>

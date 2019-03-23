@@ -33,6 +33,7 @@ function display_reports(responseObj){
      var new_rows="";
     
     var table = document.getElementById('reports_table');
+    
 
 		for (var i = 0; i < m_result.length; i++) 
 		{
@@ -45,12 +46,14 @@ function display_reports(responseObj){
          row = table.insertRow(-1);
          var cell = row.insertCell(-1);
          cell.innerHTML = metrics.player__name;
+         cell.style.color = "#5FCF80";
+         cell.style.fontWeight = "bold";
 
          var cell = row.insertCell(-1);
          cell.innerHTML = metrics.campaign_name;
 		     
          var duration = metrics.t_duration;
-         var no_of_times_played = metrics.times_played;
+         var no_of_times_played = metrics.t_played;
 
          var cell = row.insertCell(-1);
          cell.innerHTML = duration;
@@ -77,6 +80,8 @@ function display_reports(responseObj){
  function listCampaignReports()
  {
   console.log("listCampaignReports");
+    $("#reports_table").find("tr:not(:first)").remove();
+    
     var dev_id = document.getElementById('dev_id').value;
     var from_date = document.getElementById('from_date').value;
     var to_date = document.getElementById('to_date').value;

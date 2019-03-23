@@ -243,12 +243,11 @@ class Campaign_Reports(models.Model):
          created_at__range=[postParams.get('from_date'), postParams.get('to_date')]).values('player','campaign_name').annotate(t_duration = Sum('duration'),t_played=Sum('times_played'));
         
       elif(Player.isMyPlayer(player,userId)):
-        metrics = Age_Geder_Metrics.objects.filter(player_id=player,
-          created_at__range=[postParams.get('from_date'), postParams.get('to_date')]).order_by('-created_at');
+        metrics = Campaign_Reports.objects.filter(player_id=player,
+          created_at__range=[postParams.get('from_date'), postParams.get('to_date')]).values('campaign_name').annotate(t_duration = Sum('duration'),t_played=Sum('times_played'));
 
       if(len(metrics)>=1):
-          #return {'statusCode':0,'metrics':list(metrics.values('created_at','g_female','g_male','player__name','age_0_2','age_4_6','age_8_12',
-          #  'age_15_20','age_25_32','age_38_43','age_48_53','age_60_100'))}
-          return {'statusCode':0,'metrics':list(metrics.values('campaign_name','times_played','t_duration','player__name')),'queryset.query':str(metrics.query)};
+          
+          return {'statusCode':0,'metrics':list(metrics.values('campaign_name','t_played','t_duration','player__name')),'queryset.query':str(metrics.query)};
       else:
           return {'statusCode':4,'status':"No metrics found for the selected dates"};

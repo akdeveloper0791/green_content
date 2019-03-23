@@ -58,8 +58,9 @@
               <a class="nav-link" href="{% url 'upload_camp_web' %}">Upload Campaign</a>
             </li> -->
             <li class="nav-item">
-              <a class="nav-link" onclick="comming_soon('Campaign Reports');" style="text-align: center;padding: 0 20px;">Campaign<p>Reports</p></a>
-            </li>
+              <a class="nav-link" href="{% url 'campaignReports' %}" style="text-align: center;padding: 0 20px;">Campaign<p>Reports</p></a>
+            </li> 
+            
             <li class="nav-item" >
               <a class="nav-link"  href="{% url 'viewerMetrics' %}" style="text-align: center;padding: 0 20px;">Viewers<p>Metrics</p></a>
             </li>
