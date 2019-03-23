@@ -67,6 +67,19 @@ function display_reports(responseObj){
 
          var cell = row.insertCell(-1);
          cell.innerHTML = (duration);
+         
+         try
+         {
+           var date = new Date(metrics.last_played_at);
+           date = date.getDate()+"-"+date.getMonth()+"-"+date.getFullYear() + " "+date.getHours()+":"+date.getMinutes()+":"+date.getSeconds();
+
+           var cell = row.insertCell(-1);
+           cell.innerHTML = (date);
+         }catch(err)
+         {
+
+         }
+         
     }
 
        		
@@ -107,7 +120,7 @@ function display_reports(responseObj){
     
     xhr.onload = function() {
         if (xhr.status === 200) {
-            console.log("xhr.response-"+xhr.response);
+            //console.log("xhr.response-"+xhr.response);
             var responseObj = JSON.parse(xhr.response);
             // Upload succeeded. Do something here with the file info.
             dismissInitBusyDialog();

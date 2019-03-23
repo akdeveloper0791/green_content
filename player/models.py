@@ -201,6 +201,7 @@ class Campaign_Reports(models.Model):
     campaign_name = models.CharField(max_length=50)
     times_played = models.SmallIntegerField(default=1)
     duration = models.IntegerField(default=1)
+    last_played_at = models.DateTimeField(blank=True,null=True)
     created_at = models.DateTimeField(default=datetime.datetime.now())
 
     def saveCampaignReports(player,pMac,data):
@@ -212,7 +213,7 @@ class Campaign_Reports(models.Model):
         for report in data:
           p_metrics = Campaign_Reports(player_id=player,
             campaign_name=report['c_name'],times_played=report['times_played'],
-            duration=report['duration']);
+            duration=report['duration'],last_played_at=report['last_played_at']);
           if('c_server_id' in report and report['c_server_id']>=1):
             p_metrics.campaign_id = report['c_server_id'];
           
@@ -241,14 +242,14 @@ class Campaign_Reports(models.Model):
       if(player=="All"):
         #list all metrics
         metrics = Campaign_Reports.objects.filter(player__user_id=userId,
-         created_at__range=[postParams.get('from_date'), postParams.get('to_date')]).values('player','campaign_name').annotate(t_duration = Sum('duration'),t_played=Sum('times_played'),campaign_id= Max('campaign_id'));
+         created_at__range=[postParams.get('from_date'), postParams.get('to_date')]).values('player','campaign_name').annotate(t_duration = Sum('duration'),t_played=Sum('times_played'),campaign_id= Max('campaign_id'),last_played_at= Max('last_played_at'));
         
       elif(Player.isMyPlayer(player,userId)):
         metrics = Campaign_Reports.objects.filter(player_id=player,
-          created_at__range=[postParams.get('from_date'), postParams.get('to_date')]).values('campaign_name').annotate(t_duration = Sum('duration'),t_played=Sum('times_played'),campaign_id= Max('campaign_id'));
+          created_at__range=[postParams.get('from_date'), postParams.get('to_date')]).values('campaign_name').annotate(t_duration = Sum('duration'),t_played=Sum('times_played'),campaign_id= Max('campaign_id'),last_played_at= Max('last_played_at'));
 
       if(len(metrics)>=1):
           
-          return {'statusCode':0,'metrics':list(metrics.values('campaign_name','t_played','t_duration','player__name','campaign_id')),'queryset.query':str(metrics.query)};
+          return {'statusCode':0,'metrics':list(metrics.values('campaign_name','t_played','t_duration','player__name','campaign_id','last_played_at')),'queryset.query':str(metrics.query)};
       else:
           return {'statusCode':4,'status':"No metrics found for the selected dates"};
