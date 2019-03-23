@@ -73,7 +73,7 @@ function display_reports(responseObj){
           if(metrics.last_played_at!=null)
            {
            var date = new Date(metrics.last_played_at);
-           date = date.getDate()+"-"+date.getMonth()+"-"+date.getFullYear() + " "+date.getHours()+":"+date.getMinutes()+":"+date.getSeconds();
+           date = date.getDate()+"-"+(date.getMonth()+1)+"-"+date.getFullYear() + " "+date.getHours()+":"+date.getMinutes()+":"+date.getSeconds();
 
            var cell = row.insertCell(-1);
            cell.innerHTML = (date);
