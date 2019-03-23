@@ -196,7 +196,8 @@ class Last_Seen_Metrics(models.Model):
 from django.db.models import Sum, Max
 class Campaign_Reports(models.Model):
     player = models.ForeignKey('player.Player',on_delete=models.CASCADE)
-    campaign = models.ForeignKey('cmsapp.Multiple_campaign_upload',default=0,blank=True,null=False,on_delete=models.CASCADE)
+    #campaign = models.ForeignKey('cmsapp.Multiple_campaign_upload',default=None,blank=True,null=True,on_delete=models.SET_NULL)
+    campaign_id= models.IntegerField(default=0)
     campaign_name = models.CharField(max_length=50)
     times_played = models.SmallIntegerField(default=1)
     duration = models.IntegerField(default=1)
