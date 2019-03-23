@@ -354,3 +354,32 @@ def saveCampaignReports(request):
     else:
         return JsonResponse({'statusCode':1,
             'status':"Invalid request"});
+
+@api_view(['POST'])
+def getCampaignReports(request):   
+    if(request.method == 'POST'):
+        postParams = request.POST;
+        if(postParams.get('player') and postParams.get('from_date') and postParams.get('to_date')
+            and postParams.get('accessToken')):     
+            isUserId = False;
+            secretKey = request.POST.get("accessToken")
+            if(secretKey=='web'):
+                isUserId = True;
+                if(request.user.is_authenticated):
+                    secretKey = request.user.id;
+                else:
+                    return JsonResponse(
+                        {'statusCode':2,'status':"Invalid accessToken please login"});
+            result = Campaign_Reports.getCampaignReports(secretKey,isUserId,postParams);
+            return JsonResponse(result); 
+        else:
+          return JsonResponse({'statusCode':6,
+            'status':'No data available'})
+
+@login_required
+def campaignReports(request):
+    if request.user.is_authenticated:
+        devices = Player.getMyPlayers(request.user.id);
+        return render(request,'player/campaign_reports.html',{'devices':devices})
+    else:
+        return render(request,'signin.html');

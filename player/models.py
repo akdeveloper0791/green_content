@@ -193,6 +193,7 @@ class Last_Seen_Metrics(models.Model):
     else:
       return {'statusCode':1,'status':'No metrics'}
 
+from django.db.models import Sum
 class Campaign_Reports(models.Model):
     player = models.ForeignKey('player.Player',on_delete=models.CASCADE)
     campaign = models.IntegerField(default=0)
@@ -225,3 +226,29 @@ class Campaign_Reports(models.Model):
       except Player.DoesNotExist:
         return {'statusCode':3,'status':
                 "Player not found"};
+
+    def getCampaignReports(secretKey,isUserId,postParams):
+      userId = secretKey;
+      if(isUserId==False):
+            userId = User_unique_id.getUserId(secretKey);
+            if(userId == False):
+                return {'statusCode':1,'status':
+                "Invalid session, please login"};
+      # check for player
+      player = postParams.get('player');
+      metrics={};
+      if(player=="All"):
+        #list all metrics
+        metrics = Campaign_Reports.objects.filter(player__user_id=userId,
+         created_at__range=[postParams.get('from_date'), postParams.get('to_date')]).values('player','campaign_name').annotate(t_duration = Sum('duration'),t_played=Sum('times_played'));
+        
+      elif(Player.isMyPlayer(player,userId)):
+        metrics = Age_Geder_Metrics.objects.filter(player_id=player,
+          created_at__range=[postParams.get('from_date'), postParams.get('to_date')]).order_by('-created_at');
+
+      if(len(metrics)>=1):
+          #return {'statusCode':0,'metrics':list(metrics.values('created_at','g_female','g_male','player__name','age_0_2','age_4_6','age_8_12',
+          #  'age_15_20','age_25_32','age_38_43','age_48_53','age_60_100'))}
+          return {'statusCode':0,'metrics':list(metrics.values('campaign_name','times_played','t_duration','player__name')),'queryset.query':str(metrics.query)};
+      else:
+          return {'statusCode':4,'status':"No metrics found for the selected dates"};
