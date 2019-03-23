@@ -42,16 +42,23 @@ function display_reports(responseObj){
          var date = new Date(metrics.created_at);
          date = date.getDate()+"-"+date.getMonth()+"-"+date.getFullYear() + " "+date.getHours()+":"+date.getMinutes()+":"+date.getSeconds();
 
-		     //new_rows += '<tr><td style="color:#5FCF80;font-weight: bold">'+metrics.player__name+'</td><td>'+date+'</td><td>'+metrics.g_male+'</td><td>'+metrics.g_female+'</td><td>'+metrics.age_0_2+'</td><td>'+metrics.age_4_6+'</td><td>'+metrics.age_8_12+'</td><td>'+metrics.age_15_20+'</td><td>'+metrics.age_25_32+'</td><td>'+metrics.age_38_43+'</td><td>'+metrics.age_48_53+'</td><td>'+metrics.age_60_100+'</td></tr>';  
          row = table.insertRow(-1);
          var cell = row.insertCell(-1);
          cell.innerHTML = metrics.player__name;
          cell.style.color = "#5FCF80";
          cell.style.fontWeight = "bold";
-
+         
+         var campaignId = metrics.campaign;
+         
          var cell = row.insertCell(-1);
-         cell.innerHTML = metrics.campaign_name;
-		     
+         if(campaignId>=1)
+         {
+           cell.innerHTML = "<a href='/campaigns/previewCampaign/"+campaignId+"'target='_blank'>"+metrics.campaign_name+"</a>";
+         }else
+         {
+          cell.innerHTML = metrics.campaign_name;
+         }
+         
          var duration = metrics.t_duration;
          var no_of_times_played = metrics.t_played;
 
@@ -81,7 +88,7 @@ function display_reports(responseObj){
  {
   console.log("listCampaignReports");
     $("#reports_table").find("tr:not(:first)").remove();
-    
+
     var dev_id = document.getElementById('dev_id').value;
     var from_date = document.getElementById('from_date').value;
     var to_date = document.getElementById('to_date').value;

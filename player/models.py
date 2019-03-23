@@ -248,6 +248,6 @@ class Campaign_Reports(models.Model):
 
       if(len(metrics)>=1):
           
-          return {'statusCode':0,'metrics':list(metrics.values('campaign_name','t_played','t_duration','player__name')),'queryset.query':str(metrics.query)};
+          return {'statusCode':0,'metrics':list(metrics.values('campaign_name','t_played','t_duration','player__name','campaign')),'queryset.query':str(metrics.query)};
       else:
           return {'statusCode':4,'status':"No metrics found for the selected dates"};
