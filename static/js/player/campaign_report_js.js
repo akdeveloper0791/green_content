@@ -48,7 +48,7 @@ function display_reports(responseObj){
          cell.style.color = "#5FCF80";
          cell.style.fontWeight = "bold";
          
-         var campaignId = metrics.campaign;
+         var campaignId = metrics.campaign_id;
          
          var cell = row.insertCell(-1);
          if(campaignId>=1)

@@ -193,10 +193,10 @@ class Last_Seen_Metrics(models.Model):
     else:
       return {'statusCode':1,'status':'No metrics'}
 
-from django.db.models import Sum
+from django.db.models import Sum, Max
 class Campaign_Reports(models.Model):
     player = models.ForeignKey('player.Player',on_delete=models.CASCADE)
-    campaign = models.IntegerField(default=0)
+    campaign = models.ForeignKey('cmsapp.Multiple_campaign_upload',default=0,blank=True,null=False,on_delete=models.CASCADE)
     campaign_name = models.CharField(max_length=50)
     times_played = models.SmallIntegerField(default=1)
     duration = models.IntegerField(default=1)
@@ -212,8 +212,8 @@ class Campaign_Reports(models.Model):
           p_metrics = Campaign_Reports(player_id=player,
             campaign_name=report['c_name'],times_played=report['times_played'],
             duration=report['duration']);
-          if('c_server_id' in report):
-            p_metrics.campaign = report['c_server_id'];
+          if('c_server_id' in report and report['c_server_id']>=1):
+            p_metrics.campaign_id = report['c_server_id'];
           
           metrics.append(p_metrics);
 
@@ -240,14 +240,14 @@ class Campaign_Reports(models.Model):
       if(player=="All"):
         #list all metrics
         metrics = Campaign_Reports.objects.filter(player__user_id=userId,
-         created_at__range=[postParams.get('from_date'), postParams.get('to_date')]).values('player','campaign_name').annotate(t_duration = Sum('duration'),t_played=Sum('times_played'));
+         created_at__range=[postParams.get('from_date'), postParams.get('to_date')]).values('player','campaign_name').annotate(t_duration = Sum('duration'),t_played=Sum('times_played'),campaign_id= Max('campaign_id'));
         
       elif(Player.isMyPlayer(player,userId)):
         metrics = Campaign_Reports.objects.filter(player_id=player,
-          created_at__range=[postParams.get('from_date'), postParams.get('to_date')]).values('campaign_name').annotate(t_duration = Sum('duration'),t_played=Sum('times_played'));
+          created_at__range=[postParams.get('from_date'), postParams.get('to_date')]).values('campaign_name').annotate(t_duration = Sum('duration'),t_played=Sum('times_played'),campaign_id= Max('campaign_id'));
 
       if(len(metrics)>=1):
           
-          return {'statusCode':0,'metrics':list(metrics.values('campaign_name','t_played','t_duration','player__name','campaign')),'queryset.query':str(metrics.query)};
+          return {'statusCode':0,'metrics':list(metrics.values('campaign_name','t_played','t_duration','player__name','campaign_id')),'queryset.query':str(metrics.query)};
       else:
           return {'statusCode':4,'status':"No metrics found for the selected dates"};
