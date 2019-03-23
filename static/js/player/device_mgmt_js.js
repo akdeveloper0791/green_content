@@ -110,7 +110,7 @@ function displayPlayerCampaigns(campaigns)
 
 function displayCampaignsToAdd()
 {
-	
+
 	closePlayerCampaignInfo();
     lmcbListCampaigns();	 
 }
@@ -212,14 +212,22 @@ function removeCampaign(campaignId)
 
               	//after delete ,, check and delete rows
               	for(var i=0;i<campaigns.length;i++)
+              	{
               	try
               	{
                   var row = document.getElementById("campaign_row_"+campaigns[i]);
                   table.deleteRow(row.rowIndex);
+
+                   //remove from existing campaigns
+              	var index = existedCampaigns.indexOf(campaigns[i]);
+				if (index > -1) {
+				  existedCampaigns.splice(index, 1);
+				}
               	}catch(Exception)
               	{
                   console.log(Exception.message);
               	}
+               }
               }
 
 		   },
