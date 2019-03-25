@@ -1643,7 +1643,7 @@ def forgot_password(request):
         if email_check:
 
             subject = 'GC Password Reset Link'
-            message = 'https://www.greencontent.in/change_password/{}/'.format(email_check[0].id)
+            message = 'https://www.greencontent.in/reset_password/{}/'.format(email_check[0].id)
             from_email = settings.EMAIL_HOST_USER
             to_list= []
             to_list.append(request.POST['email'])
