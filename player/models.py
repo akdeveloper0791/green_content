@@ -178,7 +178,7 @@ class Last_Seen_Metrics(models.Model):
   accessed_at = models.DateTimeField(default=datetime.datetime.now(),blank=False,null=False)
   
   def __str__(self):
-        return self.player
+        return self.player.mac
 
   def saveMetrics(playerId):
     try:
