@@ -176,6 +176,9 @@ class Age_Geder_Metrics(models.Model):
 class Last_Seen_Metrics(models.Model):
   player = models.OneToOneField('player.Player',on_delete=models.CASCADE,primary_key=True)
   accessed_at = models.DateTimeField(default=datetime.datetime.now(),blank=False,null=False)
+  
+  def __str__(self):
+        return self.player
 
   def saveMetrics(playerId):
     try:
