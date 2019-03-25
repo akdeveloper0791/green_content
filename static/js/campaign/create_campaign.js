@@ -508,6 +508,7 @@ function displayCreateTableRegion()
 {
   dismissSelectRegOption();
   document.getElementById('create_table_reg_dialog').style.display="block";
+  
 }
 function dismissCreateTableRegion()
 {
