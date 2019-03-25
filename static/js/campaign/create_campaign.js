@@ -17,6 +17,16 @@ var duration = 10;//seconds
  	return Math.round((percentage*totalPixels)/100)+"px";
  }
 
+ function getPercentagePixels(totalPixels,elemPixels)
+ {
+  var elemPixels = parseInt(elemPixels.replace('px',''));
+  //var totalPixels = parseInt(totalPixels.replace('px','')); 
+  //return (elemPixels*100);
+  var floatPercentage = ((100*elemPixels)/totalPixels);
+  return Math.round(floatPercentage * 100) / 100
+  
+ }
+
  function setInfoTitle(msg)
  {
    var elem = document.getElementById("info_title");
@@ -36,15 +46,22 @@ function prepareView(selectedTemplate)
 {
   try{
 
-    setInfoTitle("Add Content to Campaign");
+    
 
     displayUpload();
 	  
     cctDismissTemplates();
-   
-  	var templateInfo = JSON.parse(selectedTemplate);
-    regionsInfo = templateInfo.regions;
-    constructDivs();
+    if(selectedTemplate=="custom")
+    {
+      setInfoTitle("Start draw your campaigns with mouse");
+     constructCustomDiv();
+    }else{
+      setInfoTitle("Add Content to Campaign");
+      var templateInfo = JSON.parse(selectedTemplate);
+      regionsInfo = templateInfo.regions;
+      constructDivs();
+    }
+  	
   }catch(err)
   {
 
@@ -823,5 +840,121 @@ function getUploadMediaName(selectedFileName)
   uploadFilesTempNames[selectedFileName] = tempName;
 
   return tempName;
+}
+
+function constructCustomDiv()
+{
+     var parentDiv = document.createElement('div');
+        //parentDiv.class='generic';
+        parentDiv.id = 'custom';
+       
+        //document.getElementsByTagName('body')[0].appendChild(parentDiv);
+        document.getElementById('parent_div').appendChild(parentDiv);
+        initDraw(parentDiv);
+}
+
+function initDraw(canvas) {
+
+    var regPosition=0;
+    screenInfo = {'width':640,'height':360};
+
+    function setMousePosition(e) {
+        var ev = e || window.event; //Moz || IE
+        if (ev.pageX) { //Moz
+            mouse.x = (ev.pageX-custom_x);
+            mouse.y = (ev.pageY-custom_y);
+        } else if (ev.clientX) { //IE
+            mouse.x = ev.clientX + 0;
+            mouse.y = ev.clientY + 0;
+        }
+    };
+
+    var element = document.getElementById('custom');
+    var position = element.getBoundingClientRect();
+    var custom_x = position.left;
+    var custom_y = position.top;
+    var isDraw = true;
+    var mouse = {
+        x: 0,
+        y: 0,
+        startX: 0,
+        startY: 0
+    };
+    var element = null;
+
+    canvas.onmousemove = function (e) {
+       if(isDraw)
+       {
+        setMousePosition(e);
+        if (element !== null) {
+            element.style.width = Math.abs(mouse.x - mouse.startX) + 'px';
+            element.style.height = Math.abs(mouse.y - mouse.startY) + 'px';
+            //console.log("on mouse move - mouse.x"+mouse.x)
+            element.style.left = (mouse.x - mouse.startX < 0) ? mouse.x + 'px' : mouse.startX + 'px';
+            element.style.top = (mouse.y - mouse.startY < 0) ? mouse.y + 'px' : mouse.startY + 'px';
+
+
+        }
+      }
+    }
+
+    canvas.onclick = function (e) {
+     if(isDraw)
+     {
+        
+        if (element !== null) {
+            
+            canvas.style.cursor = "default";
+            console.log("finsihed.width-"+element.style.width+",height.y"+element.style.height);
+            console.log("finsihed.left-"+element.style.left+",top.y"+element.style.top);
+            
+             prepareInfoForCustomDiv(element.style.width,element.style.height,
+              element.style.left,element.style.top);
+             element = null;
+            ++regPosition;
+        } else {
+            console.log("begun.mouse.x-"+mouse.x+",mouse.y"+mouse.y);
+            mouse.startX = mouse.x;
+            mouse.startY = mouse.y;
+            element = document.createElement('div');
+            element.className = 'rectangle'
+            //element.style.border = "groove #4de4c0"
+            element.style.left = mouse.x + 'px';
+            element.style.top = mouse.y + 'px';
+            element.id="reg_div_"+regPosition;
+
+            element.onclick=function(){
+              if(element==null)
+              {
+                isDraw = false;
+                
+              }
+              
+            };
+            if(element!=null)
+            {
+              canvas.appendChild(element)
+              canvas.style.cursor = "crosshair";
+            }
+            
+        }
+      }else{
+        console.log("is draw false");
+        isDraw = true;
+      }
+    }
+
+    function prepareInfoForCustomDiv(widthPx,heightPx,leftPx,topPx)
+    {
+      var customDivInfo = {'width':getPercentagePixels(screenInfo['width'],widthPx),
+      'height':getPercentagePixels(screenInfo['height'],heightPx),
+      'top_margin':getPercentagePixels(screenInfo['height'],topPx),
+      'left_margin':getPercentagePixels(screenInfo['width'],leftPx)};
+      console.log(getPercentagePixels(screenInfo['width'],widthPx));
+      console.log(JSON.stringify(customDivInfo));
+
+      regionsInfo.push(customDivInfo);
+      addImgReg(regPosition,null);
+    }
 }
 
