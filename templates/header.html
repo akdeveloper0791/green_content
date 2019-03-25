@@ -7,7 +7,8 @@
   <title>Green Content</title>
   <meta name="description" content="green content to have your own account to store media content ">
   <meta name="keywords" content="green content, campaigns, groups, video, images, text, url">
-
+  <link rel="shortcut icon" href="{% static 'Mentor/img/favicon.ico' %}" type="image/x-icon">
+<link rel="icon" href="{% static 'Mentor/img/favicon.ico' %}" type="image/x-icon">
   <link rel="stylesheet" type="text/css" href="{% static 'Mentor/css/font-awesome.min.css' %}">
   <link rel="stylesheet" type="text/css" href="{% static 'Mentor/css/bootstrap.min.css' %}">
  
@@ -35,7 +36,7 @@
           <span class="icon-bar"></span>
           <span class="icon-bar"></span>
         </button>
-        <a class="navbar-brand" href="{% url 'listCampaignsWeb' %}" style="color:#5FCF80;">Green<span style="color: grey;">Content</span></a>
+        <a class="navbar-brand" href="{% url 'listCampaignsWeb' %}" style="color:#5FCF80;"> <img src='{% static "Mentor/img/gc_logo1.png" %}' style='cursor:pointer'></a>
       </div>
       <div class="collapse navbar-collapse" id="myNavbar">
         <ul class="nav navbar-nav navbar-right col-md-8" id="header">

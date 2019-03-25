@@ -374,9 +374,19 @@ function downloadThumbFile()
 
  function deleteCampaign(campaignId)
  {
-  var isDelete = confirm("Are you sure to delete this Campaign? Click \"Ok\" to delete.");
-  if(isDelete)
-  {
+
+ swal({
+            title: "Are you sure?",
+            text: "You want to delete campaign!",
+            type: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#DD6B55",
+            confirmButtonText: "Yes, delete it!",
+            closeOnConfirm: false
+        },
+         function(isConfirm){
+           if (isConfirm) {
+    
     displayInitUploadBusyDialog();
    var xhr = new XMLHttpRequest();
    xhr.onload = function() {
@@ -392,6 +402,13 @@ function downloadThumbFile()
               var div = document.getElementById("campaign_row_"+campaignId);
                if (div) {
                     div.parentNode.removeChild(div);
+                
+                    swal({
+     title: "Deleted succesfully!",
+     text: "",
+     type: "success",
+     timer: 3000   
+     });
                 }
              }else{
               deleteError(response.status);
@@ -421,8 +438,10 @@ function downloadThumbFile()
   var params = 'accessToken=web&camp_id='+campaignId+'&mac=web';
    
    xhr.send(params);
-  }
-  
+   }else{
+                swal("Cancelled", "Your imaginary file is safe :)", "error");
+          } 
+    });
  }
 
  function deleteError(msg)
