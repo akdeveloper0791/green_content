@@ -216,11 +216,12 @@ class Campaign_Reports(models.Model):
         for report in data:
           p_metrics = Campaign_Reports(player_id=player,
             campaign_name=report['c_name'],times_played=report['times_played'],
-            duration=report['duration'],last_played_at=report['last_played_at']);
+            duration=report['duration'],last_played_at=report['last_played_at'],created_at=datetime.datetime.now());
           if('c_server_id' in report and report['c_server_id']>=1):
             p_metrics.campaign_id = report['c_server_id'];
           
           metrics.append(p_metrics);
+  
 
         Campaign_Reports.objects.bulk_create(metrics);
         return {'statusCode':0,'status':'metrics'};
