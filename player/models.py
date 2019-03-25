@@ -206,7 +206,10 @@ class Campaign_Reports(models.Model):
     duration = models.IntegerField(default=1)
     last_played_at = models.DateTimeField(blank=True,null=True)
     created_at = models.DateTimeField(default=datetime.datetime.now())
-
+    
+    def __str__(self):
+        return self.player.mac
+        
     def saveCampaignReports(player,pMac,data):
       try:
         data = json.loads(data);
