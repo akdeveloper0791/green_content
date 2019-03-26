@@ -7,7 +7,8 @@
   <title>Green Content</title>
   <meta name="description" content="green content to have your own account to store media content ">
   <meta name="keywords" content="green content, campaigns, groups, video, images, text, url">
-
+  <link rel="shortcut icon" href="{% static 'Mentor/img/favicon.ico' %}" type="image/x-icon">
+<link rel="icon" href="{% static 'Mentor/img/favicon.ico' %}" type="image/x-icon">
   <link rel="stylesheet" type="text/css" href="{% static 'Mentor/css/font-awesome.min.css' %}">
   <link rel="stylesheet" type="text/css" href="{% static 'Mentor/css/bootstrap.min.css' %}">
  
@@ -17,6 +18,7 @@
   <link rel="stylesheet" href="{% static 'css/sweetalert.css' %}">
 
     <script src="{% static 'js/sweetalert.js' %}"></script>
+
 
 </head>
 
@@ -34,26 +36,22 @@
           <span class="icon-bar"></span>
           <span class="icon-bar"></span>
         </button>
-        <a class="navbar-brand" href="{% url 'listCampaignsWeb' %}" style="color:#5FCF80;">Green<span style="color: grey;">Content</span></a>
+        <a class="navbar-brand" href="{% url 'listCampaignsWeb' %}" style="color:#5FCF80;"> <img src='{% static "Mentor/img/gc_logo1.png" %}' style='cursor:pointer'></a>
       </div>
       <div class="collapse navbar-collapse" id="myNavbar">
-        <ul class="nav navbar-nav navbar-right">
+        <ul class="nav navbar-nav navbar-right col-md-8" id="header">
               {% if request.user.is_authenticated %}
-                 <!--     <li class="nav-item">
-              <a class="nav-link" href="{% url 'mycontent_videos' %}">My Content</a>
-            </li> -->
-           <!--  <li class="nav-item ">
-              <a class="nav-link" href="{% url 'my_wishlist' %}">My Whishlist</a>
-            </li> -->
-            <li class="nav-item">
-              <a class="nav-link" href="{% url 'listCampaignsWeb' %}" style="text-align: center;padding: 0 20px;">Campaign<p>Management</p></a>
+
+            <li class="nav-item col-md-2" id="management">
+              <a class="nav-link" href="{% url 'listCampaignsWeb' %}" style="text-align: center;padding:0px;">Campaign Management</a>
             </li>
-            <li class="nav-item">
-              <a class="nav-link" href="{% url 'deviceMgmt' %}" style="text-align: center;padding: 0 20px;">Device<p>Management</p></a>
+            <li class="nav-item col-md-2" id="device">
+              <a class="nav-link" href="{% url 'deviceMgmt' %}" style="text-align: center;padding: 0px;">Device Management</a>
             </li>
-            <li class="nav-item">
-              <a class="nav-link" href="{% url 'gcGroups' %}" style="text-align: center;padding: 0 20px;">GC<p>Groups</p></a>
+            <li class="nav-item col-md-2" id="gcGroups">
+              <a class="nav-link" href="{% url 'gcGroups' %}" style="text-align: center;padding: 0 20px;">GC Groups</a>
             </li>
+
            <!--  <li class="nav-item">
               <a class="nav-link" href="{% url 'upload_camp_web' %}">Upload Campaign</a>
             </li> -->
@@ -61,16 +59,18 @@
               <a class="nav-link" href="{% url 'campaignReports' %}" style="text-align: center;padding: 0 20px;">Campaign<p>Reports</p></a>
             </li> 
             
-            <li class="nav-item" >
-              <a class="nav-link"  href="{% url 'viewerMetrics' %}" style="text-align: center;padding: 0 20px;">Viewers<p>Metrics</p></a>
+         
+           
+            
+            <li class="nav-item col-md-2" id="viewers">
+              <a class="nav-link"  href="{% url 'viewerMetrics' %}" style="text-align: center;padding: 0px;">Viewers Reports</a>
+
             </li>
          
-           <!--   <li class="nav-item">
-              <a class="nav-link" href="{% url 'web_search' %}">Web Content</a>
-            </li> -->
+  
            
-            <li class="nav-item active">
-              <a class="nav-link"  href="{% url 'logout' %}" style="text-align: center;padding: 0 20px;">{{ request.user.first_name}}<p>(Logout)</p></a>
+            <li class="nav-item col-md-2">
+              <a class="nav-link"  href="{% url 'logout' %}" style="text-align: center;padding: 0px;">{{ request.user.first_name}} (Logout)</a>
             </li>
 
              {% else %}
@@ -86,12 +86,30 @@
   <!--/ Navigation bar-->
   <script type="text/javascript">
     function comming_soon(msg) {
+
       swal({
   title: msg,
   text: "Comming Soon.",
-  timer: 2000
+  timer: 2000,
+  showConfirmButton: false
+}, function(){
+      window.location.href = "";
 });
     }
+
+
   </script>
 </body>
 </html>
+           <!--     <li class="nav-item">
+              <a class="nav-link" href="{% url 'mycontent_videos' %}">My Content</a>
+            </li> -->
+           <!--  <li class="nav-item ">
+              <a class="nav-link" href="{% url 'my_wishlist' %}">My Whishlist</a>
+            </li> -->
+            <!--  <li class="nav-item">
+              <a class="nav-link" href="{% url 'upload_camp_web' %}">Upload Campaign</a>
+            </li> -->
+                     <!--   <li class="nav-item">
+              <a class="nav-link" href="{% url 'web_search' %}">Web Content</a>
+            </li> -->

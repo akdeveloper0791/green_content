@@ -25,10 +25,24 @@
   padding: 8px;
 }
 
-
+  .modal-dialog {
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    padding: 0;
+  }
+  
+  .modal-content {
+    height: auto;
+    min-height: 100%;
+    border: 0 none;
+    border-radius: 0;
+  }
 /*td:nth-child(even){background-color: #f2f2f2}*/
 </style>
 <!-- The Multi region Modal -->
+
+<div class="container">
  <div class="modal" id="cct_display_template_modal" style="display:none">
     <div class="modal-dialog">
       <div class="modal-content"> 
@@ -41,103 +55,138 @@
         
         <!-- Modal body -->
         <div class="modal-body">
+
          <div style="overflow-x:auto;">
-         <table class="table">
- 
-            <tr>
-              <td class="td"><img src='{% static "images/campaign/single_100_100.png" %}' style='cursor:pointer' onclick="prepareView('{{ SINGLE_100_100 }}');"></td>
-
-              <td class="td"><img src='{% static "images/campaign/two_reg_vertical.png" %}' onclick="prepareView('{{ two_reg_vertical_json }}');" style='cursor:pointer'></td>
-              
-              <td class="td"><img src='{% static "images/campaign/two_reg_horz.png" %}' onclick="prepareView('{{ two_reg_hoirz_json }}');" style='cursor:pointer'></td>
-                
-               <td class="td"> <img src='{% static "images/campaign/two_horiz_one_below.png" %}' onclick="prepareView('{{ two_horiz_one_below_json }}');" style='cursor:pointer'></td>
-             
-            </tr>
-             <tr>
-              <td class="td"><img src='{% static "images/campaign/two_vertical_50_50.png" %}' onclick="prepareView('{{ two_reg_vertical_50_50_json }}');" style='cursor:pointer'></td>
-
-              <td class="td"> <img src='{% static "images/campaign/r3_1h_2v_20_50_50.png" %}'onclick="prepareView('{{ r3_1h_2v_20_50_50_json }}');"  style='cursor:pointer'></td>
-
-              <td class="td"><img src='{% static "images/campaign/two_vertical_20_70.png" %}'  style='cursor:pointer' onclick="prepareView('{{ two_vertical_20_70_json }}');"></td>
-
-              <td class="td"><img src='{% static "images/campaign/r4_2h_2v_50_50.png" %}' onclick="prepareView('{{ r4_2h_2v_50_50_json }}');" style='cursor:pointer'></td>
-
-             
-             </tr>
-             <tr>
-               <td class="td"><img src='{% static "images/campaign/custom.png" %}' onclick="prepareView('custom');" style='cursor:pointer'></td>
-             </tr>
-             
-          </table>
         
-     </div>
-        </div>
         
-        <!-- Modal footer -->
-        <div class="modal-footer">
-         
-         <!-- <button type="button" class="btn btn-danger" data-dismiss="modal" onclick="">Close</button> -->
     
+
+     <div class="col-md-12 col-xs-12" style="text-align: center;">
+      <div class="rows">
+        <div class="col-md-3 col-xs-6" style="margin: 10px 0px;">
+          <img src='{% static "images/campaign/single_100_100.png" %}' style='cursor:pointer' onclick="prepareView('{{ SINGLE_100_100 }}');">
+        </div>
+        <div class="col-md-3 col-xs-6" style="margin: 10px 0px;">
+          <img src='{% static "images/campaign/two_reg_vertical.png" %}' onclick="prepareView('{{ two_reg_vertical_json }}');" style='cursor:pointer'>
+        </div>
+        <div class="col-md-3 col-xs-6" style="margin: 10px 0px;">
+          <img src='{% static "images/campaign/two_reg_horz.png" %}' onclick="prepareView('{{ two_reg_hoirz_json }}');" style='cursor:pointer'>
+        </div>
+        <div class="col-md-3 col-xs-6" style="margin: 10px 0px;">
+          <img src='{% static "images/campaign/two_horiz_one_below.png" %}' onclick="prepareView('{{ two_horiz_one_below_json }}');" style='cursor:pointer'>
+        </div>
+
+      </div>
+
+
+     </div>
+
+
+         <div class="col-md-12 col-xs-12" style="text-align: center;">
+      <div class="rows">
+        <div class="col-md-3 col-xs-6" style="margin: 10px 0px;">
+          <img src='{% static "images/campaign/two_vertical_50_50.png" %}' onclick="prepareView('{{ two_reg_vertical_50_50_json }}');" style='cursor:pointer'>
+        </div>
+        <div class="col-md-3 col-xs-6" style="margin: 10px 0px;">
+          <img src='{% static "images/campaign/r3_1h_2v_20_50_50.png" %}'onclick="prepareView('{{ r3_1h_2v_20_50_50_json }}');"  style='cursor:pointer'>
+        </div>
+        <div class="col-md-3 col-xs-6" style="margin: 10px 0px;">
+          <img src='{% static "images/campaign/two_vertical_20_70.png" %}'  style='cursor:pointer' onclick="prepareView('{{ two_vertical_20_70_json }}');">
+        </div>
+        <div class="col-md-3 col-xs-6" style="margin: 10px 0px;">
+          <img src='{% static "images/campaign/r4_2h_2v_50_50.png" %}' onclick="prepareView('{{ r4_2h_2v_50_50_json }}');" style='cursor:pointer'>
+        </div>
+      </div>
+     </div>
+
+      <div class="col-md-12 col-xs-12" style="text-align: center;">
+      <div class="rows">
+        <div class="col-md-3 col-xs-6" style="margin: 10px 0px;">
+          <img src='{% static "images/campaign/custom.png" %}' onclick="prepareView('custom');" style='cursor:pointer'>
+        </div>
+      </div>
+    </div>
+
+<div class="col-md-12 col-xs-12">
+      <div class="rows">
+          <center>
+         <button type="button" class="btn btn-danger" data-dismiss="modal" onclick="window.location ='/search/'">Close</button>
+     </center>
+   </div>
+ </div>
+
+
         </div>
         
       </div>
     </div> 
   </div>
+</div>
 
 
   <!-- The Multi region Modal -->
  <div class="modal_test" id="cct_display_template_modal_mobile" style="display:none">
-   <!-- <div class="modal-dialog">
-      <div class="modal-content"> -->
+   <div class="modal-dialog">
+      <div class="modal-content"> 
       
         <!-- Modal Header -->
-        <div class="modal-header_test"> 
+        <div class="modal-header"> 
           <h4 class="modal-title" style="text-align:center;color:#5FCF80;"> Select Layout  for Campaign
           </h4>
         </div>
         
         <!-- Modal body -->
-        <div class="modal-body_test">
-         <div style="overflow-x:auto;">
-          <table>
- 
-            <tr>
-              <td><img src='{% static "images/campaign/mobile/single_100_100.png" %}' style='cursor:pointer' onclick="prepareView('{{ SINGLE_100_100 }}');"></td>
-
-              <td><img src='{% static "images/campaign/mobile/two_reg_vertical.png" %}' onclick="prepareView('{{ two_reg_vertical_json }}');" style='cursor:pointer'></td>
-              </tr>
-              <tr>
-              <td><img src='{% static "images/campaign/mobile/two_reg_horz.png" %}' onclick="prepareView('{{ two_reg_hoirz_json }}');" style='cursor:pointer'></td>
-                
-               <td> <img src='{% static "images/campaign/mobile/two_horiz_one_below.png" %}' onclick="prepareView('{{ two_horiz_one_below_json }}');" style='cursor:pointer'></td>
-             
-            </tr>
-             <tr>
-              <td><img src='{% static "images/campaign/mobile/two_vertical_50_50.png" %}' onclick="prepareView('{{ two_reg_vertical_50_50_json }}');" style='cursor:pointer'></td>
-
-              <td> <img src='{% static "images/campaign/mobile/r3_1h_2v_20_50_50.png" %}' onclick="prepareView('{{ r3_1h_2v_20_50_50_json }}');"  style='cursor:pointer'></td>
-             </tr>
-             <tr>
-              <td><img src='{% static "images/campaign/mobile/two_vertical_20_70.png" %}' onclick="prepareView('{{ two_vertical_20_70_json }}');" style='cursor:pointer'></td>
-
-              <td><img src='{% static "images/campaign/mobile/r4_2h_2v_50_50.png" %}' onclick="prepareView('{{ r4_2h_2v_50_50_json }}');" style='cursor:pointer'></td>
-             </tr>
-             
-          </table>
-        
-     </div>
-        </div>
-        
-        <!-- Modal footer -->
         <div class="modal-footer">
-         
-         <!-- <button type="button" class="btn btn-danger" data-dismiss="modal" onclick="">Close</button> -->
-    
+
+     <div class="col-md-12 col-xs-12" style="text-align: center;">
+      <div class="rows">
+        <div class="col-md-3 col-xs-6" style="margin: 10px 0px;">
+          <img src='{% static "images/campaign/single_100_100.png" %}' style='cursor:pointer' onclick="prepareView('{{ SINGLE_100_100 }}');">
+        </div>
+        <div class="col-md-3 col-xs-6" style="margin: 10px 0px;">
+          <img src='{% static "images/campaign/two_reg_vertical.png" %}' onclick="prepareView('{{ two_reg_vertical_json }}');" style='cursor:pointer'>
+        </div>
+        <div class="col-md-3 col-xs-6" style="margin: 10px 0px;">
+          <img src='{% static "images/campaign/two_reg_horz.png" %}' onclick="prepareView('{{ two_reg_hoirz_json }}');" style='cursor:pointer'>
+        </div>
+        <div class="col-md-3 col-xs-6" style="margin: 10px 0px;">
+          <img src='{% static "images/campaign/two_horiz_one_below.png" %}' onclick="prepareView('{{ two_horiz_one_below_json }}');" style='cursor:pointer'>
+        </div>
+
+      </div>
+
+     </div>
+
+
+         <div class="col-md-12 col-xs-12" style="text-align: center;">
+      <div class="rows">
+        <div class="col-md-3 col-xs-6" style="margin: 10px 0px;">
+          <img src='{% static "images/campaign/two_vertical_50_50.png" %}' onclick="prepareView('{{ two_reg_vertical_50_50_json }}');" style='cursor:pointer'>
+        </div>
+        <div class="col-md-3 col-xs-6" style="margin: 10px 0px;">
+          <img src='{% static "images/campaign/r3_1h_2v_20_50_50.png" %}'onclick="prepareView('{{ r3_1h_2v_20_50_50_json }}');"  style='cursor:pointer'>
+        </div>
+        <div class="col-md-3 col-xs-6" style="margin: 10px 0px;">
+          <img src='{% static "images/campaign/two_vertical_20_70.png" %}'  style='cursor:pointer' onclick="prepareView('{{ two_vertical_20_70_json }}');">
+        </div>
+        <div class="col-md-3 col-xs-6" style="margin: 10px 0px;">
+          <img src='{% static "images/campaign/r4_2h_2v_50_50.png" %}' onclick="prepareView('{{ r4_2h_2v_50_50_json }}');" style='cursor:pointer'>
+        </div>
+      </div>
+     </div>
+<div class="col-md-12 col-xs-12">
+      <div class="rows">
+          <center>
+         <button type="button" class="btn btn-danger" data-dismiss="modal" onclick="window.location ='/search/'">Close</button>
+     </center>
+   </div>
+ </div>
+
+
         </div>
         
-      <!--</div>
-    </div> -->
+      </div>
+    </div> 
   </div>
 
 </body>

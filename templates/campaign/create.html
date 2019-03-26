@@ -61,7 +61,7 @@ th, td {
 
 div.generic {border: groove;} 
 
-.create_button {
+.create_button,.button1 {
   background-color: #4CAF50;
   border: none;
   color: white;
@@ -73,6 +73,7 @@ div.generic {border: groove;}
   margin: 2px 2px;
   cursor: pointer;
 }
+
 #custom {
     width:640px;
     height:360px;
@@ -88,6 +89,8 @@ div.generic {border: groove;}
     position: absolute;
 }
 
+
+
 </style>
 </head>
 {% block body %}
@@ -95,7 +98,7 @@ div.generic {border: groove;}
 	{% include 'campaign/create_campaign_templates.html' %}
 
   {% include 'campaign/upload.html' %}
-
+ <input type="button" id="button1" class="button1" value="Back" style="float:left;display:none;" onclick="window.location='/campaigns/create/'">
   <input type="button" id="create_button" class="create_button" value="Next" style="float:right;display:none" onclick="displayCreateCampaignDialog()"/>
 
   <h4 id="info_title" class="modal-title" style="text-align:center;color:#5FCF80;"></h4>
@@ -105,61 +108,72 @@ div.generic {border: groove;}
   </div>
 
 	<!-- select option -->
-  <div class="modal" id="selectoption">
-    <div class="modal-dialog modal-lg">
-      <div class="modal-content">
+ 
+
+  <!-- The Multi region Modal -->
+<div class="container">
+ <div class="modal" id="selectoption">
+    <div class="modal-dialog">
+      <div class="modal-content"> 
       
         <!-- Modal Header -->
-        <div class="modal-header">
-          <h4 class="modal-title" style="text-align:center;color:#5FCF80;">  Select Content Type.
-         <!--  <span type="button" class="close" data-dismiss="modal" onclick="dismissSelectRegOption();">&times;</span> --></h4>
-
-          <input type="hidden" id="select_media_reg_id">
-
+        <div class="modal-header"> 
+          <h4 class="modal-title" style="text-align:center;color:#5FCF80;"> Select Content Type
+          </h4>
         </div>
         
         <!-- Modal body -->
-        <div class="modal-body" >
-          <div style="overflow-x:auto;">
-        	<table class="table" cellspacing="10">
- 
-            <tr>
-              <td class="td">
-              	<input type="file" accept="image/*" name="input-file-preview" id="select_img_file_type" style="display:none" onchange="onSelectImgReg(this)"/>
-              	<img src='{% static "images/campaign/image.png" %}' style='cursor:pointer' onclick="selectImgRegion();">
-                <p align="center">Image</p>
-              </td>
-              <td class="td">
-              	<input type="file" accept="video/*" name="input-file-preview" id="select_video_file_type" style="display:none" onchange="onSelectVideoReg(this)"/>
-              	<img src='{% static "images/campaign/video.png" %}' onclick="selectVideoRegion();" style='cursor:pointer'>
-                <p align="center">Video</p>
-              </td>
-              <td class="td"><img src='{% static "images/campaign/url.png" %}' onclick="displayCreateURLDialog();" style='cursor:pointer'>
-               <p align="center">URL</p>
-             </td>
-               <td class="td" onclick="displayCreateTextRegion()"> <img src='{% static "images/campaign/text.png" %}' onclick="displayCreateTextRegion();" style='cursor:pointer'>
-                <p align="center">Text</p></td>
+        <div class="modal-body">
 
-              <td class="td" id="display_create_table_region" onclick="displayCreateTableRegion()"> <img src='{% static "images/campaign/ic_table_layout.png" %}' onclick="displayCreateTableRegion();" style='cursor:pointer'>
-                <p align="center">Table</p></td>
-             
-            </tr>
-        </table>
-      </div>
-     		  
+     <div class="col-md-12 col-xs-12" style="text-align: center;">
+      <div class="rows">
+         <div class="col-md-1 " style="margin: 10px 0px;">
         </div>
-        
-        <!-- Modal footer -->
-        <div class="modal-footer">
+        <div class="col-md-2 col-xs-4" style="margin: 10px 0px;">
+           <input type="file" accept="image/*" name="input-file-preview" id="select_img_file_type" style="display:none" onchange="onSelectImgReg(this)"/>
+                <img src='{% static "images/campaign/mobile/ic_image_yellow.png" %}' style='cursor:pointer' onclick="selectImgRegion();">
+                <p align="center">Image</p>
+        </div>
+        <div class="col-md-2 col-xs-4" style="margin: 10px 0px;">
+            <input type="file" accept="video/*" name="input-file-preview" id="select_video_file_type" style="display:none" onchange="onSelectVideoReg(this)"/>
+                <img src='{% static "images/campaign/mobile/ic_video_yellow.png" %}' onclick="selectVideoRegion();" style='cursor:pointer'>
+                <p align="center">Video</p>
+        </div>
+        <div class="col-md-2 col-xs-4" style="margin: 10px 0px;">
+          <img src='{% static "images/campaign/mobile/ic_url.png" %}' onclick="displayCreateURLDialog();" style='cursor:pointer'>
+               <p align="center">URL</p>
+        </div>
+        <div class="col-md-2 col-xs-6" style="margin: 10px 0px;">
+          <i class="td" onclick="displayCreateTextRegion()"> <img src='{% static "images/campaign/mobile/ic_text_yellow.png" %}' onclick="displayCreateTextRegion();" style='cursor:pointer'></i>
+                <p align="center">Text</p>
+        </div>
+          <div class="col-md-2 col-xs-6" style="margin: 10px 0px;">
+         <b class="td" id="display_create_table_region" onclick="displayCreateTableRegion()" style="display:inline;padding: 0px;"> <img src='{% static "images/campaign/mobile/ic_table.png" %}' onclick="displayCreateTableRegion();" style='cursor:pointer;'></b>
+                <p align="center">Table</p>
+        </div>
+         <div class="col-md-1 " style="margin: 10px 0px;">
+        </div>
+
+
+      </div>
+     </div>
+
+<div class="col-md-12 col-xs-12">
+      <div class="rows">
+        <br/>
           <center>
-      <button  class="btn btn-success" data-dismiss="modal" onclick="dismissSelectRegOption();">Close</button>
-      <!--  <button type="button" class="btn btn-success" onclick="">Submit</button> -->
-       </center>
+          <button  class="btn btn-danger" data-dismiss="modal" onclick="dismissSelectRegOption();">Close</button>
+     </center>
+   </div>
+ </div>
+
+
         </div>
         
       </div>
-    </div>
+    </div> 
   </div>
+</div>
 <!-- select option -->
 
 <!-- select option -->
@@ -212,7 +226,7 @@ div.generic {border: groove;}
         <!-- Modal footer -->
         <div class="modal-footer">
           <center>
-      <button  class="btn btn-success" data-dismiss="modal" onclick="dismissSelectRegOption();">Close</button>
+      <button  class="btn btn-danger" data-dismiss="modal" onclick="dismissSelectRegOption();">Close</button>
       <!--  <button type="button" class="btn btn-success" onclick="">Submit</button> -->
        </center>
         </div>
@@ -238,16 +252,16 @@ div.generic {border: groove;}
      
         <div>
           <label style="font-weight:bold">Rich Text : *</label><br>
-            <textarea rows="4"  placeholder="Enter your text need to be displayed" name="media_name" id="create_text_media_name"></textarea> <br>
+            <textarea rows="4"  placeholder="Enter your text need to be displayed" name="media_name" id="create_text_media_name" style="width: 100%;"></textarea> <br>
 
           <label style="font-weight:bold" for="exampleInputPassword2">Text Size :</label>
-            <input type="number"  placeholder="Enter Font Size" name="font_size" id="create_text_media_text_size" value=40 />  <br>
+            <input type="number"  placeholder="Enter Font Size" name="font_size" id="create_text_media_text_size" value=40 style="width: 100%;"/>  <br>
 
             <label style="font-weight:bold;" for="exampleInputEmail1">Text Color :</label>
-            <input class="jscolor {zIndex:9999} form-control" value="000000" id="create_txt_media_txt_color"> <br>
+            <input class="jscolor {zIndex:9999} form-control" value="5500FF" id="create_txt_media_txt_color"> 
             
             <label style="font-weight:bold" for="exampleInputEmail1">Text Background Color :</label>
-            <input class="jscolor {zIndex:9999} form-control" value="FFFFFF" id="create_txt_media_txt_bg">
+            <input class="jscolor {zIndex:9999} form-control" value="C9FFCE" id="create_txt_media_txt_bg">
 
              <label style="font-weight:bold;" for="exampleInputEmail1">Text Alignment : *</label>
               <select class="form-control" id="create_txt_media_txt_algmt">
@@ -287,7 +301,7 @@ div.generic {border: groove;}
 
 <!-- URL-->
   <div class="modal" id="create_url_reg_dialog" >
-    <div class="modal-dialog modal-lg">
+    <div class="modal-dialog ">
       <div class="modal-content">
       
         <!-- Modal Header -->
@@ -302,7 +316,7 @@ div.generic {border: groove;}
               <div >
                 <label for="exampleInputEmail1" style="font-weight:bold" >URL : *</label>
 
-                <input type="text" size="100" value="https://www." name="url" id="create_url_reg_url" focus> <br>
+                <input type="text" size="100" value="https://www." name="url" id="create_url_reg_url" focus style="width: 100%;"> <br>
                 <span>Enter url address like https://www.xyz.com</span><br>
               </div>
 
@@ -386,7 +400,7 @@ div.generic {border: groove;}
                <div class="form-group">
                   <label for="exampleInputPassword1" style="font-weight:bold">Campaign Name : *</label>
                   <input type="text" class="form-control" placeholder="Enter Campaign Name" name="media_name" id="file_media_name" size="100" style="width: 100%;">  
-                  <input type="checkbox" onchange="setDefaultCampaignName(this);">Set default Campaign name   
+                  <input type="checkbox" onchange="setDefaultCampaignName(this);">Set Default Campaign name   
                 </div>
 
              
@@ -451,7 +465,6 @@ div.generic {border: groove;}
 
        
 	})();
-
 
  </script>
 </body>

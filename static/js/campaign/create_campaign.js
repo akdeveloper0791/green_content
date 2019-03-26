@@ -37,8 +37,8 @@ var duration = 10;//seconds
 
  function displayUpload()
  {
-   document.getElementById("create_button").style.
-   display="block";
+   document.getElementById("create_button").style.display="block";
+      document.getElementById("button1").style.display="block";
  }
 
 
