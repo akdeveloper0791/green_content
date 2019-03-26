@@ -19,7 +19,11 @@ var duration = 10;//seconds
 
  function getPercentagePixels(totalPixels,elemPixels)
  {
-  var elemPixels = parseInt(elemPixels.replace('px',''));
+  if(typeof elemPixels == "string")
+  {
+    var elemPixels = parseInt(elemPixels.replace('px',''));
+  }
+  
   //var totalPixels = parseInt(totalPixels.replace('px','')); 
   //return (elemPixels*100);
   var floatPercentage = ((100*elemPixels)/totalPixels);
@@ -857,6 +861,20 @@ function initDraw(canvas) {
 
     var regPosition=0;
     screenInfo = {'width':640,'height':360};
+    
+    var element = document.getElementById('custom');
+    var position = element.getBoundingClientRect();
+    var custom_x = position.left;
+    var custom_y = position.top;
+   
+    var isDraw = true;
+    var mouse = {
+        x: 0,
+        y: 0,
+        startX: 0,
+        startY: 0
+    };
+    var element = null;
 
     function setMousePosition(e) {
         var ev = e || window.event; //Moz || IE
@@ -869,18 +887,7 @@ function initDraw(canvas) {
         }
     };
 
-    var element = document.getElementById('custom');
-    var position = element.getBoundingClientRect();
-    var custom_x = position.left;
-    var custom_y = position.top;
-    var isDraw = true;
-    var mouse = {
-        x: 0,
-        y: 0,
-        startX: 0,
-        startY: 0
-    };
-    var element = null;
+
 
     canvas.onmousemove = function (e) {
        if(isDraw)
@@ -910,8 +917,10 @@ function initDraw(canvas) {
             
              prepareInfoForCustomDiv(element.style.width,element.style.height,
               element.style.left,element.style.top);
+             
+             addHoverOptions(element);
              element = null;
-            ++regPosition;
+              ++regPosition;
         } else {
             console.log("begun.mouse.x-"+mouse.x+",mouse.y"+mouse.y);
             mouse.startX = mouse.x;
@@ -951,11 +960,146 @@ function initDraw(canvas) {
       'top_margin':getPercentagePixels(screenInfo['height'],topPx),
       'left_margin':getPercentagePixels(screenInfo['width'],leftPx),
       'right_margin':0,'bottom_margin':0};
-      console.log(getPercentagePixels(screenInfo['width'],widthPx));
+      console.log("leftPx"+leftPx+",topPx"+topPx);
       console.log(JSON.stringify(customDivInfo));
 
       regionsInfo.push(customDivInfo);
       addImgReg(regPosition,null);
     }
+
+    function addHoverOptions(element)
+    {
+      var hoverDiv = document.createElement("div");
+     
+      hoverDiv.className="custom_region_options";
+      hoverDiv.id = element.id+"_options_div";
+
+      var dragButton = document.createElement("button");
+      dragButton.innerHTML="Drag";
+      dragButton.id=element.id+"_move";
+      
+      dragButton.onclick=function(){
+          moveDiv(element);
+        };
+
+      hoverDiv.appendChild(dragButton);
+      hoverDiv.style.top=element.style.top;
+      hoverDiv.style.left= element.style.left;
+      element.appendChild(hoverDiv);
+      element.addEventListener("mouseover", function( event ) {   
+       var hoverOptions = document.getElementById(element.id+"_options_div");
+       hoverOptions.style.display="block";
+         console.log("inside mouse over");
+          //hoverDiv.style.display="block";
+       }, false);
+      element.addEventListener("mouseout", function( event ) {   
+       var hoverOptions = document.getElementById(element.id+"_options_div");
+       hoverOptions.style.display="none";
+         console.log("inside mouse over");
+          //hoverDiv.style.display="block";
+       }, false);
+    }
+
+    function moveDiv(element)
+    {
+      //alert(element.id);
+      dragElement(element);
+      document.getElementById(element.id+"_move").
+      innerHTML="Click and move";
+    }
+
+  function dragElement(elmnt) {
+  var pos1 = 0, pos2 = 0, pos3 = 0, pos4 = 0;
+  if (document.getElementById(elmnt.id+"_move")) {
+    /* if present, the header is where you move the DIV from:*/
+    document.getElementById(elmnt.id +"_move").onmousedown = dragMouseDown;
+  } else {
+    /* otherwise, move the DIV from anywhere inside the DIV:*/
+    elmnt.onmousedown = dragMouseDown;
+  }
+
+  function dragMouseDown(e) {
+    e = e || window.event;
+    //e.preventDefault();
+    // get the mouse cursor position at startup:
+    pos3 = e.clientX;
+    pos4 = e.clientY;
+    document.onmouseup = closeDragElement;
+    // call a function whenever the cursor moves:
+    document.onmousemove = elementDrag;
+
+  }
+
+  function elementDrag(e) {
+    e = e || window.event;
+    e.preventDefault();
+    // calculate the new cursor position:
+    pos1 = pos3 - e.clientX;
+    pos2 = pos4 - e.clientY;
+    pos3 = e.clientX;
+    pos4 = e.clientY;
+    // set the element's new position:
+    var afterMoveTop = (elmnt.offsetTop - pos2); 
+    var afterMoveLeft =  (elmnt.offsetLeft - pos1);
+    console.log("AfterMoveTop"+afterMoveTop);
+    console.log("AfterMoveLeft"+afterMoveLeft);
+    var elementHeight = parseInt(elmnt.style.height);
+    var elementWidth = parseInt(elmnt.style.width);
+    if(chcekAndMove(afterMoveLeft,afterMoveTop,elementHeight,elementWidth))
+    {
+       elmnt.style.top =  afterMoveTop + "px";
+       elmnt.style.left = afterMoveLeft + "px";
+       
+       //update options div
+      var optionsDiv = document.getElementById(elmnt.id+"_options_div");
+      optionsDiv.style.top=afterMoveTop + "px";
+      optionsDiv.style.left= afterMoveLeft + "px";
+
+      updateMargins(elmnt,afterMoveTop,afterMoveLeft);
+    }
+   
+ 
+    
+  }
+
+  function closeDragElement() {
+    /* stop moving when mouse button is released:*/
+    document.onmouseup = null;
+    document.onmousemove = null;
+  }
+
+  function chcekAndMove(afterMoveLeft,afterMoveTop,
+    elementHeight,elementWidth)
+  {
+    if(afterMoveLeft<0 || afterMoveTop <0)
+    {
+      return false;
+    }else{
+      var bottomLimit = screenInfo['height'] - (elementHeight);
+      var rightLimit = screenInfo['width'] - (elementWidth);
+      if(afterMoveTop<=bottomLimit && afterMoveLeft <= rightLimit)
+      {
+        return true;
+      }else{
+        return false;
+      }
+      console.log("bottomLimit"+bottomLimit);
+      
+    }
+    console.log("screenFixedPositions"+JSON.stringify(screenFixedPositions));
+  }
+
+  //update new margins 
+   function updateMargins(element,topPx,leftPx)
+   {
+     id = element.id;
+     idPosition = parseInt(id.replace("reg_div_",""));
+     info = regionsInfo[idPosition];
+     info['top_margin']  = getPercentagePixels(screenInfo['height'],topPx);
+     info['left_margin'] = getPercentagePixels(screenInfo['width'],leftPx);
+     regionsInfo[idPosition] = info;
+     console.log("latest info "+JSON.stringify(info));
+   }
+ }
 }
 
