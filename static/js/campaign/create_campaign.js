@@ -949,7 +949,8 @@ function initDraw(canvas) {
       var customDivInfo = {'width':getPercentagePixels(screenInfo['width'],widthPx),
       'height':getPercentagePixels(screenInfo['height'],heightPx),
       'top_margin':getPercentagePixels(screenInfo['height'],topPx),
-      'left_margin':getPercentagePixels(screenInfo['width'],leftPx)};
+      'left_margin':getPercentagePixels(screenInfo['width'],leftPx),
+      'right_margin':0,'bottom_margin':0};
       console.log(getPercentagePixels(screenInfo['width'],widthPx));
       console.log(JSON.stringify(customDivInfo));
 
