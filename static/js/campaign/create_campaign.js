@@ -931,6 +931,8 @@ function initDraw(canvas) {
             element.style.left = mouse.x + 'px';
             element.style.top = mouse.y + 'px';
             element.id="reg_div_"+regPosition;
+            
+            element.onresize=function(){alert("on resize")};
 
             element.onclick=function(){
               if(element==null)
@@ -975,7 +977,7 @@ function initDraw(canvas) {
       hoverDiv.id = element.id+"_options_div";
 
       var dragButton = document.createElement("button");
-      dragButton.innerHTML="Drag";
+      dragButton.innerHTML="Move";
       dragButton.id=element.id+"_move";
       
       dragButton.onclick=function(){
@@ -992,6 +994,7 @@ function initDraw(canvas) {
          console.log("inside mouse over");
           //hoverDiv.style.display="block";
        }, false);
+
       element.addEventListener("mouseout", function( event ) {   
        var hoverOptions = document.getElementById(element.id+"_options_div");
        hoverOptions.style.display="none";
