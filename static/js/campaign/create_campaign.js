@@ -87,7 +87,8 @@ function constructDivs()
         parentDiv.style.top=getPixels(screenInfo['height'],info.top_margin);
         parentDiv.style.left=getPixels(screenInfo['width'],info.left_margin);
         parentDiv.style.border = "groove #4de4c0";
-       
+        parentDiv.style.width = getPixels(screenInfo['width'],info.width);
+        parentDiv.style.height = getPixels(screenInfo['height'],info.height)
         //document.getElementsByTagName('body')[0].appendChild(parentDiv);
         document.getElementById('parent_div').appendChild(parentDiv);
         addImgReg(i,null);
@@ -105,7 +106,7 @@ function constructDivs()
     var childTag = document.createElement('IMG');
   	info.type="Image";
     info.properties = {"scaleType":"fillScreen"};
-        childTag.src= '/static/images/campaign/campaign_default2.png';
+    childTag.src= '/static/images/campaign/campaign_default2.png';
     info.is_self_path = true;
 
     if(file==null)
@@ -125,8 +126,14 @@ function constructDivs()
     }
   	
     childTag.id='reg_div_child_'+idPosition;
-    childTag.style.width = getPixels(screenInfo['width'],info.width);
+    /*childTag.style.width = getPixels(screenInfo['width'],info.width);
     childTag.style.height = getPixels(screenInfo['height'],info.height);
+    childTag.style.position="absolute";*/
+
+    childTag.style.width = '100%';
+    childTag.style.height = '100%';
+    childTag.style.position="absolute";
+
     childTag.onclick=function(){
         	displayRegSelectOption(idPosition);
         };
@@ -169,7 +176,7 @@ function constructDivs()
   	childTag.id='reg_div_child_'+idPosition;
     childTag.style.width = '100%';
     childTag.style.height = '100%';
-    childTag.style.position="relative";
+    childTag.style.position="absolute";
     childTag.style.border = "0";
     childTag.scrolling = false;
 
@@ -195,10 +202,21 @@ function constructDivs()
   function removeChildElement(idPosition)
   {
   	
-  	node = document.getElementById('reg_div_'+idPosition);
-  	while (node.hasChildNodes()) {
-    node.removeChild(node.lastChild);
-    } 
+  	var parentNode = document.getElementById('reg_div_'+idPosition);
+  	var childNodes = parentNode.childNodes.length;
+    var pos=0;
+    while (parentNode.hasChildNodes() && pos<childNodes) {
+      
+      if(!(parentNode.lastChild.id == 'reg_div_'+idPosition+"_options_div" || 
+        parentNode.lastChild.id == 'reg_div_'+idPosition+"_resize_custom_div"))
+      {
+        
+        parentNode.removeChild(parentNode.lastChild);
+      }
+       pos+=1;
+    }
+    
+    
   }
 
   function displayRegSelectOption(idPosition)
@@ -395,9 +413,13 @@ function constructDivs()
   {
     var info = regionsInfo[idPosition];
     childTag.id='reg_div_child_'+idPosition;
-    childTag.style.width = getPixels(screenInfo['width'],info.width);
+    /*childTag.style.width = getPixels(screenInfo['width'],info.width);
     childTag.style.height = getPixels(screenInfo['height'],info.height);
-    
+    */
+    childTag.style.width = '100%';
+    childTag.style.height = '100%';
+    childTag.style.position="absolute";
+
     childTag.innerHTML = info.media_name;
     var properties = info.properties;
 
@@ -507,8 +529,9 @@ function constructDivs()
         //create new text child tag
          childTag = document.createElement('iframe');
          childTag.id='reg_div_child_'+idPosition;
-         childTag.style.width = getPixels(screenInfo['width'],info.width);
-         childTag.style.height = getPixels(screenInfo['height'],info.height);
+         childTag.style.width = '100%';
+         childTag.style.height = '100%';
+         childTag.style.position="absolute";
          childTag.src = mediaName;
          childTag.onclick=function(){
           displayRegSelectOption(idPosition);
@@ -621,7 +644,7 @@ function reconstructDivs()
 
 function displayCreateCampaignDialog()
 {
-  console.log("Inside display create campaign dialog");
+  
   if(Object.keys(regionsResourceFiles).length>=1)
   {
     document.getElementById("file_duration").value = duration;
@@ -702,8 +725,10 @@ function initXXX()
 
 function prepareInfoFile(mediaName)
 {
+  //prepare regionsInfo file
+  var activeRegions = deleteInActiveDivs();
   var playDuration = document.getElementById("file_duration").value;
-  var infoJSON = { "type": "multi_region", "regions": regionsInfo,
+  var infoJSON = { "type": "multi_region", "regions": activeRegions,
   "duration": playDuration }; 
   
   info = JSON.stringify(infoJSON);
@@ -714,12 +739,29 @@ function prepareInfoFile(mediaName)
   size += campaignInfoFile.size;
   uploadFiles.push(campaignInfoFile);
  
- displayInitUploadBusyDialog();
+   displayInitUploadBusyDialog();
    clearParentDiv();
    prepareThumbView(0);
   //clearParentDiv();
   
   //initUpload();
+}
+
+function deleteInActiveDivs()
+{
+  var newRegions = [];
+  for(var i=0;i<regionsInfo.length;i++)
+  {
+    var info = regionsInfo[i];
+    //if activated save info
+    if(!(info.hasOwnProperty("is_active") && 
+      info['is_active']==false))
+    {
+      newRegions.push(info);
+    }
+  }
+
+   return newRegions;
 }
 
 function createThumb()
@@ -750,6 +792,11 @@ function prepareThumbView(i)
   if(regionsInfo.length>i)
   {
     var info = regionsInfo[i];
+    if(info.hasOwnProperty("is_active") && 
+      info["is_active"] == false)
+    {
+       prepareThumbView(++i);
+    }else{
     var file = null;
     var childTag = null;
     var isPrepare = false;
@@ -825,6 +872,7 @@ function prepareThumbView(i)
     {
       prepareThumbView(++i);
     }
+   }
   }else{
     createThumb();
   }
@@ -857,10 +905,11 @@ function constructCustomDiv()
         initDraw(parentDiv);
 }
 
-function initDraw(canvas) {
+function initDraw(canvas) 
+{
 
     var regPosition=0;
-    screenInfo = {'width':640,'height':360};
+    screenInfo = {'width':800,'height':450};
     
     var element = document.getElementById('custom');
     var position = element.getBoundingClientRect();
@@ -874,6 +923,10 @@ function initDraw(canvas) {
         startX: 0,
         startY: 0
     };
+
+    var resizeMouse = {startX:0,startY:0,re_element:null};
+
+
     var element = null;
 
     function setMousePosition(e) {
@@ -882,21 +935,22 @@ function initDraw(canvas) {
             mouse.x = (ev.pageX-custom_x);
             mouse.y = (ev.pageY-custom_y);
         } else if (ev.clientX) { //IE
-            mouse.x = ev.clientX + 0;
-            mouse.y = ev.clientY + 0;
+            mouse.x = ev.clientX -custom_x;
+            mouse.y = ev.clientY -custom_y;
         }
     };
 
 
 
     canvas.onmousemove = function (e) {
+      
        if(isDraw)
        {
         setMousePosition(e);
         if (element !== null) {
             element.style.width = Math.abs(mouse.x - mouse.startX) + 'px';
             element.style.height = Math.abs(mouse.y - mouse.startY) + 'px';
-            //console.log("on mouse move - mouse.x"+mouse.x)
+            
             element.style.left = (mouse.x - mouse.startX < 0) ? mouse.x + 'px' : mouse.startX + 'px';
             element.style.top = (mouse.y - mouse.startY < 0) ? mouse.y + 'px' : mouse.startY + 'px';
 
@@ -912,17 +966,19 @@ function initDraw(canvas) {
         if (element !== null) {
             
             canvas.style.cursor = "default";
-            console.log("finsihed.width-"+element.style.width+",height.y"+element.style.height);
-            console.log("finsihed.left-"+element.style.left+",top.y"+element.style.top);
+            
             
              prepareInfoForCustomDiv(element.style.width,element.style.height,
-              element.style.left,element.style.top);
+             element.style.left,element.style.top);
              
              addHoverOptions(element);
+             
+             
+
              element = null;
               ++regPosition;
         } else {
-            console.log("begun.mouse.x-"+mouse.x+",mouse.y"+mouse.y);
+            
             mouse.startX = mouse.x;
             mouse.startY = mouse.y;
             element = document.createElement('div');
@@ -932,8 +988,7 @@ function initDraw(canvas) {
             element.style.top = mouse.y + 'px';
             element.id="reg_div_"+regPosition;
             
-            element.onresize=function(){alert("on resize")};
-
+          
             element.onclick=function(){
               if(element==null)
               {
@@ -942,15 +997,18 @@ function initDraw(canvas) {
               }
               
             };
+
             if(element!=null)
             {
               canvas.appendChild(element)
               canvas.style.cursor = "crosshair";
+
+              
             }
             
         }
       }else{
-        console.log("is draw false");
+        
         isDraw = true;
       }
     }
@@ -962,9 +1020,7 @@ function initDraw(canvas) {
       'top_margin':getPercentagePixels(screenInfo['height'],topPx),
       'left_margin':getPercentagePixels(screenInfo['width'],leftPx),
       'right_margin':0,'bottom_margin':0};
-      console.log("leftPx"+leftPx+",topPx"+topPx);
-      console.log(JSON.stringify(customDivInfo));
-
+      
       regionsInfo.push(customDivInfo);
       addImgReg(regPosition,null);
     }
@@ -981,26 +1037,136 @@ function initDraw(canvas) {
       dragButton.id=element.id+"_move";
       
       dragButton.onclick=function(){
-          moveDiv(element);
+          //moveDiv(element);
         };
-
       hoverDiv.appendChild(dragButton);
+
+      //
+
+      //delete option 
+      var deleteButton = document.createElement("button");
+      deleteButton.innerHTML = "Delete";
+      deleteButton.id=element.id+"_delete";
+      deleteButton.onclick=function()
+      {
+        deleteDiv(element);
+      }
+      hoverDiv.appendChild(deleteButton);
+
       hoverDiv.style.top=element.style.top;
       hoverDiv.style.left= element.style.left;
       element.appendChild(hoverDiv);
+
+      moveDiv(element);
+      
+      //add resize options
+      var resizeDiv = document.createElement("div");
+      resizeDiv.className = "resize_custom_div";
+      resizeDiv.id=element.id+"_resize_custom_div";
+      //resizeDiv.style.top=element.style.top;
+      //resizeDiv.style.left= element.style.left;
+      element.appendChild(resizeDiv);
+
       element.addEventListener("mouseover", function( event ) {   
        var hoverOptions = document.getElementById(element.id+"_options_div");
        hoverOptions.style.display="block";
-         console.log("inside mouse over");
+         
           //hoverDiv.style.display="block";
        }, false);
 
       element.addEventListener("mouseout", function( event ) {   
        var hoverOptions = document.getElementById(element.id+"_options_div");
        hoverOptions.style.display="none";
-         console.log("inside mouse over");
+         
           //hoverDiv.style.display="block";
        }, false);
+
+      //resizeDiv.addEventListener('mousedown', function(event){
+        //startResizing(event,element)}, false);
+      resizeDiv.onmousedown = function(){startResizing(event,element)};
+      //resizeDiv.addEventListener('mouseup', function(event){
+        //stopResizing(event)}, false);
+    }
+
+    function startResizing(event,element)
+    {
+       
+      event = event || window.event;
+      event.preventDefault();
+      resizeMouse.startX = parseInt(element.style.left);
+      resizeMouse.startY = parseInt(element.style.top);
+      resizeMouse.re_element = element;
+
+      
+      document.onmousemove=resize;
+      document.onmouseup = stopResize;
+      
+    }
+
+    function resize(event)
+    {
+      
+      var originalNewX = event.pageX;
+      var originalNewY = event.pageY;
+      if(originalNewX > custom_x+screenInfo['width'])
+      {
+        originalNewX = custom_x+screenInfo['width'];
+      }
+
+      if(originalNewY > (custom_y+screenInfo['height']))
+      {
+        originalNewY = (custom_y+screenInfo['height']);
+      }
+
+      if((originalNewX>=custom_x && originalNewX <= custom_x+screenInfo['width']))
+      {
+        resizeMouse.re_element.style.width = Math.abs((originalNewX-custom_x)-resizeMouse.startX) + 'px'; 
+        
+      }
+
+      if((originalNewY>=custom_y && originalNewY <= (custom_y+screenInfo['height']+1)))
+      {
+        resizeMouse.re_element.style.height = Math.abs((originalNewY-custom_y)-resizeMouse.startY) + 'px';
+      }
+    }
+
+    function stopResize(e) {
+    //console.log("e"+e.id);
+    e = e || window.event;
+      e.preventDefault();
+    document.onmouseup = null;
+    document.onmousemove = null;
+    isDraw=false;
+     
+     //update margins
+     var reElement = resizeMouse.re_element;
+     updateDimension(reElement,reElement.style.width,reElement.style.height);
+     //updateDimension(reElement,reElement.style.width,reElement.style.height);
+    //document.removeEventListener('mouseup', stopResizing, false);
+   }
+   function updateDimension(element,width,height)
+   {
+     
+     var reElemid = element.id;
+     var reElemIdPosition = parseInt(reElemid.replace("reg_div_",""));
+     var reElemInfo = regionsInfo[reElemIdPosition];
+     reElemInfo['width']  = getPercentagePixels(screenInfo['width'],width);
+     reElemInfo['height'] = getPercentagePixels(screenInfo['height'],height);
+     regionsInfo[reElemIdPosition] = info;
+     
+   }
+
+    function deleteDiv(element)
+    {
+      var deleteElemid = element.id;
+      var deleteElemIdPosition = parseInt(deleteElemid.replace("reg_div_",""));
+      var deleteReginfo = regionsInfo[deleteElemIdPosition];
+      deleteReginfo['is_active']  = false;
+      regionsResourceFiles[deleteElemIdPosition] = null;//no resource file 
+
+      regionsInfo[deleteElemIdPosition] = deleteReginfo;
+      element.parentNode.removeChild(element);
+      
     }
 
     function moveDiv(element)
@@ -1023,7 +1189,7 @@ function initDraw(canvas) {
 
   function dragMouseDown(e) {
     e = e || window.event;
-    //e.preventDefault();
+    e.preventDefault();
     // get the mouse cursor position at startup:
     pos3 = e.clientX;
     pos4 = e.clientY;
@@ -1044,8 +1210,7 @@ function initDraw(canvas) {
     // set the element's new position:
     var afterMoveTop = (elmnt.offsetTop - pos2); 
     var afterMoveLeft =  (elmnt.offsetLeft - pos1);
-    console.log("AfterMoveTop"+afterMoveTop);
-    console.log("AfterMoveLeft"+afterMoveLeft);
+    
     var elementHeight = parseInt(elmnt.style.height);
     var elementWidth = parseInt(elmnt.style.width);
     if(chcekAndMove(afterMoveLeft,afterMoveTop,elementHeight,elementWidth))
@@ -1069,6 +1234,7 @@ function initDraw(canvas) {
     /* stop moving when mouse button is released:*/
     document.onmouseup = null;
     document.onmousemove = null;
+    isDraw=false;
   }
 
   function chcekAndMove(afterMoveLeft,afterMoveTop,
@@ -1086,10 +1252,10 @@ function initDraw(canvas) {
       }else{
         return false;
       }
-      console.log("bottomLimit"+bottomLimit);
+      
       
     }
-    console.log("screenFixedPositions"+JSON.stringify(screenFixedPositions));
+    
   }
 
   //update new margins 
@@ -1101,8 +1267,11 @@ function initDraw(canvas) {
      info['top_margin']  = getPercentagePixels(screenInfo['height'],topPx);
      info['left_margin'] = getPercentagePixels(screenInfo['width'],leftPx);
      regionsInfo[idPosition] = info;
-     console.log("latest info "+JSON.stringify(info));
+     
    }
+
+  
  }
 }
+
 
