@@ -99,6 +99,82 @@ div.generic {border: groove;}
   z-index: 1;
 }
 
+/*+ -*/
+/* -- quantity box -- */
+
+.quantity {
+ display: inline-block; }
+
+.quantity .input-text.qty {
+ width: 35px;
+ height: 39px;
+ padding: 0 5px;
+ text-align: center;
+ background-color: transparent;
+ border: 1px solid #efefef;
+}
+
+.quantity.buttons_added {
+ text-align: left;
+ position: relative;
+ white-space: nowrap;
+ vertical-align: top; }
+
+.quantity.buttons_added input {
+ display: inline-block;
+ margin: 0;
+ vertical-align: top;
+ box-shadow: none;
+}
+
+.quantity.buttons_added .minus,
+.quantity.buttons_added .plus {
+ padding: 7px 15px 8px;
+ height: 39px;
+ background-color: #ffffff;
+ border: 1px solid #efefef;
+ cursor:pointer;}
+
+.quantity.buttons_added .minus {
+ border-right: 0; }
+
+.quantity.buttons_added .plus {
+ border-left: 0; }
+
+.quantity.buttons_added .minus:hover,
+.quantity.buttons_added .plus:hover {
+ background: #eeeeee; }
+
+.quantity input::-webkit-outer-spin-button,
+.quantity input::-webkit-inner-spin-button {
+ -webkit-appearance: none;
+ -moz-appearance: none;
+ margin: 0; }
+ 
+ .quantity.buttons_added .minus:focus,
+.quantity.buttons_added .plus:focus {
+ outline: none; }
+
+/*clear*/
+.text-input-wrapper {
+  border:1px solid;
+  padding:1px 6px 1px 1px;
+  display:inline-block;
+}
+.text-input-wrapper input {
+  border:none;
+  background:none;
+  outline:none;
+  padding:0 0;
+  margin:0 0;
+  font:inherit;
+}
+.text-input-wrapper span {
+  cursor:pointer;
+  color:blue;
+  font-weight:bold;
+  visibility:hidden;
+}
 
 </style>
 </head>
@@ -261,16 +337,19 @@ div.generic {border: groove;}
      
         <div>
           <label style="font-weight:bold">Rich Text : *</label><br>
-            <textarea rows="4"  placeholder="Enter your text need to be displayed" name="media_name" id="create_text_media_name" style="width: 100%;"></textarea> <br>
+            <textarea rows="4"  placeholder="Enter text here" name="media_name" id="create_text_media_name" style="width: 100%;"></textarea> <br>
 
           <label style="font-weight:bold" for="exampleInputPassword2">Text Size :</label>
-            <input type="number"  placeholder="Enter Font Size" name="font_size" id="create_text_media_text_size" value=40 style="width: 100%;"/>  <br>
+              <div class="quantity buttons_added">
+  <input type="button" value="-" class="minus"><input type="number" step="2" min="120" max="" name="quantity font_size" value="40" title="Qty" class="input-text qty text" size="4" pattern="" inputmode="" id="create_text_media_text_size" style="width:75%;"><input type="button" value="+" class="plus">
+</div>
+       <!--      <input type="number"  placeholder="Enter Font Size" name="font_size" id="create_text_media_text_size" value=40 style="width: 100%;"/>  --> <br>
 
             <label style="font-weight:bold;" for="exampleInputEmail1">Text Color :</label>
-            <input class="jscolor {zIndex:9999} form-control" value="5500FF" id="create_txt_media_txt_color"> 
+            <input class="jscolor {zIndex:9999} form-control" value="0000FF" id="create_txt_media_txt_color"> 
             
             <label style="font-weight:bold" for="exampleInputEmail1">Text Background Color :</label>
-            <input class="jscolor {zIndex:9999} form-control" value="C9FFCE" id="create_txt_media_txt_bg">
+            <input class="jscolor {zIndex:9999} form-control" value="F6EDED" id="create_txt_media_txt_bg">
 
              <label style="font-weight:bold;" for="exampleInputEmail1">Text Alignment : *</label>
               <select class="form-control" id="create_txt_media_txt_algmt">
@@ -325,7 +404,11 @@ div.generic {border: groove;}
               <div >
                 <label for="exampleInputEmail1" style="font-weight:bold" >URL : *</label>
 
-                <input type="text" size="100" value="https://www." name="url" id="create_url_reg_url" focus style="width: 100%;"> <br>
+              <!--   <input type="text" size="100" value="https://www." name="url" id="create_url_reg_url" focus style="width: 100%;"> <br> -->
+                <form id="search-form">
+                  <span class="text-input-wrapper" style="width: 100%;"><input type="text" name="url" autocomplete="off" size="140" id="create_url_reg_url" style="width:95%;"/><span title="Clear">&times;</span></span>
+                  <!-- <input type="submit" value="Submit"/> -->
+              </form>
                 <span>Enter url address like https://www.xyz.com</span><br>
               </div>
 
@@ -409,7 +492,7 @@ div.generic {border: groove;}
                <div class="form-group">
                   <label for="exampleInputPassword1" style="font-weight:bold">Campaign Name : *</label>
                   <input type="text" class="form-control" placeholder="Enter Campaign Name" name="media_name" id="file_media_name" size="100" style="width: 100%;">  
-                  <input type="checkbox" onchange="setDefaultCampaignName(this);">Set Default Campaign name   
+                  <input type="checkbox" onchange="setDefaultCampaignName(this);">Set Default Campaign Name   
                 </div>
 
              
@@ -475,6 +558,44 @@ div.generic {border: groove;}
        
 	})();
 
+// + -
+function wcqib_refresh_quantity_increments() {
+    jQuery("div.quantity:not(.buttons_added), td.quantity:not(.buttons_added)").each(function(a, b) {
+        var c = jQuery(b);
+        c.addClass("buttons_added"), c.children().first().before('<input type="button" value="-" class="minus" />'), c.children().last().after('<input type="button" value="+" class="plus" />')
+    })
+}
+String.prototype.getDecimals || (String.prototype.getDecimals = function() {
+    var a = this,
+        b = ("" + a).match(/(?:\.(\d+))?(?:[eE]([+-]?\d+))?$/);
+    return b ? Math.max(0, (b[1] ? b[1].length : 0) - (b[2] ? +b[2] : 0)) : 0
+}), jQuery(document).ready(function() {
+    wcqib_refresh_quantity_increments()
+}), jQuery(document).on("updated_wc_div", function() {
+    wcqib_refresh_quantity_increments()
+}), jQuery(document).on("click", ".plus, .minus", function() {
+    var a = jQuery(this).closest(".quantity").find(".qty"),
+        b = parseFloat(a.val()),
+        c = parseFloat(a.attr("max")),
+        d = parseFloat(a.attr("min")),
+        e = a.attr("step");
+    b && "" !== b && "NaN" !== b || (b = 0), "" !== c && "NaN" !== c || (c = ""), "" !== d && "NaN" !== d || (d = 0), "any" !== e && "" !== e && void 0 !== e && "NaN" !== parseFloat(e) || (e = 1), jQuery(this).is(".plus") ? c && b >= c ? a.val(c) : a.val((b + parseFloat(e)).toFixed(e.getDecimals())) : d && b <= d ? a.val(d) : b > 0 && a.val((b - parseFloat(e)).toFixed(e.getDecimals())), a.trigger("change")
+});
+
+(function() {
+  var searchForm = document.getElementById('search-form'),
+    textInput = searchForm.url,
+    clearBtn = textInput.nextSibling;
+  textInput.onkeyup = function() {
+    // Show the clear button if text input value is not empty
+    clearBtn.style.visibility = (this.value.length) ? "visible" : "hidden";
+  };
+  // Hide the clear button on click, and reset the input value
+  clearBtn.onclick = function() {
+    this.style.visibility = "hidden";
+    textInput.value = "";
+  };
+})();
  </script>
 </body>
 {% endblock %}
