@@ -1,4 +1,5 @@
 from django.conf.urls import url
+from django.urls import path
 
 from cmsapp import views
 from campaign import views as cView
@@ -81,8 +82,10 @@ urlpatterns = [
         url(r'^campaign_downloads_api/(\d+)/$', views.campaign_downloads_api, name='campaign_downloads_api'),
 
         url(r'^forgot_password/', views.forgot_password, name='forgot_password'),
+        
+        path('reset_password/<k>/<session>', views.reset_password, name='reset_password'),
 
-        url(r'^reset_password/(\d+)/$', views.reset_password, name='reset_password'),
+        #url(r'^reset_password/(\d+)/$', views.reset_password, name='reset_password'),
 
         url(r'^all_user_emails_api/', views.all_user_emails_api, name='all_user_emails'),
 

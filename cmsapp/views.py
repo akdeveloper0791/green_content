@@ -1636,14 +1636,16 @@ def campaign_upload_files_api(request):
 
 
 from django.core.mail import send_mail
+from accounts.models import ForgotPwdSession
 
 def forgot_password(request):
     if request.method == "POST":
-        email_check = User.objects.filter(username = request.POST['email'])
+        email = request.POST['email'];
+        email_check = User.objects.filter(username = email)
         if email_check:
-
+            session = ForgotPwdSession.createSession(email_check[0].id);
             subject = 'GC Password Reset Link'
-            message = 'https://www.greencontent.in/reset_password/{}/'.format(email_check[0].id)
+            message = 'https://www.greencontent.in/reset_password/{}/{}'.format(email,session)
             from_email = settings.EMAIL_HOST_USER
             to_list= []
             to_list.append(request.POST['email'])
@@ -1656,28 +1658,33 @@ def forgot_password(request):
     else:
         return render(request,'forgot_password.html')
 
-def reset_password(request,k):
-    user = User.objects.filter(id = k)
-    if request.method == "POST":
-        if user:
-            if request.POST["pass"] == request.POST["confirm_pass"]:
-                u = User.objects.get(id=k)
-                u.set_password(request.POST["pass"])
-                u.save()
-                return render(request,'reset_password.html',{"success": "Your password is updated successfully"})
-                #return HttpResponse("your password is updated successfully ")
+def reset_password(request,k,session):
+    #check for session
+    try:
+        users = User.objects.filter(email=k);
+        if(users):
+            user = users[0];
+            ForgotPwdSession.objects.get(user_id=user.id,session_key=session);
+            if(request.method=="GET"):
+               return render(request,'reset_password.html',{"id":k,"session":session}); 
+            elif(request.method=="POST"):
+                if request.POST["pass"] == request.POST["confirm_pass"]:
+                    #u = User.objects.get(id=k)
+                    user.set_password(request.POST["pass"])
+                    user.save()
+                    return render(request,'reset_password.html',{"success": "Your password is updated successfully","id":k,"session":session})
+                    #return HttpResponse("your password is updated successfully ")
 
-            else:
-                return render(request,'reset_password.html',{"error": "Password must be same"})
+                else:
+                    #return JsonResponse({'status',"Invalid password"})
+                    return render(request,'reset_password.html',{"id":k,"session":session,"error": "Password must be same"})
+
         else:
-            #return HttpResponse("User doesn't Exist ")
-            return render(request,'reset_password.html',{"error":" User doesn't Exist"})
-    else:
-        if user:
-            return render(request,'reset_password.html',{"id":k})
-        else:
-            #return HttpResponse("User doesn't Exist ")
-            return render(request,'reset_password.html',{"error":" User doesn't Exist"})
+            return redirect('/accounts/signin/')
+    except ForgotPwdSession.DoesNotExist:
+        return render(request,'forgot_password.html',{"error":"Session expired, please try again later"}); 
+
+
 
 def all_user_emails_api(request):
     emails = []
