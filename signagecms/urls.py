@@ -33,6 +33,7 @@ urlpatterns = [
     path('groups/',include('group.urls')),
     path('gdbx/',include('gdbx.urls')),
     path('player/',include('player.urls')),
+    path('license/',include('license.urls')),
     url(r'^accounts/',include('accounts.urls')),
     url(r'^',include('cmsapp.urls')),
 
