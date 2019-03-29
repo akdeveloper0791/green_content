@@ -50,8 +50,6 @@ function prepareView(selectedTemplate)
 {
   try{
 
-    
-
     displayUpload();
 	  
     cctDismissTemplates();
@@ -727,6 +725,9 @@ function prepareInfoFile(mediaName)
 {
   //prepare regionsInfo file
   var activeRegions = deleteInActiveDivs();
+  
+ 
+
   var playDuration = document.getElementById("file_duration").value;
   var infoJSON = { "type": "multi_region", "regions": activeRegions,
   "duration": playDuration }; 
@@ -965,7 +966,7 @@ function initDraw(canvas)
         
         if (element !== null) {
             
-            canvas.style.cursor = "default";
+canvas.style.cursor = "default";            
             
             
              prepareInfoForCustomDiv(element.style.width,element.style.height,
@@ -1035,7 +1036,7 @@ function initDraw(canvas)
       var dragButton = document.createElement("button");
       dragButton.innerHTML="Move";
       dragButton.id=element.id+"_move";
-      
+      dragButton.style.cursor="move";
       dragButton.onclick=function(){
           //moveDiv(element);
         };
@@ -1051,6 +1052,8 @@ function initDraw(canvas)
       {
         deleteDiv(element);
       }
+      
+
       hoverDiv.appendChild(deleteButton);
 
       hoverDiv.style.top=element.style.top;
@@ -1090,7 +1093,7 @@ function initDraw(canvas)
 
     function startResizing(event,element)
     {
-       
+      console.log("start resizing"+element.id);
       event = event || window.event;
       event.preventDefault();
       resizeMouse.startX = parseInt(element.style.left);
@@ -1152,7 +1155,7 @@ function initDraw(canvas)
      var reElemInfo = regionsInfo[reElemIdPosition];
      reElemInfo['width']  = getPercentagePixels(screenInfo['width'],width);
      reElemInfo['height'] = getPercentagePixels(screenInfo['height'],height);
-     regionsInfo[reElemIdPosition] = info;
+     regionsInfo[reElemIdPosition] = reElemInfo;
      
    }
 
@@ -1174,7 +1177,7 @@ function initDraw(canvas)
       //alert(element.id);
       dragElement(element);
       document.getElementById(element.id+"_move").
-      innerHTML="Click and move";
+      innerHTML="Hold Here and Move";
     }
 
   function dragElement(elmnt) {
@@ -1202,6 +1205,7 @@ function initDraw(canvas)
   function elementDrag(e) {
     e = e || window.event;
     e.preventDefault();
+    canvas.style.cursor ="move";
     // calculate the new cursor position:
     pos1 = pos3 - e.clientX;
     pos2 = pos4 - e.clientY;
@@ -1234,6 +1238,7 @@ function initDraw(canvas)
     /* stop moving when mouse button is released:*/
     document.onmouseup = null;
     document.onmousemove = null;
+    canvas.style.cursor = "default";
     isDraw=false;
   }
 
