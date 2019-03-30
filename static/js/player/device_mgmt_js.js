@@ -1,4 +1,3 @@
-
 function getCampaignInfo(playerId)
 {
   try {
