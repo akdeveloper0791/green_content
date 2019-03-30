@@ -412,6 +412,8 @@ def exportCampaignReports(request):
 from django.http import HttpResponse
 import xlsxwriter
 from datetime import timedelta
+import uuid 
+import time
 
 def exportCampaignReportsToExcel(metrics):
     output = io.BytesIO()
@@ -456,7 +458,8 @@ def exportCampaignReportsToExcel(metrics):
 
     
 
-    filename = 'Campaign_Reports.xlsx'
+    filename = 'Campaign_Reports_{}.xlsx'.format(str(round(time.time() * 1000))+uuid.uuid4().hex[:6]);
+
     response = HttpResponse(
              (output),
             content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
@@ -552,7 +555,7 @@ def prepareViewerMetricsExcel(metrics):
 
     
 
-    filename = 'viewer_metrics.xlsx'
+    filename = 'viewer_metrics_{}.xlsx'.format(str(round(time.time() * 1000))+uuid.uuid4().hex[:6]);
     response = HttpResponse(
              (output),
             content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'

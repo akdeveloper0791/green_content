@@ -246,6 +246,3 @@ function removeCampaign(campaignId)
 		 }
 		
 	}
-
-
-
