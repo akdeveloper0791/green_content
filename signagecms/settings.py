@@ -16,7 +16,7 @@ EMAIL_HOST_USER = 'contact@adskite.com'
 EMAIL_HOST_PASSWORD = 'adskitesupport'
 EMAIL_PORT = 25
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-
+DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
 import os
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)

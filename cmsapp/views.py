@@ -31,6 +31,9 @@ from django.db.models import Q
 from rest_framework.decorators import api_view
 from django.contrib.auth.decorators import login_required
 from player.models import Last_Seen_Metrics;
+from django.conf import settings
+from django.core.mail import send_mail
+from django.template.loader import get_template
 
 @login_required
 def home(request):
@@ -749,7 +752,29 @@ def privacy_services(request):
 
 
 def contact_us(request):
-    return render(request,'contact.html')
+    if request.method == "POST":
+        name = request.POST.get("name")
+        email = request.POST.get("email")
+        message = request.POST.get("message")
+
+        subject = 'Contact Form'
+        from_email = settings.EMAIL_HOST_USER
+        to_email = [settings.EMAIL_HOST_USER]
+
+        context = {
+         'user' :name,
+         'email' : email,
+         'message' : message,
+        }
+
+        contact_message = get_template('contact_message.txt').render(context)
+        
+        send_mail(subject,contact_message,from_email,to_email,fail_silently= True)
+
+        return render(request,'contact.html',{"success":"Message sent successfully, our team will reply shortly "})
+      
+    else:
+        return render(request,'contact.html')
 
 from django.conf import settings
 from django.core.files.storage import FileSystemStorage
@@ -1644,7 +1669,7 @@ def forgot_password(request):
         email_check = User.objects.filter(username = email)
         if email_check:
             session = ForgotPwdSession.createSession(email_check[0].id);
-            subject = 'GC Password Reset Link'
+            subject = 'Green Content Reset Password'
             message = 'https://www.greencontent.in/reset_password/{}/{}'.format(email,session)
             from_email = settings.EMAIL_HOST_USER
             to_list= []

@@ -56,9 +56,12 @@
       <!--     <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Exercitationem nesciunt vitae,<br> maiores, magni dolorum aliquam.</p> -->
           <hr class="bottom-line">
         </div>
-        <div id="sendmessage">Your message has been sent. Thank you!</div>
-        <div id="errormessage"></div>
-        <form action="" method="post" role="form" class="contactForm">
+        {% if success %}
+          <p class="login-box-msg" style="color: green;font-weight:bold;text-align: center;">
+                     {{ success }}</p>
+                {% endif %}
+        <form action= "{% url 'contact_us' %}" method = "post" name="Login_Form" role="form" class="contactForm">
+           {% csrf_token %}
           <div class="col-md-6 col-sm-6 col-xs-12 left">
             <div class="form-group">
               <input type="text" name="name" class="form-control form" id="name" placeholder="Your Name" data-rule="minlen:4" data-msg="Please enter at least 4 chars" />
