@@ -19,3 +19,4 @@ six==1.11.0
 urllib3==1.23
 uuid==1.30
 youtube-dl==2018.7.29
+xlsxwriter

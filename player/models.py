@@ -148,7 +148,7 @@ class Age_Geder_Metrics(models.Model):
     except Exception as ex:
       return {'statusCode':1,'status':"Unable to save metrics - "+str(ex)};
 
-  def getViewerMetrics(secretKey,isUserId,postParams):
+  def getViewerMetrics(secretKey,isUserId,postParams,exportExcel=False):
       userId = secretKey;
       if(isUserId==False):
             userId = User_unique_id.getUserId(secretKey);
@@ -168,8 +168,12 @@ class Age_Geder_Metrics(models.Model):
           created_at__range=[postParams.get('from_date'), postParams.get('to_date')]).order_by('-created_at');
 
       if(metrics.exists()):
-          return {'statusCode':0,'metrics':list(metrics.values('created_at','g_female','g_male','player__name','age_0_2','age_4_6','age_8_12',
-            'age_15_20','age_25_32','age_38_43','age_48_53','age_60_100'))}
+          if(exportExcel==False):
+            return {'statusCode':0,'metrics':list(metrics.values('created_at','g_female','g_male','player__name','age_0_2','age_4_6','age_8_12',
+              'age_15_20','age_25_32','age_38_43','age_48_53','age_60_100'))}
+          else:
+            return {'statusCode':0,'metrics':(metrics.values_list('player__name','created_at','g_male','g_female','age_0_2','age_4_6','age_8_12',
+              'age_15_20','age_25_32','age_38_43','age_48_53','age_60_100'))}
       else:
           return {'statusCode':4,'status':"No metrics found for the selected dates"};
 
@@ -236,7 +240,7 @@ class Campaign_Reports(models.Model):
         return {'statusCode':3,'status':
                 "Player not found"};
 
-    def getCampaignReports(secretKey,isUserId,postParams):
+    def getCampaignReports(secretKey,isUserId,postParams,exportReports=False):
       userId = secretKey;
       if(isUserId==False):
             userId = User_unique_id.getUserId(secretKey);
@@ -256,7 +260,9 @@ class Campaign_Reports(models.Model):
           created_at__range=[postParams.get('from_date'), postParams.get('to_date')]).values('campaign_name').annotate(t_duration = Sum('duration'),t_played=Sum('times_played'),campaign_id= Max('campaign_id'),last_played_at= Max('last_played_at'));
 
       if(len(metrics)>=1):
-          
+        if(exportReports==False):
           return {'statusCode':0,'metrics':list(metrics.values('campaign_name','t_played','t_duration','player__name','campaign_id','last_played_at')),'queryset.query':str(metrics.query)};
+        else:
+          return {'statusCode':0,'metrics':(metrics.values_list('player__name','campaign_name','t_played','t_duration','last_played_at')),'queryset.query':str(metrics.query)};
       else:
           return {'statusCode':4,'status':"No metrics found for the selected dates"};

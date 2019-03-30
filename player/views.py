@@ -383,3 +383,195 @@ def campaignReports(request):
         return render(request,'player/campaign_reports.html',{'devices':devices})
     else:
         return render(request,'signin.html');
+
+@api_view(['POST'])
+def exportCampaignReports(request):   
+    if(request.method == 'POST'):
+        postParams = request.POST;
+        if(postParams.get('player') and postParams.get('from_date') and postParams.get('to_date')
+            and postParams.get('accessToken')):     
+            isUserId = False;
+            secretKey = request.POST.get("accessToken")
+            if(secretKey=='web'):
+                isUserId = True;
+                if(request.user.is_authenticated):
+                    secretKey = request.user.id;
+                else:
+                    return JsonResponse(
+                        {'statusCode':2,'status':"Invalid accessToken please login"});
+            result = Campaign_Reports.getCampaignReports(secretKey,isUserId,postParams,True);
+            if(result['statusCode']==0):
+                return exportCampaignReportsToExcel(result['metrics']);
+            else:
+                return exportCampaignReportsToExcel(False);
+        else:
+          return JsonResponse({'statusCode':6,
+            'status':'No data available'})
+
+from django.http import HttpResponse
+import xlsxwriter
+
+def exportCampaignReportsToExcel(metrics):
+    output = io.BytesIO()
+    workbook = xlsxwriter.Workbook(output);
+    worksheet = workbook.add_worksheet();
+    cell_format = workbook.add_format()
+    cell_format.set_align("center");
+    cell_format.set_align('vcenter')
+
+    worksheet.set_column('A:E', 25)
+    if(metrics==False):
+        worksheet.set_header("No reports found");
+        worksheet.set_column('A:A', 50)
+        worksheet.write('A1', "No reports found")
+    else:   
+        coloumn_names = ['Device Name', 'Campaign', 'Number Of times played', 'Total duration(Sec)','Last played at'] 
+        row=0;coloumn=0;
+        for coloumnName in coloumn_names:
+            worksheet.write(row,coloumn,coloumnName,cell_format);
+            coloumn += 1;
+       
+        #add data
+        row=1;coloumn=0;
+        for report in metrics:
+            coloumn=0;
+            for value in (report):
+                if(coloumn==4):#date value
+                    value = value.replace(tzinfo=None)
+                    date_format = workbook.add_format({'num_format': 'dd/mm/yy HH:mm:ss'})
+                    date_format.set_align("center");
+                    date_format.set_align('vcenter');
+                    worksheet.write(row, coloumn,value,date_format);
+                else:
+                    worksheet.write(row, coloumn,value,cell_format);
+                coloumn +=1;
+            row +=1;
+
+
+    workbook.close() 
+    output.seek(0);
+
+    
+
+    filename = 'Campaign_Reports.xlsx'
+    response = HttpResponse(
+             (output),
+            content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+        )
+    response['Content-Disposition'] = 'attachment; filename=%s' % filename
+
+    return response;
+
+import csv
+def exportCampaignReportsToCsv(metrics):
+     response = HttpResponse(content_type='text/csv')
+     response['Content-Disposition'] = 'attachment; filename="campaign_reports.csv"'
+
+     writer = csv.writer(response)
+     writer.writerow(['Device Name', 'Campaign', 'Number Of times played', 'Total duration(Sec)','Last played at'])
+     for report in metrics:
+        
+        writer.writerow([report['player__name'],report['campaign_name'],
+            report['t_played'],report['t_duration'],report['last_played_at']]);
+
+     return response;
+
+@api_view(['POST'])
+def exportViewerMetrics(request):   
+    if(request.method == 'POST'):
+        postParams = request.POST;
+        if(postParams.get('player') and postParams.get('from_date') and postParams.get('to_date')
+            and postParams.get('accessToken')):     
+            isUserId = False;
+            secretKey = request.POST.get("accessToken")
+            if(secretKey=='web'):
+                isUserId = True;
+                if(request.user.is_authenticated):
+                    secretKey = request.user.id;
+                else:
+                    return JsonResponse(
+                        {'statusCode':2,'status':"Invalid accessToken please login"});
+            result = Age_Geder_Metrics.getViewerMetrics(secretKey,isUserId,postParams,True);
+            if(result['statusCode']==0):
+               return prepareViewerMetricsExcel(result['metrics']);
+            else:
+                return prepareViewerMetricsExcel(False);
+        else:
+          return JsonResponse({'statusCode':6,
+            'status':'No data available'})
+
+import xlsxwriter
+import io
+
+def prepareViewerMetricsExcel(metrics):
+    
+    output = io.BytesIO()
+    workbook = xlsxwriter.Workbook(output) ;
+    worksheet = workbook.add_worksheet();
+    cell_format = workbook.add_format()
+    cell_format.set_align("center");
+    cell_format.set_align('vcenter');
+
+    worksheet.set_column('A:L', 25)
+    if(metrics==False):
+        worksheet.set_header("No reports found");
+        worksheet.set_column('A:A', 50)
+        worksheet.write('A1', "No reports found")
+    else:   
+        coloumn_names = ['Device Name', 'Date & Time', 'Male', 'Female','Age (0-2)',
+            'Age (4-6)','Age (8-12)','Age (15-20)','Age (25-32)',
+            'Age (38-43)','Age (48-53)','Age (60-100)'] 
+        row=0;coloumn=0;
+        for coloumnName in coloumn_names:
+            worksheet.write(row,coloumn,coloumnName,cell_format);
+            coloumn += 1;
+       
+        #add data
+        row=1;coloumn=0;
+        for report in metrics:
+            coloumn=0;
+            for value in (report):
+                if(coloumn==1):#date value
+                    naive_datetime = value.replace(tzinfo=None)
+                    date_format = workbook.add_format({'num_format': 'dd/mm/yy HH:mm:ss'})
+                    date_format.set_align("center");
+                    date_format.set_align('vcenter');
+                    worksheet.write(row, coloumn,naive_datetime,date_format);
+                else:
+                    worksheet.write(row, coloumn,value,cell_format);
+                coloumn +=1;
+            row +=1;
+
+
+    workbook.close() 
+    output.seek(0);
+
+    
+
+    filename = 'viewer_metrics.xlsx'
+    response = HttpResponse(
+             (output),
+            content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+        )
+    response['Content-Disposition'] = 'attachment; filename=%s' % filename
+
+    return response;
+
+
+
+def prepareViewerMetricsCsv(metrics):
+     response = HttpResponse(content_type='text/csv')
+     response['Content-Disposition'] = 'attachment; filename="viewer_metrics.csv"'
+
+     writer = csv.writer(response)
+     writer.writerow(['Device Name', 'Date & Time', 'Male', 'Female','Age (0-2)',
+        'Age (4-6)','Age (8-12)','Age (15-20)','Age (25-32)',
+        'Age (38-43)','Age (48-53)','Age (60-100)'])
+     for report in metrics:
+        writer.writerow(report)
+        '''writer.writerow([report['player__name'],report['created_at'],
+            report['g_male'],report['g_female'],report['age_0_2'],
+            report['age_4_6'],report['age_8_12'],report['age_15_20'],
+            report['age_25_32'],report['age_38_43'],report['age_48_53'],report['age_60_100']]);'''
+
+     return response;

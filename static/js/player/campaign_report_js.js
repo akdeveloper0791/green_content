@@ -123,7 +123,7 @@ function display_reports(responseObj){
     
     xhr.onload = function() {
         if (xhr.status === 200) {
-            //console.log("xhr.response-"+xhr.response);
+            
             var responseObj = JSON.parse(xhr.response);
             // Upload succeeded. Do something here with the file info.
             dismissInitBusyDialog();
@@ -139,12 +139,12 @@ function display_reports(responseObj){
               dismissBusyDialog();
               swal(responseObj.status);
             }
-            
+
         }
         else {
             var errorMessage = xhr.response || 'Unable to upload file';
             // Upload failed. Do something here with the error.
-            
+            console.log(errorMessage);
             swal("unable to upload - "+errorMessage);
         }
 
@@ -164,65 +164,69 @@ function display_reports(responseObj){
     }
  }
 
-	/*function viewer_matrics_list(){
-		var dev_id = document.getElementById('dev_id').value;
-		var from_date = document.getElementById('from_date').value;
-		var to_date = document.getElementById('to_date').value;
-		if(from_date == null || from_date == "")
-		{
-			swal("please select From_Date");
-		}else if(to_date==null || to_date == ""){
-			swal("please select To_Date");
-		}
-		
-		if (Date.parse(from_date) > Date.parse(to_date)) {
-			swal("Invalid Date Range!\nStart Date cannot be after End Date!")
-			return false;
-		}else{
+ function exportCampaignReports()
+ {
+  
+    $("#reports_table").find("tr:not(:first)").remove();
 
-			 displayInitUploadBusyDialog();
-			 var xhr = new XMLHttpRequest();
-    var params = 'accessToken=web&player='+dev_id+'&from_date='+from_date+'&to_date='+to_date;
+    var dev_id = document.getElementById('dev_id').value;
+    var from_date = document.getElementById('from_date').value;
+    var to_date = document.getElementById('to_date').value;
+    if(from_date == null || from_date == "")
+    {
+      swal("please select From_Date");
+    }else if(to_date==null || to_date == ""){
+      swal("please select To_Date");
+    }
+    
+    if (Date.parse(from_date) > Date.parse(to_date)) {
+      swal("Invalid Date Range!\nStart Date cannot be after End Date!")
+      return false;
+    }else{
+
+       displayInitUploadBusyDialog();
+       var xhr = new XMLHttpRequest();
+       var params = 'accessToken=web&player='+dev_id+'&from_date='+from_date+'&to_date='+to_date;
     
     xhr.onload = function() {
+       //dismissInitBusyDialog();
+       dismissBusyDialog();
         if (xhr.status === 200) {
-            var responseObj = JSON.parse(xhr.response);
-            // Upload succeeded. Do something here with the file info.
-            dismissInitBusyDialog();
+            
+          var blob = new Blob([xhr.response], { type: 'octet/stream' });
 
-            if(responseObj.statusCode == 0)
-            {
-            	dismissBusyDialog();
-               display_reports(responseObj);
-            }else
-            {
-              
-              document.getElementById('metrix_list').innerHTML = responseObj.status;
-              dismissBusyDialog();
-              swal(responseObj.status);
-            }
+          var link = document.createElement('a');
+          link.href = window.URL.createObjectURL(blob);
+          link.download = "campaignReports("+from_date+"-"+to_date+").xlsx";
+
+          document.body.appendChild(link);
+
+          link.click();
+
+          document.body.removeChild(link);
             
         }
         else {
             var errorMessage = xhr.response || 'Unable to upload file';
             // Upload failed. Do something here with the error.
-            
+            console.log(errorMessage);
             swal("unable to upload - "+errorMessage);
         }
 
 
-    	};
-     	 xhr.onerror = function()
-		  {
-		    swal('No internet');
-		  };
+      };
+       xhr.onerror = function()
+      {
+        dismissBusyDialog();
+        swal('No internet');
+      };
 
-    xhr.open('POST', '/player/getCampaignReports');
+    xhr.open('POST', '/player/exportCampaignReports/');
      
     xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
 
     xhr.setRequestHeader("X-CSRFToken", csrf_token );
+    xhr.responseType = "arraybuffer";
     xhr.send(params);
-		}
-		
-	}*/
+    }
+ }

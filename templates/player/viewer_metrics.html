@@ -58,7 +58,11 @@
 			<div class="rows">
 				<div class="col-sm-12" style="text-align: center;padding: 10px;">
 					<input type="button" value="Submit" class="btn btn-success" style="padding: 8px 20px;" onclick="viewer_matrics_list()">
+
+          <input type="button" value="Export" class="btn btn-success" style="padding: 8px 20px;" onclick="export_viewer_matrics()">
+
 			  	</div>
+
 			</div>
 </div>
 <!-- {{ devices }} -->
@@ -276,7 +280,7 @@ function display_reports(responseObj){
         else {
             var errorMessage = xhr.response || 'Unable to upload file';
             // Upload failed. Do something here with the error.
-            
+            console.log(errorMessage);
             swal("unable to upload - "+errorMessage);
         }
 
@@ -296,6 +300,72 @@ function display_reports(responseObj){
 		}
 		
 	}
+
+  function export_viewer_matrics(){
+    var dev_id = document.getElementById('dev_id').value;
+    var from_date = document.getElementById('from_date').value;
+    var to_date = document.getElementById('to_date').value;
+    if(from_date == null || from_date == "")
+    {
+      swal("please select From_Date");
+    }else if(to_date==null || to_date == ""){
+      swal("please select To_Date");
+    }
+    
+    if (Date.parse(from_date) > Date.parse(to_date)) {
+      swal("Invalid Date Range!\nStart Date cannot be after End Date!")
+      return false;
+    }else{
+
+       displayInitUploadBusyDialog();
+       var xhr = new XMLHttpRequest();
+    var params = 'accessToken=web&player='+dev_id+'&from_date='+from_date+'&to_date='+to_date;
+    
+    xhr.onload = function() {
+      dismissBusyDialog();
+      //dismissInitBusyDialog();
+        if (xhr.status === 200) {
+        
+          var blob = new Blob([xhr.response], { type: 'octet/stream' });
+
+          var link = document.createElement('a');
+          link.href = window.URL.createObjectURL(blob);
+          link.download = "viewerReports("+from_date+"-"+to_date+").xlsx";
+
+          document.body.appendChild(link);
+
+          link.click();
+
+          document.body.removeChild(link);
+      
+        }
+        else {
+            var errorMessage = xhr.response || 'Unable to upload file';
+            // Upload failed. Do something here with the error.
+            console.log(errorMessage);
+            swal("unable to upload - "+errorMessage);
+        }
+
+
+      };
+       xhr.onerror = function()
+      {
+        dismissBusyDialog();
+        swal('No internet');
+      };
+
+    xhr.open('POST', '/player/exportViewerMetrics/');
+     
+    xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+
+    xhr.setRequestHeader("X-CSRFToken", '{{ csrf_token }}');
+    xhr.responseType = "arraybuffer";
+    xhr.send(params);
+    }
+    
+  }
+
+ 
 </script>
 
 {% endblock %}

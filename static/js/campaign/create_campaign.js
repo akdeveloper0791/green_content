@@ -10,7 +10,16 @@ var w = window,
 var uploadFilesTempNames = new Object();
 var screenInfo = {'width':x,'height':(y-50)};//50 pixels for submit button
 var duration = 10;//seconds  
-
+function updateScreenSize()
+{
+  var w = window,
+    d = document,
+    e = d.documentElement,
+    g = d.getElementsByTagName('body')[0],
+    x = w.innerWidth || e.clientWidth || g.clientWidth,
+    y = w.innerHeight|| e.clientHeight|| g.clientHeight;
+    screenInfo = {'width':x,'height':(y-50)};//50 pixels for submit button
+}
 //get pixels from percentage
  function getPixels(totalPixels,percentage)
  {
@@ -223,9 +232,9 @@ function constructDivs()
     if(regInfo.hasOwnProperty('is_display_table')&& 
       regInfo['is_display_table'] == false)
     {
-      document.getElementById('display_create_table_region').style.display="none";
+      document.getElementById('display_create_table_region_div').style.display="none";
     }else{
-      document.getElementById('display_create_table_region').style.display="block";
+      document.getElementById('display_create_table_region_div').style.display="block";
     }
   
    if(isMobileBrowser())
@@ -739,7 +748,9 @@ function prepareInfoFile(mediaName)
   
   size += campaignInfoFile.size;
   uploadFiles.push(campaignInfoFile);
- 
+   
+   //update screen size
+   updateScreenSize();
    displayInitUploadBusyDialog();
    clearParentDiv();
    prepareThumbView(0);
@@ -966,12 +977,12 @@ function initDraw(canvas)
         
         if (element !== null) {
             
-canvas.style.cursor = "default";            
+            canvas.style.cursor = "default";            
             
             
              prepareInfoForCustomDiv(element.style.width,element.style.height,
              element.style.left,element.style.top);
-             
+             //element.style.border = "0";
              addHoverOptions(element);
              
              
@@ -1056,8 +1067,8 @@ canvas.style.cursor = "default";
 
       hoverDiv.appendChild(deleteButton);
 
-      hoverDiv.style.top=element.style.top;
-      hoverDiv.style.left= element.style.left;
+      //hoverDiv.style.top=(element.style.top+5);
+      //hoverDiv.style.left= (element.style.left+5);
       element.appendChild(hoverDiv);
 
       moveDiv(element);
@@ -1223,9 +1234,9 @@ canvas.style.cursor = "default";
        elmnt.style.left = afterMoveLeft + "px";
        
        //update options div
-      var optionsDiv = document.getElementById(elmnt.id+"_options_div");
-      optionsDiv.style.top=afterMoveTop + "px";
-      optionsDiv.style.left= afterMoveLeft + "px";
+      //var optionsDiv = document.getElementById(elmnt.id+"_options_div");
+      //optionsDiv.style.top=afterMoveTop + "px";
+      //optionsDiv.style.left= afterMoveLeft + "px";
 
       updateMargins(elmnt,afterMoveTop,afterMoveLeft);
     }

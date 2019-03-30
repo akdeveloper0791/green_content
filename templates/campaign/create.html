@@ -97,8 +97,8 @@ div.generic {border: groove;}
     height: 10px;
     cursor: se-resize;
     position:absolute;
-    right: -5px;
-    bottom: -5px;
+    right: 0px;
+    bottom: 0px;
     
     
 }
@@ -106,10 +106,12 @@ div.generic {border: groove;}
 
 .custom_region_options {
   display: none;
-  position: fixed;
+  position: absolute;
   background-color: #f1f1f1;
   box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
   z-index: 1;
+  top: 5px;
+  left: 5px;
 }
 
 
@@ -252,7 +254,7 @@ textarea {
           <i class="td" onclick="displayCreateTextRegion()"> <img src='{% static "images/campaign/mobile/ic_text_yellow.png" %}' onclick="displayCreateTextRegion();" style='cursor:pointer'></i>
                 <p align="center">Text</p>
         </div>
-          <div class="col-md-2 col-xs-6" style="margin: 10px 0px;">
+          <div class="col-md-2 col-xs-6" style="margin: 10px 0px;" id = "display_create_table_region_div">
          <b class="td" id="display_create_table_region" onclick="displayCreateTableRegion()" style="display:inline;padding: 0px;"> <img src='{% static "images/campaign/mobile/ic_table.png" %}' onclick="displayCreateTableRegion();" style='cursor:pointer;'></b>
                 <p align="center">Table</p>
         </div>
