@@ -383,3 +383,11 @@ def campaignReports(request):
         return render(request,'player/campaign_reports.html',{'devices':devices})
     else:
         return render(request,'signin.html');
+
+
+@login_required
+def playerGroup(request):
+    if(request.user.is_authenticated==False):
+        return render('/signin/');
+    else:
+        return render(request,'player/player_group.html')

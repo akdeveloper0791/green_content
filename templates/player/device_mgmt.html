@@ -22,11 +22,12 @@ table {
   border-collapse: separate;
   border-spacing: 15px 10px;
   border-color: gray;
+  font-size: 14px;
 
 }
 
 
-td.info, th.info {
+td.info1, th.info1 {
   border: 1px solid #dddddd;
   text-align: center;
 
@@ -45,8 +46,8 @@ td.info, th.info {
 <body>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.15.1/moment.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.15.1/moment.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script> -->
 
 <style>
 
@@ -75,8 +76,8 @@ a.btn:active{
   width: 100%; /* Full width */
   height: 100%; /* Full height */
   overflow: auto; /* Enable scroll if needed */
-  background-color: rgb(0,0,0); /* Fallback color */
-  background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+  background-color: rgb(0,0,0); 
+  background-color: rgba(0,0,0,0.4); 
 }
 
 </style>
@@ -84,28 +85,30 @@ a.btn:active{
 <br /><br /><br /> <br />
  
  {% if res.statusCode == 0 %}
-  <table class="info" align="center">
-  	<tr>
-      <th class="info" style="text-align:center">Device Name</th>
-      <th class="info" style="text-align:center">License</th> 
-      <th class="info" style="text-align:center">Last Contacted At</th>
-      <th class="info" style="text-align:center">Campaign</th>
-      <!--<th class="info" style="text-align:center">Rules</th>
-      <th class="info" style="text-align:center">Power</th>-->
+
+<div class="container" style="overflow-x: auto;">
+  <table class="testTable table table-hover" id="reports_table">
+  	<tr style="background: cornflowerblue;color: white;">
+      <th class="info1" style="text-align:center">Device Name</th>
+      <th class="info1" style="text-align:center">License</th> 
+      <th class="info1" style="text-align:center">Last Active</th>
+      <th class="info1" style="text-align:center">Campaign</th>
+      <!--<th class="info1" style="text-align:center">Rules</th>
+      <th class="info1" style="text-align:center">Power</th>-->
     </tr>
    {% for metrics in res.metrics %}
     <tr>
-      <td class="info" style="color:#5FCF80;font-weight: bold" id="{{ metrics.player__id }}_player_name">{{ metrics.player__name }} </td>
-      <td class="info" >Approved</td>
-      <td class="info" >{{ metrics.accessed_at}}</td>
-      <td class="info" style="cursor:pointer;color:#5D8AA8" onclick='getCampaignInfo({{ metrics.player__id }});' ><u>Select </u></td> 
-     <!-- <td class="info" style="cursor:pointer;color:#5D8AA8"><u>Edit</u></td>
+      <td class="info1" style="color:dodgerblue;font-weight: bold" id="{{ metrics.player__id }}_player_name">{{ metrics.player__name }} </td>
+      <td class="info1" >Approved</td>
+      <td class="info1" >{{ metrics.accessed_at}}</td>
+      <td class="info1" style="cursor:pointer;color:#5D8AA8;" onclick='getCampaigninfo1({{ metrics.player__id }});' ><u style="text-decoration-line:none;">Select</u></td> 
+     <!-- <td class="info1" style="cursor:pointer;color:#5D8AA8"><u>Edit</u></td>
       <td class="info" style="cursor:pointer;color:#5D8AA8"><u>Schedule</u></td> -->
     </tr>
     
    {% endfor %}
   </table>
-
+</div>
    
 {% else %}
    <h1 align="center">{{ res.status}} </h1>
@@ -113,7 +116,7 @@ a.btn:active{
 
 {% include 'campaign/list_mycampaigns_cb.html' %}
 
- <!-- div to display campaigns info -->
+ <!-- div to display campaigns   -->
     <!-- The Modal -->
   <div class="modal" id="campaigns_info">
     <div class="modal-dialog">
@@ -124,7 +127,7 @@ a.btn:active{
          <p id="campaigns_info_player" style="color:#4CAF50;text-align: center;font-weight: 700;font-size:26px;">Player</p>
       
           </div>
-         <!--  </div>
+         <!--  </div> 
         </div> -->
         
         <!-- Modal body -->

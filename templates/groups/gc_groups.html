@@ -573,12 +573,12 @@
 	  for (i = 0; i < tablinks.length; i++) {
 	    tablinks[i].style.backgroundColor = "#CFCFC4";
 	  }
-	  if(pageName == "member_groups")
+	  if(pageName == "my_groups_tab")
 	  {
-        mgListGroupsfunc();
+       	document.getElementById(pageName).style.display = "block";
 	  }else{
-	  	document.getElementById(pageName).style.display = "block";
-	   
+	  	
+	  	 mgListGroupsfunc();   
 	  }
 	  elmnt.style.backgroundColor = tabSelectedColor;
 	  
@@ -677,12 +677,13 @@ table {
 	</div>
 	<!--end add gmail-->
    <div class='container' style="margin-top: 25px;margin-bottom:4px;padding: 0 10px;">
-	<button class="tablink" onclick="openPage('my_groups_tab', this, 'green')" id="my_groups_tab_button" style="background-color:cornflowerblue">My Groups</button>
-   <button class="tablink" onclick="openPage('member_groups', this, 'green')" id="member_groups_tab_button" style="background-color:#CFCFC4;    padding: 14px 0px;">My Memberships</button>
+   	<button class="tablink" onclick="openPage('member_groups', this, 'green')" id="member_groups_tab_button" style="background-color:cornflowerblue;padding: 14px 0px;">My Content Partners</button>
+	<button class="tablink" onclick="openPage('my_groups_tab', this, 'green')" id="my_groups_tab_button" style="background-color: #CFCFC4;">My Groups</button>
+   
   </div>
 
    <!-- list of groups -->
-  <div class='tabcontent' id="my_groups_tab">
+  <div class='tabcontent' id="my_groups_tab" style="display:none">
    <div class='container'  id="list_groups">
     <div class='rows'>
 			<br/>
@@ -782,6 +783,7 @@ $(".btn_custom").text(function(index, currentText) {
   }
 });
 
+window.onload =  mgListGroupsfunc();
   </script>
 
 </body>
