@@ -19,7 +19,63 @@
 
     <script src="{% static 'js/sweetalert.js' %}"></script>
 
+<style type="text/css">
+/*  SECTIONS  */
+.section {
+  clear: both;
+  padding: 0px;
+  margin: 0px;
+}
 
+/*  COLUMN SETUP  */
+.col {
+  display: block;
+  float:left;
+  margin: 1% 0 1% 1.6%;
+}
+.col:first-child { margin-left: 0; }
+
+/*  GROUPING  */
+.group:before,
+.group:after { content:""; display:table; }
+.group:after { clear:both;}
+.group { zoom:1; /* For IE 6/7 */ }
+
+  /*  GRID OF SEVEN  */
+.span_7_of_7 {
+  width: 100%;
+}
+
+.span_6_of_7 {
+    width: 85.48%;
+}
+
+.span_5_of_7 {
+    width: 70.97%;
+}
+
+.span_4_of_7 {
+    width: 56.45%;
+}
+
+.span_3_of_7 {
+    width: 41.94%;
+}
+
+.span_2_of_7 {
+    width: 27.42%;
+}
+
+.span_1_of_7 {
+    width: 12.91%;
+}
+
+/*  GO FULL WIDTH BELOW 480 PIXELS */
+@media only screen and (max-width: 480px) {
+  .col {  margin: 1% 0 1% 0%; }
+  .span_1_of_7, .span_2_of_7, .span_3_of_7, .span_4_of_7, .span_5_of_7, .span_6_of_7, .span_7_of_7 { width: 100%; }
+}
+</style>
 </head>
 
 
@@ -39,36 +95,37 @@
         <a class="navbar-brand" href="{% url 'listCampaignsWeb' %}" style="color:#5FCF80;margin: 5px 0 0 10px;"> <img src='{% static "Mentor/img/gc_logo1.png" %}' style='cursor:pointer;'></a>
       </div>
       <div class="collapse navbar-collapse" id="myNavbar">
+
         <ul class="nav navbar-nav navbar-right col-md-8" id="header">
               {% if request.user.is_authenticated %}
 
-            <li class="nav-item col-md-2" id="management">
-              <a class="nav-link" href="{% url 'listCampaignsWeb' %}" style="text-align: center;padding:0px;">Campaign Management</a>
+            <li class="nav-item col span_1_of_7" id="management">
+              <a class="nav-link" href="{% url 'listCampaignsWeb' %}" style="text-align: center;padding:0px;margin-bottom: 0;">Campaign Management</a>
             </li>
-            <li class="nav-item col-md-2" id="device">
-              <a class="nav-link" href="{% url 'deviceMgmt' %}" style="text-align: center;padding: 0px;">Device Management</a>
-            </li>
-
-            <li class="nav-item col-md-2" id="content">
-              <a class="nav-link" href="{% url 'web_search' %}" style="text-align: center;padding: 0px;">Content Management</a>
+            <li class="nav-item col span_1_of_7" id="device">
+              <a class="nav-link" href="{% url 'deviceMgmt' %}" style="text-align: center;padding: 0px;margin-bottom: 0;">Device Management</a>
             </li>
 
-            <li class="nav-item col-md-2" id="gcGroups">
-              <a class="nav-link" href="{% url 'gcGroups' %}" style="text-align: center;padding: 0 20px;">Content Partners</a>
+            <li class="nav-item col span_1_of_7" id="content">
+              <a class="nav-link" href="{% url 'web_search' %}" style="text-align: center;padding: 0px;margin-bottom: 0;">Content Management</a>
             </li>
-            <li class="nav-item col-md-2" id="campaigns">
-              <a class="nav-link" href="{% url 'campaignReports' %}" style="text-align: center;padding: 0px;">Campaign Reports</a>
+
+            <li class="nav-item col span_1_of_7" id="gcGroups">
+              <a class="nav-link" href="{% url 'gcGroups' %}" style="text-align: center;padding: 0 20px;margin-bottom: 0;">Content Partners</a>
+            </li>
+            <li class="nav-item col span_1_of_7" id="campaigns">
+              <a class="nav-link" href="{% url 'campaignReports' %}" style="text-align: center;padding: 0px;margin-bottom: 0;">Campaign Reports</a>
             </li> 
             
-            <li class="nav-item col-md-2" id="viewers">
-              <a class="nav-link"  href="{% url 'viewerMetrics' %}" style="text-align: center;padding: 0px;">Adview Reports</a>
+            <li class="nav-item col span_1_of_7" id="viewers">
+              <a class="nav-link"  href="{% url 'viewerMetrics' %}" style="text-align: center;padding: 0px;margin-bottom: 0;">Adview Reports</a>
 
             </li>
          
   
            
-            <li class="nav-item col-md-2">
-              <a class="nav-link"  href="{% url 'logout' %}" style="text-align: center;padding: 0px;">{{ request.user.first_name}} (Logout)</a>
+            <li class="nav-item col span_1_of_7">
+              <a class="nav-link"  href="{% url 'logout' %}" style="text-align: center;padding: 0px;margin-bottom: 0;">{{ request.user.first_name}} (Logout)</a>
             </li>
 
              {% else %}
