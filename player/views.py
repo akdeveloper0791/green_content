@@ -410,6 +410,7 @@ def exportCampaignReports(request):
 
 from django.http import HttpResponse
 import xlsxwriter
+from datetime import timedelta
 
 def exportCampaignReportsToExcel(metrics):
     output = io.BytesIO()
@@ -438,6 +439,7 @@ def exportCampaignReportsToExcel(metrics):
             for value in (report):
                 if(coloumn==4):#date value
                     value = value.replace(tzinfo=None)
+                    value = value + timedelta(minutes=330)#add indian time zone
                     date_format = workbook.add_format({'num_format': 'dd/mm/yy HH:mm:ss'})
                     date_format.set_align("center");
                     date_format.set_align('vcenter');
@@ -533,6 +535,7 @@ def prepareViewerMetricsExcel(metrics):
             for value in (report):
                 if(coloumn==1):#date value
                     naive_datetime = value.replace(tzinfo=None)
+                    naive_datetime = naive_datetime + timedelta(minutes=330)#add indian time zone
                     date_format = workbook.add_format({'num_format': 'dd/mm/yy HH:mm:ss'})
                     date_format.set_align("center");
                     date_format.set_align('vcenter');
