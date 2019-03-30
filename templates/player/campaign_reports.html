@@ -81,9 +81,9 @@ td,th {
 			<tr>
         <th style="text-align:center">Device Name</th>
 				<th style="text-align:center">Campaign</th>
-				<th style="text-align:center">Number Of times played</th>
-				<th style="text-align:center">Total duration(Sec)</th>
-        <th style="text-align:center">Last played at</th>
+				<th style="text-align:center">Number of Times Played</th>
+				<th style="text-align:center">Total Duration(Sec)</th>
+        <th style="text-align:center">Last Active</th>
 				
 			</tr>
 		</thead>
@@ -147,6 +147,10 @@ td,th {
 <!-- end busy loader -->
 <script type="text/javascript">
 
+  $(document).ready(function(){
+$('#campaigns').addClass('active');
+    });
+
 csrf_token = '{{ csrf_token }}';
 $(document).ready(function() {
    // $("#get_date").trigger('click');
@@ -177,10 +181,14 @@ function formatDate() {
             format: 'YYYY-MM-DD HH:mm:ss'
   });
 
+$(document).ready(function(){
+$('#campaign').addClass('active');
+    });
+
 </script>
 
 
-</script>
+
 
 {% endblock %}
 

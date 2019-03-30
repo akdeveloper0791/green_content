@@ -16,7 +16,11 @@ urlpatterns = [
     path('saveCampaignReports/',views.saveCampaignReports, name="saveCampaignReports"),
     path('getCampaignReports/',views.getCampaignReports, name="getCampaignReports"),
     path('campaign_reports',views.campaignReports,name="campaignReports"),
+
     path('exportCampaignReports/',views.exportCampaignReports, name="exportCampaignReports"),
     path('exportViewerMetrics/',views.exportViewerMetrics, name="exportViewerMetrics"),
     path('prepareViewerMetricsExcel/',views.prepareViewerMetricsExcel,name="prepareViewerMetricsExcel"),
+
+    path('player_group',views.playerGroup,name="playerGroup"),
+
     ]

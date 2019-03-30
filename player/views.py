@@ -384,6 +384,7 @@ def campaignReports(request):
     else:
         return render(request,'signin.html');
 
+
 @api_view(['POST'])
 def exportCampaignReports(request):   
     if(request.method == 'POST'):
@@ -578,3 +579,12 @@ def prepareViewerMetricsCsv(metrics):
             report['age_25_32'],report['age_38_43'],report['age_48_53'],report['age_60_100']]);'''
 
      return response;
+
+
+@login_required
+def playerGroup(request):
+    if(request.user.is_authenticated==False):
+        return render('/signin/');
+    else:
+        return render(request,'player/player_group.html')
+
