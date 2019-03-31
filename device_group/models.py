@@ -6,6 +6,7 @@ from cmsapp.models import User_unique_id,Multiple_campaign_upload
 from django.db import IntegrityError
 import json
 from player.models import Player
+from campaign.models import Player_Campaign
 
 # Create your models here.
 class Device_Group(models.Model):
@@ -162,3 +163,56 @@ class Device_Group_Campaign(models.Model):
         unique_together=[
         ['device_group','campaign']
         ]
+
+    def assignNewCampaigns(userId,gId,campaigns,isWeb):
+        if(isWeb == False):
+            userId = User_unique_id.getUserId(userId);
+            if(userId == False):
+                return {'statusCode':1,'status':
+                "Invalid session, please login"};
+        
+        try:
+           campaigns =  json.loads(campaigns);
+           return Device_Group_Campaign.addCampaign(userId,gId,campaigns);
+           
+        except ValueError as ex:
+            return {'statusCode':3,'status':
+                "Invalid request parameters, campaigns should not be zero - "+str(ex)};
+        
+        except IntegrityError as e:
+            return {'statusCode':5,'status':
+            "Group has already some of the campaigns provided, please check and add again"};
+
+        except Exception as e:
+            return {'statusCode':3,'status':
+                "Invalid request parameters --"+str(e)};
+
+
+    def addCampaign(userId,gId,campaigns):
+        if(gId and int(gId)>=1 and campaigns and len(campaigns)>=1):
+            #check group info
+            try:
+                groupInfo = Device_Group.objects.get(id=gId,user_id=userId);
+                
+                 #check for campaigns (provided campaigns must be user uploaded)
+                if(Player_Campaign.checkForvalidCampaigns(campaigns,userId)):
+                    #prepare object to bulk insert
+                    groupCampaignsBulk = [];
+                    for campaignId in campaigns:
+                        groupCampaignsBulk.append(
+                            Device_Group_Campaign(device_group_id=gId,campaign_id=campaignId));
+
+                    Device_Group_Campaign.objects.bulk_create(groupCampaignsBulk);
+                    
+                    return {'statusCode':0,'status':
+                    'Campaigns have been assigned successfully'};
+                else:
+                    return {'statusCode':5,'status':
+                    'Some of the campaigns are not found, please refresh and try again later'};
+            except Device_Group.DoesNotExist:
+                return {'statusCode':4,
+                'status':"Group not found please check and try again"};
+            return {'campaigns':campaigns};
+        else:
+            return {'statusCode':3,'status':
+                "Invalid request parameters"};
