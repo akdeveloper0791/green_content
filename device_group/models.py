@@ -216,3 +216,43 @@ class Device_Group_Campaign(models.Model):
         else:
             return {'statusCode':3,'status':
                 "Invalid request parameters"};
+    
+    def removeCampaigns(userId,gId,campaigns,isWeb):
+        if(isWeb == False):
+            userId = User_unique_id.getUserId(userId);
+            if(userId == False):
+                return {'statusCode':1,'status':
+                "Invalid session, please login"};
+        
+        try:
+           campaigns =  json.loads(campaigns);
+           return Device_Group_Campaign.checkAndRemoveCampaign(userId,gId,campaigns);
+           
+        except ValueError as ex:
+            return {'statusCode':3,'status':
+                "Invalid request parameters, campaigns should not be zero - "+str(ex)};
+        
+        except IntegrityError as e:
+            return {'statusCode':5,'status':
+            "Group has already some of the campaigns provided, please check and add again"};
+
+        except Exception as e:
+            return {'statusCode':3,'status':
+                "Invalid request parameters --"+str(e)};
+
+    def checkAndRemoveCampaign(userId,gId,campaigns):
+        if(gId and int(gId)>=1 and campaigns and len(campaigns)>=1):
+            #check group info
+            try:
+                groupInfo = Device_Group.objects.get(id=gId,user_id=userId);   
+                Device_Group_Campaign.objects.filter(device_group_id=gId,campaign_id__in=campaigns).delete()
+                return {'statusCode':0,'status':
+                    'Campaigns have been removed successfully'};
+                
+            except Device_Group.DoesNotExist:
+                return {'statusCode':4,
+                'status':"Group not found please check and try again"};
+            return {'campaigns':campaigns};
+        else:
+            return {'statusCode':3,'status':
+                "Invalid request parameters"};

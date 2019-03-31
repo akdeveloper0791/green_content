@@ -7,4 +7,5 @@ urlpatterns = [
     path('assignPlayers/',views.assignPlayers,name="assignPlayers"),
     path('removePlayers/',views.removePlayers,name="removePlayers"),
     path('assignCampaigns/',views.assignCampaigns,name="assignCampaigns"),
+    path('removeCampaigns/',views.removeCampaigns,name="removeCampaigns"),
     ]
