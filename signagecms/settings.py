@@ -56,6 +56,7 @@ INSTALLED_APPS = [
     'gdbx',
     'player',
     'license',
+    'device_group',
 ]
 
 MIDDLEWARE = [
