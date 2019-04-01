@@ -1,0 +1,297 @@
+{% load static %}
+<html>
+<body>
+	<style>
+	table { 
+  display: table;
+  border-collapse: separate;
+  border-spacing: 15px 10px;
+  border-color: gray;
+  font-size: 14px;
+
+}
+
+	</style>
+	<!-- div to display group info -->
+    <!-- The Modal -->
+  <div class="modal" id="lptp_players">
+    <div class="modal-dialog">
+      <div class="modal-content">
+      
+        <!-- Modal Header -->
+        <div class="modal-header"><center>
+          <h4 class="modal-title" >Select and publish campaign to players</h4></center>
+          <input type="hidden" id="lptp_campaign_id" />
+          
+        </div>
+        
+        <!-- Modal body -->
+        <div class="modal-body">
+          <div id="lptp_player_list" style="height: 300px;overflow-x: auto;">
+          </div>
+         
+
+        </div>
+        
+        <!-- Modal footer -->
+        <div class="modal-footer">
+          <center>
+          <button type="button" class="btn btn-success" data-dismiss="modal"  onclick="publicshLPTPselectedPlayers()">Publish</button>
+
+          <button type="button" class="btn btn-danger" data-dismiss="modal"  onclick="closeLPTPPlayers()">Close</button>
+          </center>
+        </div>
+        
+      </div>
+    </div>
+  </div>
+<script >
+var lptpSelectedPlayers=[];
+ function lptpPublishCampaign(campaignId)
+ {
+ 	document.getElementById('lptp_campaign_id').value = campaignId;
+
+ 	
+   var xhr = new XMLHttpRequest();
+    xhr.onload = function() {
+      if (xhr.status === 200) {
+       
+        var responseJSON = JSON.parse(xhr.response);
+        if(responseJSON['statusCode']==0)
+        {
+          lptpDisplayPlayers(responseJSON['players']);
+        }else
+        {
+          alert(responseJSON['status']);
+        }
+          
+      }
+      else {
+       
+          var errorMessage = xhr.response;
+           
+           alert(errorMessage);
+         
+          }
+  };
+  xhr.onerror = function()
+  {
+    
+    console.log("Error");
+  };
+  
+  xhr.open('POST', '/player/listPlayersToPublishCamp/');
+  xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+  xhr.setRequestHeader("X-CSRFToken", csrf_token);
+  
+  
+  var params = 'cId='+campaignId;
+   
+  xhr.send(params);
+ }
+
+ function lptpDisplayPlayers(players)
+ {
+ 	lptpSelectedPlayers=[];
+   document.getElementById('lptp_players').
+   style.display="block";
+   var dvTable = document.getElementById("lptp_player_list");
+
+    if(players.length>=0)
+    {
+            //Create a HTML Table element.
+        var table = document.createElement("TABLE");
+        table.border = "0";
+        
+       
+        //Add the header row.
+       // var row = table.insertRow(-1);
+
+        for (var i = 0; i < players.length; i++) 
+        {
+        	var player = players[i];
+             row = table.insertRow(-1);
+             row.style.height = "25px";
+             
+             {
+
+              var cell = row.insertCell(-1);
+              /*cell.innerHTML = campaigns[i]['campaign_name'];*/
+              campaignId = players[i]['pcId'];
+              
+              if(campaignId>0)
+              {
+                cell.innerHTML = "<input id='lptp_cb_"+player.id+"' type='checkbox' checked= true disabled= true name='name1' onchange='lptpOnchange(this,"+player['id']+")'/>";
+              }else
+              {
+                cell.innerHTML = "<input type='checkbox'  name='name1' onchange='lptpOnchange(this,"+players[i]['id']+")'/>";
+              }
+              
+
+
+              var cell = row.insertCell(-1);
+              
+
+              cell.innerHTML = players[i]['name']
+
+              if(campaignId>0)
+              {
+              	var deleteCell = row.insertCell(-1);
+              deleteCell.innerHTML = "<input type='image' id='lptp_unpublish_"+player.id+"'src='/static/images/ic_remove.png' alt='remove' title='remove' onclick='lptpUnPublishCampaign("+players[i]['id']+")'>"
+              
+              }
+              /* 
+                */
+             }
+        }
+ 
+         
+         dvTable.innerHTML = "";
+         dvTable.appendChild(table);
+    }else
+    {
+      //no members
+      dvTable.innerHTML = "No Campaigns";
+    }
+
+ }
+
+ function closeLPTPPlayers()
+ {
+
+ 	 document.getElementById('lptp_players').
+   style.display="none";
+ }
+
+ function lptpOnchange(element,playerId)
+ {
+ 	if(element.disabled==false)
+ 	{
+ 	if(element.checked == true)
+ 	{
+      if(lptpSelectedPlayers.includes(playerId)==false)
+      {
+        lptpSelectedPlayers.push(playerId);
+      }
+ 	}else
+ 	{
+      lptpRemovePlayerFromSelected(playerId);
+ 	}
+  } 
+ 	
+ }
+
+ function lptpRemovePlayerFromSelected(playerId)
+ {
+ 	var elementIndex = lptpSelectedPlayers.indexOf(playerId);
+      if(elementIndex>=0)
+      {
+      	lptpSelectedPlayers.splice(elementIndex,1);
+      }
+ }
+
+ function publicshLPTPselectedPlayers()
+ {
+ 	closeLPTPPlayers();
+
+ 	if(lptpSelectedPlayers.length>=1)
+ 	{
+ 		
+    ajaxindicatorstart("<img src='/static/images/ajax-loader.gif'><br/> Please wait...!");
+ 	var xhr = new XMLHttpRequest();
+    xhr.onload = function() {
+    	ajaxindicatorstop();
+      if (xhr.status === 200) {
+       
+        var responseJSON = JSON.parse(xhr.response);
+        if(responseJSON['statusCode']==0)
+        {
+          ///lptpDisplayPlayers(responseJSON['players']);
+          swal(responseJSON['status']);
+        }else
+        {
+          swal(responseJSON['status']);
+        }
+          
+      }
+      else {
+        
+          var errorMessage = xhr.response;
+           
+           swal(errorMessage);
+         
+          }
+  };
+  xhr.onerror = function()
+  {
+    ajaxindicatorstop();
+    console.log("Error");
+  };
+  
+  xhr.open('POST', '/player/assignCampaignsToPlayer/');
+  xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+  xhr.setRequestHeader("X-CSRFToken", csrf_token);
+  
+  
+	  var params = 'campaignId='+document.getElementById('lptp_campaign_id').value+'&players='+JSON.stringify(lptpSelectedPlayers)+
+	   '&accessToken=web';
+	   
+	  xhr.send(params);
+	  
+ 	}
+   
+ }
+
+ function lptpUnPublishCampaign(playerId)
+ {
+ 	var campaigns = [document.getElementById('lptp_campaign_id').value];
+
+ 	ajaxindicatorstart("<img src='/static/images/ajax-loader.gif'><br/> Please wait...!");
+ 	var xhr = new XMLHttpRequest();
+    xhr.onload = function() {
+    	ajaxindicatorstop();
+      if (xhr.status === 200) {
+        
+        var responseJSON = JSON.parse(xhr.response);
+        if(responseJSON['statusCode']==0)
+        {
+          lptpRemovePlayerFromSelected(playerId);
+
+          document.getElementById('lptp_cb_'+playerId).disabled=false;
+          document.getElementById('lptp_cb_'+playerId).checked=false;
+
+          document.getElementById('lptp_unpublish_'+playerId).style.display="none";
+        }else
+        {
+          swal(responseJSON['status']);
+        }
+          
+      }
+      else {
+        
+          var errorMessage = xhr.response;
+           
+           swal(errorMessage);
+         
+          }
+  };
+  xhr.onerror = function()
+  {
+    ajaxindicatorstop();
+    console.log("Error");
+  };
+  
+  xhr.open('POST', '/player/removeCampaigns/');
+  xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+  xhr.setRequestHeader("X-CSRFToken", csrf_token);
+  
+  
+	  var params = 'campaigns='+JSON.stringify(campaigns)+'&pId='+playerId+
+	   '&accessToken=web';
+	   
+	  xhr.send(params);
+ }
+
+</script>
+</body>
+</html>

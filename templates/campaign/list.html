@@ -64,15 +64,22 @@ a.btn:active{
       </div>
    <!--    <div class="col-md-1 col-xs-1" style="padding:0px;text-align: center;">
           <i class='fa fa-file-archive-o fa-lg' style='color:deepskyblue;margin:5px;cursor: pointer;padding: 30px 0px;' alt="Archive" title="Archive" onclick='function display(){swal("comming soon")};display()'></i>
-      </div> -->
+      </div> 
         <div class="col-md-1 col-xs-1" style="padding:0px;text-align: center;">
-          <i class='fa fa-trash fa-lg' style='color:orangered;margin:5px;cursor: pointer;padding: 30px 0px;' alt="Delete" title="Delete" onclick='deleteCampaign("{{campaign.id}}")'></i>
-      </div>
-      <div class="col-md-1 col-xs-1" style="padding:0px;text-align: center;">
+          
+      </div>-->
+      <div class="col-md-2 col-xs-2" style="padding:0px;text-align: center;">
+        <i class='fa fa-trash fa-lg' style='color:orangered;margin:5px;cursor: pointer;padding: 30px 0px;' alt="Delete" title="Delete" onclick='deleteCampaign("{{campaign.id}}")'></i>
+
         <a href="/campaigns/previewCampaign/{{campaign.id}}" target='_blank'>
           <i class='fa fa-eye fa-lg' style='color:yellowgreen;margin:5px;cursor:pointer;padding: 30px 0px;' alt="Preview" title="Preview"></i>
         </a>
+
+        <i class='fa fa-television fa-lg' style='color:yellowgreen;margin:5px;cursor: pointer;padding: 30px 0px;' alt="Delete" title="Publish" onclick='publishCampaign("{{campaign.id}}")'></i>
+
       </div>
+
+
     </div>
   </div>
 	{% endfor %}
@@ -85,7 +92,7 @@ a.btn:active{
 </div>
 </section>
 <div class="container">
-  <div class="modal fade centered-modal" tabindex="-1" role="dialog" id="busy_dialog">
+  <div class="modal centered-modal" tabindex="-1" role="dialog" id="busy_dialog">
 
   <div class="modal-dialog" role="document">
   
@@ -99,7 +106,7 @@ a.btn:active{
           <!--initiate busy spinner -->
            <div id="init_upload_busy_dialg_div" align="center" style="display:none">
             <div class="loader" > </div>
-            <p>Deleting...</p>
+            <p id="busy_dialog_msg">Deleting...</p>
             </div>
           
 
@@ -130,6 +137,8 @@ a.btn:active{
   </div>
   
 </div>
+
+{% include 'campaign/list_players_to_publish.html' %}
 
 <script>
 var csrf_token = '{{ csrf_token }}';

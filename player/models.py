@@ -4,7 +4,15 @@ import datetime
 from datetime import datetime as dt
 import json
 from cmsapp.models import User_unique_id
+from django.db import  connection
 
+def dictfetchall(cursor):
+    
+    columns = [col[0] for col in cursor.description]
+    return [
+        dict(zip(columns, row))
+        for row in cursor.fetchall()
+    ]
 
 # Create your models here.
 class Player(models.Model):
@@ -82,6 +90,20 @@ class Player(models.Model):
         return player;
       except Player.DoesNotExist:
         return False;
+
+    def listPlayersToPublishCamp(campaignId,userId):
+      
+      with connection.cursor() as cursor:
+          query = '''SELECT player.id,player.name,player_campaign.id as pcId FROM player_player as player 
+           LEFT JOIN campaign_player_campaign as player_campaign ON player.id = player_campaign.player_id AND player_campaign.campaign_id=%s 
+           WHERE (player.user_id=%s)'''
+          cursor.execute(query,[campaignId,userId]);
+          players = dictfetchall(cursor);
+          cursor.close();
+          connection.close();
+        
+      return {'statusCode':0,'players':players};
+        
 
 
 #metrics modal

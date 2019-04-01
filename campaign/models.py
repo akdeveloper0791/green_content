@@ -370,6 +370,66 @@ class Player_Campaign(models.Model):
             else:
                 return (checkedCampaigns[0] == (len(campaigns)))
 
+    def assignCampaignsToPlayers(userId,players,campaignId,isWeb):
+        if(isWeb == False):
+            userId = User_unique_id.getUserId(userId);
+            if(userId == False):
+                return {'statusCode':1,'status':
+                "Invalid session, please login"};
+        
+        try:
+           players =  json.loads(players);
+           
+           return Player_Campaign.addCampaignsToPlayer(userId,players,campaignId);
+           
+        except ValueError as ex:
+            return {'statusCode':3,'status':
+                "Invalid request parameters, campaigns should not be zero - "+str(ex)};
+        
+        except IntegrityError as e:
+            return {'statusCode':5,'status':
+            "Player has already some of the campaigns provided, please check and add again"};
+
+        except Exception as e:
+            return {'statusCode':3,'status':
+                "Invalid request parameters --"+str(e)};
+
+    def addCampaignsToPlayer(userId,players,campaignId):
+        if(campaignId and int(campaignId)>=1 and players and len(players)>=1):
+            #check group info
+            try:
+                #check for player,,
+                playerInfo = Player.objects.filter(id__in=players,user_id=userId);
+                if(len(playerInfo)!=len(players)):
+                    return {'statusCode':5,'status':
+                    'Some of the players are not found, please refresh and try again later'};
+
+                #check for campaigns (provided campaigns must be user uploaded)
+                campaigns = [];
+                campaigns.append(campaignId);
+                if(Player_Campaign.checkForvalidCampaigns(campaigns,userId)):
+                    
+                    #prepare object to bulk insert
+                    campaignsBulk = [];
+                    for playerId in players:
+                        campaignsBulk.append(
+                            Player_Campaign(user_id=userId,player_id=playerId,campaign_id=campaignId));
+
+                    Player_Campaign.objects.bulk_create(campaignsBulk);
+                    
+                    return {'statusCode':0,'status':
+                    'Campaigns have been published successfully'};
+                else:
+                    return {'statusCode':5,'status':
+                    'Some of the campaigns are not found, please refresh and try again later'};
+            except Player.DoesNotExist:
+                return {'statusCode':4,
+                'status':"Player not found please check and try again"};
+            
+        else:
+            return {'statusCode':3,'status':
+                "Invalid request parameters"};
+
     def removeCampaigns(userId,pId,campaigns,isWeb):
         if(isWeb == False):
             userId = User_unique_id.getUserId(userId);

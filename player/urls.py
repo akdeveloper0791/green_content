@@ -22,5 +22,6 @@ urlpatterns = [
     path('prepareViewerMetricsExcel/',views.prepareViewerMetricsExcel,name="prepareViewerMetricsExcel"),
 
     path('player_group',views.playerGroup,name="playerGroup"),
-
+    path('listPlayersToPublishCamp/',views.listPlayersToPublishCamp,name="listPlayersToPublishCamp"),
+    path('assignCampaignsToPlayer/',views.assignCampaignsToPlayer,name="assignCampaignsToPlayer"),
     ]

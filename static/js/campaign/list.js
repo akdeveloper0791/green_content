@@ -236,7 +236,7 @@ function checkAndDownloadThumbFile()
    var hasThumbs = getDownloadThumbInfo();
    if(hasThumbs)
    {
-    console.log(JSON.stringify(downloadThumbInfo))
+    
     downloadThumbFile();
    }else{
     console.log("Downloading thumbs finished");
@@ -313,7 +313,6 @@ function downloadThumbFile()
  function generateNewLink(resourceFile)
  {
   
-
    var xhr = new XMLHttpRequest();
     xhr.onload = function() {
       if (xhr.status === 200) {
@@ -375,7 +374,7 @@ function downloadThumbFile()
  function deleteCampaign(campaignId)
  {
 
- swal({
+   swal({
             title: "Are you sure?",
             text: "You want to delete campaign!",
             type: "warning",
@@ -392,7 +391,7 @@ function downloadThumbFile()
    xhr.onload = function() {
       if (xhr.status === 200) {
         dismissBusyDialog();
-          console.log(xhr.response);
+          
           var response = JSON.parse(xhr.response);       
           try
           {
@@ -448,4 +447,9 @@ function downloadThumbFile()
  {
    dismissBusyDialog();
    alert(msg);
+ }
+
+ function publishCampaign(campaignId)
+ {
+   lptpPublishCampaign(campaignId);
  }
