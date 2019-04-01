@@ -5,7 +5,7 @@ from django.http import JsonResponse
 
 # Create your views here.
 @api_view(['POST'])
-def create(request):
+def createDG(request):
     if(request.method == 'POST'):
         isWeb = False;
         accessToken = request.POST.get('accessToken');
@@ -26,7 +26,7 @@ def create(request):
             'status':'Invalid method'});
 
 @api_view(['POST'])
-def assignPlayers(request):
+def assignPlayersDG(request):
     if(request.method == 'POST'):
         isWeb = False;
         accessToken = request.POST.get('accessToken');
@@ -48,7 +48,7 @@ def assignPlayers(request):
             'status':'Invalid method'});
 
 @api_view(['POST'])
-def removePlayers(request):
+def removePlayersDG(request):
     if(request.method == 'POST'):
         isWeb = False;
         accessToken = request.POST.get('accessToken');
@@ -70,7 +70,7 @@ def removePlayers(request):
             'status':'Invalid method'});
 
 @api_view(['POST'])
-def assignCampaigns(request):
+def assignCampaignsDG(request):
     if(request.method == 'POST'):
         isWeb = False;
         accessToken = request.POST.get('accessToken');
@@ -92,7 +92,7 @@ def assignCampaigns(request):
             'status':'Invalid method'});
 
 @api_view(['POST'])
-def removeCampaigns(request):
+def removeCampaignsDG(request):
     if(request.method == 'POST'):
         isWeb = False;
         accessToken = request.POST.get('accessToken');

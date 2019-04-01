@@ -3,9 +3,9 @@ from . import views
 
 urlpatterns = [
     #url(r'^first/',csrf_exempt(views.first),name='first'),
-    path('create/',views.create,name='create'),
-    path('assignPlayers/',views.assignPlayers,name="assignPlayers"),
-    path('removePlayers/',views.removePlayers,name="removePlayers"),
-    path('assignCampaigns/',views.assignCampaigns,name="assignCampaigns"),
-    path('removeCampaigns/',views.removeCampaigns,name="removeCampaigns"),
+    path('create/',views.createDG,name='createDG'),
+    path('assignPlayers/',views.assignPlayersDG,name="assignPlayersDG"),
+    path('removePlayers/',views.removePlayersDG,name="removePlayersDG"),
+    path('assignCampaigns/',views.assignCampaignsDG,name="assignCampaignsDG"),
+    path('removeCampaigns/',views.removeCampaignsDG,name="removeCampaignsDG"),
     ]
