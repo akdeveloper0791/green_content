@@ -65,8 +65,13 @@ function prepareView(selectedTemplate)
     if(selectedTemplate=="custom")
     {
       setInfoTitle("Start draw your campaigns with mouse");
-     constructCustomDiv();
-    }else{
+      constructCustomDiv();
+    }else if(selectedTemplate=="ticker_text")
+    {
+      setInfoTitle("Write your own Ticker text");
+      prepareTickerText();
+    }
+    else{
       setInfoTitle("Add Content to Campaign");
       var templateInfo = JSON.parse(selectedTemplate);
       regionsInfo = templateInfo.regions;
@@ -385,7 +390,8 @@ function constructDivs()
        info.properties = {'textBgColor':"#"+document.getElementById('create_txt_media_txt_bg').value,
        'textColor':"#"+document.getElementById('create_txt_media_txt_color').value,
        'textSize':document.getElementById('create_text_media_text_size').value,
-       'isScrollAnim':false,'isBold':document.getElementById('create_txt_media_txt_bold').checked,
+       'isScrollAnim':document.getElementById('create_txt_media_scroll_anim').checked,
+       'isBold':document.getElementById('create_txt_media_txt_bold').checked,
        'isItalic':document.getElementById('create_txt_media_txt_italic').checked,
        'isUnderLine':document.getElementById('create_txt_media_txt_underline').checked,
        'textAlignment':document.getElementById('create_txt_media_txt_algmt').value};
@@ -739,7 +745,7 @@ function prepareInfoFile(mediaName)
 
   var playDuration = document.getElementById("file_duration").value;
   var infoJSON = { "type": "multi_region", "regions": activeRegions,
-  "duration": playDuration }; 
+  "duration": playDuration,'hide_ticker_txt': document.getElementById("create_txt_media_hide_ticker").checked}; 
   
   info = JSON.stringify(infoJSON);
   //var blob = new Blob([info], {type: "text/plain;charset=utf-8"});
@@ -1289,5 +1295,98 @@ function initDraw(canvas)
   
  }
 }
+
+function prepareTickerText()
+{
+
+      var customDivInfo = {'width':100,
+      'height':100,'top_margin':0,'left_margin':0,
+      'right_margin':0,'bottom_margin':0};
+      
+      regionsInfo.push(customDivInfo);
+
+      var parentDiv = document.createElement('div');
+        //parentDiv.class='generic';
+        parentDiv.id = 'reg_div_0';
+        parentDiv.style.position="absolute";
+        parentDiv.style.top=0;
+        parentDiv.style.left=0;
+        parentDiv.style.border = "groove #4de4c0";
+        parentDiv.style.width = screenInfo['width']+"px";
+        parentDiv.style.height = screenInfo['height']+"px";
+        //document.getElementsByTagName('body')[0].appendChild(parentDiv);
+        document.getElementById('parent_div').appendChild(parentDiv);
+
+        addImgReg(0,null);
+
+        displayTickerTextReg();
+   
+}
+
+function displayTickerTextReg()
+{
+  document.getElementById('create_ticker_text_modal').style.display="block";
+
+}
+
+function dismissCreateTickerTextRegion()
+{
+  document.getElementById('create_ticker_text_modal').style.display="none";
+}
+
+function onSelectTickerTxtReg()
+{
+    //validate fields
+    var mediaName = document.getElementById('create_ticker_text_media_name').value;
+    
+    if(mediaName=='' || mediaName==null)
+    {
+       swal('Please enter your text');
+    }else{
+      
+       var idPosition = 0;
+       regionsResourceFiles[idPosition] = null;//no resource file 
+       
+       //get the region info
+       info = regionsInfo[idPosition];
+       info.media_name = mediaName;
+       info.is_self_path = true;
+
+       //set properties
+       info.properties = {'textBgColor':"#"+document.getElementById('create_ticker_txt_media_txt_bg').value,
+       'textColor':"#"+document.getElementById('create_ticker_txt_media_txt_color').value,
+       'textSize':20,
+       'isScrollAnim':true,
+       'isBold':document.getElementById('create_ticker_txt_media_txt_bold').checked,
+       'isItalic':document.getElementById('create_ticker_txt_media_txt_italic').checked
+       };
+
+       
+       
+       var childTag=null; 
+       var isNew = true;
+       if(info.type.toLowerCase == 'text')
+       {
+         isNew = false;
+         childTag = document.getElementById('reg_div_child_'+
+            idPosition);
+       }else{
+        info.type = 'text';
+        removeChildElement(idPosition);
+        //create new text child tag
+         childTag = document.createElement('TEXTAREA');
+         childTag.onclick=null;
+         document.getElementById('reg_div_'+idPosition).appendChild(childTag);
+       }
+       //update info
+       regionsInfo[idPosition] = info;
+       //style text child
+       styleTextChild(childTag,isNew,idPosition);
+
+       dismissCreateTickerTextRegion();
+
+       prepareInfoFile("DNDM_SS_TICKER_TXT");
+    }
+  }
 
 
