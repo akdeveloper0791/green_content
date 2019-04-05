@@ -249,60 +249,67 @@ function downloadThumbFile()
 
   if(uploadDXXX!=null && Object.keys(uploadDXXX).length>=1)
   {
-   var resourceFile = "DNDM-THUMB-"+downloadThumbInfo.resourceName+".jpg"
+    if(downloadThumbInfo.resourceName==="DNDM_SS_TICKER_TXT")
+    {
+         document.getElementById('thumb_img_'+downloadThumbInfo.id).src = 
+         '/static/images/campaign/ticker_text.png';
+        checkAndDownloadThumbFile();
+    }else{
+     var resourceFile = "DNDM-THUMB-"+downloadThumbInfo.resourceName+".jpg"
 
-   var xhr = new XMLHttpRequest();
-    xhr.onload = function() {
-      if (xhr.status === 200) {
+     var xhr = new XMLHttpRequest();
+      xhr.onload = function() {
+        if (xhr.status === 200) {
+            
+            var fileInfo = JSON.parse(xhr.response);
           
-          var fileInfo = JSON.parse(xhr.response);
-        
-          try
-          {
-            var list = fileInfo.links;
-            if(list.length>=1)
+            try
             {
-              link = list[0];
-              var url = link['url'];
-              updateThumbPreview(url);
-            }else{
-              
-              generateNewLink(resourceFile);
+              var list = fileInfo.links;
+              if(list.length>=1)
+              {
+                link = list[0];
+                var url = link['url'];
+                updateThumbPreview(url);
+              }else{
+                
+                generateNewLink(resourceFile);
+              }
+            }catch(exception)
+            {
+
+              checkAndDownloadThumbFile();
+              //childPreviewError(resourceId,'Unable to display preview, please try again later -'+exception.message);
             }
-          }catch(exception)
-          {
-
-            checkAndDownloadThumbFile();
-            //childPreviewError(resourceId,'Unable to display preview, please try again later -'+exception.message);
-          }
-          
-      }
-      else {
-          var errorMessage = xhr.response;
-           checkAndDownloadThumbFile();
-                //childPreviewError(resourceId,'Unable to display preview-'+errorMessage);
-         
-          }
-  };
-  xhr.onerror = function()
-  {
+            
+        }
+        else {
+            var errorMessage = xhr.response;
+             checkAndDownloadThumbFile();
+                  //childPreviewError(resourceId,'Unable to display preview-'+errorMessage);
+           
+            }
+    };
+    xhr.onerror = function()
+    {
+      
+      checkAndDownloadThumbFile();
+     //childPreviewError(resourceId,'No internet');
+    };
+    xhr.open('POST', 'https://api.dropboxapi.com/2/sharing/list_shared_links');
     
-    checkAndDownloadThumbFile();
-   //childPreviewError(resourceId,'No internet');
-  };
-  xhr.open('POST', 'https://api.dropboxapi.com/2/sharing/list_shared_links');
-  
-  xhr.setRequestHeader('Authorization', 'Bearer ' + uploadDXXX['xxdd']);
+    xhr.setRequestHeader('Authorization', 'Bearer ' + uploadDXXX['xxdd']);
 
-  xhr.setRequestHeader('Content-Type', 'application/json');
+    xhr.setRequestHeader('Content-Type', 'application/json');
 
-  
-  var params = JSON.stringify({"path":downloadThumbInfo.save_path+resourceFile,
-    })
-   
+    
+    var params = JSON.stringify({"path":downloadThumbInfo.save_path+resourceFile,
+      })
      
+       
 
-   xhr.send(params);
+     xhr.send(params);
+   }
   }else
    {
          initUploadDxxx();
