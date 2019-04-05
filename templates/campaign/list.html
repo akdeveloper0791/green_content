@@ -41,9 +41,10 @@ a.btn:active{
 	<div class='panel-heading' style='background: cornflowerblue;color: white;'>Campaign List</div>
 
 <!-- 	<ul class='list-group'> -->
+  {% load tz %}
+  {% timezone "Australia/Lord_Howe" %}<!-- temp solution convert to indian format-->
 	
 	{% for campaign in res.campaigns %}
-
    <div class="col-md-12 col-xs-12" style="padding:0px;border-bottom: 1px solid darkgrey;">
     <div class="rows" id="campaign_row_{{ campaign.id }}">
        <div class="col-md-2 col-xs-2" style="padding:0px;">
@@ -60,7 +61,10 @@ a.btn:active{
       </div>
       <div class="col-md-8 col-xs-8" style="padding: 20px 2px;">
         <p class="btn-custom" style="color:dodgerblue;margin: 0px;font-weight: 700;">{{ campaign.campaign_name }}</p>
-        <p style="color:gray;font-size: 12px;">{{ campaign.created_date }}</p>
+        
+        
+        <p style="color:gray;font-size: 12px;">{{ campaign.updated_date|localtime }}</p>
+       
       </div>
    <!--    <div class="col-md-1 col-xs-1" style="padding:0px;text-align: center;">
           <i class='fa fa-file-archive-o fa-lg' style='color:deepskyblue;margin:5px;cursor: pointer;padding: 30px 0px;' alt="Archive" title="Archive" onclick='function display(){swal("comming soon")};display()'></i>
@@ -83,6 +87,8 @@ a.btn:active{
     </div>
   </div>
 	{% endfor %}
+
+  {% endtimezone %}
 
 <!-- 
 	</ul> -->

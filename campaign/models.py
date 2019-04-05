@@ -14,6 +14,7 @@ import uuid
 import time
 from player.models import Player
 from django.db import IntegrityError
+from django.utils import timezone
 
 
 def dictfetchall(cursor):
@@ -68,6 +69,8 @@ class CampaignInfo(models.Model):
             "Unable to upload campaign "+''.join(saveInfo['error'])}
         
 
+    
+    
     @classmethod
     def createCampaign(cls,userId,name,campType,info,campaignSize,savePath):
         try:
@@ -77,14 +80,14 @@ class CampaignInfo(models.Model):
                 campaignToSave = Multiple_campaign_upload.objects.get(campaign_uploaded_by=userId,campaign_name=name)
                 #if campaign exist get save path from db
                 savePath = campaignToSave.save_path;
-
+                
             except Multiple_campaign_upload.DoesNotExist:
                 campaignToSave = Multiple_campaign_upload()
+                campaignToSave.created_date = timezone.now()
             #campaignToSave = Multiple_campaign_upload()
             campaignToSave.campaign_uploaded_by = userId
             campaignToSave.campaign_name = name
-            campaignToSave.created_date = datetime.datetime.now()
-            campaignToSave.updated_date = datetime.datetime.now()
+            campaignToSave.updated_date = timezone.now()
             campaignToSave.camp_type = campType
             campaignToSave.stor_location = 2 #indicates drop box
             campaignToSave.campaignSize = campaignSize
@@ -118,7 +121,7 @@ class CampaignInfo(models.Model):
             'No campaigns Found'};
         else:
             return {'statusCode':0,'campaigns':list(campaigns.values())};
-
+    
     def getUserCampaignsWithInfo(userId,isUserId=False):
         if(isUserId==False):
             userId = User_unique_id.getUserId(userId);
