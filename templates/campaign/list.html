@@ -59,7 +59,7 @@ a.btn:active{
           margin-right: auto;
         ">
       </div>
-      <div class="col-md-8 col-xs-8" style="padding: 20px 2px;">
+      <div class="col-md-7 col-xs-7" style="padding: 20px 2px;">
         <p class="btn-custom" style="color:dodgerblue;margin: 0px;font-weight: 700;">{{ campaign.campaign_name }}</p>
         
         
@@ -72,14 +72,16 @@ a.btn:active{
         <div class="col-md-1 col-xs-1" style="padding:0px;text-align: center;">
           
       </div>-->
-      <div class="col-md-2 col-xs-2" style="padding:0px;text-align: center;">
-        <i class='fa fa-trash fa-lg' style='color:orangered;margin:5px;cursor: pointer;padding: 30px 0px;' alt="Delete" title="Delete" onclick='deleteCampaign("{{campaign.id}}")'></i>
-
+      <div class="col-md-1 col-xs-1" style="padding:30px 0px 0px 0px;">
+        <i class='fa fa-trash fa-lg' style='color:orangered;cursor: pointer;' alt="Delete" title="Delete" onclick='deleteCampaign("{{campaign.id}}")'></i>
+      </div>
+       <div class="col-md-1 col-xs-1" style="padding:30px 0px 0px 0px;">
         <a href="/campaigns/previewCampaign/{{campaign.id}}" target='_blank'>
-          <i class='fa fa-eye fa-lg' style='color:yellowgreen;margin:5px;cursor:pointer;padding: 30px 0px;' alt="Preview" title="Preview"></i>
+          <i class='fa fa-eye fa-lg' style='color:yellowgreen;cursor:pointer;' alt="Preview" title="Preview"></i>
         </a>
-
-        <i class='fa fa-television fa-lg' style='color:yellowgreen;margin:5px;cursor: pointer;padding: 30px 0px;' alt="Delete" title="Publish" onclick='publishCampaign("{{campaign.id}}")'></i>
+       </div>
+       <div class="col-md-1 col-xs-1" style="padding:30px 0px 0px 0px;">
+        <i class='fa fa-television fa-lg' style='color:yellowgreen;cursor: pointer;' alt="Delete" title="Publish" onclick='publishCampaign("{{campaign.id}}")'></i>
 
       </div>
 
