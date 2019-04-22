@@ -50,10 +50,13 @@ function fullscreenChange() {
   }
 }
 
+
+
 var csrf_token = '{{ csrf_token }}';
 
 var info = "{{info}}"; regionsInfo=[];
-var campaignName;var savePath;
+var campaignName;var savePath;var storeLocation;
+
 var downloadResources= [];
 
  info = JSON.parse(info.replace(/&quot;/g,'"'));
@@ -68,7 +71,7 @@ var downloadResources= [];
 
 var screenInfo = {'width':x,'height':y};
 //var screenInfo = {'width':640,'height':360};
-console.log("screenInfo"+JSON.stringify(screenInfo));
+
 
 
 if(info.statusCode != 0)
@@ -81,6 +84,7 @@ if(info.statusCode != 0)
  
   campaignName = info.c_name;
   savePath = info.save_path;
+  storeLocation = info.store_location;
 
   if(info.cInfo.type=='multi_region')
   {
@@ -107,7 +111,14 @@ if(info.statusCode != 0)
    ga.id = 'invisible';
    document.body.appendChild(ga);
    
-   initUploadDxxx();
+   
+   if(storeLocation==2) //drop box
+   {
+    initUploadDxxx();
+  }else{
+    checkForCampaignInLocal();
+  }
+   
        
   })();
 

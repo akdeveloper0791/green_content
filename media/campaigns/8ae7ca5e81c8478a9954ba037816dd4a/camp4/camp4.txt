@@ -1,1 +1,0 @@
-{"resource":"DNDM-1542972695435.jpg","media_name":"camp4","offer_text":"camp4","duration":10,"display_scroll_txt":false,"is_skip":false,"type":"Image"}

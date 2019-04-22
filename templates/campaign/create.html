@@ -615,7 +615,7 @@ textarea {
 
  <script id="hide2">
    var csrf_token = '{{ csrf_token }}';
-   
+   var storeLocation = '{{ store_location }}';
 	// self executing function here
 	(function() {
 	   // your page initialization code here
@@ -640,6 +640,16 @@ textarea {
    document.body.appendChild(ga1);
 
    var elem = document.getElementById("invisible1");
+   elem.parentNode.removeChild(elem);
+
+   var ga2 = document.createElement("script"); //ga is to remember Google Analytics ;-)
+   ga2.type = 'text/javascript';
+   ga2.src = "{% static 'js/campaign/upload_local.js' %}";
+
+   ga2.id = 'invisible2';
+   document.body.appendChild(ga2);
+
+   var elem = document.getElementById("invisible2");
    elem.parentNode.removeChild(elem);
    
    cctDisplayTemplates();

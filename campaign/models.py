@@ -15,6 +15,8 @@ import time
 from player.models import Player
 from django.db import IntegrityError
 from django.utils import timezone
+import os
+import shutil
 
 
 def dictfetchall(cursor):
@@ -31,7 +33,7 @@ class CampaignInfo(models.Model):
     info = models.TextField()
 
     def processInfoAndSaveCampaign(info,requestFrom,user_sessionId,
-        campaignName,campaignSize=0):
+        campaignName,campaignSize=0,storeLocation=2):
         self = CampaignInfo();
         secretKey = user_sessionId; #upload folder in dropbox
         if(requestFrom == "api"):
@@ -58,21 +60,21 @@ class CampaignInfo(models.Model):
         uniqueKey = str(uuid.uuid4().hex[:6].upper())+str(round(time.time() * 1000))+uuid.uuid4().hex[:6];
         savePath = '/campaigns/{}/{}/'.format(uniqueKey,campaignName);
         saveInfo = self.createCampaign(userId,campaignName,campType,
-            info,campaignSize,savePath);
+            info,campaignSize,savePath,storeLocation);
         
         if(saveInfo['status'] == True):
-            
             return {'isSave':True,'statusCode':0,'status':
-            "success",'save_path':saveInfo['savePath']}
+            "success",'save_path':saveInfo['savePath'],'cId':saveInfo['id']}
         else:
             return {'statusCode':3,'status':
             "Unable to upload campaign "+''.join(saveInfo['error'])}
         
+    
+    
 
-    
-    
     @classmethod
-    def createCampaign(cls,userId,name,campType,info,campaignSize,savePath):
+    def createCampaign(cls,userId,name,campType,info,campaignSize,savePath,
+        storeLocation):
         try:
          with transaction.atomic():
             #check for duplicate
@@ -83,13 +85,13 @@ class CampaignInfo(models.Model):
                 
             except Multiple_campaign_upload.DoesNotExist:
                 campaignToSave = Multiple_campaign_upload()
+                campaignToSave.stor_location = storeLocation #indicates drop box
                 campaignToSave.created_date = timezone.now()
             #campaignToSave = Multiple_campaign_upload()
             campaignToSave.campaign_uploaded_by = userId
             campaignToSave.campaign_name = name
             campaignToSave.updated_date = timezone.now()
             campaignToSave.camp_type = campType
-            campaignToSave.stor_location = 2 #indicates drop box
             campaignToSave.campaignSize = campaignSize
             campaignToSave.save_path = savePath
             campaignToSave.save()
@@ -102,7 +104,8 @@ class CampaignInfo(models.Model):
                 campInfo.campaign_id_id = campaignToSave.id
             campInfo.info = info
             campInfo.save()
-         return {'status':True,'savePath':savePath}
+
+         return {'status':True,'savePath':savePath,'id':campaignToSave.id}
         except Exception as e:
             
             return {'status':False,'error':e.args}
@@ -146,6 +149,10 @@ class CampaignInfo(models.Model):
             'No campaigns Found'};
         else:
             return {'statusCode':0,'campaigns':campaigns};
+    
+    import shutil
+    import signagecms.constants;
+    
 
     def deleteMyCampaign(campaignId,accessToken,mac,isWeb):
         userId=accessToken;
@@ -164,12 +171,24 @@ class CampaignInfo(models.Model):
                     #deleteCampaignFromDropBox
                     savePath = campaign.save_path;
                     savePath = savePath[:-1]
-                    post_data = JsonResponse({ "path": savePath })
-                    headers = {'Authorization': 'Bearer {}'.format(constants.DROP_BOX_ACCESS_TOKEN),
-                    'Content-Type': 'application/json'}
-                    response = requests.post('https://api.dropboxapi.com/2/files/delete_v2', data=post_data,
-                     headers=headers);
-                
+                    savePath = savePath.replace(campaign.campaign_name,"");
+                    savePath = savePath[:-1]
+                    storeLocation = campaign.stor_location;
+                    if(storeLocation==2):#drop box
+                        post_data = JsonResponse({ "path": savePath })
+                        headers = {'Authorization': 'Bearer {}'.format(constants.DROP_BOX_ACCESS_TOKEN),
+                        'Content-Type': 'application/json'}
+                        response = requests.post('https://api.dropboxapi.com/2/files/delete_v2', data=post_data,
+                         headers=headers);
+                    elif(storeLocation==1):#local
+                        #delete from local storage
+                        campaignPath = str(constants.file_storage_path)+savePath;
+                        BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+                        if(os.path.exists(os.path.join(BASE_DIR,"media"+savePath))):
+                            shutil.rmtree(campaignPath);
+                                 
+                        
+                        
                 #delete campaign 
                 campaign.delete();
 
@@ -194,8 +213,20 @@ class CampaignInfo(models.Model):
             except Exception as e:
                 return {'statusCode':3,'status':'Error -'+str(e)};
 
-        
-   
+    def canUploadCampaignResource(accessToken,campaignId,isWeb):
+        userId=accessToken;
+        if(isWeb==False):
+            userId = User_unique_id.getUserId(accessToken);
+            if(userId == False):
+                return {'statusCode':1,'status':
+                         "Invalid session, please login"};
+
+        try:
+            campaign = Multiple_campaign_upload.objects.get(id=campaignId,campaign_uploaded_by=userId);
+            return {'statusCode':0,'campaign':campaign};
+        except Multiple_campaign_upload.DoesNotExist:
+           return {'statusCode':1,'status':'No campaign found'}; 
+
     def listCampaigns1():
     
       with connection.cursor() as cursor:
@@ -224,7 +255,7 @@ class CampaignInfo(models.Model):
         'updated':i};
 
     def getPreviewCampaignInfo(userId,cId):
-        query='''SELECT cInfo.info,campaign.save_path,campaign.campaign_name FROM cmsapp_multiple_campaign_upload as campaign 
+        query='''SELECT cInfo.info,campaign.save_path,campaign.campaign_name,campaign.stor_location FROM cmsapp_multiple_campaign_upload as campaign 
         INNER JOIN campaign_campaigninfo as cInfo ON cInfo.campaign_id_id=campaign.id WHERE ((campaign.id=%s AND campaign.campaign_uploaded_by = %s))
         OR campaign.id = (SELECT campaign_id FROM group_groupcampaigns WHERE campaign_id=%s AND gc_group_id IN (SELECT gc_group_id FROM group_gcgroupmembers WHERE member_id = %s) group by campaign_id LIMIT 1)''';
         with connection.cursor() as cursor:
@@ -233,7 +264,7 @@ class CampaignInfo(models.Model):
             if info == None:
                     return {"statusCode":2,"status":"Invalid details"};
             else:
-                    return {"statusCode":0,"cInfo":json.loads(info[0]),"save_path":info[1],'c_name':info[2]};
+                    return {"statusCode":0,"cInfo":json.loads(info[0]),"save_path":info[1],'c_name':info[2],'store_location':info[3]};
 
 class Deleted_Campaigns(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL,on_delete=models.CASCADE)

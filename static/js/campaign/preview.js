@@ -38,6 +38,22 @@ function initUploadDBxxFail(warningMsg)
   swal(warningMsg);
 }
 
+
+function checkForCampaignInLocal()
+{
+   var http = new XMLHttpRequest();
+   var campaignUrl = "/media"+savePath+campaignName+".txt"
+    http.open('HEAD', campaignUrl, false);
+    http.send();
+ 
+    if(http.status == 200)
+    {
+      constructDivs();
+    }else{
+      swal("Campaign file not found");
+    }
+}
+
 function checkForCampaignInDB()
  {
    var xhr = new XMLHttpRequest();
@@ -279,11 +295,15 @@ function checkForCampaignInDB()
 
  function downloadResoruceFile(resourceId,resourceFile)
  {
-
- 	
-
-   var xhr = new XMLHttpRequest();
-  	xhr.onload = function() {
+  
+ 	if(storeLocation==1)
+  {
+     var resourceurl = "/media"+savePath+resourceFile;
+     updateChildPreview(resourceId,resourceurl);
+  }else //drop box
+  {
+     var xhr = new XMLHttpRequest();
+    xhr.onload = function() {
       if (xhr.status === 200) {
          
           var fileInfo = JSON.parse(xhr.response);
@@ -298,14 +318,14 @@ function checkForCampaignInDB()
               var url = link['url'];
               updateChildPreview(resourceId,url);
             }else{
-            	
-            	
-            	generateNewLink(resourceId,resourceFile);
+              
+              
+              generateNewLink(resourceId,resourceFile);
             }
           }catch(exception)
           {
-			childPreviewError(resourceId,'Unable to display preview, please try again later -'+exception.message);
-		 }
+      childPreviewError(resourceId,'Unable to display preview, please try again later -'+exception.message);
+     }
           
       }
       else {
@@ -321,19 +341,22 @@ function checkForCampaignInDB()
     
    childPreviewError(resourceId,'No internet');
   };
-	xhr.open('POST', 'https://api.dropboxapi.com/2/sharing/list_shared_links');
-	
-	xhr.setRequestHeader('Authorization', 'Bearer ' + uploadDXXX['xxdd']);
+  xhr.open('POST', 'https://api.dropboxapi.com/2/sharing/list_shared_links');
+  
+  xhr.setRequestHeader('Authorization', 'Bearer ' + uploadDXXX['xxdd']);
 
-	xhr.setRequestHeader('Content-Type', 'application/json');
+  xhr.setRequestHeader('Content-Type', 'application/json');
 
-	
-	var params = JSON.stringify({"path":savePath+resourceFile,
+  
+  var params = JSON.stringify({"path":savePath+resourceFile,
     })
    
      
 
-	xhr.send(params);
+  xhr.send(params);
+  }
+
+  
  }
 
  function childPreviewError(resourceId,errorMsg)
@@ -366,8 +389,12 @@ function checkForCampaignInDB()
  	dismissChildBusy(resourceId);
 
  	//reform url to display preview
- 	var res = url.split("?");
- 	url = res[0]+"?raw=1";
+  if(storeLocation==2)
+  {
+      var res = url.split("?");
+      url = res[0]+"?raw=1";
+  }
+ 
  	
  	var childDiv = document.getElementById('reg_div_child_'+resourceId);
  	childDiv.src=url;

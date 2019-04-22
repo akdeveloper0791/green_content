@@ -1,1 +1,0 @@
-{"type":"Image","media_name":"shashi","offer_text":"cfhdcdgfhfghfghfg","resource":"DNDM-shashi.jpg","duration":"10","display_scroll_txt":false,"bg_audio":"DNDM-shashi.mp3","play_bg_audio":true}

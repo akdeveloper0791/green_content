@@ -534,7 +534,7 @@ import io
 def prepareViewerMetricsExcel(metrics):
     
     output = io.BytesIO()
-    workbook = xlsxwriter.Workbook(output) ;
+    workbook = xlsxwriter.Workbook(output);
     worksheet = workbook.add_worksheet();
     cell_format = workbook.add_format()
     cell_format.set_align("center");

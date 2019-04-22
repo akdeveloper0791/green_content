@@ -14,5 +14,6 @@ def global_settings(request):
         'two_vertical_20_70_json':constants.two_vertical_20_70_json,
         'r3_1h_2v_20_50_50_json':constants.r3_1h_2v_20_50_50_json,
         'r4_2h_2v_50_50_json':constants.r4_2h_2v_50_50_json,
+        'store_location':constants.STORE_LOCATION,
 
     }

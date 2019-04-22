@@ -246,17 +246,25 @@ function checkAndDownloadThumbFile()
 //download thumb nails
 function downloadThumbFile()
 {
+  var resourceFile = "DNDM-THUMB-"+downloadThumbInfo.resourceName+".jpg"
 
-  if(uploadDXXX!=null && Object.keys(uploadDXXX).length>=1)
+  
+  if(downloadThumbInfo.resourceName==="DNDM_SS_TICKER_TXT")
   {
-    if(downloadThumbInfo.resourceName==="DNDM_SS_TICKER_TXT")
-    {
          document.getElementById('thumb_img_'+downloadThumbInfo.id).src = 
          '/static/images/campaign/ticker_text.png';
         checkAndDownloadThumbFile();
-    }else{
-     var resourceFile = "DNDM-THUMB-"+downloadThumbInfo.resourceName+".jpg"
-
+  }
+  else if(downloadThumbInfo.store_location == 1)//local
+  {
+    var url = "/media"+downloadThumbInfo.save_path+resourceFile;
+    updateThumbPreview(url);
+    
+  }else{ //drop box
+  if(uploadDXXX!=null && Object.keys(uploadDXXX).length>=1)
+  {
+    {
+     
      var xhr = new XMLHttpRequest();
       xhr.onload = function() {
         if (xhr.status === 200) {
@@ -314,6 +322,7 @@ function downloadThumbFile()
    {
          initUploadDxxx();
    }
+  }
  }
 
  //generate new link

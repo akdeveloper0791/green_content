@@ -742,7 +742,6 @@ function prepareInfoFile(mediaName)
   var activeRegions = deleteInActiveDivs();
   
  
-
   var playDuration = document.getElementById("file_duration").value;
   var infoJSON = { "type": "multi_region", "regions": activeRegions,
   "duration": playDuration,'hide_ticker_txt': document.getElementById("create_txt_media_hide_ticker").checked}; 
@@ -796,12 +795,24 @@ function createThumb()
       uploadFiles.push(thumbFile);
       dismissInitBusyDialog();
       clearParentDiv();
-      initUpload();
+      startUpload();
     },'image/jpg', 0.95); 
       ////
   });
    
     
+}
+
+function startUpload()
+{
+  
+  
+  if(storeLocation == 2)
+  {
+   initUpload();
+  }else{
+    initLocalUpload();
+  }
 }
 
 

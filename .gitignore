@@ -3,5 +3,5 @@
 __pycache__
 cms
 db.sqlite3
-
+media
 .DS_Store
