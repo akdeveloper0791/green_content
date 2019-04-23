@@ -7,7 +7,9 @@
     <meta name="viewport" content="width=device-width">
 
     <title>My Content</title>
-    <link rel='stylesheet prefetch' href='https://cdnjs.cloudflare.com/ajax/libs/normalize/5.0.0/normalize.min.css'><link rel='stylesheet prefetch' href='https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css'><link rel='stylesheet prefetch' href='https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.5.2/animate.min.css'>
+    <link rel='stylesheet prefetch' href="{% static 'extra/normalize.min.css' %}">
+    <link rel='stylesheet prefetch' href="{% static 'twitter-bootstrap/3.3.7/bootstrap.min.css' %}">
+    <link rel='stylesheet prefetch' href="{% static 'extra/animate.min.css' %}">
     <style class="cp-pen-styles">@import url("https://fonts.googleapis.com/css?family=Open+Sans:300,400,400i,600,700&subset=latin-ext");
 </style>
 
@@ -516,14 +518,15 @@
 	</script>
 
 
-<script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js'></script>
-<script src='https://use.fontawesome.com/2188c74ac9.js'></script><script src='https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js'></script>
+
+<script src='https://use.fontawesome.com/2188c74ac9.js'></script>
+<script src="{% static 'twitter-bootstrap/3.3.7/bootstrap.min.js' %}"></script>
 
 <script src="{% static 'js/dashboard.js' %}"></script>
 
 <script src="{% static 'js/default_busy_loader.js' %}"></script>
 
-<script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js'></script>
+<script src="{% static 'jquery/3.1.1/jquery.min.js' %}"></script>
 
 
 <script>
