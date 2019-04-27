@@ -40,7 +40,7 @@
     <!-- This file has been downloaded from Bootsnipp.com. Enjoy! -->
     <title>Green Content</title>
         <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link href="http://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet">
+    <link href="{% static 'bootstrap/4.0.0/bootstrap.min.css' %}" rel="stylesheet">
     <link rel="stylesheet" type="text/css" href="{% static 'navbar/css/bootstrap.min.css' %}">
 	<link rel="stylesheet" type="text/css" href="{% static 'navbar/css/logo-nav.css' %}">
     <style type="text/css">
@@ -191,8 +191,8 @@ input[type="password"] {
 <!--</div>-->
 <!-- ============================================================= FOOTER : END============================================================= -->
 
-<script src="http://code.jquery.com/jquery-1.11.1.min.js"></script>
-<script src="http://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+<script src="{% static 'jquery/1.11.1/jquery-1.11.1.min.js' %}"></script>
+<script src="{% static 'bootstrap/4.0.0/bootstrap.min.js' %}"></script>
 <script src="{% static 'navbar/js/bootstrap.bundle.js' %}"></script>
 <script src="{% static 'navbar/js/jquery.min.js' %}"></script>
 <script type="text/javascript">
