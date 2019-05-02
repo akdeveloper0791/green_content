@@ -82,17 +82,18 @@ a.btn:active{
         <table border="1" cellpadding="10" style="border-spacing: 2px;width: 100%;text-align: center;">
 
           <tr>
-              <th rowspan="2"><img id="thumb_img_{{ campaign.id }}" src="{% static 'images/campaign/default_campaign.png' %}" style="border-radius: 4px;padding: 2px 0px;width:100%;height: 90px;display: block;margin-left: auto;margin-right: auto;"></th>
-              <th colspan="4">{{ campaign.campaign_name }}</th>
+              <th rowspan="2" style="width: 12%"><img id="thumb_img_{{ campaign.id }}" src="{% static 'images/campaign/default_campaign.png' %}" style="width: 100%;
+    height: 100px;"></th>
+              <th colspan="4" style="border: 0px;">{{ campaign.campaign_name }}</th>
           </tr>
 
           <tr>
-              <td>{{ campaign.updated_date|localtime }}</td>
-              <td><i class='fa fa-trash fa-lg' style='color:orangered;cursor: pointer;' alt="Delete" title="Delete" onclick='deleteCampaign("{{campaign.id}}")'></i></td>
-              <td> <a href="/campaigns/previewCampaign/{{campaign.id}}" target='_blank'>
+              <td style="border: 0px;font-size: 12px;">{{ campaign.updated_date|localtime }}</td>
+              <td style="border: 0px;"><i class='fa fa-trash fa-lg' style='color:orangered;cursor: pointer;' alt="Delete" title="Delete" onclick='deleteCampaign("{{campaign.id}}")'></i></td>
+              <td style="border: 0px;"> <a href="/campaigns/previewCampaign/{{campaign.id}}" target='_blank'>
                 <i class='fa fa-eye fa-lg' style='color:yellowgreen;cursor:pointer;' alt="Preview" title="Preview"></i>
               </a></td>
-              <td>  <i class='fa fa-television fa-lg' style='color:yellowgreen;cursor: pointer;' alt="Delete" title="Publish" onclick='publishCampaign("{{campaign.id}}")'></i></td>
+              <td style="border: 0px;">  <i class='fa fa-television fa-lg' style='color:darkblue;cursor: pointer;' alt="Delete" title="Publish" onclick='publishCampaign("{{campaign.id}}")'></i></td>
           </tr>
 
         </table>

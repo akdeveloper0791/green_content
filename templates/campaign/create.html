@@ -205,8 +205,9 @@ textarea {
 	{% include 'campaign/create_campaign_templates.html' %}
 
   {% include 'campaign/upload.html' %}
- <input type="button" id="button1" class="button1" value="Back" style="float:left;display:none;" onclick="window.location='/campaigns/create/'">
-  <input type="button" id="create_button" class="create_button" value="Next" style="float:right;display:none" onclick="displayCreateCampaignDialog()"/>
+<div style="margin-top: 5px;"></div>
+  <button class="btn btn-warning" id="button1" class="button1" style="float:left;display:none;" onclick="window.location='/campaigns/create/'">Back</button>
+  <button class="btn btn-success" id="create_button" class="create_button" style="float:right;display:none" onclick="displayCreateCampaignDialog()">Next</button>
 
   <h4 id="info_title" class="modal-title" style="text-align:center;color:#5FCF80;"></h4>
 
@@ -453,7 +454,7 @@ textarea {
 
         <div class="modal-footer">
         <center>     
-                      
+                       <button class="btn btn-warning" id="close" onclick="window.location='/campaigns/create/'">Back</button> 
                   <button class="btn btn-success" id="submit" onclick="onSelectTickerTxtReg();">Ok</button>
         </center>
          
@@ -494,7 +495,7 @@ textarea {
 
         <div class="modal-footer">
         <center>     
-                 <button class="btn btn-danger"  data-dismiss="modal" onclick="dimissCreateURLDialog();">Close</button>       
+                   <button class="btn btn-warning" id="close" onclick="window.location='/campaigns/create/'">Back</button>   
                   <button class="btn btn-success" id="submit" onclick="onSelectUrlReg()">Ok</button>
         </center>
          
