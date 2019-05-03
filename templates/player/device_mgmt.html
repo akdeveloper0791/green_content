@@ -7,7 +7,9 @@
 
 
 <style>
-
+tr{
+  border-bottom: thin solid;
+}
 table.info {
   font-family: arial, sans-serif;
   border-collapse: collapse;
@@ -133,8 +135,8 @@ a.btn:active{
         <div class="modal-body">
           <input type="hidden" id="player_campaign_info_id" />
           <div id="campaigns_info">
-            <h4 style="color:cornflowerblue;display:inline-block"> Assigned Campaigns</h4> <button type="button" style="float: right;" class="btn btn-green " onclick="displayCampaignsToAdd()">Assign New </button> </br></br>
-            
+            <button type="button" style="float: right;" class="btn-green " onclick="displayCampaignsToAdd()">Assign New </button> 
+            <h4 style="color:cornflowerblue;display:inline-block"> Assigned Campaigns</h4>           
             <div id="player_info_campaigns">
             </div>
           </div>
