@@ -46,7 +46,8 @@ class Player(models.Model):
            
            player.user_id = userId;
            player.name = data["name"];
-           player.fcm_id = data['fcm_id'];
+           if('fcm_id' in data):
+            player.fcm_id = data['fcm_id'];
            
            if('location_desc' in data):
             player.location_desc = data['location_desc'];

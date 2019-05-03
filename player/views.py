@@ -66,6 +66,8 @@ def metrics(request):
         Last_Seen_Metrics.saveMetrics(player);
 
         #Init open cv DNN(age and gender) and cascades(face detetion)
+        #server path --> /home/adskite/myproject/signagecms/
+        #local path --> C:/Users/Jitendra/python_projects/green_content
         face_detector = "/home/adskite/myproject/signagecms/haarcascade_frontalface_alt.xml"
         age_net = cv2.dnn.readNetFromCaffe(
                         "/home/adskite/myproject/signagecms/age_gender_model/deploy_age.prototxt", 
@@ -94,6 +96,7 @@ def metrics(request):
         MODEL_MEAN_VALUES = (78.4263377603, 87.7689143744, 114.895847746)
         gender_list = ['Male', 'Female']
         genders = {};
+        
         if len(faces)>=1:
             for (x,y,w,h) in faces:        
                 face_img = image[y:y+h, x:x+w].copy()
