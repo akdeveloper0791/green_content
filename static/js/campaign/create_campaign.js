@@ -675,7 +675,7 @@ function dismissCreateCampaignDialog()
 function createCampaign()
 {
   //check for resource files
-  var mediaName = document.getElementById("file_media_name").value;
+  var mediaName = (document.getElementById("file_media_name").value).trim();
   var playDuration = document.getElementById("file_duration").value;
   if((mediaName==null || mediaName.trim()=='') || playDuration<=0 )
   {
