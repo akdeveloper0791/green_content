@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+
+
+<link href="css/bootstrap.css" rel="stylesheet">
+<link href="bootstrap-datetimepicker/css/bootstrap-datetimepicker.css" rel="stylesheet">
+
+
+</head>
+<body data-spy="scroll" data-target=".bs-docs-sidebar">
+
+
+<section id="demo_input">
+<div class="page-header">
+<h2>Default input</h2>
+</div>
+<div>
+<div class="bs-docs-example">
+<p>One of the simpliest implementation is the component.</p>
+<input size="16" type="text" value="2019-04-05 13:20" readonly class="form_datetime1">
+</div>
+</div>
+</section>
+
+
+<script src="js/jquery.js"></script>
+
+<script src="bootstrap-datetimepicker/js/bootstrap-datetimepicker.mine49b.js?t=20130302"></script>
+
+<script type="text/javascript">
+
+
+    $(".form_datetime1").datetimepicker({format: 'yyyy-mm-dd hh:ii', forceParse: true});
+   
+  </script>
+</body>
+
+</html>
