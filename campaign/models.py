@@ -255,7 +255,7 @@ class CampaignInfo(models.Model):
         'updated':i};
 
     def getPreviewCampaignInfo(userId,cId):
-        query='''SELECT cInfo.info,campaign.save_path,campaign.campaign_name,campaign.stor_location FROM cmsapp_multiple_campaign_upload as campaign 
+        query='''SELECT cInfo.info,campaign.save_path,campaign.campaign_name,campaign.stor_location,campaign.id as cId FROM cmsapp_multiple_campaign_upload as campaign 
         INNER JOIN campaign_campaigninfo as cInfo ON cInfo.campaign_id_id=campaign.id WHERE ((campaign.id=%s AND campaign.campaign_uploaded_by = %s))
         OR campaign.id = (SELECT campaign_id FROM group_groupcampaigns WHERE campaign_id=%s AND gc_group_id IN (SELECT gc_group_id FROM group_gcgroupmembers WHERE member_id = %s) group by campaign_id LIMIT 1)''';
         with connection.cursor() as cursor:
@@ -264,7 +264,7 @@ class CampaignInfo(models.Model):
             if info == None:
                     return {"statusCode":2,"status":"Invalid details"};
             else:
-                    return {"statusCode":0,"cInfo":json.loads(info[0]),"save_path":info[1],'c_name':info[2],'store_location':info[3]};
+                    return {"statusCode":0,"cInfo":json.loads(info[0]),"save_path":info[1],'c_name':info[2],'store_location':info[3],'cId':info[4]};
 
 class Deleted_Campaigns(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL,on_delete=models.CASCADE)

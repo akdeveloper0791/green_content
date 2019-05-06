@@ -629,3 +629,18 @@ def listPlayersToPublishCamp(request):
             return JsonResponse({'statusCode':1,'status':'Session has been expired, please relogin'});
     else:
         return JsonResponse({'statusCode':1,'status':'Invalid method'});
+
+from campaign.models import CampaignInfo
+@login_required
+def scheduleCampaign(request,player,campaign):
+    playerInfo = Player.isMyPlayer(player,request.user.id);
+    if(playerInfo==False):
+       return render(request,'player/schedule_campaign.html',{'status':False,'error':'Invalid player'});
+    campaignInfo = CampaignInfo.getPreviewCampaignInfo(request.user.id,campaign);
+    
+    if(campaignInfo['statusCode']==2):
+       return render(request,'player/schedule_campaign.html',{'status':False,'error':'Invalid campaign'}); 
+    
+    return render(request,'player/schedule_campaign.html',{'status':True,'player_id':playerInfo.id,'player_name':playerInfo.name,
+        'campaign_id':campaignInfo['cId'],'campaign_name':campaignInfo['c_name']});
+    
