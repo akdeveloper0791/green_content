@@ -24,4 +24,5 @@ urlpatterns = [
     path('player_group',views.playerGroup,name="playerGroup"),
     path('listPlayersToPublishCamp/',views.listPlayersToPublishCamp,name="listPlayersToPublishCamp"),
     path('assignCampaignsToPlayer/',views.assignCampaignsToPlayer,name="assignCampaignsToPlayer"),
+    path('schedule_campaign/<int:player>/<int:campaign>',views.scheduleCampaign,name="scheduleCampaign"),
     ]
