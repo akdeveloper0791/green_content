@@ -302,7 +302,7 @@ class Player_Campaign(models.Model):
     player = models.ForeignKey('player.Player',on_delete=models.CASCADE)
     campaign = models.ForeignKey('cmsapp.Multiple_campaign_upload',on_delete=models.CASCADE)
     created_at = models.DateTimeField(default=datetime.datetime.now())
-
+    schedule_type = models.SmallIntegerField(default=10)#10->schedule always
     class Meta(object):
         unique_together = [
         ['user','player','campaign']
@@ -528,3 +528,13 @@ class Player_Campaign(models.Model):
         else:
             return {'statusCode':0,'campaigns':campaigns};
 
+
+class Schedule_Campaign(models.Model):
+    player_campaign = models.ForeignKey('campaign.Player_Campaign',on_delete=models.CASCADE)
+    schedule_from = models.DateTimeField(null=False,blank=False)
+    schedule_to = models.DateTimeField(null=False,blank=False)
+
+    class Meta:
+       indexes = [
+           models.Index(fields=['schedule_from', 'schedule_to',]),
+           ]
