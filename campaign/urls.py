@@ -13,7 +13,8 @@ urlpatterns = [
     path('create/', views.create, name='create'),
     path('approve/<int:one>/<int:two>', views.approveCampaignNotif, name='approveCampaignNotif'),
     path('uploadCampaignResource/',views.uploadCampaignResource,name='uploadCampaignResource'),
-    path('saveScheduleCampaign/',views.saveScheduleCampaign,name='saveScheduleCampaign')
+    path('saveScheduleCampaign/',views.saveScheduleCampaign,name='saveScheduleCampaign'),
+    path('deleteScheduleCampaign/',views.deleteScheduleCampaign,name='deleteScheduleCampaign')
     
     
 ]

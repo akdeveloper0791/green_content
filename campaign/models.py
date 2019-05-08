@@ -310,9 +310,9 @@ class Player_Campaign(models.Model):
         ['user','player','campaign']
         ]
     
-    def getPlayerCampaign(pcId,userId):
+    def getPlayerCampaign(player,campaign,userId):
         try:
-            playerCampaign = Player_Campaign.objects.get(user_id=userId,id=pcId);
+            playerCampaign = Player_Campaign.objects.get(user_id=userId,player_id=player,campaign_id=campaign);
             return playerCampaign;
         except Player_Campaign.DoesNotExist:
             return False;
@@ -537,6 +537,30 @@ class Player_Campaign(models.Model):
         else:
             return {'statusCode':0,'campaigns':campaigns};
 
+    def getPlayerScheduleCampaignsWithInfo(player,secretKey):
+        userId = User_unique_id.getUserId(secretKey);
+        if(userId == False):
+            return {'statusCode':1,'status':
+                "Invalid session, please login"};
+        
+        with connection.cursor() as cursor:
+            conditionQuery = '''SELECT campaigns.*, camInfo.info  FROM cmsapp_multiple_campaign_upload as campaigns 
+                LEFT JOIN campaign_campaigninfo as camInfo ON campaigns.id = camInfo.campaign_id_id WHERE (campaigns.id IN ( 
+                    SELECT campaign_id FROM campaign_player_campaign WHERE user_id=%s and player_id= %s)) 
+                group by campaigns.id ORDER BY campaigns.updated_date DESC'''
+            
+            cursor.execute(conditionQuery,[userId,player])
+            campaigns = dictfetchall(cursor);
+            cursor.close();
+            connection.close();
+        
+        #campaigns = Multiple_campaign_upload.objects.filter(campaign_uploaded_by=userId);
+        if(len(campaigns)<=0):
+            return {'statusCode':2,'status':
+            'No campaigns Found'};
+        else:
+            return {'statusCode':0,'campaigns':campaigns};
+
 
 class Schedule_Campaign(models.Model):
     player_campaign = models.ForeignKey('campaign.Player_Campaign',on_delete=models.CASCADE)
@@ -601,3 +625,16 @@ class Schedule_Campaign(models.Model):
     def getPCSchedules(pcId):
         schedules = Schedule_Campaign.objects.filter(player_campaign_id=pcId);
         return list(schedules.values());
+
+    def deleteCampaignSchedule(isWeb,accessToken,scId):
+        if(isWeb==False):
+            accessToken = User_unique_id.getUserId(accessToken);
+            if(accessToken == False):
+                return {'statusCode':2,'status':
+                "Invalid session, please login"};
+        try:
+            scheduleCampaign = Schedule_Campaign.objects.get(id=scId,player_campaign__user_id=accessToken);
+            scheduleCampaign.delete();
+            return {'statusCode':0,'status':'Schedule has been removed successfully'};
+        except Schedule_Campaign.DoesNotExist:
+            return {'statusCode':6,'status':'Unable to delete schedule, please try again later'};

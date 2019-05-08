@@ -234,3 +234,21 @@ def saveScheduleCampaign(request):
             schedules = Schedule_Campaign.getPCSchedules(postParams.get('pc_id'));
             saveResponse['schedules'] = schedules;
     return JsonResponse(saveResponse);
+
+@api_view(['POST'])
+def deleteScheduleCampaign(request):
+    if(request.method!="POST"):
+        return JsonResponse({'statusCode':1,
+            'status':"Invalid method",'request.method':request.method});
+    postParams = request.POST;
+    isWeb=False;accessToken = postParams.get('access_token');
+    if(accessToken=="web"):
+        isWeb = True;
+        if(request.user.is_authenticated):
+            accessToken = request.user.id;
+        else:
+            return JsonResponse({'statusCode':2,
+                'status':'Invalid access token, please login and try'});
+    deleteResponse = Schedule_Campaign.deleteCampaignSchedule(isWeb,accessToken,
+        postParams.get('sc_id'));
+    return JsonResponse(deleteResponse);
