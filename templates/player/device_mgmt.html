@@ -3,9 +3,6 @@
 <html lang="en">
 <head>
 <script  src="{% static 'js/player/device_mgmt_js.js' %}"></script>
-
-
-
 <style>
 tr{
   border-bottom: thin solid;
@@ -125,22 +122,20 @@ a.btn:active{
       
         <!-- Modal Header -->
         <div class="modal-header">
-         <p id="campaigns_info_player" style="color:#4CAF50;text-align: center;font-weight: 700;font-size:26px;">Player</p>
-      
-          </div>
+         <p id="campaigns_info_player" style="color:#4CAF50;text-align: center;font-weight: 700;font-size:26px;">Player</p>      
+        </div>
          <!--  </div> 
         </div> -->
         
         <!-- Modal body -->
         <div class="modal-body">
-          <input type="text" id="player_campaign_info_id" />
+          <input type="hidden" id="player_campaign_info_id" />
           <div id="campaigns_info">
             <button type="button" style="float: right;" class="btn-green " onclick="displayCampaignsToAdd()">Assign New </button> 
             <h4 style="color:cornflowerblue;display:inline-block"> Assigned Campaigns</h4>           
             <div id="player_info_campaigns">
             </div>
           </div>
-
         </div>
         
         <!-- Modal footer -->
@@ -153,131 +148,6 @@ a.btn:active{
     </div>
   </div>
 
-  <!-- Schedule campaign [++] -->
-    <div class="modal" id="scheduleCampaign" style="display: none;">
-    <div class="modal-dialog">
-      <div class="modal-content">
-      
-        <!-- Modal Header -->
-        <div class="modal-header">
-         <p id="campaigns_info_player" style="color:#4CAF50;text-align: center;font-weight: 700;font-size:26px;">Schedule Event</p>
-
-          </div>
-         <!--  </div> 
-        </div> -->
-        
-        <!-- Modal body -->
-        <div class="modal-body">
-<script src="{% static 'jquery/1.12.4/jquery.min.js' %}"></script>
-<script src="{% static 'jquery/2.15.1/moment.min.js' %}"></script>
-<script src="{% static 'twitter-bootstrap/3.3.7/bootstrap.min.js' %}"></script>
-<script src="{% static 'bootstrap-datetimepicker/bootstrap-datetimepicker.min.js' %}"></script>
-<link rel="stylesheet" href="{% static 'twitter-bootstrap/3.3.7/bootstrap.min.css' %}">
-<link rel="stylesheet" href="{% static 'bootstrap-datetimepicker/bootstrap-datetimepicker.min.css' %}">
-
-
-
-      <!-- <div class="form-group"> -->
-         <label>DAYPARTING</label>
-         <select name="Item_1" class="form-control" id="selectBox" onchange="changeFunc();">
-          <option value='Always'>Always</option>    
-          <option value='Custom'>Custom</option>     
-       </select>
-<br/>
-<div id ="custums" style="display: none;">
-       <label>FROM</label>
-      <div class="form-group">
-        <div class='input-group date' id='datetimepicker2'>
-          <input type='text' class="form-control" id="from_date"/>
-          <span class="input-group-addon" >
-            <span class="fa fa-calendar" id="get_date"></span>
-          </span>
-        </div>
-      </div>
-
-          <label>TO</label>
-      <div class="form-group">
-        <div class='input-group date' id='datetimepicker3'>
-          <input type='text' class="form-control" id="to_date" />
-          <span class="input-group-addon">
-            <span class="fa fa-calendar" id="set_date"></span>
-          </span>
-        </div>
-      </div>
-    </div>
-
-<script type="text/javascript">
-  function changeFunc() {
-    var selectBox = document.getElementById("selectBox");
-    var selectedValue = selectBox.options[selectBox.selectedIndex].value;
-    if(selectedValue=="Custom"){
-       document.getElementById("custums").style.display="block";
-    }else{
-      document.getElementById("custums").style.display="none";
-    }
-   }
-
-  $(document).ready(function() {
-    $("#get_date").trigger('click');
-    $("#get_date").trigger('click');
-    //$("#set_date").trigger('click');
-   //$("#set_date").trigger('click');
-});
-
-window.onload=formatDate();
-
-function formatDate() {
-
-    var d = new Date(),
-        month = '' + (d.getMonth() + 1),
-        day = '' + d.getDate(),
-        year = d.getFullYear();
-
-    if (month.length < 2) month = '0' + month;
-    if (day.length < 2) day = '0' + day;
-
-  var curr_date = [year, month, day].join('-');
-  var hours = d.getHours();
-  var minutes = d.getMinutes() + 15;
-  var seconds = d.getSeconds();
-   if (hours.toString().length == 1) {
-      hours = "0"+hours;
-   }
-   if (minutes.toString().length == 1) {
-      minutes = "0"+minutes;
-   }
-   if (seconds.toString().length == 1) {
-      seconds = "0"+seconds;
-   }
-  var time = d.getHours() + ":" + (d.getMinutes() + 15)+ ":" + d.getSeconds();
-  document.getElementById('to_date').value=curr_date+' '+time;
-}
-
-    $('#datetimepicker2').datetimepicker({
-            format: 'YYYY-MM-DD HH:mm:ss'
-  });
-        $('#datetimepicker3').datetimepicker({
-            format: 'YYYY-MM-DD HH:mm:ss'
-  });
-
-
-</script>
-          
-        </div>
-        
-        <!-- Modal footer -->
-        <div class="modal-footer"><center>
-          <button type="button" class="btn btn-danger" data-dismiss="modal" id
-          ="player_campaign_info_close" onclick="closeScheduleCampaignInfo()">Close</button>
-          <button type="button" class="btn btn-success" onclick="exportScheduleReports()">Save</button>
-       </center>
-        </div>
-        
-      </div>
-    </div>
-  </div>
-  <!-- Schedule campign [--] -->
- 
  <script>
   csrf_token = "{{ csrf_token }}"
  </script>

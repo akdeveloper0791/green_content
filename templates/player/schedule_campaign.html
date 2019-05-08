@@ -1,14 +1,26 @@
-{{status}} {{error}}
 {% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<script  src="{% static 'js/player/device_mgmt_js.js' %}"></script>
+<script  src="{% static 'js/player/schedule_campaign.js' %}"></script>
 
 <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
-  <link rel="stylesheet" href="/resources/demos/style.css">
+  <!-- <link rel="stylesheet" href="/resources/demos/style.css"> -->
   <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
   <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+<style type="text/css">
+	body {
+	font-family: Arial, Helvetica, sans-serif;
+}
+
+table {
+	font-size: 1em;
+}
+
+.ui-draggable, .ui-droppable {
+	background-position: top;
+}
+</style>
 </head>
 
 
@@ -19,30 +31,16 @@
 {% block body %}
 <body>
 
-<br/><br/><br/><br/><br/><br/>
+<br/><br/><br/><br/>
+{% if status == True %}
 <div class="container">
 
 
       <!-- <div class="form-group"> -->
-      	<div class="col-md-12">
-	<div class="rows">
 
-		<div class="col-md-2" style="text-align: center;">
-			Repeats
-			</div>
-       <div class="col-md-10"> 
-         <select name="Item_1" class="form-control" id="selectBox" onchange="changeFunc();">
-          <option value='Always'>Always</option>    
-          <option value='Custom'>Custom</option>     
-       </select>
-   </div>
 
-	</div>
-	<br/><br/>
-	</div>
-<br/>
-<div id ="custums" style="display: none;">
-	<div class="col-md-12">
+<div id ="custums">
+	<div class="col-md-12" style="padding-bottom: 10px;">
 	<div class="rows">
 
 			<div class="col-md-2" style="text-align: center;">
@@ -58,7 +56,7 @@
 		  	</div>
 
 		    <div class="col-md-4">
-		    	<select class="form-control">
+		    	<select class="form-control" id="start_time">
 		    		<option>00:00</option><option>00:15</option><option>00:30</option><option>00:45</option><option>01:00</option><option>01:15</option><option>01:30</option><option>01:45</option><option>02:00</option><option>02:15</option><option>02:30</option><option>02:45</option><option>03:00</option><option>03:15</option><option>03:30</option><option>03:45</option><option>04:00</option><option>04:15</option><option>04:30</option><option>04:45</option><option>05:00</option><option>05:15</option><option>05:30</option><option>05:45</option><option>06:00</option><option>06:15</option><option>06:30</option><option>06:45</option><option>07:00</option><option>07:15</option><option>07:30</option><option>07:45</option><option>08:00</option><option>08:15</option><option>08:30</option><option>08:45</option><option>09:00</option><option>09:15</option><option>09:30</option><option>09:45</option><option>10:00</option><option>10:15</option><option>10:30</option><option>10:45</option><option>11:00</option><option>11:15</option><option>11:30</option><option>11:45</option><option>12:00</option><option>12:15</option><option>12:30</option><option>12:45</option><option>13:00</option><option>13:15</option><option>13:30</option><option>13:45</option><option>14:00</option><option>14:15</option><option>14:30</option><option>14:45</option><option>15:00</option><option>15:15</option><option>15:30</option><option>15:45</option><option>16:00</option><option>16:15</option><option>16:30</option><option>16:45</option><option>17:00</option><option>17:15</option><option>17:30</option><option>17:45</option><option>18:00</option><option>18:15</option><option>18:30</option><option>18:45</option><option>19:00</option><option>19:15</option><option>19:30</option><option>19:45</option><option>20:00</option><option>20:15</option><option>20:30</option><option>20:45</option><option>21:00</option><option>21:15</option><option>21:30</option><option>21:45</option><option>22:00</option><option>22:15</option><option>22:30</option><option>22:45</option><option>23:00</option><option>23:15</option><option>23:30</option><option>23:45</option>
 		    	</select>
 	  		</div>
@@ -81,7 +79,7 @@
 	  	</div>
 
 	  		    <div class="col-md-4">
-		    	<select class="form-control">
+		    	<select class="form-control" id="end_time">
 		    		<option>00:00</option><option>00:15</option><option>00:30</option><option>00:45</option><option>01:00</option><option>01:15</option><option>01:30</option><option>01:45</option><option>02:00</option><option>02:15</option><option>02:30</option><option>02:45</option><option>03:00</option><option>03:15</option><option>03:30</option><option>03:45</option><option>04:00</option><option>04:15</option><option>04:30</option><option>04:45</option><option>05:00</option><option>05:15</option><option>05:30</option><option>05:45</option><option>06:00</option><option>06:15</option><option>06:30</option><option>06:45</option><option>07:00</option><option>07:15</option><option>07:30</option><option>07:45</option><option>08:00</option><option>08:15</option><option>08:30</option><option>08:45</option><option>09:00</option><option>09:15</option><option>09:30</option><option>09:45</option><option>10:00</option><option>10:15</option><option>10:30</option><option>10:45</option><option>11:00</option><option>11:15</option><option>11:30</option><option>11:45</option><option>12:00</option><option>12:15</option><option>12:30</option><option>12:45</option><option>13:00</option><option>13:15</option><option>13:30</option><option>13:45</option><option>14:00</option><option>14:15</option><option>14:30</option><option>14:45</option><option>15:00</option><option>15:15</option><option>15:30</option><option>15:45</option><option>16:00</option><option>16:15</option><option>16:30</option><option>16:45</option><option>17:00</option><option>17:15</option><option>17:30</option><option>17:45</option><option>18:00</option><option>18:15</option><option>18:30</option><option>18:45</option><option>19:00</option><option>19:15</option><option>19:30</option><option>19:45</option><option>20:00</option><option>20:15</option><option>20:30</option><option>20:45</option><option>21:00</option><option>21:15</option><option>21:30</option><option>21:45</option><option>22:00</option><option>22:15</option><option>22:30</option><option>22:45</option><option>23:00</option><option>23:15</option><option>23:30</option><option>23:45</option>
 		    	</select>
 	  		</div>
@@ -90,11 +88,35 @@
 	</div>
 	</div>
 
+	<div class="col-md-12" style="padding-bottom: 10px;">
+	<div class="rows">
+	<div class="col-md-2" style="text-align: center;">
+			Repeats
+			</div>
+    <div class="col-md-10"> 
+        <select name="Item_1" class="form-control" id="selectBox" onchange="changeFunc();">
+          	<option value='None'>None</option>    
+          	<option value='Per_Minute'>Per Minute</option>
+          	<option value='Hourly'>Hourly</option> 
+           	<option value='Daily'>Daily</option>
+            <option value='Weekly'>Weekly</option> 
+            <option value='Monthly'>Monthly</option> 
+            <option value='Yearly'>Yearly</option>         
+       </select>
+   	</div>
+	</div>
+	</div>
+			<center><button class="btn btn-success" onclick="exportScheduleReports()" style="display: none;" id="submit">Save</button></center>
 	</div>
 
-		<center><button class="btn btn-success">Save</button></center>
-		</div>
- 
+		
+</div>
+{% else %}
+<center><b>{{error}}</b></center>
+<br/>
+<center><a class="btn btn-warning" href="/player/device_mgmt">Back</a></center>
+
+{% endif %} 
 
 
  <script>
@@ -109,10 +131,8 @@
   function changeFunc() {
     var selectBox = document.getElementById("selectBox");
     var selectedValue = selectBox.options[selectBox.selectedIndex].value;
-    if(selectedValue=="Custom"){
-       document.getElementById("custums").style.display="block";
-    }else{
-      document.getElementById("custums").style.display="none";
+    if(selectedValue!="None"){
+       document.getElementById("submit").style.display="block";
     }
    }
 </script>

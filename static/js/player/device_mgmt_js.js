@@ -93,8 +93,7 @@ function displayPlayerCampaigns(campaigns,pId)
               cell.innerHTML =campaign.campaign_name;
               
               var scheduleCell = row.insertCell(-1);
-              //scheduleCell.innerHTML = "<span class='fa fa-calendar' onclick='scheduleCampaign("+campaign.id+")' alt='Schedule' title='Schedule' style='cursor:pointer;'></span>";
-              scheduleCell.innerHTML = "<a class='fa fa-calendar' href='http://127.0.0.1:8000/player/schedule_campaign/"+pId+"/"+campaign.id+"' alt='Schedule' title='Schedule' style='cursor:pointer;'></a>";
+              scheduleCell.innerHTML = "<a class='fa fa-calendar' href='/player/schedule_campaign/"+campaign.id+"' alt='Schedule' title='Schedule' style='cursor:pointer;'></a>";
 
               var deleteCell = row.insertCell(-1);
               deleteCell.innerHTML = "<span class='fa fa-trash' alt='Remove' title='Remove' onclick='removeCampaign("+campaign.id+")'>"             
@@ -123,13 +122,7 @@ function closePlayerCampaignInfo()
 	document.getElementById('campaigns_info').style.display="none";
 }
 
-function closeScheduleCampaignInfo()
-{
-	document.getElementById('scheduleCampaign').style.display="none";
-	formatDate() ;
-	 $("#get_date").trigger('click');
-    $("#get_date").trigger('click');
-}
+
 
 function sendLMCBselectedCampaigns()
 {
@@ -189,12 +182,9 @@ function assignCampaignsApi(campaigns)
 }
 
 
-function scheduleCampaign(campaignId){
-document.getElementById("campaigns_info").style.display="none";
-document.getElementById("scheduleCampaign").style.display="block";
-formatDate();
 
-}
+
+
 function removeCampaign(campaignId)
 {
 	
@@ -266,72 +256,3 @@ function removeCampaign(campaignId)
 		
 	}
 
- function exportScheduleReports()
- {
-
-
-    var dev_id = document.getElementById('selectBox').value;
-    var from_date = document.getElementById('from_date').value;
-    var to_date = document.getElementById('to_date').value;
-
-    if(dev_id=="Custom"){
-    if(from_date == null || from_date == "")
-    {
-      swal("please select From_Date");
-    }else if(to_date==null || to_date == ""){
-      swal("please select To_Date");
-    }
-    
-    if (Date.parse(from_date) > Date.parse(to_date)) {
-      swal("Invalid Date Range!\nStart Date cannot be after End Date!")
-      return false;
-    }
-    alert(dev_id+" "+from_date+" "+to_date);
-	}else{
-		alert(dev_id+" "+from_date+" "+to_date);
-		
-    //    displayInitUploadBusyDialog();
-    //    var xhr = new XMLHttpRequest();
-    //    var params = 'accessToken=web&player='+dev_id+'&from_date='+from_date+'&to_date='+to_date;
-    
-    // xhr.onload = function() {
-    //    dismissBusyDialog();
-    //     if (xhr.status === 200) {
-            
-    //       var blob = new Blob([xhr.response], { type: 'octet/stream' });
-
-    //       var link = document.createElement('a');
-    //       link.href = window.URL.createObjectURL(blob);
-    //       link.download = "campaignReports("+from_date+"-"+to_date+").xlsx";
-
-    //       document.body.appendChild(link);
-
-    //       link.click();
-
-    //       document.body.removeChild(link);
-            
-    //     }
-    //     else {
-    //         var errorMessage = xhr.response || 'Unable to upload file';
-         
-    //         console.log(errorMessage);
-    //         swal("unable to upload - "+errorMessage);
-    //     }
-
-
-    //   };
-    //    xhr.onerror = function()
-    //   {
-    //     dismissBusyDialog();
-    //     swal('No internet');
-    //   };
-
-    // xhr.open('POST', '/player/exportCampaignReports/');
-     
-    // xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
-
-    // xhr.setRequestHeader("X-CSRFToken", csrf_token );
-    // xhr.responseType = "arraybuffer";
-    // xhr.send(params);
-    }
- }
