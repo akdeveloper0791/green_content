@@ -632,11 +632,11 @@ def listPlayersToPublishCamp(request):
 
 from campaign.models import CampaignInfo,Schedule_Campaign
 @login_required
-def scheduleCampaign(request,pc): 
-    playerCampaign = Player_Campaign.getPlayerCampaign(pc,request.user.id);
+def scheduleCampaign(request,player,campaign): 
+    playerCampaign = Player_Campaign.getPlayerCampaign(player,campaign,request.user.id);
     if(playerCampaign==False):
         return render(request,'player/schedule_campaign.html',{'status':False,'error':'Invalid campaign, info not found'});
     
-    schedules = Schedule_Campaign.getPCSchedules(pc);
+    schedules = Schedule_Campaign.getPCSchedules(playerCampaign.id);
     return render(request,'player/schedule_campaign.html',{'status':True,'pc_id':playerCampaign.id,'schedules':schedules});
     
