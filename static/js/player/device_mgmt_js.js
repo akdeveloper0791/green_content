@@ -55,13 +55,13 @@ function displayCampaignInfo(info,pId)
 	 
      document.getElementById('campaigns_info_player').innerHTML=document.getElementById(pId+"_player_name").innerHTML;
      document.getElementById('player_campaign_info_id').value=pId;
-     displayPlayerCampaigns(info['campaigns']);
+     displayPlayerCampaigns(info['campaigns'],pId);
 	 var modal = document.getElementById('campaigns_info');
 	  modal.style.display = "block";
  
 }
 
-function displayPlayerCampaigns(campaigns)
+function displayPlayerCampaigns(campaigns,pId)
 {
 	var dvTable = document.getElementById("player_info_campaigns");
     
@@ -92,8 +92,11 @@ function displayPlayerCampaigns(campaigns)
               var cell = row.insertCell(-1);
               cell.innerHTML =campaign.campaign_name;
               
+              var scheduleCell = row.insertCell(-1);
+              scheduleCell.innerHTML = "<a class='fa fa-calendar' href='/player/schedule_campaign/"+campaign.id+"' alt='Schedule' title='Schedule' style='cursor:pointer;'></a>";
+
               var deleteCell = row.insertCell(-1);
-              deleteCell.innerHTML = "<input type='image' src='/static/images/ic_remove.png' alt='remove' title='remove' onclick='removeCampaign("+campaign.id+")'>"
+              deleteCell.innerHTML = "<span class='fa fa-trash' alt='Remove' title='Remove' onclick='removeCampaign("+campaign.id+")'>"             
              }
             }
  
@@ -118,6 +121,8 @@ function closePlayerCampaignInfo()
 {
 	document.getElementById('campaigns_info').style.display="none";
 }
+
+
 
 function sendLMCBselectedCampaigns()
 {
@@ -175,6 +180,10 @@ function assignCampaignsApi(campaigns)
 				alert(Exception.message);
 		 }
 }
+
+
+
+
 
 function removeCampaign(campaignId)
 {
@@ -246,3 +255,4 @@ function removeCampaign(campaignId)
 		 }
 		
 	}
+

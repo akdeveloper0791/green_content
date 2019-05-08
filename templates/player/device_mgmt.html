@@ -3,9 +3,6 @@
 <html lang="en">
 <head>
 <script  src="{% static 'js/player/device_mgmt_js.js' %}"></script>
-
-
-
 <style>
 tr{
   border-bottom: thin solid;
@@ -119,15 +116,14 @@ a.btn:active{
 
  <!-- div to display campaigns   -->
     <!-- The Modal -->
-  <div class="modal" id="campaigns_info">
+  <div class="modal" id="campaigns_info" >
     <div class="modal-dialog">
       <div class="modal-content">
       
         <!-- Modal Header -->
         <div class="modal-header">
-         <p id="campaigns_info_player" style="color:#4CAF50;text-align: center;font-weight: 700;font-size:26px;">Player</p>
-      
-          </div>
+         <p id="campaigns_info_player" style="color:#4CAF50;text-align: center;font-weight: 700;font-size:26px;">Player</p>      
+        </div>
          <!--  </div> 
         </div> -->
         
@@ -140,7 +136,6 @@ a.btn:active{
             <div id="player_info_campaigns">
             </div>
           </div>
-
         </div>
         
         <!-- Modal footer -->
@@ -152,7 +147,7 @@ a.btn:active{
       </div>
     </div>
   </div>
- 
+
  <script>
   csrf_token = "{{ csrf_token }}"
  </script>
