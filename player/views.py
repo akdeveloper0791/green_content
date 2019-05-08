@@ -630,17 +630,13 @@ def listPlayersToPublishCamp(request):
     else:
         return JsonResponse({'statusCode':1,'status':'Invalid method'});
 
-from campaign.models import CampaignInfo
+from campaign.models import CampaignInfo,Schedule_Campaign
 @login_required
-def scheduleCampaign(request,player,campaign):
-    playerInfo = Player.isMyPlayer(player,request.user.id);
-    if(playerInfo==False):
-       return render(request,'player/schedule_campaign.html',{'status':False,'error':'Invalid player'});
-    campaignInfo = CampaignInfo.getPreviewCampaignInfo(request.user.id,campaign);
+def scheduleCampaign(request,pc): 
+    playerCampaign = Player_Campaign.getPlayerCampaign(pc,request.user.id);
+    if(playerCampaign==False):
+        return render(request,'player/schedule_campaign.html',{'status':False,'error':'Invalid campaign, info not found'});
     
-    if(campaignInfo['statusCode']==2):
-       return render(request,'player/schedule_campaign.html',{'status':False,'error':'Invalid campaign'}); 
-    
-    return render(request,'player/schedule_campaign.html',{'status':True,'player_id':playerInfo.id,'player_name':playerInfo.name,
-        'campaign_id':campaignInfo['cId'],'campaign_name':campaignInfo['c_name']});
+    schedules = Schedule_Campaign.getPCSchedules(pc);
+    return render(request,'player/schedule_campaign.html',{'status':True,'pc_id':playerCampaign.id,'schedules':schedules});
     

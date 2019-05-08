@@ -15,3 +15,7 @@ r4_2h_2v_50_50_json = ''' {"regions":[{"width":50,"height":50,"top_margin":0,"le
 file_storage_path="C:/Users/Jitendra/python_projects/green_content/media";
 
 STORE_LOCATION = 2; #2-> dropbox , 1-> local
+
+#schedule types
+schedule_always= 10
+schedule_custom = 100

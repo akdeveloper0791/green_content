@@ -17,6 +17,8 @@ from django.db import IntegrityError
 from django.utils import timezone
 import os
 import shutil
+import pytz
+from django.utils.dateparse import parse_datetime
 
 
 def dictfetchall(cursor):
@@ -307,7 +309,14 @@ class Player_Campaign(models.Model):
         unique_together = [
         ['user','player','campaign']
         ]
-  
+    
+    def getPlayerCampaign(pcId,userId):
+        try:
+            playerCampaign = Player_Campaign.objects.get(user_id=userId,id=pcId);
+            return playerCampaign;
+        except Player_Campaign.DoesNotExist:
+            return False;
+
     def getCampaignsInfo(userId,playerId,isUserId=False):
         if(isUserId == False):
             userId = User_unique_id.getUserId(userId);
@@ -538,3 +547,57 @@ class Schedule_Campaign(models.Model):
        indexes = [
            models.Index(fields=['schedule_from', 'schedule_to',]),
            ]
+    
+    
+    def saveCampaign(isWeb,accessToken,scheduleFrom,scheduleTo,pcId,scheduleType):
+        if(isWeb==False):
+            accessToken = User_unique_id.getUserId(accessToken);
+            if(accessToken == False):
+                return {'statusCode':2,'status':
+                "Invalid session, please login"};
+        try:
+            pcInfo = Player_Campaign.objects.get(id=pcId,user_id=accessToken);
+            scheduleFrom = datetime.datetime.strptime(scheduleFrom,"%Y-%m-%d %H:%M:%S")
+            scheduleFrom = scheduleFrom.astimezone(pytz.UTC);
+            scheduleTo = datetime.datetime.strptime(scheduleTo,"%Y-%m-%d %H:%M:%S")
+            scheduleTo = scheduleTo.astimezone(pytz.UTC);
+            if(scheduleFrom.date()>= scheduleTo.date()):
+                return {'statusCode':7,'status':'Invalid times'};
+            
+            isTimeSlotAvailable = False;
+            with connection.cursor() as cursor:
+                checkSlotQuery = ''' SELECT count(*) FROM campaign_schedule_campaign WHERE 
+                player_campaign_id = %s AND ((schedule_from <= %s AND schedule_to >= %s) OR (schedule_from <= %s AND schedule_to >= %s) OR (schedule_from >= %s AND schedule_to <= %s))'''
+                cursor.execute(checkSlotQuery,[pcId,scheduleTo,scheduleTo,scheduleFrom,scheduleFrom,scheduleFrom,scheduleTo]);
+                
+                info = cursor.fetchone();
+                
+                if (info[0] <= 0):
+                    isTimeSlotAvailable = True;
+            if(isTimeSlotAvailable==False):
+                return {'statusCode':5,'status':'Campaign has been scheduled for the selected times, please select different time','info':info};
+            else:
+                #return {'status':True,'info':info}
+                with transaction.atomic():
+                    #update schedule type
+                    pcInfo.schedule_type=scheduleType;
+                    pcInfo.save();
+                    #save the values
+                    newScheduleCampaign = Schedule_Campaign();
+                    newScheduleCampaign.player_campaign_id = pcId;
+                    newScheduleCampaign.schedule_from = scheduleFrom
+                    newScheduleCampaign.schedule_to = scheduleTo
+                    newScheduleCampaign.save();
+
+                    if(newScheduleCampaign.id>=1):
+                        return {'statusCode':0,'status':'Schedule has been saved successfull'};
+                    else:
+                        return {'statusCode':6,'status':'Some thing went wrong, please try again later'};
+        except Player_Campaign.DoesNotExist:
+            return {'statusCode':4,'status':'Invalid info, campaign not found'}
+        except Exception as e:    
+            return {'statusCode':6,'status':e.args}
+
+    def getPCSchedules(pcId):
+        schedules = Schedule_Campaign.objects.filter(player_campaign_id=pcId);
+        return list(schedules.values());

@@ -210,3 +210,27 @@ def uploadCampaignResource(request):
                     
         else:
             return JsonResponse({'statusCode':3,'status':canUpload['status']});
+
+from .models import Schedule_Campaign
+@api_view(['GET','POST'])
+def saveScheduleCampaign(request):
+    if(request.method!="POST"):
+        return JsonResponse({'statusCode':1,
+            'status':"Invalid method",'request.method':request.method});
+    postParams = request.POST;
+    isWeb=False;accessToken = postParams.get('access_token');
+    if(accessToken=="web"):
+        isWeb = True;
+        if(request.user.is_authenticated):
+            accessToken = request.user.id;
+        else:
+            return JsonResponse({'statusCode':2,
+                'status':'Invalid access token, please login and try'});
+    saveResponse = Schedule_Campaign.saveCampaign(isWeb,accessToken,
+        postParams.get('schedule_from'),postParams.get('schedule_to'),postParams.get('pc_id'),
+        postParams.get('schedule_type'));
+    if(saveResponse['statusCode']==0):
+        if('list' in postParams):
+            schedules = Schedule_Campaign.getPCSchedules(postParams.get('pc_id'));
+            saveResponse['schedules'] = schedules;
+    return JsonResponse(saveResponse);

@@ -178,7 +178,7 @@ function assignCampaignsApi(campaigns)
 
 function removeCampaign(campaignId)
 {
-	
+	   
 		campaigns = [campaignId];
 		
 		try {

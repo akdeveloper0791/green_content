@@ -12,7 +12,8 @@ urlpatterns = [
     path('previewCampaign/<int:c_id>', views.previewCampaign, name='previewCampaign'),
     path('create/', views.create, name='create'),
     path('approve/<int:one>/<int:two>', views.approveCampaignNotif, name='approveCampaignNotif'),
-    path('uploadCampaignResource/',views.uploadCampaignResource,name='uploadCampaignResource')
+    path('uploadCampaignResource/',views.uploadCampaignResource,name='uploadCampaignResource'),
+    path('saveScheduleCampaign/',views.saveScheduleCampaign,name='saveScheduleCampaign')
     
     
 ]
