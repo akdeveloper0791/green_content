@@ -93,7 +93,7 @@ function displayPlayerCampaigns(campaigns,pId)
               cell.innerHTML =campaign.campaign_name;
               
               var scheduleCell = row.insertCell(-1);
-              scheduleCell.innerHTML = "<a class='fa fa-calendar' href='/player/schedule_campaign/"+campaign.id+"' alt='Schedule' title='Schedule' style='cursor:pointer;'></a>";
+              scheduleCell.innerHTML = "<a class='fa fa-calendar' href='/player/schedule_campaign/"+pId+"/"+campaign.id+"' alt='Schedule' title='Schedule' style='cursor:pointer;'></a>";
 
               var deleteCell = row.insertCell(-1);
               deleteCell.innerHTML = "<span class='fa fa-trash' alt='Remove' title='Remove' onclick='removeCampaign("+campaign.id+")'>"             
@@ -187,7 +187,7 @@ function assignCampaignsApi(campaigns)
 
 function removeCampaign(campaignId)
 {
-	   
+	
 		campaigns = [campaignId];
 		
 		try {
