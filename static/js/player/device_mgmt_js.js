@@ -55,13 +55,13 @@ function displayCampaignInfo(info,pId)
 	 
      document.getElementById('campaigns_info_player').innerHTML=document.getElementById(pId+"_player_name").innerHTML;
      document.getElementById('player_campaign_info_id').value=pId;
-     displayPlayerCampaigns(info['campaigns']);
+     displayPlayerCampaigns(info['campaigns'],pId);
 	 var modal = document.getElementById('campaigns_info');
 	  modal.style.display = "block";
  
 }
 
-function displayPlayerCampaigns(campaigns)
+function displayPlayerCampaigns(campaigns,pId)
 {
 	var dvTable = document.getElementById("player_info_campaigns");
     
@@ -93,7 +93,8 @@ function displayPlayerCampaigns(campaigns)
               cell.innerHTML =campaign.campaign_name;
               
               var scheduleCell = row.insertCell(-1);
-              scheduleCell.innerHTML = "<span class='fa fa-calendar' onclick='scheduleCampaign("+campaign.id+")' alt='Schedule' title='Schedule' style='cursor:pointer;'></span>";
+              //scheduleCell.innerHTML = "<span class='fa fa-calendar' onclick='scheduleCampaign("+campaign.id+")' alt='Schedule' title='Schedule' style='cursor:pointer;'></span>";
+              scheduleCell.innerHTML = "<a class='fa fa-calendar' href='http://127.0.0.1:8000/player/schedule_campaign/"+pId+"/"+campaign.id+"' alt='Schedule' title='Schedule' style='cursor:pointer;'></a>";
 
               var deleteCell = row.insertCell(-1);
               deleteCell.innerHTML = "<span class='fa fa-trash' alt='Remove' title='Remove' onclick='removeCampaign("+campaign.id+")'>"             
