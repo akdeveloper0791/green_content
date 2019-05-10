@@ -32,6 +32,12 @@ table {
 <body>
 
 <br/><br/><br/><br/>
+
+{{pc_id}}
+{{schedules}}
+<script type="text/javascript">
+	var pc_id = {{pc_id}};
+</script>
 {% if status == True %}
 <div class="container">
 
@@ -94,8 +100,8 @@ table {
 			Repeats
 			</div>
     <div class="col-md-10"> 
-        <select name="Item_1" class="form-control" id="selectBox" onchange="changeFunc();">
-          	<option value='None'>None</option>    
+        <select name="Item_1" class="form-control" id="selectBox" >
+          	<option value='100'>None</option>    
           	<option value='Per_Minute'>Per Minute</option>
           	<option value='Hourly'>Hourly</option> 
            	<option value='Daily'>Daily</option>
@@ -106,7 +112,7 @@ table {
    	</div>
 	</div>
 	</div>
-			<center><button class="btn btn-success" onclick="exportScheduleReports()" style="display: none;" id="submit">Save</button></center>
+			<center><button class="btn btn-success" onclick="exportScheduleReports(pc_id)" id="submit">Save</button></center>
 	</div>
 
 		
@@ -128,13 +134,15 @@ table {
     $( "#datepicker_to" ).datepicker();
   } );
 
-  function changeFunc() {
-    var selectBox = document.getElementById("selectBox");
-    var selectedValue = selectBox.options[selectBox.selectedIndex].value;
-    if(selectedValue!="None"){
-       document.getElementById("submit").style.display="block";
-    }
-   }
+  // function changeFunc() {
+  //   var selectBox = document.getElementById("selectBox");
+  //   var selectedValue = selectBox.options[selectBox.selectedIndex].value;
+  //   if(selectedValue!="None"){
+  //      document.getElementById("submit").style.display="block";
+  //   }
+  //  }
+
+  csrf_token = '{{ csrf_token }}';
 </script>
 
 

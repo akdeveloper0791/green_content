@@ -1,4 +1,4 @@
- function exportScheduleReports()
+ function exportScheduleReports(pc_id)
  {
 
 
@@ -8,12 +8,14 @@
     var start_time = document.getElementById('start_time').value;
     var end_time = document.getElementById('end_time').value;
 
-    if(dev_id != "None"){
+    // if(dev_id != "None"){
     if(from_date == null || from_date == "" || start_time == null || start_time == "")
     {
       swal("Please select start date and time");
+       return false;
     }else if(to_date==null || to_date == "" || end_time == null || end_time == ""){
       swal("Please select end date and time");
+       return false;
     }
     
     if (Date.parse(from_date) > Date.parse(to_date)) {
@@ -21,55 +23,66 @@
       return false;
     }
 
-   // alert(dev_id+" "+from_date+" "+to_date);
+    var d = new Date(from_date),
+        month = '' + (d.getMonth() + 1),
+        day = '' + d.getDate(),
+        year = d.getFullYear();
+
+    if (month.length < 2) month = '0' + month;
+    if (day.length < 2) day = '0' + day;
+
+    var fromDate = [year, month, day].join('-');
+
+        var d = new Date(to_date),
+        month = '' + (d.getMonth() + 1),
+        day = '' + d.getDate(),
+        year = d.getFullYear();
+
+    if (month.length < 2) month = '0' + month;
+    if (day.length < 2) day = '0' + day;
+
+    var toDate = [year, month, day].join('-');
+
+    //alert(fromDate+" "+toDate+" "+dev_id+" "+from_date+" "+to_date);
 	
-    }else{
-
-	alert(dev_id+" "+from_date+" "+to_date);
-    alert("succes");
+    // }else{
+    fromDate = fromDate+" "+start_time+":00";
+    toDate = toDate+" "+end_time+":00";
+    alert(fromDate+ " "+toDate+" "+pc_id+" "+dev_id);
 		
-    //    displayInitUploadBusyDialog();
-    //    var xhr = new XMLHttpRequest();
-    //    var params = 'accessToken=web&player='+dev_id+'&from_date='+from_date+'&to_date='+to_date;
+      // displayInitUploadBusyDialog();
+       var xhr = new XMLHttpRequest();
+       var params = 'accessToken=web&schedule_from='+fromDate+'&schedule_to='+toDate+'&pc_id='+pc_id+'&schedule_type='+dev_id;
     
-    // xhr.onload = function() {
-    //    dismissBusyDialog();
-    //     if (xhr.status === 200) {
+    xhr.onload = function() {
+       //dismissBusyDialog();
+        if (xhr.status === 200) {
             
-    //       var blob = new Blob([xhr.response], { type: 'octet/stream' });
-
-    //       var link = document.createElement('a');
-    //       link.href = window.URL.createObjectURL(blob);
-    //       link.download = "campaignReports("+from_date+"-"+to_date+").xlsx";
-
-    //       document.body.appendChild(link);
-
-    //       link.click();
-
-    //       document.body.removeChild(link);
+  
+          swal("success");
             
-    //     }
-    //     else {
-    //         var errorMessage = xhr.response || 'Unable to upload file';
+        }
+        else {
+            var errorMessage = xhr.response || 'Unable to upload file';
          
-    //         console.log(errorMessage);
-    //         swal("unable to upload - "+errorMessage);
-    //     }
+            console.log(errorMessage);
+            swal("unable to upload - "+errorMessage);
+        }
 
 
-    //   };
-    //    xhr.onerror = function()
-    //   {
-    //     dismissBusyDialog();
-    //     swal('No internet');
-    //   };
+      };
+       xhr.onerror = function()
+      {
+        //dismissBusyDialog();
+        swal('No internet');
+      };
 
-    // xhr.open('POST', '/player/exportCampaignReports/');
+    xhr.open('POST', '/campaigns/saveScheduleCampaign/');
      
-    // xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+    xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
 
-    // xhr.setRequestHeader("X-CSRFToken", csrf_token );
-    // xhr.responseType = "arraybuffer";
-    // xhr.send(params);
-    }
+    xhr.setRequestHeader("X-CSRFToken", csrf_token );
+    xhr.responseType = "arraybuffer";
+    xhr.send(params);
+    
  }
