@@ -544,10 +544,11 @@ class Player_Campaign(models.Model):
                 "Invalid session, please login"};
         
         with connection.cursor() as cursor:
-            conditionQuery = '''SELECT campaigns.*, camInfo.info  FROM cmsapp_multiple_campaign_upload as campaigns 
-                LEFT JOIN campaign_campaigninfo as camInfo ON campaigns.id = camInfo.campaign_id_id WHERE (campaigns.id IN ( 
-                    SELECT campaign_id FROM campaign_player_campaign WHERE user_id=%s and player_id= %s)) 
-                group by campaigns.id ORDER BY campaigns.updated_date DESC'''
+            conditionQuery = '''SELECT campaigns.*, camInfo.info,schedules.id as sc_id, schedules.schedule_from, schedules.schedule_to, pc.schedule_type,schedules.schedule_type as sc_schedule_type  FROM  campaign_player_campaign as pc
+                INNER JOIN cmsapp_multiple_campaign_upload as campaigns ON pc.campaign_id = campaigns.id
+                LEFT JOIN campaign_campaigninfo as camInfo ON campaigns.id = camInfo.campaign_id_id 
+                LEFT JOIN campaign_schedule_campaign as schedules ON pc.id = schedules.player_campaign_id WHERE (pc.user_id=%s and pc.player_id= %s)
+                ORDER BY campaigns.updated_date DESC'''
             
             cursor.execute(conditionQuery,[userId,player])
             campaigns = dictfetchall(cursor);
@@ -566,6 +567,7 @@ class Schedule_Campaign(models.Model):
     player_campaign = models.ForeignKey('campaign.Player_Campaign',on_delete=models.CASCADE)
     schedule_from = models.DateTimeField(null=False,blank=False)
     schedule_to = models.DateTimeField(null=False,blank=False)
+    schedule_type = models.SmallIntegerField(default=10)#10->schedule always
 
     class Meta:
        indexes = [
@@ -585,8 +587,8 @@ class Schedule_Campaign(models.Model):
             scheduleFrom = scheduleFrom.astimezone(pytz.UTC);
             scheduleTo = datetime.datetime.strptime(scheduleTo,"%Y-%m-%d %H:%M:%S")
             scheduleTo = scheduleTo.astimezone(pytz.UTC);
-            if(scheduleFrom.date()>= scheduleTo.date()):
-                return {'statusCode':7,'status':'Invalid times'};
+            if(scheduleFrom >= scheduleTo):
+                return {'statusCode':7,'status':'Invalid times','scheduleFrom':scheduleFrom.now(),'scheduleTo':scheduleTo.now()};
             
             isTimeSlotAvailable = False;
             with connection.cursor() as cursor:
@@ -604,17 +606,18 @@ class Schedule_Campaign(models.Model):
                 #return {'status':True,'info':info}
                 with transaction.atomic():
                     #update schedule type
-                    pcInfo.schedule_type=scheduleType;
+                    pcInfo.schedule_type=100;#schedule
                     pcInfo.save();
                     #save the values
                     newScheduleCampaign = Schedule_Campaign();
                     newScheduleCampaign.player_campaign_id = pcId;
                     newScheduleCampaign.schedule_from = scheduleFrom
                     newScheduleCampaign.schedule_to = scheduleTo
+                    newScheduleCampaign.schedule_type= scheduleType
                     newScheduleCampaign.save();
 
                     if(newScheduleCampaign.id>=1):
-                        return {'statusCode':0,'status':'Schedule has been saved successfull'};
+                        return {'statusCode':0,'status':'Schedule has been saved successfull','id':newScheduleCampaign.id};
                     else:
                         return {'statusCode':6,'status':'Some thing went wrong, please try again later'};
         except Player_Campaign.DoesNotExist:
@@ -623,7 +626,7 @@ class Schedule_Campaign(models.Model):
             return {'statusCode':6,'status':e.args}
 
     def getPCSchedules(pcId):
-        schedules = Schedule_Campaign.objects.filter(player_campaign_id=pcId);
+        schedules = Schedule_Campaign.objects.filter(player_campaign_id=pcId).order_by('-id');
         return list(schedules.values());
 
     def deleteCampaignSchedule(isWeb,accessToken,scId):
