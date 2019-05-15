@@ -626,7 +626,7 @@ class Schedule_Campaign(models.Model):
             return {'statusCode':6,'status':e.args}
 
     def getPCSchedules(pcId):
-        schedules = Schedule_Campaign.objects.filter(player_campaign_id=pcId);
+        schedules = Schedule_Campaign.objects.filter(player_campaign_id=pcId).order_by('-id');
         return list(schedules.values());
 
     def deleteCampaignSchedule(isWeb,accessToken,scId):
