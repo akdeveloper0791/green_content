@@ -13,6 +13,7 @@ urlpatterns = [
     path('assignCampaigns/', views.assignCampaigns, name='assignCampaigns'),
     path('removeCampaigns/',views.removeCampaigns, name='removeCampaigns'),
     path('getPlayerCampaigns/',views.getPlayerCampaigns, name='getPlayerCampaigns'),
+    path('getSchedulePlayerCampaigns/',views.getSchedulePlayerCampaigns, name='getSchedulePlayerCampaigns'),
     path('saveCampaignReports/',views.saveCampaignReports, name="saveCampaignReports"),
     path('getCampaignReports/',views.getCampaignReports, name="getCampaignReports"),
     path('campaign_reports',views.campaignReports,name="campaignReports"),

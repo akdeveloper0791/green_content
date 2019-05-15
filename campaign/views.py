@@ -231,8 +231,9 @@ def saveScheduleCampaign(request):
         postParams.get('schedule_type'));
     if(saveResponse['statusCode']==0):
         if('list' in postParams):
-            schedules = Schedule_Campaign.getPCSchedules(postParams.get('pc_id'));
-            saveResponse['schedules'] = schedules;
+            #schedules = Schedule_Campaign.getPCSchedule(postParams.get('pc_id'),);
+            saveResponse['schedules'] = {'id':saveResponse['id'],'schedule_from':postParams.get('schedule_from'),
+            'schedule_to':postParams.get('schedule_to'),'schedule_type':postParams.get('schedule_type')};
     return JsonResponse(saveResponse);
 
 @api_view(['POST'])

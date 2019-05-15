@@ -68,14 +68,14 @@ def metrics(request):
         #Init open cv DNN(age and gender) and cascades(face detetion)
         #server path --> /home/adskite/myproject/signagecms/
         #local path --> C:/Users/Jitendra/python_projects/green_content
-        face_detector = "/home/adskite/myproject/signagecms/haarcascade_frontalface_alt.xml"
+        face_detector = "C:/Users/Jitendra/python_projects/green_content/haarcascade_frontalface_alt.xml"
         age_net = cv2.dnn.readNetFromCaffe(
-                        "/home/adskite/myproject/signagecms/age_gender_model/deploy_age.prototxt", 
-                        "/home/adskite/myproject/signagecms/age_gender_model/age_net.caffemodel")
+                        "C:/Users/Jitendra/python_projects/green_content/age_gender_model/deploy_age.prototxt", 
+                        "C:/Users/Jitendra/python_projects/green_content/age_gender_model/age_net.caffemodel")
 
         gender_net = cv2.dnn.readNetFromCaffe(
-                        "/home/adskite/myproject/signagecms/age_gender_model/deploy_gender.prototxt", 
-                        "/home/adskite/myproject/signagecms/age_gender_model/gender_net.caffemodel")
+                        "C:/Users/Jitendra/python_projects/green_content/age_gender_model/deploy_gender.prototxt", 
+                        "C:/Users/Jitendra/python_projects/green_content/age_gender_model/gender_net.caffemodel")
 
         player = request.POST.get('player');
         fileObj = request.FILES['file'];
@@ -360,6 +360,20 @@ def getPlayerCampaigns(request):
         #save auto sync metrics
         Last_Seen_Metrics.saveMetrics(player);
         return JsonResponse(result);
+    else:
+        return JsonResponse({'statusCode':1,
+            'status':"Invalid request"});
+
+@api_view(['POST'])
+def getSchedulePlayerCampaigns(request):
+    if(request.method == 'POST'):
+        player = request.POST.get('player');
+        result = Player_Campaign.getPlayerScheduleCampaignsWithInfo(player,request.POST.get("secretKey"));
+        
+        #save auto sync metrics
+        Last_Seen_Metrics.saveMetrics(player);
+        return JsonResponse(result);
+        
     else:
         return JsonResponse({'statusCode':1,
             'status':"Invalid request"});
