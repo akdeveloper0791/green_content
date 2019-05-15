@@ -33,12 +33,12 @@ table {
 
 <br/><br/><br/><br/>
 
-{{pc_id}}
-{{schedules}}
+<!-- {{pc_id}}
+{{schedules}} -->
 <script type="text/javascript">
 	var pc_id = {{pc_id}};
 </script>
-{% if status == True %}
+
 <div class="container">
 
 
@@ -117,12 +117,46 @@ table {
 
 		
 </div>
-{% else %}
-<center><b>{{error}}</b></center>
-<br/>
-<center><a class="btn btn-warning" href="/player/device_mgmt">Back</a></center>
+<br/><br/>
+<!-- table -->
 
-{% endif %} 
+{% if status == True %}
+
+<div class="container" style="overflow-x: auto;">
+  <table class="testTable table table-hover" id="reports_table" style="text-align: center;">
+  	<thead>
+  	<tr style="background: cornflowerblue;color: white;">
+      <th class="info1" style="text-align:center">ID</th>
+      <th class="info1" style="text-align:center">Schedule From</th>
+      <th class="info1" style="text-align:center">Schedule To</th>
+         <th class="info1" style="text-align:center">Status</th> 
+      <th class="info1" style="text-align:center">Delete</th>
+      
+    </tr>
+    </thead>
+    <tbody id="metrix_list">
+
+		
+   {% for schedule in schedules %}
+    <tr>
+      <td class="info1" >{{ schedule.id}}</td>
+      <td class="info1" >{{ schedule.schedule_from}}</td>
+      <td class="info1" >{{ schedule.schedule_to}}</td> 
+     <td class="info1" style="color:lawngreen">ACTIVE</td>
+      <td class="info1" style="cursor:pointer;color:orangered"><span class="fa fa-trash"></span></td>
+    </tr>
+    
+   {% endfor %}
+   </tbody>
+  </table>
+</div>
+   
+{% else %}
+   <h1 align="center">{{ error }} </h1>
+{% endif %}
+
+<!-- end table -->
+
 
 
  <script>
