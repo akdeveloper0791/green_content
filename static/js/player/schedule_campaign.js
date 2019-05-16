@@ -1,76 +1,72 @@
 
 
- function display_reports(){
-
-   document.getElementById('metrix_list').innerHTML = "";
-  // var dvTable = document.createElement("div");
-
-
-  // if(m_result.length>=0){
+ function display_reports(response){
+// var m_result = schedules;
+  
 
 
-  //    document.getElementById('metrix_list').innerHTML = "";
-  //    var new_rows="";
+ //  console.log("display"+m_result.length);
+ //  if(m_result.length>=0){
+ // console.log("display"+m_result.length);
+
+ // var new_rows="";
     
-  //   var table = document.getElementById('reports_table');
+    // var table = document.getElementById('reports_table');
     
-
-  //   for (var i = 0; i < m_result.length; i++) 
-  //   {
-  //        var metrics = m_result[i];
+// var schedule = JSON.stringify(response.schedules);  
+console.log(response.schedules['id']);
+  var table = document.getElementById("reports_table");
+  var row = table.insertRow(0);
+  var cell1 = row.insertCell(0);
+  var cell2 = row.insertCell(1);
+  var cell3 = row.insertCell(2);
+  var cell4 = row.insertCell(3);
+   var cell5 = row.insertCell(4);
+  cell1.innerHTML = response.schedules['id'];
+  cell2.innerHTML = response.schedules['schedule_from'];
+  cell3.innerHTML = response.schedules['schedule_to'];
+  cell4.innerHTML = "<span style='color:lawngreen'>ACTIVE</span>";
+  cell5.innerHTML = "<span class='fa fa-trash' style='cursor:pointer;color:orangered'></span>";
+  
+   // for (var metrics in response.schedules) 
+   //  {
+   //     console.log("display"+metrics);  
+       
+   //  row = table.insertRow(-1);
+   //       var cell = row.insertCell(-1);
+   //       cell.innerHTML = metrics.id;
+   //       cell.style.color = "#5FCF80";
+   //       cell.style.fontWeight = "bold";
          
-  //        var date = new Date(metrics.created_at);
-  //        date = date.getDate()+"-"+date.getMonth()+"-"+date.getFullYear() + " "+date.getHours()+":"+date.getMinutes()+":"+date.getSeconds();
-
-  //        row = table.insertRow(-1);
-  //        var cell = row.insertCell(-1);
-  //        cell.innerHTML = metrics.player__name;
-  //        cell.style.color = "#5FCF80";
-  //        cell.style.fontWeight = "bold";
+   //       var cell = row.insertCell(-1);
+   //       cell.innerHTML = metrics.schedule_from;
+   //       // var cell = row.insertCell(-1);
+   //       // if(campaignId>=1)
+   //       // {
+   //       //   cell.innerHTML = "<a href='/campaigns/previewCampaign/"+campaignId+"'target='_blank'>"+metrics.campaign_name+"</a>";
+   //       // }else
+   //       // {
+   //       //  cell.innerHTML = metrics.campaign_name;
+   //       // }
          
-  //        var campaignId = metrics.campaign_id;
+   //       // var duration = metrics.t_duration;
+   //       // var no_of_times_played = metrics.t_played;
+
+   //        var cell = row.insertCell(-1);
+   //       cell.innerHTML = metrics.schedule_from;
+
+   //         var cell = row.insertCell(-1);
+   //       cell.innerHTML = metrics.schedule_from;
+
+   //       var cell = row.insertCell(-1);
+   //       cell.innerHTML = metrics.schedule_from;
+
+   //       }
          
-  //        var cell = row.insertCell(-1);
-  //        if(campaignId>=1)
-  //        {
-  //          cell.innerHTML = "<a href='/campaigns/previewCampaign/"+campaignId+"'target='_blank'>"+metrics.campaign_name+"</a>";
-  //        }else
-  //        {
-  //         cell.innerHTML = metrics.campaign_name;
-  //        }
-         
-  //        var duration = metrics.t_duration;
-  //        var no_of_times_played = metrics.t_played;
-
-  //        var cell = row.insertCell(-1);
-  //        cell.innerHTML = no_of_times_played;
-
-  //        var cell = row.insertCell(-1);
-  //        cell.innerHTML = (duration);
-         
-  //        try
-  //        {
-  //         if(metrics.last_played_at!=null)
-  //          {
-  //          var date = new Date(metrics.last_played_at);
-  //          date = date.getDate()+"-"+(date.getMonth()+1)+"-"+date.getFullYear() + " "+date.getHours()+":"+date.getMinutes()+":"+date.getSeconds();
-
-  //          var cell = row.insertCell(-1);
-  //          cell.innerHTML = (date);
-  //         }
-  //        }catch(err)
-  //        {
-
-  //        }
-         
-  //   }
+    // }
 
 
 
-  // }else{
-
-  //     document.getElementById('metrix_list').innerHTML += "No records Found";
-  // }
 }
  
 
@@ -126,7 +122,7 @@
     // }else{
     fromDate = fromDate+" "+start_time+":00";
     toDate = toDate+" "+end_time+":00";
-    alert(fromDate+ " "+toDate+" "+pc_id+" "+dev_id);
+    //alert(fromDate+ " "+toDate+" "+pc_id+" "+dev_id);
 		
        // displayInitUploadBusyDialog();
        var xhr = new XMLHttpRequest();
@@ -143,9 +139,9 @@
             if(responseObj.statusCode == 0)
             {
               // dismissBusyDialog();
-               display_reports();
-               //console.log(responseObj);
-               swal(responseObj.status);
+               display_reports(responseObj);
+               console.log(responseObj.schedules);
+               //swal(responseObj.status);
 
               
             }else
