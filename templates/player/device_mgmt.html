@@ -61,7 +61,9 @@ td.info1, th.info1 {
 a.btn:active{
     background:green;
 }
-
+.fa-trash{
+  color: red;
+}
 
 /* The Modal (background) */
 .modal {
@@ -131,9 +133,9 @@ a.btn:active{
         <div class="modal-body">
           <input type="hidden" id="player_campaign_info_id" />
           <div id="campaigns_info">
-            <button type="button" style="float: right;" class="btn-green " onclick="displayCampaignsToAdd()">Assign New </button> 
-            <h4 style="color:cornflowerblue;display:inline-block"> Assigned Campaigns</h4>           
-            <div id="player_info_campaigns">
+            <span style="float: right;" class="btn btn-green" onclick="displayCampaignsToAdd()"><sapn class="fa fa-plus"> Assign New </sapn></span> <br/>
+            <h5 style="color:cornflowerblue;display:inline-block"> Assigned Campaigns</h5>           
+            <div id="player_info_campaigns" style="margin-top:2px;">
             </div>
           </div>
         </div>

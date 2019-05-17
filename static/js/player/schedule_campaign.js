@@ -14,7 +14,7 @@
     // var table = document.getElementById('reports_table');
     
 // var schedule = JSON.stringify(response.schedules);  
-console.log(response.schedules['id']);
+//console.log(response.schedules['id']);
   var table = document.getElementById("reports_table");
   var row = table.insertRow(0);
   var cell1 = row.insertCell(0);
