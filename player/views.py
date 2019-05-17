@@ -68,14 +68,14 @@ def metrics(request):
         #Init open cv DNN(age and gender) and cascades(face detetion)
         #server path --> /home/adskite/myproject/signagecms/
         #local path --> C:/Users/Jitendra/python_projects/green_content
-        face_detector = "C:/Users/Jitendra/python_projects/green_content/haarcascade_frontalface_alt.xml"
+        face_detector = "/home/adskite/myproject/signagecms/haarcascade_frontalface_alt.xml"
         age_net = cv2.dnn.readNetFromCaffe(
-                        "C:/Users/Jitendra/python_projects/green_content/age_gender_model/deploy_age.prototxt", 
-                        "C:/Users/Jitendra/python_projects/green_content/age_gender_model/age_net.caffemodel")
+                        "/home/adskite/myproject/signagecms/age_gender_model/deploy_age.prototxt", 
+                        "/home/adskite/myproject/signagecms/age_gender_model/age_net.caffemodel")
 
         gender_net = cv2.dnn.readNetFromCaffe(
-                        "C:/Users/Jitendra/python_projects/green_content/age_gender_model/deploy_gender.prototxt", 
-                        "C:/Users/Jitendra/python_projects/green_content/age_gender_model/gender_net.caffemodel")
+                        "/home/adskite/myproject/signagecms/age_gender_model/deploy_gender.prototxt", 
+                        "/home/adskite/myproject/signagecms/age_gender_model/gender_net.caffemodel")
 
         player = request.POST.get('player');
         fileObj = request.FILES['file'];
@@ -654,6 +654,7 @@ def scheduleCampaign(request,player,campaign):
     playerInfo = Player.isMyPlayer(player,request.user.id);
     if(playerInfo==False):
         return render(request,'player/schedule_campaign.html',{'status':False,'error':'Invalid player, player details not found'});
+    
     campaignInfo = CampaignInfo.getPreviewCampaignInfo(request.user.id,campaign);
     if(campaignInfo['statusCode']!=0):
         return render(request,'player/schedule_campaign.html',{'status':False,'error':campaignInfo['status']});
