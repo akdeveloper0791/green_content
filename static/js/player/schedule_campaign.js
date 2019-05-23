@@ -17,55 +17,21 @@
 //console.log(response.schedules['id']);
   var table = document.getElementById("reports_table");
   var row = table.insertRow(0);
+  row.id="sc_rec_row_"+response.schedules['id'];
   var cell1 = row.insertCell(0);
   var cell2 = row.insertCell(1);
   var cell3 = row.insertCell(2);
   var cell4 = row.insertCell(3);
-   var cell5 = row.insertCell(4);
+  var cell5 = row.insertCell(4);
   cell1.innerHTML = response.schedules['id'];
   cell2.innerHTML = response.schedules['schedule_from'];
   cell3.innerHTML = response.schedules['schedule_to'];
   cell4.innerHTML = "<span style='color:lawngreen'>ACTIVE</span>";
   cell5.innerHTML = "<span class='fa fa-trash' style='cursor:pointer;color:orangered'></span>";
-  
-   // for (var metrics in response.schedules) 
-   //  {
-   //     console.log("display"+metrics);  
-       
-   //  row = table.insertRow(-1);
-   //       var cell = row.insertCell(-1);
-   //       cell.innerHTML = metrics.id;
-   //       cell.style.color = "#5FCF80";
-   //       cell.style.fontWeight = "bold";
-         
-   //       var cell = row.insertCell(-1);
-   //       cell.innerHTML = metrics.schedule_from;
-   //       // var cell = row.insertCell(-1);
-   //       // if(campaignId>=1)
-   //       // {
-   //       //   cell.innerHTML = "<a href='/campaigns/previewCampaign/"+campaignId+"'target='_blank'>"+metrics.campaign_name+"</a>";
-   //       // }else
-   //       // {
-   //       //  cell.innerHTML = metrics.campaign_name;
-   //       // }
-         
-   //       // var duration = metrics.t_duration;
-   //       // var no_of_times_played = metrics.t_played;
-
-   //        var cell = row.insertCell(-1);
-   //       cell.innerHTML = metrics.schedule_from;
-
-   //         var cell = row.insertCell(-1);
-   //       cell.innerHTML = metrics.schedule_from;
-
-   //       var cell = row.insertCell(-1);
-   //       cell.innerHTML = metrics.schedule_from;
-
-   //       }
-         
-    // }
-
-
+  cell5.onclick= function(){
+          deleteSC(response.schedules['id']);
+        };
+   
 
 }
  
@@ -129,6 +95,7 @@
        // displayInitUploadBusyDialog();
        var xhr = new XMLHttpRequest();
        var params = 'access_token=web&schedule_from='+fromDate+'&schedule_to='+toDate+'&pc_id='+pc_id+'&schedule_type='+dev_id;
+    
     console.log("Inside exportScheduleReports params"+params);
    
     //swal("Sdfsdf"+xhr.status);
@@ -145,7 +112,7 @@
             {
               // dismissBusyDialog();
                display_reports(responseObj);
-               console.log(responseObj.schedules);
+               //console.log(responseObj.schedules);
                //swal(responseObj.status);
 
               
@@ -154,7 +121,8 @@
               
               //document.getElementById('metrix_list').innerHTML = responseObj.status;
               // dismissBusyDialog();
-              swal(responseObj.status);
+              console.log("status"+responseObj.status);
+              swal(""+(responseObj.status));
             }
 
         }
@@ -182,3 +150,51 @@
     xhr.send(params);
     
  }
+
+function deleteSC(scId)
+{
+  
+  var xhr = new XMLHttpRequest();
+  var params = 'access_token=web&sc_id='+scId;
+    
+  xhr.onload = function() {
+   if (xhr.status === 200) {
+      console.log("response - "+xhr.response);      
+      var responseObj = JSON.parse(xhr.response);
+      if(responseObj.statusCode == 0)
+      {
+        deleteSCRow(scId);
+               
+      }else
+      {
+        swal(""+(responseObj.status));
+      }
+
+    }
+    else {
+            var errorMessage = xhr.response || 'Unable to update';
+            
+            swal("unable to delete - "+errorMessage);
+        }
+
+
+      };
+       xhr.onerror = function()
+      {
+        //dismissBusyDialog();
+        swal('No internet');
+      };
+
+    xhr.open('POST', '/campaigns/deleteScheduleCampaign/');
+     
+    xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+
+    xhr.setRequestHeader("X-CSRFToken", csrf_token );
+    
+    xhr.send(params);
+}
+
+function deleteSCRow(scId)
+{
+    document.getElementById("sc_rec_table").deleteRow(document.getElementById("sc_rec_row_"+scId).rowIndex);
+}

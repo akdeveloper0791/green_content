@@ -9,7 +9,7 @@
   <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
   
   <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
-  
+
 <style type="text/css">
 	body {
 	font-family: Arial, Helvetica, sans-serif;
@@ -111,7 +111,7 @@ table {
     <div class="col-md-10"> 
         <select name="Item_1" class="form-control" id="selectBox" >
           	<option value='100'>None</option>    
-          	<option value='Per_Minute'>Per Minute</option>
+          	<option value='110'>Per Minute</option>
           	<option value='Hourly'>Hourly</option> 
            	<option value='Daily'>Daily</option>
             <option value='Weekly'>Weekly</option> 
@@ -132,7 +132,7 @@ table {
 {% if status == True %}
 
 <div class="container" style="overflow-x: auto;padding: 0px;">
-  <table class="testTable table table-hover"  style="text-align: center;">
+  <table class="testTable table table-hover"  style="text-align: center;" id="sc_rec_table">
   	<thead>
   	<tr style="background: cornflowerblue;color: white;">
       <th class="info1" style="text-align:center">ID</th>
@@ -147,12 +147,12 @@ table {
 
 		
    {% for schedule in schedules %}
-    <tr>
+    <tr id="sc_rec_row_{{schedule.id}}">
       <td class="info1" >{{ schedule.id}}</td>
       <td class="info1" >{{ schedule.schedule_from}}</td>
       <td class="info1" >{{ schedule.schedule_to}}</td> 
      <td class="info1" style="color:lawngreen">ACTIVE</td>
-      <td class="info1" style="cursor:pointer;color:orangered"><span class="fa fa-trash"></span></td>
+      <td class="info1" style="cursor:pointer;color:orangered"onclick="deleteSC({{ schedule.id}})"><span class="fa fa-trash"></span></td>
     </tr>
     
    {% endfor %}
@@ -177,14 +177,7 @@ table {
     $( "#datepicker_to" ).datepicker();
   } );
 
-  // function changeFunc() {
-  //   var selectBox = document.getElementById("selectBox");
-  //   var selectedValue = selectBox.options[selectBox.selectedIndex].value;
-  //   if(selectedValue!="None"){
-  //      document.getElementById("submit").style.display="block";
-  //   }
-  //  }
-
+ 
   csrf_token = '{{ csrf_token }}';
 </script>
 
@@ -192,8 +185,9 @@ table {
 {% endblock %}
 </body>
 {% block footer %} {% include 'footer.html' %} {% endblock %}
-  <script type="text/javascript">
+
+<script type="text/javascript">
 $(document).ready(function(){
 $('#device').addClass('active');
     });
- </script>
+</script>

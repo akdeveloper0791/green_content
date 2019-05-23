@@ -635,9 +635,13 @@ class Schedule_Campaign(models.Model):
             if(accessToken == False):
                 return {'statusCode':2,'status':
                 "Invalid session, please login"};
+        #return {'datetime':timezone.now()}
         try:
             scheduleCampaign = Schedule_Campaign.objects.get(id=scId,player_campaign__user_id=accessToken);
-            scheduleCampaign.delete();
-            return {'statusCode':0,'status':'Schedule has been removed successfully'};
+            if((scheduleCampaign.schedule_to)>timezone.now()):
+                scheduleCampaign.delete();
+                return {'statusCode':0,'status':'Schedule has been removed successfully'};
+            else:
+                return {'statusCode':7,'status':'Cannot delete schedule, schedule is already running'};
         except Schedule_Campaign.DoesNotExist:
             return {'statusCode':6,'status':'Unable to delete schedule, please try again later'};
