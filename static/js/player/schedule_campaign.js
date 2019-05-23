@@ -75,14 +75,15 @@
  function exportScheduleReports(pc_id)
  {
 
-   console.log("Inside exportScheduleReports");
-   
+
     var dev_id = document.getElementById('selectBox').value;
     var from_date = document.getElementById('datepicker_from').value;
     var to_date = document.getElementById('datepicker_to').value;
     var start_time = document.getElementById('start_time').value;
     var end_time = document.getElementById('end_time').value;
 
+   console.log("Inside exportScheduleReports from_date - "+from_date+"to_date"+to_date);
+   
     // if(dev_id != "None"){
     if(from_date == null || from_date == "" || start_time == null || start_time == "")
     {
