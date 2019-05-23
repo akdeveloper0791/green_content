@@ -75,7 +75,8 @@
  function exportScheduleReports(pc_id)
  {
 
-
+   console.log("Inside exportScheduleReports");
+   
     var dev_id = document.getElementById('selectBox').value;
     var from_date = document.getElementById('datepicker_from').value;
     var to_date = document.getElementById('datepicker_to').value;
@@ -130,7 +131,8 @@
     //swal("Sdfsdf"+xhr.status);
     xhr.onload = function() {
      if (xhr.status === 200) {
-            
+            console.log("response in schedule campaign "+xhr.response);
+
             var responseObj = JSON.parse(xhr.response);
            
             // Upload succeeded. Do something here with the file info.
@@ -173,7 +175,7 @@
     xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
 
     xhr.setRequestHeader("X-CSRFToken", csrf_token );
-    //xhr.responseType = "arraybuffer";
+    
     xhr.send(params);
     
  }
