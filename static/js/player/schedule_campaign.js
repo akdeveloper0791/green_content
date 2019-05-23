@@ -82,7 +82,6 @@
     var start_time = document.getElementById('start_time').value;
     var end_time = document.getElementById('end_time').value;
 
-   console.log("Inside exportScheduleReports from_date - "+from_date+"to_date"+to_date);
    
     // if(dev_id != "None"){
     if(from_date == null || from_date == "" || start_time == null || start_time == "")
@@ -125,10 +124,13 @@
     fromDate = fromDate+" "+start_time+":00";
     toDate = toDate+" "+end_time+":00";
     //alert(fromDate+ " "+toDate+" "+pc_id+" "+dev_id);
-		
+		console.log("Inside exportScheduleReports from_date - "+from_date+"to_date"+to_date);
+   
        // displayInitUploadBusyDialog();
        var xhr = new XMLHttpRequest();
        var params = 'access_token=web&schedule_from='+fromDate+'&schedule_to='+toDate+'&pc_id='+pc_id+'&schedule_type='+dev_id;
+    console.log("Inside exportScheduleReports params"+params);
+   
     //swal("Sdfsdf"+xhr.status);
     xhr.onload = function() {
      if (xhr.status === 200) {
