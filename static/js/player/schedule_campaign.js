@@ -1,20 +1,7 @@
 
 
  function display_reports(response){
-// var m_result = schedules;
-  
 
-
- //  console.log("display"+m_result.length);
- //  if(m_result.length>=0){
- // console.log("display"+m_result.length);
-
- // var new_rows="";
-    
-    // var table = document.getElementById('reports_table');
-    
-// var schedule = JSON.stringify(response.schedules);  
-//console.log(response.schedules['id']);
   var table = document.getElementById("reports_table");
   var row = table.insertRow(0);
   row.id="sc_rec_row_"+response.schedules['id'];
@@ -38,7 +25,7 @@
 
 
 
- function exportScheduleReports(pc_id)
+ function saveSchedule(pc_id)
  {
 
 
@@ -47,7 +34,12 @@
     var to_date = document.getElementById('datepicker_to').value;
     var start_time = document.getElementById('start_time').value;
     var end_time = document.getElementById('end_time').value;
-
+    var priority = document.getElementById('sc_priority').value;
+    
+    if(Number.isInteger(parseInt(priority)) == false)
+    {
+      priority = 0;
+    }
    
     // if(dev_id != "None"){
     if(from_date == null || from_date == "" || start_time == null || start_time == "")
@@ -90,19 +82,16 @@
     fromDate = fromDate+" "+start_time+":00";
     toDate = toDate+" "+end_time+":00";
     //alert(fromDate+ " "+toDate+" "+pc_id+" "+dev_id);
-		console.log("Inside exportScheduleReports from_date - "+from_date+"to_date"+to_date);
-   
+		
        // displayInitUploadBusyDialog();
        var xhr = new XMLHttpRequest();
-       var params = 'access_token=web&schedule_from='+fromDate+'&schedule_to='+toDate+'&pc_id='+pc_id+'&schedule_type='+dev_id;
+       var params = 'access_token=web&schedule_from='+fromDate+'&schedule_to='+toDate+'&pc_id='+pc_id+'&schedule_type='+dev_id+'&sc_priority='+priority;
     
-    console.log("Inside exportScheduleReports params"+params);
-   
+    
     //swal("Sdfsdf"+xhr.status);
     xhr.onload = function() {
      if (xhr.status === 200) {
-            console.log("response in schedule campaign "+xhr.response);
-
+            
             var responseObj = JSON.parse(xhr.response);
            
             // Upload succeeded. Do something here with the file info.
@@ -121,7 +110,7 @@
               
               //document.getElementById('metrix_list').innerHTML = responseObj.status;
               // dismissBusyDialog();
-              console.log("status"+responseObj.status);
+              
               swal(""+(responseObj.status));
             }
 
@@ -129,7 +118,7 @@
         else {
             var errorMessage = xhr.response || 'Unable to update';
             // Upload failed. Do something here with the error.
-            console.log(errorMessage);
+            
             swal("unable to update - "+errorMessage);
         }
 
@@ -159,7 +148,7 @@ function deleteSC(scId)
     
   xhr.onload = function() {
    if (xhr.status === 200) {
-      console.log("response - "+xhr.response);      
+      
       var responseObj = JSON.parse(xhr.response);
       if(responseObj.statusCode == 0)
       {

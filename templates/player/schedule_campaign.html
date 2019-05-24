@@ -121,7 +121,19 @@ table {
    	</div>
 	</div>
 	</div>
-			<center><button class="btn btn-success" onclick="exportScheduleReports(pc_id)" id="submit">Save</button></center>
+
+  <div class="col-md-12" style="padding-bottom: 10px;">
+  <div class="rows">
+  <div class="col-md-2" style="text-align: center;">
+      Priority
+      </div>
+    <div class="col-md-10"> 
+        <input type="number" max="9999" value="0" id="sc_priority" class="form-control">
+    </div>
+  </div>
+  </div>
+
+			<center><button class="btn btn-success" onclick="saveSchedule(pc_id)" id="submit">Save</button></center>
 	</div>
 
 		

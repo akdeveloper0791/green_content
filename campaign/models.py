@@ -305,6 +305,8 @@ class Player_Campaign(models.Model):
     campaign = models.ForeignKey('cmsapp.Multiple_campaign_upload',on_delete=models.CASCADE)
     created_at = models.DateTimeField(default=datetime.datetime.now())
     schedule_type = models.SmallIntegerField(default=10)#10->schedule always
+    pc_priority = models.IntegerField(default=0)
+    
     class Meta(object):
         unique_together = [
         ['user','player','campaign']
@@ -568,6 +570,7 @@ class Schedule_Campaign(models.Model):
     schedule_from = models.DateTimeField(null=False,blank=False)
     schedule_to = models.DateTimeField(null=False,blank=False)
     schedule_type = models.SmallIntegerField(default=10)#10->schedule always
+    sc_priority = models.IntegerField(default=0)
 
     class Meta:
        indexes = [
@@ -575,7 +578,8 @@ class Schedule_Campaign(models.Model):
            ]
     
     
-    def saveCampaign(isWeb,accessToken,scheduleFrom,scheduleTo,pcId,scheduleType):
+    def saveCampaign(isWeb,accessToken,scheduleFrom,scheduleTo,pcId,scheduleType,
+        scPriority):
         if(isWeb==False):
             accessToken = User_unique_id.getUserId(accessToken);
             if(accessToken == False):
@@ -614,10 +618,12 @@ class Schedule_Campaign(models.Model):
                     newScheduleCampaign.schedule_from = scheduleFrom
                     newScheduleCampaign.schedule_to = scheduleTo
                     newScheduleCampaign.schedule_type= scheduleType
+                    newScheduleCampaign.sc_priority = scPriority
                     newScheduleCampaign.save();
 
                     if(newScheduleCampaign.id>=1):
-                        return {'statusCode':0,'status':'Schedule has been saved successfull','id':newScheduleCampaign.id};
+                        return {'statusCode':0,'status':'Schedule has been saved successfull','id':newScheduleCampaign.id,
+                        'sc_priority':newScheduleCampaign.sc_priority};
                     else:
                         return {'statusCode':6,'status':'Some thing went wrong, please try again later'};
         except Player_Campaign.DoesNotExist:
