@@ -546,7 +546,7 @@ class Player_Campaign(models.Model):
                 "Invalid session, please login"};
         
         with connection.cursor() as cursor:
-            conditionQuery = '''SELECT campaigns.*, camInfo.info,schedules.id as sc_id, schedules.schedule_from, schedules.schedule_to, pc.schedule_type,schedules.schedule_type as sc_schedule_type  FROM  campaign_player_campaign as pc
+            conditionQuery = '''SELECT campaigns.*, camInfo.info,schedules.id as sc_id, schedules.schedule_from, schedules.schedule_to, pc.schedule_type,schedules.schedule_type as sc_schedule_type, pc.pc_priority, schedules.sc_priority  FROM  campaign_player_campaign as pc
                 INNER JOIN cmsapp_multiple_campaign_upload as campaigns ON pc.campaign_id = campaigns.id
                 LEFT JOIN campaign_campaigninfo as camInfo ON campaigns.id = camInfo.campaign_id_id 
                 LEFT JOIN campaign_schedule_campaign as schedules ON pc.id = schedules.player_campaign_id WHERE (pc.user_id=%s and pc.player_id= %s)
