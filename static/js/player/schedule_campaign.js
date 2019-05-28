@@ -1,23 +1,32 @@
 
 
- function display_reports(response){
+ function display_reports(response)
+ {
 
-  var table = document.getElementById("reports_table");
+  var table = document.getElementById("sc_rec_table");
   var row = table.insertRow(0);
   row.id="sc_rec_row_"+response.schedules['id'];
-  var cell1 = row.insertCell(0);
-  var cell2 = row.insertCell(1);
-  var cell3 = row.insertCell(2);
-  var cell4 = row.insertCell(3);
-  var cell5 = row.insertCell(4);
-  cell1.innerHTML = response.schedules['id'];
-  cell2.innerHTML = response.schedules['schedule_from'];
-  cell3.innerHTML = response.schedules['schedule_to'];
-  cell4.innerHTML = "<span style='color:lawngreen'>ACTIVE</span>";
-  cell5.innerHTML = "<span class='fa fa-trash' style='cursor:pointer;color:orangered'></span>";
-  cell5.onclick= function(){
-          deleteSC(response.schedules['id']);
-        };
+
+  //var cell1 = row.insertCell(0);
+  
+row.innerHTML='<div class="container" style="background-color: #F7F6F6; border: .2px solid #F7F6F6; margin: 1%;position: relative;">'+
+         '<div style="color:gray;">Schedule From:<span class="user_data" >'+response.schedules['schedule_from']+'</span></div>'+
+         '<div style="color:gray;">Schedule From:<span class="user_data" >'+response.schedules['schedule_to']+'</span></div>'+
+         '<div id="schedule_priority" style="color:gray;width:76%; line-height: 1.45;display:inline-block;">Schedule Priority :<span class="user_data" >1</span></div>'+
+         '<span id="delete_schedule" class="fa fa-trash"  style="cursor:pointer;color:orangered; display:inline-block;width:4%; "onclick="deleteSC({{ schedule.id}})"></span>'+
+         '<div id="schedule_status" style="color:lawngreen;width:6%;margin-right:5px; display:inline-block;">ACTIVE</div>'+
+         '</div>'
+         /*<div id="schedule_to" style="color:gray;">Schedule To :<span class="user_data" >{{ schedule.schedule_to}}</span></div>  
+
+        <div id="schedule_priority" style="color:gray;width:76%; line-height: 1.45;
+       display:inline-block;">Schedule Priority :<span class="user_data" >1</span></div>
+        <span id="delete_schedule" class="fa fa-trash"  style="cursor:pointer;color:orangered;
+       display:inline-block;width:4%; "onclick="deleteSC({{ schedule.id}})"></span>
+         <div id="schedule_status" style="color:lawngreen;width:6%;margin-right:5px;
+       display:inline-block;">ACTIVE</div>   
+      </div>'*/
+ 
+  
    
 
 }

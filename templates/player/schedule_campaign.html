@@ -21,7 +21,12 @@ table {
 
 .ui-draggable, .ui-droppable {
 	background-position: top;
+  }
+.user_data{
+color:cornflowerblue;
 }
+
+
 </style>
 </head>
 
@@ -145,29 +150,55 @@ table {
 
 {% if status == True %}
 
-<div class="container" style="overflow-x: auto;padding: 0px;">
-  <table class="testTable table table-hover"  style="text-align: center;" id="sc_rec_table">
-  	<thead>
-  	<tr style="background: cornflowerblue;color: white;">
+<div class="container" style="overflow-x: auto;">
+<table class="testTable table table-hover" id="sc_rec_table">
+
+<tbody id="reports_table">
+
+   {% for schedule in schedules %}
+    <tr  id="sc_rec_row_{{schedule.id}}">
+      <div class="container" style="background-color: #F7F6F6; border: .2px solid #F7F6F6;
+       margin: 1%;position: relative;">
+         <div  style="color:gray;">Schedule From:<span class="user_data" >{{ schedule.schedule_from}}</span></div>
+         <div style="color:gray;">Schedule To :<span class="user_data" >{{ schedule.schedule_to}}</span></div>  
+        <div  style="color:gray;width:76%; line-height: 1.45;
+       display:inline-block;">Schedule Priority :<span class="user_data" >1</span></div>
+        <span class="fa fa-trash"  style="cursor:pointer;color:orangered;
+       display:inline-block;width:4%; "onclick='deleteSC({{ schedule.id}})'></span>
+         <div  style="color:lawngreen;width:6%;margin-right:5px;
+       display:inline-block;">ACTIVE</div>   
+      </div>
+    
+   </tr>
+
+     <!--
+  <thead>
+    <tr style="background: cornflowerblue;color: white;">
       <th class="info1" style="text-align:center">ID</th>
       <th class="info1" style="text-align:center">Schedule From</th>
       <th class="info1" style="text-align:center">Schedule To</th>
-         <th class="info1" style="text-align:center">Status</th> 
+      <th class="info1" style="text-align:center">Status</th> 
       <th class="info1" style="text-align:center">Delete</th>
-      
+     
     </tr>
     </thead>
-    <tbody id="reports_table">
+ 
+
+
 
 
    {% for schedule in schedules %}
     <tr id="sc_rec_row_{{schedule.id}}">
+
       <td class="info1" >{{ schedule.id}}</td>
       <td class="info1" >{{ schedule.schedule_from}}</td>
       <td class="info1" >{{ schedule.schedule_to}}</td> 
-     <td class="info1" style="color:lawngreen">ACTIVE</td>
-      <td class="info1" style="cursor:pointer;color:orangered"onclick="deleteSC({{ schedule.id}})"><span class="fa fa-trash"></span></td>
-    </tr>
+      <td class="info1" style="color:lawngreen">ACTIVE</td>
+      <td class="info1" style="cursor:pointer;color:orangered"onclick="deleteSC({{ schedule.id}})">
+     <span class="fa fa-trash"></span>
+
+    </td> -->
+ 
     
    {% endfor %}
    </tbody>
