@@ -91,7 +91,7 @@
     //swal("Sdfsdf"+xhr.status);
     xhr.onload = function() {
      if (xhr.status === 200) {
-            
+            console.log(xhr.response);
             var responseObj = JSON.parse(xhr.response);
            
             // Upload succeeded. Do something here with the file info.
@@ -118,7 +118,7 @@
         else {
             var errorMessage = xhr.response || 'Unable to update';
             // Upload failed. Do something here with the error.
-            
+            console.log(errorMessage);
             swal("unable to update - "+errorMessage);
         }
 

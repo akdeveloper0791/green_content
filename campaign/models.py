@@ -596,10 +596,22 @@ class Schedule_Campaign(models.Model):
             
             isTimeSlotAvailable = False;
             with connection.cursor() as cursor:
-                checkSlotQuery = ''' SELECT count(*) FROM campaign_schedule_campaign WHERE 
-                player_campaign_id = %s AND ((schedule_from <= %s AND schedule_to >= %s) OR (schedule_from <= %s AND schedule_to >= %s) OR (schedule_from >= %s AND schedule_to <= %s))'''
-                cursor.execute(checkSlotQuery,[pcId,scheduleTo,scheduleTo,scheduleFrom,scheduleFrom,scheduleFrom,scheduleTo]);
+                mhnSchedule = ['100','110','120'];
+                checkSlotQuery=None;cursorParams=[];
+                if scheduleType in mhnSchedule:
+                    checkSlotQuery = ''' SELECT count(*) FROM campaign_schedule_campaign WHERE
+                    player_campaign_id = %s AND ((schedule_from <= %s AND schedule_to >= %s) OR (schedule_from <= %s AND schedule_to >= %s) OR (schedule_from >= %s AND schedule_to <= %s)) AND 
+                    schedule_type IN ({})'''.format(','.join(['%s' for _ in range(len(mhnSchedule))]))
+                    cursorParams = [pcId,scheduleTo,scheduleTo,scheduleFrom,scheduleFrom,scheduleFrom,scheduleTo];
+                    for i in mhnSchedule:
+                        cursorParams.append(i);
                 
+                elif(scheduleType=='200'):
+                    checkSlotQuery = ''' SELECT count(*) FROM campaign_schedule_campaign WHERE 
+                    player_campaign_id = %s  AND schedule_type = %s AND schedule_from = datetime(%s)'''
+                    cursorParams = [pcId,scheduleType,scheduleFrom];
+                
+                cursor.execute(checkSlotQuery,cursorParams);  
                 info = cursor.fetchone();
                 
                 if (info[0] <= 0):
