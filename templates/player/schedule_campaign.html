@@ -171,34 +171,6 @@ color:cornflowerblue;
     
    </tr>
 
-     <!--
-  <thead>
-    <tr style="background: cornflowerblue;color: white;">
-      <th class="info1" style="text-align:center">ID</th>
-      <th class="info1" style="text-align:center">Schedule From</th>
-      <th class="info1" style="text-align:center">Schedule To</th>
-      <th class="info1" style="text-align:center">Status</th> 
-      <th class="info1" style="text-align:center">Delete</th>
-     
-    </tr>
-    </thead>
- 
-
-
-
-
-   {% for schedule in schedules %}
-    <tr id="sc_rec_row_{{schedule.id}}">
-
-      <td class="info1" >{{ schedule.id}}</td>
-      <td class="info1" >{{ schedule.schedule_from}}</td>
-      <td class="info1" >{{ schedule.schedule_to}}</td> 
-      <td class="info1" style="color:lawngreen">ACTIVE</td>
-      <td class="info1" style="cursor:pointer;color:orangered"onclick="deleteSC({{ schedule.id}})">
-     <span class="fa fa-trash"></span>
-
-    </td> -->
- 
     
    {% endfor %}
    </tbody>
@@ -206,6 +178,7 @@ color:cornflowerblue;
 </div>
    
 {% else %}
+
    <h1 align="center">{{ error }} </h1>
 {% endif %}
 
