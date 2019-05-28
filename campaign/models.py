@@ -606,7 +606,7 @@ class Schedule_Campaign(models.Model):
                     for i in mhnSchedule:
                         cursorParams.append(i);
                 
-                elif(scheduleType=='200'):
+                elif(scheduleType=='200' or scheduleType == '250' or scheduleType == '300'):
                     checkSlotQuery = ''' SELECT count(*) FROM campaign_schedule_campaign WHERE 
                     player_campaign_id = %s  AND schedule_type = %s AND schedule_from = datetime(%s)'''
                     cursorParams = [pcId,scheduleType,scheduleFrom];
