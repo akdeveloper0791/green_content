@@ -13,7 +13,7 @@ row.innerHTML='<div class="container" style="background-color: #F7F6F6; border: 
          '<div style="color:gray;">Schedule From:<span class="user_data" >'+response.schedules['schedule_from']+'</span></div>'+
          '<div style="color:gray;">Schedule From:<span class="user_data" >'+response.schedules['schedule_to']+'</span></div>'+
          '<div id="schedule_priority" style="color:gray;width:76%; line-height: 1.45;display:inline-block;">Schedule Priority :<span class="user_data" >1</span></div>'+
-         '<span id="delete_schedule" class="fa fa-trash"  style="cursor:pointer;color:orangered; display:inline-block;width:4%; "onclick="deleteSC({{ schedule.id}})"></span>'+
+         '<span id="delete_schedule" class="fa fa-trash"  style="cursor:pointer;color:orangered; display:inline-block;width:4%; "onclick="deleteSC('+response.schedules['id']+')"></span>'+
          '<div id="schedule_status" style="color:lawngreen;width:6%;margin-right:5px; display:inline-block;">ACTIVE</div>'+
          '</div>'
          /*<div id="schedule_to" style="color:gray;">Schedule To :<span class="user_data" >{{ schedule.schedule_to}}</span></div>  
@@ -36,7 +36,7 @@ row.innerHTML='<div class="container" style="background-color: #F7F6F6; border: 
 
  function saveSchedule(pc_id)
  {
-
+    ajaxindicatorstart("<img src='/static/images/ajax-loader.gif'><br/> Please wait...!");
 
     var dev_id = document.getElementById('selectBox').value;
     var from_date = document.getElementById('datepicker_from').value;
@@ -100,6 +100,7 @@ row.innerHTML='<div class="container" style="background-color: #F7F6F6; border: 
     //swal("Sdfsdf"+xhr.status);
     xhr.onload = function() {
      if (xhr.status === 200) {
+      ajaxindicatorstop();
             console.log(xhr.response);
             var responseObj = JSON.parse(xhr.response);
            
@@ -119,12 +120,13 @@ row.innerHTML='<div class="container" style="background-color: #F7F6F6; border: 
               
               //document.getElementById('metrix_list').innerHTML = responseObj.status;
               // dismissBusyDialog();
-              
+              ajaxindicatorstop();
               swal(""+(responseObj.status));
             }
 
         }
         else {
+          ajaxindicatorstop();
             var errorMessage = xhr.response || 'Unable to update';
             // Upload failed. Do something here with the error.
             console.log(errorMessage);
@@ -135,6 +137,7 @@ row.innerHTML='<div class="container" style="background-color: #F7F6F6; border: 
       };
        xhr.onerror = function()
       {
+        ajaxindicatorstop();
         //dismissBusyDialog();
         swal('No internet');
       };
@@ -151,13 +154,14 @@ row.innerHTML='<div class="container" style="background-color: #F7F6F6; border: 
 
 function deleteSC(scId)
 {
+  ajaxindicatorstart("<img src='/static/images/ajax-loader.gif'><br/> Please wait...!");
   
   var xhr = new XMLHttpRequest();
   var params = 'access_token=web&sc_id='+scId;
     
   xhr.onload = function() {
    if (xhr.status === 200) {
-      
+      ajaxindicatorstop();
       var responseObj = JSON.parse(xhr.response);
       if(responseObj.statusCode == 0)
       {
@@ -170,6 +174,7 @@ function deleteSC(scId)
 
     }
     else {
+      ajaxindicatorstop();
             var errorMessage = xhr.response || 'Unable to update';
             
             swal("unable to delete - "+errorMessage);
@@ -179,6 +184,7 @@ function deleteSC(scId)
       };
        xhr.onerror = function()
       {
+        ajaxindicatorstop();
         //dismissBusyDialog();
         swal('No internet');
       };
@@ -194,5 +200,6 @@ function deleteSC(scId)
 
 function deleteSCRow(scId)
 {
+    console.log("delete sc row "+scId);
     document.getElementById("sc_rec_table").deleteRow(document.getElementById("sc_rec_row_"+scId).rowIndex);
 }
