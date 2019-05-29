@@ -27,6 +27,48 @@ color:cornflowerblue;
 }
 
 
+.select_week_days_default {
+  background-color: #e7e7e7; /* Gray */
+  border: none;
+  color: black;
+  padding: 16px 32px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  margin: 4px 2px;
+  -webkit-transition-duration: 0.4s; /* Safari */
+  transition-duration: 0.4s;
+  cursor: pointer;
+  border-radius: 4px;
+}
+
+.select_week_days_default:hover {
+  background: #4CAF50;
+  color: white;
+}
+
+.select_week_days_selected {
+  background-color: #4CAF50; 
+  border: none;
+  color: white;
+  padding: 16px 32px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  margin: 4px 2px;
+  -webkit-transition-duration: 0.4s; /* Safari */
+  transition-duration: 0.4s;
+  cursor: pointer;
+  border-radius: 4px;
+}
+
+.select_week_days_selected:hover {
+  background: #e7e7e7;
+  color: black;
+}
+
 </style>
 </head>
 
@@ -114,18 +156,35 @@ color:cornflowerblue;
 			Repeats
 			</div>
     <div class="col-md-10"> 
-        <select name="Item_1" class="form-control" id="selectBox" >
+        <select name="Item_1" class="form-control" id="selectBox" onchange="onRepeatChange()" >
           	<option value='100'>None</option>    
           	<option value='110'>Per Minute</option>
           	<option value='120'>Hourly</option> 
            	<option value='200'>Daily</option>
-            <option value='Weekly'>Weekly</option> 
+            <option value='350'>Weekly</option> 
             <option value='250'>Monthly</option> 
             <option value='300'>Yearly</option>         
        </select>
    	</div>
 	</div>
 	</div>
+
+
+  <div id="weekly_repeat_days_div" class="col-md-12" style="padding-bottom: 10px;display:none">
+    <div class="rows">
+     <div class="col-md-12" style="text-align: center;">
+      <button class="select_week_days_default" onclick="toggleWeekDaySelection(this)" value="1">Sun</button>
+      <button class="select_week_days_default" onclick="toggleWeekDaySelection(this)" value="2">Mon</button>
+      <button class="select_week_days_default" onclick="toggleWeekDaySelection(this)" value="3">Tue</button>
+      <button class="select_week_days_default" onclick="toggleWeekDaySelection(this)" value="4">Wed</button>
+      <button class="select_week_days_default" onclick="toggleWeekDaySelection(this)" value="5">Thu</button>
+      <button class="select_week_days_default" onclick="toggleWeekDaySelection(this)" value="6">Fri</button>
+      <button class="select_week_days_default" onclick="toggleWeekDaySelection(this)" value="7">Sat</button>
+      </div>
+  
+  </div>
+   </div>
+  </div>
 
   <div class="col-md-12" style="padding-bottom: 10px;">
   <div class="rows">

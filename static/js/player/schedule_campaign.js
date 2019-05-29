@@ -1,4 +1,4 @@
-
+ var selectedWeekDays = [];
 
  function display_reports(response)
  {
@@ -36,15 +36,14 @@ row.innerHTML='<div class="container" style="background-color: #F7F6F6; border: 
 
  function saveSchedule(pc_id)
  {
-    ajaxindicatorstart("<img src='/static/images/ajax-loader.gif'><br/> Please wait...!");
-
+    
     var dev_id = document.getElementById('selectBox').value;
     var from_date = document.getElementById('datepicker_from').value;
     var to_date = document.getElementById('datepicker_to').value;
     var start_time = document.getElementById('start_time').value;
     var end_time = document.getElementById('end_time').value;
     var priority = document.getElementById('sc_priority').value;
-    
+    var additionalInfo = null;
     if(Number.isInteger(parseInt(priority)) == false)
     {
       priority = 0;
@@ -91,10 +90,26 @@ row.innerHTML='<div class="container" style="background-color: #F7F6F6; border: 
     fromDate = fromDate+" "+start_time+":00";
     toDate = toDate+" "+end_time+":00";
     //alert(fromDate+ " "+toDate+" "+pc_id+" "+dev_id);
-		
+		if(dev_id=="350")
+    {
+      console.log("selectedWeekDays size"+selectedWeekDays.length);
+      if(selectedWeekDays.length<=0)
+      {
+        swal("Please select any one of the week days");
+        return false;
+      }else
+      {
+        var weekDaysArray = {'weekDays':selectedWeekDays};
+        
+        additionalInfo = JSON.stringify(weekDaysArray);
+      }
+    }
+       ajaxindicatorstart("<img src='/static/images/ajax-loader.gif'><br/> Please wait...!");
+
        // displayInitUploadBusyDialog();
        var xhr = new XMLHttpRequest();
-       var params = 'access_token=web&schedule_from='+fromDate+'&schedule_to='+toDate+'&pc_id='+pc_id+'&schedule_type='+dev_id+'&sc_priority='+priority;
+       var params = 'access_token=web&schedule_from='+fromDate+'&schedule_to='+toDate+'&pc_id='+pc_id+'&schedule_type='+dev_id+'&sc_priority='+priority+
+       '&additional_info='+additionalInfo;
     
     
     //swal("Sdfsdf"+xhr.status);
@@ -202,4 +217,33 @@ function deleteSCRow(scId)
 {
     console.log("delete sc row "+scId);
     document.getElementById("sc_rec_table").deleteRow(document.getElementById("sc_rec_row_"+scId).rowIndex);
+}
+
+function toggleWeekDaySelection(daybutton)
+{
+  var weekdayIndex = selectedWeekDays.indexOf(daybutton.value);
+  if(weekdayIndex>=0)
+  {
+    daybutton.className = "select_week_days_default";
+    selectedWeekDays.splice(weekdayIndex,1);
+  }else
+  {
+    selectedWeekDays.push(daybutton.value);
+    daybutton.className = "select_week_days_selected";
+  }
+
+  console.log("selectedWeekDays"+JSON.stringify(selectedWeekDays));
+   
+}
+
+function onRepeatChange()
+{
+   var onRepeatValue = document.getElementById("selectBox").value;
+   if(onRepeatValue == "350")
+   {
+     document.getElementById('weekly_repeat_days_div').style.display ="block"
+   }else
+   {
+    document.getElementById('weekly_repeat_days_div').style.display ="none"
+   }
 }

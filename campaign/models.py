@@ -571,7 +571,8 @@ class Schedule_Campaign(models.Model):
     schedule_to = models.DateTimeField(null=False,blank=False)
     schedule_type = models.SmallIntegerField(default=10)#10->schedule always
     sc_priority = models.IntegerField(default=0)
-
+    additional_info = models.TextField(null=True)
+    
     class Meta:
        indexes = [
            models.Index(fields=['schedule_from', 'schedule_to',]),
@@ -579,7 +580,7 @@ class Schedule_Campaign(models.Model):
     
     
     def saveCampaign(isWeb,accessToken,scheduleFrom,scheduleTo,pcId,scheduleType,
-        scPriority):
+        scPriority,additionalInfo):
         if(isWeb==False):
             accessToken = User_unique_id.getUserId(accessToken);
             if(accessToken == False):
@@ -594,7 +595,8 @@ class Schedule_Campaign(models.Model):
             if(scheduleFrom >= scheduleTo):
                 return {'statusCode':7,'status':'Invalid times','scheduleFrom':scheduleFrom.now(),'scheduleTo':scheduleTo.now()};
             
-            isTimeSlotAvailable = False;
+            isTimeSlotAvailable = True;
+            
             with connection.cursor() as cursor:
                 mhnSchedule = ['100','110','120'];
                 checkSlotQuery=None;cursorParams=[];
@@ -611,13 +613,15 @@ class Schedule_Campaign(models.Model):
                     player_campaign_id = %s  AND schedule_type = %s AND schedule_from = datetime(%s)'''
                     cursorParams = [pcId,scheduleType,scheduleFrom];
                 
-                cursor.execute(checkSlotQuery,cursorParams);  
-                info = cursor.fetchone();
+                if(checkSlotQuery is not None):
+                    cursor.execute(checkSlotQuery,cursorParams);  
+                    info = cursor.fetchone();
                 
-                if (info[0] <= 0):
-                    isTimeSlotAvailable = True;
+                    if (info[0] >=1):
+                        isTimeSlotAvailable = False;
+
             if(isTimeSlotAvailable==False):
-                return {'statusCode':5,'status':'Campaign has been scheduled for the selected times, please select different time','info':info};
+                return {'statusCode':5,'status':'Campaign has been scheduled for the selected times, please select different time'};
             else:
                 #return {'status':True,'info':info}
                 with transaction.atomic():
@@ -631,11 +635,12 @@ class Schedule_Campaign(models.Model):
                     newScheduleCampaign.schedule_to = scheduleTo
                     newScheduleCampaign.schedule_type= scheduleType
                     newScheduleCampaign.sc_priority = scPriority
+                    newScheduleCampaign.additional_info = additionalInfo
                     newScheduleCampaign.save();
-
+                    
                     if(newScheduleCampaign.id>=1):
                         return {'statusCode':0,'status':'Schedule has been saved successfull','id':newScheduleCampaign.id,
-                        'sc_priority':newScheduleCampaign.sc_priority};
+                        'sc_priority':newScheduleCampaign.sc_priority,'additional_info':newScheduleCampaign.additional_info};
                     else:
                         return {'statusCode':6,'status':'Some thing went wrong, please try again later'};
         except Player_Campaign.DoesNotExist:
@@ -660,6 +665,6 @@ class Schedule_Campaign(models.Model):
                 scheduleCampaign.delete();
                 return {'statusCode':0,'status':'Schedule has been removed successfully'};
             else:
-                return {'statusCode':7,'status':'Cannot delete schedule, schedule is already running'};
+                return {'statusCode':7,'status':'Cannot delete an expired schedule'};
         except Schedule_Campaign.DoesNotExist:
             return {'statusCode':6,'status':'Unable to delete schedule, please try again later'};
