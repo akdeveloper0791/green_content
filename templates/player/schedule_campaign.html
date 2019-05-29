@@ -23,7 +23,7 @@ table {
 	background-position: top;
   }
 .user_data{
-color:cornflowerblue;
+color:blue;
 }
 
 
@@ -96,11 +96,15 @@ color:cornflowerblue;
 
 function checkAndUpdateScheduleRepeats()
 {
-
+   
   {% for schedule in schedules %}
    
    document.getElementById('sc_repeates_{{schedule.id}}').innerHTML=getScheduleType('{{schedule.schedule_type}}',
     '{{schedule.additional_info}}');
+   
+     isScheduleActive('{{schedule.id}}','{{schedule.schedule_to}}');
+  
+
  {% endfor %}
 }
 </script>
@@ -235,19 +239,19 @@ function checkAndUpdateScheduleRepeats()
      
       <td style="border: none;"><div class="container" style="background-color: #F7F6F6; border: .2px solid #F7F6F6;
        margin: 1%;position: relative;">
-         <div  style="color:black;">Start: <span class="user_data" >{{ schedule.schedule_from}}</span></div>
-         <div style="color:black;">End: <span class="user_data" >{{ schedule.schedule_to}}</span></div>  
-        <div  style="color:black;">Priority: <span class="user_data" >{{schedule.sc_priority}}</span></div>
+         <div  style="color:black;"><h5 style="display:inline;">Start:</h5> &nbsp <span class="user_data" >{{ schedule.schedule_from}}</span></div>
+         <div style="color:black;"><h5 style="display:inline;">End: </h5> &nbsp <span class="user_data" >{{ schedule.schedule_to}}</span></div>  
+        <div  style="color:black;"><h5 style="display:inline;">Priority:</h5> &nbsp <span class="user_data" >{{schedule.sc_priority}}</span></div>
 
         <div style="color:black;width:76%; line-height: 1.45;
-       display:inline-block; float: left;">Repeats: 
+       display:inline-block; float: left;"><h5 style="display:inline;">Repeats:</h5> &nbsp
        <span id="sc_repeates_{{schedule.id}}" class="user_data"></span>
        </div>
-        <span class="fa fa-trash"  style="cursor:pointer;color:orangered;
+        <span id="sc_rec_delete_row_{{schedule.id}}" class="fa fa-trash"  style="cursor:pointer;color:orangered;
        display:inline-block;width:4%;float: left;margin-left: 01.5%;
        margin-right: 01.5%; "onclick='deleteSC({{ schedule.id}})'></span>
-         <div  style="color:lawngreen;width:6%;margin-right:5px;
-       display:inline-block;float: left;margin-left: 01.5%;margin-right: 01.5%;">ACTIVE</div>  
+         <div  style="color:green;width:6%;margin-right:5px;
+       display:inline-block;float: left;margin-left: 01.5%;margin-right: 01.5%;" id="sc_rec_active_row_{{schedule.id}}">ACTIVE</div>  
 
        
 

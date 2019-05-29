@@ -30,7 +30,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = '01g=xb%so^yf@0l#v0z#duheh33=6cx@-^)#rl!$$dw)40i@g&'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = ['*']
 
@@ -130,7 +130,9 @@ TIME_ZONE = 'Asia/Kolkata'
 
 USE_I18N = True
 
-USE_L10N = True
+DATETIME_FORMAT = 'Y-m-d H:i:s'
+
+USE_L10N = False
 
 USE_TZ = True
 
@@ -143,8 +145,8 @@ USE_TZ = True
 #ADMIN_MEDIA_PREFIX = '/admin/media/'
 
 STATIC_URL = '/static/'
-STATICFILES_DIRS=(os.path.join(BASE_DIR,'static'),)
-#STATIC_ROOT = os.path.join(BASE_DIR, 'static')
+#STATICFILES_DIRS=(os.path.join(BASE_DIR,'static'),)
+STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')

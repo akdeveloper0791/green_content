@@ -1,4 +1,5 @@
  var selectedWeekDays = [];
+ var currentDate = new Date().getTime();
 
  function display_reports(response)
  {
@@ -16,7 +17,7 @@ row.innerHTML='<div class="container" style="background-color: #F7F6F6; border: 
          '<div style="color:black;width:76%; line-height: 1.45;display:inline-block;float: left;">Repeats: <span class="user_data" >'+
          getScheduleType(response.schedules['schedule_type'],response.schedules['additional_info'])+'</span></div>'+
          '<span class="fa fa-trash"  style="cursor:pointer;color:orangered; display:inline-block;width:4%;float: left;margin-left: 01.5%;margin-right: 01.5%; "onclick="deleteSC('+response.schedules['id']+')"></span>'+
-         '<div  style="color:lawngreen;width:6%;margin-right:5px; display:inline-block;float: left;margin-left: 01.5%;margin-right: 01.5%;">ACTIVE</div>'+
+         '<div  style="color:green;width:6%;margin-right:5px; display:inline-block;float: left;margin-left: 01.5%;margin-right: 01.5%;">ACTIVE</div>'+
          '</div>'      
 
 }
@@ -54,6 +55,8 @@ row.innerHTML='<div class="container" style="background-color: #F7F6F6; border: 
       return false;
     }
 
+    
+
     var d = new Date(from_date),
         month = '' + (d.getMonth() + 1),
         day = '' + d.getDate(),
@@ -79,6 +82,13 @@ row.innerHTML='<div class="container" style="background-color: #F7F6F6; border: 
     // }else{
     fromDate = fromDate+" "+start_time+":00";
     toDate = toDate+" "+end_time+":00";
+    
+    if(Date.parse(toDate)<=new Date().getTime())
+    {
+      
+      swal("Error: end time is less than current time");
+      return false;
+    }
     //alert(fromDate+ " "+toDate+" "+pc_id+" "+dev_id);
 		if(dev_id=="350")
     {
@@ -346,6 +356,19 @@ function getWeekDaysInfo(dayInfo)
    }
 
 return day;
+}
+
+function isScheduleActive(scheduleId,scheduleTo)
+{
+  var scheduleDate = new Date(scheduleTo);
+  if(scheduleDate.getTime()<currentDate)
+  {
+  
+    document.getElementById('sc_rec_active_row_'+scheduleId).innerHTML="Expired";
+    document.getElementById('sc_rec_active_row_'+scheduleId).style.color="grey";
+    document.getElementById('sc_rec_delete_row_'+scheduleId).style.display="none";
+   
+  }
 }
 
 
