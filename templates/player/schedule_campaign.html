@@ -233,14 +233,14 @@ function checkAndUpdateScheduleRepeats()
    {% for schedule in schedules %}
     <tr id="sc_rec_row_{{schedule.id}}">
      
-      <td><div class="container" style="background-color: #F7F6F6; border: .2px solid #F7F6F6;
+      <td style="border: none;"><div class="container" style="background-color: #F7F6F6; border: .2px solid #F7F6F6;
        margin: 1%;position: relative;">
-         <div  style="color:gray;">Start:<span class="user_data" >{{ schedule.schedule_from}}</span></div>
-         <div style="color:gray;">End :<span class="user_data" >{{ schedule.schedule_to}}</span></div>  
-        <div  style="color:gray;">Priority :<span class="user_data" >{{schedule.sc_priority}}</span></div>
+         <div  style="color:black;">Start: <span class="user_data" >{{ schedule.schedule_from}}</span></div>
+         <div style="color:black;">End: <span class="user_data" >{{ schedule.schedule_to}}</span></div>  
+        <div  style="color:black;">Priority: <span class="user_data" >{{schedule.sc_priority}}</span></div>
 
-        <div style="color:gray;width:76%; line-height: 1.45;
-       display:inline-block; float: left;">Repeates:
+        <div style="color:black;width:76%; line-height: 1.45;
+       display:inline-block; float: left;">Repeats: 
        <span id="sc_repeates_{{schedule.id}}" class="user_data"></span>
        </div>
         <span class="fa fa-trash"  style="cursor:pointer;color:orangered;

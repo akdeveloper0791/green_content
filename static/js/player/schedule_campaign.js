@@ -10,10 +10,10 @@
   //var cell1 = row.insertCell(0);
   
 row.innerHTML='<div class="container" style="background-color: #F7F6F6; border: .2px solid #F7F6F6; margin: 1%;position: relative;">'+
-         '<div style="color:gray;">Schedule From:<span class="user_data" >'+response.schedules['schedule_from']+'</span></div>'+
-         '<div style="color:gray;">Schedule From:<span class="user_data" >'+response.schedules['schedule_to']+'</span></div>'+
-         '<div style="color:gray;">Schedule Priority :<span class="user_data" >'+response.schedules['sc_priority']+'</span></div>'+
-         '<div style="color:gray;width:76%; line-height: 1.45;display:inline-block;float: left;">Repeates :<span class="user_data" >'+
+         '<div style="color:black;">Start: <span class="user_data" >'+response.schedules['schedule_from']+'</span></div>'+
+         '<div style="color:black;">End: <span class="user_data" >'+response.schedules['schedule_to']+'</span></div>'+
+         '<div style="color:black;">Priority: <span class="user_data" >'+response.schedules['sc_priority']+'</span></div>'+
+         '<div style="color:black;width:76%; line-height: 1.45;display:inline-block;float: left;">Repeats: <span class="user_data" >'+
          getScheduleType(response.schedules['schedule_type'],response.schedules['additional_info'])+'</span></div>'+
          '<span class="fa fa-trash"  style="cursor:pointer;color:orangered; display:inline-block;width:4%;float: left;margin-left: 01.5%;margin-right: 01.5%; "onclick="deleteSC('+response.schedules['id']+')"></span>'+
          '<div  style="color:lawngreen;width:6%;margin-right:5px; display:inline-block;float: left;margin-left: 01.5%;margin-right: 01.5%;">ACTIVE</div>'+
