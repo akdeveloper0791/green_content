@@ -12,24 +12,12 @@
 row.innerHTML='<div class="container" style="background-color: #F7F6F6; border: .2px solid #F7F6F6; margin: 1%;position: relative;">'+
          '<div style="color:gray;">Schedule From:<span class="user_data" >'+response.schedules['schedule_from']+'</span></div>'+
          '<div style="color:gray;">Schedule From:<span class="user_data" >'+response.schedules['schedule_to']+'</span></div>'+
-         '<div style="color:gray;width:76%; line-height: 1.45;display:inline-block;">Schedule Priority :<span class="user_data" >'+response.schedules['sc_priority']+'</span></div>'+
-         '<span class="fa fa-trash"  style="cursor:pointer;color:orangered; display:inline-block;width:4%; "onclick="deleteSC('+response.schedules['id']+')"></span>'+
-         '<div  style="color:lawngreen;width:6%;margin-right:5px; display:inline-block;">ACTIVE</div>'+
-          '<div style="color:gray;">Repeates :<span class="user_data" >'+getScheduleType(response.schedules['schedule_type'])+'</span></div>'+
-       // '<div  style="color:gray;">Repeates :<span class="user_data" >"getScheduleType('+response.schedules['schedule_type']+')"</span></div>'+
-         '</div>'
-         /*<div id="schedule_to" style="color:gray;">Schedule To :<span class="user_data" >{{ schedule.schedule_to}}</span></div>  
-
-        <div id="schedule_priority" style="color:gray;width:76%; line-height: 1.45;
-       display:inline-block;">Schedule Priority :<span class="user_data" >1</span></div>
-        <span id="delete_schedule" class="fa fa-trash"  style="cursor:pointer;color:orangered;
-       display:inline-block;width:4%; "onclick="deleteSC({{ schedule.id}})"></span>
-         <div id="schedule_status" style="color:lawngreen;width:6%;margin-right:5px;
-       display:inline-block;">ACTIVE</div>   
-      </div>'*/
- 
-  
-   
+         '<div style="color:gray;">Schedule Priority :<span class="user_data" >'+response.schedules['sc_priority']+'</span></div>'+
+         '<div style="color:gray;width:76%; line-height: 1.45;display:inline-block;float: left;">Repeates :<span class="user_data" >'+
+         getScheduleType(response.schedules['schedule_type'],response.schedules['additional_info'])+'</span></div>'+
+         '<span class="fa fa-trash"  style="cursor:pointer;color:orangered; display:inline-block;width:4%;float: left;margin-left: 01.5%;margin-right: 01.5%; "onclick="deleteSC('+response.schedules['id']+')"></span>'+
+         '<div  style="color:lawngreen;width:6%;margin-right:5px; display:inline-block;float: left;margin-left: 01.5%;margin-right: 01.5%;">ACTIVE</div>'+
+         '</div>'      
 
 }
  
@@ -254,10 +242,10 @@ function onRepeatChange()
 
 
 
-function getScheduleType(schduleTypeId)
+function getScheduleType(schduleType,additionalInfo)
 {
   var type;
-  switch(parseInt(schduleTypeId))
+  switch(parseInt(schduleType))
   {
     case 100:
     type="None";
@@ -273,6 +261,10 @@ function getScheduleType(schduleTypeId)
 
     case 200:
     type="Daily";
+    break;
+
+    case 350://Weekly will have additionalInfo day wise
+     type=getWeeklyInfo(additionalInfo);
     break;
 
     case 250:
@@ -291,4 +283,69 @@ function getScheduleType(schduleTypeId)
   return type;
 
 }
+
+function getWeeklyInfo(additionalInfo)
+{
+  var extraInfo="";var preAppend="";
+
+ var responseObj =JSON.parse(additionalInfo.replace(/&quot;/g,'"'));
+
+ if (responseObj!=null) 
+ {
+  for (i in responseObj.weekDays)
+        { 
+            extraInfo += preAppend+ getWeekDaysInfo(responseObj.weekDays[i]);
+            preAppend=",";
+        } 
+
+ }else
+ {
+  extraInfo= "None";
+ }
+ 
+ return extraInfo;
+}
+
+
+function getWeekDaysInfo(dayInfo)
+{
+   var day="";
+   switch(parseInt(dayInfo))
+   {
+    case 1:
+     day="Sun";
+     break;
+
+     case 2:
+     day="Mon";
+     break;
+     
+     case 3:
+     day="Tue";
+     break;
+    
+    case 4:
+     day="Wed";
+     break;
+
+   case 5:
+     day="Thu";
+     break;
+
+   case 6:
+     day="Fri";
+     break;
+
+   case 7:
+     day="Sat";
+     break;
+
+     default:
+     day="None";
+     break;
+   }
+
+return day;
+}
+
 
