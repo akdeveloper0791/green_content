@@ -12,9 +12,11 @@
 row.innerHTML='<div class="container" style="background-color: #F7F6F6; border: .2px solid #F7F6F6; margin: 1%;position: relative;">'+
          '<div style="color:gray;">Schedule From:<span class="user_data" >'+response.schedules['schedule_from']+'</span></div>'+
          '<div style="color:gray;">Schedule From:<span class="user_data" >'+response.schedules['schedule_to']+'</span></div>'+
-         '<div id="schedule_priority" style="color:gray;width:76%; line-height: 1.45;display:inline-block;">Schedule Priority :<span class="user_data" >1</span></div>'+
-         '<span id="delete_schedule" class="fa fa-trash"  style="cursor:pointer;color:orangered; display:inline-block;width:4%; "onclick="deleteSC('+response.schedules['id']+')"></span>'+
-         '<div id="schedule_status" style="color:lawngreen;width:6%;margin-right:5px; display:inline-block;">ACTIVE</div>'+
+         '<div style="color:gray;width:76%; line-height: 1.45;display:inline-block;">Schedule Priority :<span class="user_data" >'+response.schedules['sc_priority']+'</span></div>'+
+         '<span class="fa fa-trash"  style="cursor:pointer;color:orangered; display:inline-block;width:4%; "onclick="deleteSC('+response.schedules['id']+')"></span>'+
+         '<div  style="color:lawngreen;width:6%;margin-right:5px; display:inline-block;">ACTIVE</div>'+
+          '<div style="color:gray;">Repeates :<span class="user_data" >'+getScheduleType(response.schedules['schedule_type'])+'</span></div>'+
+       // '<div  style="color:gray;">Repeates :<span class="user_data" >"getScheduleType('+response.schedules['schedule_type']+')"</span></div>'+
          '</div>'
          /*<div id="schedule_to" style="color:gray;">Schedule To :<span class="user_data" >{{ schedule.schedule_to}}</span></div>  
 
@@ -219,6 +221,7 @@ function deleteSCRow(scId)
     document.getElementById("sc_rec_table").deleteRow(document.getElementById("sc_rec_row_"+scId).rowIndex);
 }
 
+
 function toggleWeekDaySelection(daybutton)
 {
   var weekdayIndex = selectedWeekDays.indexOf(daybutton.value);
@@ -247,3 +250,45 @@ function onRepeatChange()
     document.getElementById('weekly_repeat_days_div').style.display ="none"
    }
 }
+
+
+
+
+function getScheduleType(schduleTypeId)
+{
+  var type;
+  switch(parseInt(schduleTypeId))
+  {
+    case 100:
+    type="None";
+    break;
+   
+    case 110:
+    type="Per Minute";
+    break;
+
+    case 120:
+    type="Hourly";
+    break;
+
+    case 200:
+    type="Daily";
+    break;
+
+    case 250:
+    type="Monthly";
+    break;
+   
+    case 300:
+    type="Yearly";
+    break;
+
+   default:
+     type="None";
+      break;
+
+  }
+  return type;
+
+}
+
