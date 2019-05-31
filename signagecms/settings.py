@@ -57,6 +57,7 @@ INSTALLED_APPS = [
     'player',
     'license',
     'device_group',
+    'iot_device',
 ]
 
 MIDDLEWARE = [

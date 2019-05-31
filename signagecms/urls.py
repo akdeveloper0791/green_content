@@ -35,6 +35,7 @@ urlpatterns = [
     path('player/',include('player.urls')),
     path('license/',include('license.urls')),
     path('device_group/',include('device_group.urls')),
+    path('iot_device/',include('iot_device.urls')),
     url(r'^accounts/',include('accounts.urls')),
     url(r'^',include('cmsapp.urls')),
 
