@@ -104,8 +104,10 @@ class Player(models.Model):
           connection.close();
         
       return {'statusCode':0,'players':players};
-        
-
+    
+    def checkForvalidPlayers(players,userId):
+      playerInfo = Player.objects.filter(id__in=players,user_id=userId);
+      return (len(playerInfo)!=len(players));
 
 #metrics modal
 class Metrics(models.Model):

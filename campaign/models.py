@@ -71,9 +71,6 @@ class CampaignInfo(models.Model):
             return {'statusCode':3,'status':
             "Unable to upload campaign "+''.join(saveInfo['error'])}
         
-    
-    
-
     @classmethod
     def createCampaign(cls,userId,name,campType,info,campaignSize,savePath,
         storeLocation):
