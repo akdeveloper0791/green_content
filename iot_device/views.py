@@ -5,6 +5,6 @@ from django.contrib.auth.decorators import login_required
 @login_required
 def contextualAdsRules(request):
     if request.user.is_authenticated:
-        return render(request,'signin.html');
+        return render(request,'iot_device/contextual_ad_rules.html');
     else:
-        return render(request,'signin.html');
+        return render(request,'iot_device/contextual_ad_rules.html');
