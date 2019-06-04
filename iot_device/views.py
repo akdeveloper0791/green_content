@@ -11,7 +11,7 @@ from django.http import JsonResponse
 def contextualAdsRules(request):
     if request.user.is_authenticated:
         devices = IOT_Device.getMyPlayers(request.user.id);
-        return render(request,'signin.html',{'devices':devices});
+        return render(request,'iot_device/contextual_ad_rules.html',{'devices':devices});
     else:
         return render(request,'signin.html');
 

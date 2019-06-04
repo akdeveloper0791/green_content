@@ -78,9 +78,6 @@
 </style>
 </head>
 
-
-
-
 <body>
 
   <!--Navigation bar-->
@@ -111,7 +108,7 @@
             </li>
 
             <li class="nav-item col span_1_of_7" id="gcGroups">
-              <a class="nav-link" href="{% url 'gcGroups' %}" style="text-align: center;padding: 0 20px;margin-bottom: 0;">Content Partners</a>
+              <a class="nav-link" href="{% url 'gcGroups' %}" style="text-align: center;padding: 0px;margin-bottom: 0;">Content Partners</a>
             </li>
             <li class="nav-item col span_1_of_7" id="campaigns">
               <a class="nav-link" href="{% url 'campaignReports' %}" style="text-align: center;padding: 0px;margin-bottom: 0;">Campaign Reports</a>
@@ -121,9 +118,12 @@
               <a class="nav-link"  href="{% url 'viewerMetrics' %}" style="text-align: center;padding: 0px;margin-bottom: 0;">ADview Reports</a>
 
             </li>
+
+            <li class="nav-item col span_1_of_7" id="contextualAdsRules">
+              <a class="nav-link"  href="{% url 'contextualAdsRules' %}" style="text-align: center;padding: 0px;margin-bottom: 0;">Contextual Advertising</a>
+
+            </li>
          
-  
-           
             <li class="nav-item col span_1_of_7">
               <a class="nav-link"  href="{% url 'logout' %}" style="text-align: center;padding: 0px;margin-bottom: 0;">{{ request.user.first_name}} (Logout)</a>
             </li>
