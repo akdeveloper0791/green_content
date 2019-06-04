@@ -84,13 +84,20 @@ class Player(models.Model):
       player = Player.objects.filter(user_id=userId);
       return list(player.values());
 
-    def isMyPlayer(playerId,userId):
+    def isMyPlayer(playerId,userId,isPlayerId=True):
       try:
-        player = Player.objects.get(id=playerId,
-          user_id=userId);
+        player=None;
+        if(isPlayerId==True):
+          player = Player.objects.get(id=playerId,
+            user_id=userId);
+        else:
+          player = Player.objects.get(mac=playerId,
+            user_id=userId);
         return player;
       except Player.DoesNotExist:
         return False;
+
+
 
     def listPlayersToPublishCamp(campaignId,userId):
       

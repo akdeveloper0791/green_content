@@ -8,9 +8,16 @@ from cmsapp.models import User_unique_id
 from django.db import IntegrityError
 from campaign.models import Player_Campaign
 from player.models import Player
-from django.db import transaction
+from django.db import transaction, connection
 
 # Create your models here.
+def dictfetchall(cursor):
+    
+    columns = [col[0] for col in cursor.description]
+    return [
+        dict(zip(columns, row))
+        for row in cursor.fetchall()
+    ]
 
 class IOT_Device(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL,on_delete=models.CASCADE)
@@ -122,12 +129,194 @@ class Contextual_Ads_Rule(models.Model):
             return {'statusCode':3,'status':
                 "error "+str(e)};
 
+    def deleteRule(ruleId,userId,isWeb):
+        if(isWeb == False):
+            userId = User_unique_id.getUserId(userId);
+            if(userId == False):
+                return {'statusCode':1,'status':
+                "Invalid session, please login"};
+        
+        try:
+           #check for device
+           ruleInfo = Contextual_Ads_Rule.objects.get(id=ruleId,iot_device__user_id=userId);
+           ruleInfo.delete();
+           return {'statusCode':0,'status':'Rule has been deleted'};
+
+        except Contextual_Ads_Rule.DoesNotExist as ex:
+            return {'statusCode':3,'status':
+                "Invalid request parameters rule not found,"+str(ex)};
+        
+        except ValueError as ex:
+            return {'statusCode':3,'status':
+                "Invalid request parameters unable to parse,"+str(ex)};
+
+        except Exception as e:
+            return {'statusCode':3,'status':
+                "error "+str(e)};
+
 #contextual ads rules associated campaigns
 class CAR_Campaign(models.Model):
     car = models.ForeignKey('iot_device.Contextual_Ads_Rule',on_delete=models.CASCADE)
     campaign = models.ForeignKey('cmsapp.Multiple_campaign_upload',on_delete=models.CASCADE)
+    
+    class Meta(object):
+        unique_together = [
+        ['car','campaign']
+        ]
+
+    def assignNew(ruleId,userId,campaigns,isWeb):
+          if(isWeb == False):
+              userId = User_unique_id.getUserId(userId);
+              if(userId == False):
+                  return {'statusCode':1,'status':
+                  "Invalid session, please login"};
+          
+          try:
+             #check for device
+             ruleInfo = Contextual_Ads_Rule.objects.get(id=ruleId,iot_device__user_id=userId);
+             campaigns = json.loads(campaigns);
+             #check for campaigns
+             if(Player_Campaign.checkForvalidCampaigns(campaigns,userId)==False):
+              return {'statusCode':7,'status':'Some of the campaigns are not found, please refresh and try again later'};
+             
+             bulkInsertCARCampaigns = [];
+             for campaignId in campaigns:
+              bulkInsertCARCampaigns.append(CAR_Campaign(car_id=ruleId,campaign_id=campaignId));
+
+             CAR_Campaign.objects.bulk_create(bulkInsertCARCampaigns);
+
+             return {'statusCode':0,'status':'Campaigns have been inserted successfully'};
+
+          except Contextual_Ads_Rule.DoesNotExist as ex:
+              return {'statusCode':3,'status':
+                  "Invalid request parameters rule not found,"+str(ex)};
+          
+          except IntegrityError as e:
+            return {'statusCode':5,'status':
+            "Player has already some of the campaigns provided, please check and add again "};
+
+          except Exception as e:
+              return {'statusCode':3,'status':
+                  "error "+str(e)};
+
+    def remove(ruleId,userId,campaigns,isWeb):
+          if(isWeb == False):
+              userId = User_unique_id.getUserId(userId);
+              if(userId == False):
+                  return {'statusCode':1,'status':
+                  "Invalid session, please login"};
+          
+          try:
+             #check for device
+             ruleInfo = Contextual_Ads_Rule.objects.get(id=ruleId,iot_device__user_id=userId);
+             campaigns = json.loads(campaigns);
+                           
+             CAR_Campaign.objects.filter(car_id=ruleId,campaign_id__in=campaigns).delete();
+             
+             return {'statusCode':0,'status':'Campaigns have been removed successfully'};
+
+          except Contextual_Ads_Rule.DoesNotExist as ex:
+              return {'statusCode':3,'status':
+                  "Invalid request parameters rule not found,"+str(ex)};
+          
+          
+          except Exception as e:
+              return {'statusCode':3,'status':
+                  "error "+str(e)};
 
 #contextual ads rules associated DSP(signages)
 class CAR_Device(models.Model):
     car = models.ForeignKey('iot_device.Contextual_Ads_Rule',on_delete=models.CASCADE)
     player = models.ForeignKey('player.Player',on_delete=models.CASCADE)
+    
+    class Meta(object):
+        unique_together = [
+        ['car','player']
+        ]
+
+    def assignNew(ruleId,userId,players,isWeb):
+          if(isWeb == False):
+              userId = User_unique_id.getUserId(userId);
+              if(userId == False):
+                  return {'statusCode':1,'status':
+                  "Invalid session, please login"};
+          
+          try:
+             #check for device
+             ruleInfo = Contextual_Ads_Rule.objects.get(id=ruleId,iot_device__user_id=userId);
+             players = json.loads(players);
+             #check for campaigns
+             if(Player.checkForvalidPlayers(players,userId)):
+              return {'statusCode':7,'status':'Some of the players are not found, please refresh and try again later'};
+             
+             bulkInsertCARPlayers = [];
+             for playerId in players:
+              bulkInsertCARPlayers.append(CAR_Device(car_id=ruleId,player_id=playerId));
+
+             CAR_Device.objects.bulk_create(bulkInsertCARPlayers);
+
+             return {'statusCode':0,'status':'Devices have been assigned successfully'};
+
+          except Contextual_Ads_Rule.DoesNotExist as ex:
+              return {'statusCode':3,'status':
+                  "Invalid request parameters rule not found,"+str(ex)};
+          
+          except IntegrityError as e:
+            return {'statusCode':5,'status':
+            "Player has already some of the devices provided, please check and add again "};
+
+          except Exception as e:
+              return {'statusCode':3,'status':
+                  "error "+str(e)};
+
+    def remove(ruleId,userId,players,isWeb):
+          if(isWeb == False):
+              userId = User_unique_id.getUserId(userId);
+              if(userId == False):
+                  return {'statusCode':1,'status':
+                  "Invalid session, please login"};
+          
+          try:
+             #check for device
+             ruleInfo = Contextual_Ads_Rule.objects.get(id=ruleId,iot_device__user_id=userId);
+             players = json.loads(players);
+                           
+             CAR_Device.objects.filter(car_id=ruleId,player_id__in=players).delete();
+             
+             return {'statusCode':0,'status':'Devices have been removed successfully'};
+
+          except Contextual_Ads_Rule.DoesNotExist as ex:
+              return {'statusCode':3,'status':
+                  "Invalid request parameters rule not found,"+str(ex)};
+          
+          
+          except Exception as e:
+              return {'statusCode':3,'status':
+                  "error "+str(e)};
+
+    def getAssignedRules(secretKey,isUserId,playerMac):
+      userId = secretKey;
+      if(isUserId==False):
+            userId = User_unique_id.getUserId(secretKey);
+            if(userId == False):
+                return {'statusCode':1,'status':
+                "Invalid session, please login"};
+      playerInfo = Player.isMyPlayer(playerMac,userId,False);
+      if(playerInfo==False):
+        return {'statusCode':6,'status':'Invalid player'}
+      with connection.cursor() as cursor:
+        conditionQuery = '''SELECT rules.*, camInfo.info, campaigns.*  FROM iot_device_car_device as iot_devices 
+            INNER JOIN iot_device_contextual_ads_rule as rules ON iot_devices.car_id = rules.id LEFT JOIN 
+            iot_device_car_campaign as rule_campaigns ON rules.id = rule_campaigns.car_id INNER JOIN 
+            cmsapp_multiple_campaign_upload as campaigns ON rule_campaigns.campaign_id = campaigns.id LEFT JOIN 
+            campaign_campaigninfo as camInfo ON campaigns.id = camInfo.campaign_id_id WHERE (iot_devices.player_id=%s) 
+            group by campaigns.id ORDER BY campaigns.updated_date DESC'''
+            
+        cursor.execute(conditionQuery,[playerInfo.id])
+        rules = dictfetchall(cursor);
+        if(len(rules)<=0):
+            return {'statusCode':2,'status':
+            'No rules Found','conditionQuery':str(conditionQuery)};
+        else:
+            return {'statusCode':0,'rules':rules};
+

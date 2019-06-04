@@ -662,4 +662,26 @@ def scheduleCampaign(request,player,campaign):
     schedules = Schedule_Campaign.getPCSchedules(playerCampaign.id);
     return render(request,'player/schedule_campaign.html',{'status':True,'pc_id':playerCampaign.id,'schedules':schedules,'player_name':playerInfo.name,
         'camapaign_name':campaignInfo['c_name']});
+
+from iot_device.models import CAR_Device
+
+@api_view(['POST'])
+def getCARules(request):   
+    if(request.method == 'POST'):
+        postParams = request.POST;
+        isUserId = False;
+        secretKey = request.POST.get("accessToken")
+        if(secretKey=='web'):
+            isUserId = True;
+            if(request.user.is_authenticated):
+                secretKey = request.user.id;
+            else:
+                return JsonResponse(
+                    {'statusCode':2,'status':"Invalid accessToken please login"});
+            
+        result = CAR_Device.getAssignedRules(secretKey,isUserId,postParams.get('p_mac'));
+        return JsonResponse(result); 
+    
+
+
     
