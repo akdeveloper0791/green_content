@@ -11,4 +11,7 @@ urlpatterns = [
     path('removeCampaignsFromRule',views.removeCampaignsFromCARule,name="removeCampaignsFromCARule"),
     path('assignDevicesToRule',views.assignDevicesToRule,name="assignDevicesToRule"),
     path('removeDevicesFromRule',views.removeDevicesFromRule,name="removeDevicesFromRule"),
+    path('getCARules',views.getCARules,name="getIOTDeviceCARules"),
+    path('getCARuleInfo',views.getCARuleInfo,name="getIOTDeviceCARuleInfo"),
+    path('metrics',views.metrics,name='iotDeviceMetrics'),
     ]

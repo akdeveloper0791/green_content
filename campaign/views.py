@@ -230,7 +230,6 @@ def saveScheduleCampaign(request):
         postParams.get('schedule_from'),postParams.get('schedule_to'),postParams.get('pc_id'),
         postParams.get('schedule_type'),postParams.get('sc_priority'),postParams.get('additional_info'));
     if(saveResponse['statusCode']==0):
-        
         #schedules = Schedule_Campaign.getPCSchedule(postParams.get('pc_id'),);
         saveResponse['schedules'] = {'id':saveResponse['id'],'schedule_from':postParams.get('schedule_from'),
             'schedule_to':postParams.get('schedule_to'),'schedule_type':postParams.get('schedule_type'),

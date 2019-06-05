@@ -681,6 +681,23 @@ def getCARules(request):
             
         result = CAR_Device.getAssignedRules(secretKey,isUserId,postParams.get('p_mac'));
         return JsonResponse(result); 
+
+@api_view(['POST'])
+def getPlayers(request):   
+    if(request.method == 'POST'):
+        postParams = request.POST;
+        isUserId = False;
+        secretKey = request.POST.get("accessToken")
+        if(secretKey=='web'):
+            isUserId = True;
+            if(request.user.is_authenticated):
+                secretKey = request.user.id;
+            else:
+                return JsonResponse(
+                    {'statusCode':2,'status':"Invalid accessToken please login"});
+            
+        result = Player.getPlayers(secretKey,isUserId);
+        return JsonResponse(result); 
     
 
 

@@ -27,4 +27,5 @@ urlpatterns = [
     path('assignCampaignsToPlayer/',views.assignCampaignsToPlayer,name="assignCampaignsToPlayer"),
     path('schedule_campaign/<int:player>/<int:campaign>',views.scheduleCampaign,name="scheduleCampaign"),
     path('getCARules/',views.getCARules, name='getPlayerCARules'),
+    path('getPlayers/',views.getPlayers, name='getPlayers'),
     ]
