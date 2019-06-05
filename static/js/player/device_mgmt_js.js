@@ -99,8 +99,7 @@ function displayPlayerCampaigns(campaigns,pId)
               deleteCell.innerHTML = "<span class='fa fa-trash' alt='Remove' title='Remove' onclick='removeCampaign("+campaign.id+")'>"             
              }
             }
- 
-         
+  
          dvTable.innerHTML = "";
          dvTable.appendChild(table);
       }else

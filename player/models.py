@@ -83,7 +83,20 @@ class Player(models.Model):
     def getMyPlayers(userId):
       player = Player.objects.filter(user_id=userId);
       return list(player.values());
-
+    
+    def getPlayers(secretKey,isUserId):
+      userId = secretKey;
+      if(isUserId==False):
+            userId = User_unique_id.getUserId(secretKey);
+            if(userId == False):
+                return {'statusCode':1,'status':
+                "Invalid session, please login"};
+      players = Player.getMyPlayers(userId);
+      if(len(players)>=1):
+        return {'statusCode':0,'players':players}
+      else:
+        return {'statusCode':2,'status':'No players found'};
+        
     def isMyPlayer(playerId,userId,isPlayerId=True):
       try:
         player=None;

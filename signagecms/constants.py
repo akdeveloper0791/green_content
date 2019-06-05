@@ -16,6 +16,10 @@ file_storage_path="C:/Users/Jitendra/python_projects/green_content/media";
 
 STORE_LOCATION = 1; #2-> dropbox , 1-> local
 
+setup = 1; #2 server, 1->local
+project_local_path = "C:/Users/Jitendra/python_projects/green_content"
+project_server_path = "/home/adskite/myproject/signagecms"
+
 #schedule types
 schedule_always= 10
 schedule_custom = 100

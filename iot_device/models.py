@@ -10,6 +10,7 @@ from campaign.models import Player_Campaign
 from player.models import Player
 from django.db import transaction, connection
 
+
 # Create your models here.
 def dictfetchall(cursor):
     
@@ -65,6 +66,65 @@ class IOT_Device(models.Model):
       except IOT_Device.DoesNotExist:
         return False;
 
+    def getPlayer(playerId,playerKey):
+      try:
+        player = IOT_Device.objects.get(id=playerId,
+          key=playerKey);
+        return player.id;
+      except IOT_Device.DoesNotExist:
+        return False;
+
+    def getContextualAdRules(secretKey,isUserId,playerKey):
+      userId = secretKey;
+      if(isUserId==False):
+            userId = User_unique_id.getUserId(secretKey);
+            if(userId == False):
+                return {'statusCode':1,'status':
+                "Invalid session, please login11"};
+      playerInfo = IOT_Device.isMyPlayer(playerKey,userId);
+      if(playerInfo==False):
+        return {'statusCode':6,'status':'Invalid player'}
+      
+      rules = Contextual_Ads_Rule.objects.filter(iot_device = playerInfo).values();
+      if(len(rules)>=1):
+        return {'statusCode':0,'rules':list(rules)};
+      else:
+        return {'statusCode':2,'status':'No rules found'};
+    
+    def getContextualAdRuleInfo(secretKey,isUserId,ruleId,isCampaigns=True,isDevices=True):
+      userId = secretKey;
+      if(isUserId==False):
+            userId = User_unique_id.getUserId(secretKey);
+            if(userId == False):
+                return {'statusCode':1,'status':
+                "Invalid session, please login11"};
+
+      try:
+        #check for device
+        ruleInfo = Contextual_Ads_Rule.objects.get(id=ruleId,iot_device__user_id=userId);
+        info={'id':ruleInfo.id,'classifier':ruleInfo.classifier,
+        'delay_time':ruleInfo.delay_time,'created_at':ruleInfo.created_at};
+        returnJSON = {'statusCode':0,'rule':info};
+        
+        if(isCampaigns==True):
+          associatedCampaigns = CAR_Campaign.objects.filter(car_id=ruleInfo.id).values('campaign__campaign_name','campaign__id');
+          returnJSON['campaigns'] =list(associatedCampaigns);
+        
+        if(isDevices==True):
+          with connection.cursor() as cursor:
+            query = '''SELECT player.id,player.name,car_device.id as car_device_Id FROM player_player as player 
+              LEFT JOIN iot_device_car_device as car_device ON player.id = car_device.player_id AND car_device.car_id=%s 
+              WHERE (player.user_id=%s)'''
+            cursor.execute(query,[ruleInfo.id,userId]);
+            associatedDevices = dictfetchall(cursor);
+            returnJSON['devices'] =list(associatedDevices);
+        
+        return returnJSON;
+
+      except Contextual_Ads_Rule.DoesNotExist:
+        return {'statusCode':2,'status':'Invalid rule, info not found'}
+
+
 class Contextual_Ads_Rule(models.Model):
     iot_device = models.ForeignKey('iot_device.IOT_Device',on_delete=models.CASCADE)
     classifier = models.CharField(max_length=125,blank=False,null=False,db_index=True)
@@ -114,7 +174,7 @@ class Contextual_Ads_Rule(models.Model):
 
                 CAR_Device.objects.bulk_create(bulkInsertCARPlayers);
 
-           return {'statusCode':0,'status':'Rule has been created'};
+           return {'statusCode':0,'status':'Rule has been created','id':ca_rule.id};
            
            
         except ValueError as ex:
@@ -305,8 +365,8 @@ class CAR_Device(models.Model):
       if(playerInfo==False):
         return {'statusCode':6,'status':'Invalid player'}
       with connection.cursor() as cursor:
-        conditionQuery = '''SELECT rules.*, camInfo.info, campaigns.*  FROM iot_device_car_device as iot_devices 
-            INNER JOIN iot_device_contextual_ads_rule as rules ON iot_devices.car_id = rules.id LEFT JOIN 
+        conditionQuery = '''SELECT rules.id as rule_id,rules.classifier,rules.delay_time, camInfo.info, campaigns.*  FROM iot_device_car_device as iot_devices 
+            INNER JOIN iot_device_contextual_ads_rule as rules ON iot_devices.car_id = rules.id INNER JOIN 
             iot_device_car_campaign as rule_campaigns ON rules.id = rule_campaigns.car_id INNER JOIN 
             cmsapp_multiple_campaign_upload as campaigns ON rule_campaigns.campaign_id = campaigns.id LEFT JOIN 
             campaign_campaigninfo as camInfo ON campaigns.id = camInfo.campaign_id_id WHERE (iot_devices.player_id=%s) 
@@ -316,7 +376,57 @@ class CAR_Device(models.Model):
         rules = dictfetchall(cursor);
         if(len(rules)<=0):
             return {'statusCode':2,'status':
-            'No rules Found','conditionQuery':str(conditionQuery)};
+            'No rules Found'};
         else:
             return {'statusCode':0,'rules':rules};
 
+class Age_Geder_Metrics(models.Model):
+  iot_device = models.ForeignKey('iot_device.IOT_Device',on_delete=models.CASCADE,db_index=True)
+  created_at = models.DateTimeField(default=timezone.now,blank=False,null=False)
+  g_male=models.IntegerField(default=0)
+  g_female=models.IntegerField(default=0)
+  age_0_2 = models.IntegerField(default=0)
+  age_4_6 = models.IntegerField(default=0)
+  age_8_12 = models.IntegerField(default=0)
+  age_15_20 = models.IntegerField(default=0)
+  age_25_32 = models.IntegerField(default=0)
+  age_38_43 = models.IntegerField(default=0)
+  age_48_53 = models.IntegerField(default=0)
+  age_60_100 = models.IntegerField(default=0)
+
+  def saveMetrics(player,genders,ages):
+    try:
+      metrics = Age_Geder_Metrics(iot_device_id=player);
+      #save gender metrics
+      if "Female" in genders:
+        metrics.g_female = genders['Female'];
+      if "Male" in genders:
+        metrics.g_male = genders['Male']
+
+      #age metrics 
+      for age in ages:
+        if age == "0":
+          metrics.age_0_2 = ages[age];
+        elif age == "1":
+          metrics.age_4_6 = ages[age];
+        elif age == "2":
+          metrics.age_8_12 = ages[age];
+        elif age == "3":
+          metrics.age_15_20 = ages[age];
+        elif age == "4":
+          metrics.age_25_32 = ages[age];
+        elif age == "5":
+          metrics.age_38_43 = ages[age];
+        elif age == "6":
+          metrics.age_48_53 = ages[age];
+        elif age == "7":
+          metrics.age_60_100 = ages[age];
+     
+      
+      metrics.save();
+      if(metrics.id>=1):
+        return {'statusCode':0}
+      else:
+        return {'statusCode':1,'status':"Unable to save metrics"};
+    except Exception as ex:
+      return {'statusCode':1,'status':"Unable to save metrics - "+str(ex)};
