@@ -1,15 +1,20 @@
 
+var campaignsList=[];
+var playersList=[];
 
 function showRuleCreationBtn() 
  {
 	var creation_btn = document.getElementById("create_btn");
-	var dev_id=document.getElementById("dev_id");
-    if(dev_id.value=="0")
+	var deviceId=document.getElementById("dev_id");
+    if(deviceId.value=="0")
     {
      creation_btn.style.display = "none";  
     }
     else{
-          creation_btn.style.display = "block";
+    creation_btn.style.display = "block";
+	document.getElementById("submit_btn").style.display="none";
+	document.getElementById("rules_form").style.display="none";
+         
     }
 
 }
@@ -22,14 +27,25 @@ function displayRulesCreationForm()
 	creation_btn.style.display ="none";
 	submit_btn.style.display="block";
 	document.getElementById("rules_form").style.display="block";
+
+    displayCampaignsList();
+	if(playersList!=null)
+	{
+
+	}else
+	{
+         carpGetPlayersList();
+	}
+
 }
 
-function lmcbGetCampaigns()
+
+//to get the campaigns list
+function carpGetCampaigns()
   {
     try {
-        ajaxindicatorstart("<img src='{% static "images/ajax-loader.gif" %}'><br/> Please wait...!");
-
-    $.aja
+       
+    $.ajax(
     {
 
       type:'POST',
@@ -37,41 +53,127 @@ function lmcbGetCampaigns()
       headers: {            
             'X-CSRFToken':'{{ csrf_token }}'
         },
-      data
+      data:{
                 secretKey: 'web',
                 
       },
       
       success: function(data)
        {
-         ajaxindicatorstop();
         
-
         if(data['statusCode']==0)
         {
+        	campaignsList=data['campaigns'];
              
-            lmcbDisplayCampaigns(data['campaigns']);      
+            displayCampaignsList();
+           
         }
        else
        {
 
-           swal(data['status']);                               
+             swal(data['status']);
+                                 
        }
 
+    
        },
     
      error: function (jqXHR, exception) {
-      ajaxindicatorstop();
       console.log(jqXHR.responseText);
 
       swal(exception+jqXHR.responseText);
      }
 
-       });
+    });
     }
       catch(Exception)
       {
         swal(Exception.message);
         }
+  }
+
+//to get the players list
+  function carpGetPlayersList()
+  {
+    try {
+       
+    $.ajax(
+    {
+
+      type:'POST',
+      url: '/player/getPlayers/',
+      headers: {            
+            'X-CSRFToken':'{{ csrf_token }}'
+        },
+      data:{
+                accessToken: 'web',
+                
+      },
+     
+      success: function(data)
+       {
+        
+        if(data['statusCode']==0)
+        {
+             
+            carpDisplayCampaigns(data['players']);
+           
+        }
+       else
+       {
+
+             swal(data['status']);
+                                 
+       }
+
+    
+       },
+    
+     error: function (jqXHR, exception) {
+      console.log(jqXHR.responseText);
+
+      swal(exception+jqXHR.responseText);
+     }
+
+    });
+    }
+      catch(Exception)
+      {
+        swal(Exception.message);
+        }
+  }
+
+  function displayCampaignsList()
+  {
+
+	if(campaignsList!=null && campaignsList.length>0)
+	{
+
+        for (var i = 0; i < campaignsList.length; i++) 
+        {
+          
+        }
+      
+	}else
+	{
+          carpGetCampaigns();
+	}
+
+  }
+
+  function displayPlayersList()
+  {
+  	if(playersList!=null && playersList.length>0)
+  	{
+  		for (var i = 0; i < playersList.length; i++) 
+        {
+          
+        }
+  	}else
+	{
+          carpGetPlayersList();
+	}
+
+
   }
 

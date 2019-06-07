@@ -39,32 +39,32 @@
 		         {% endfor %}
 	          
     </select>	
- 
-  <button id="rule_creation" style="float: right;" class="gradient-button gradient-btn" onclick="ruleCreationForm();"><i class="fa fa-plus">Create Rule</i></button>
-
-  <button id="form_submit" style="float: right;display: none;" class="gradient-button gradient-btn" onclick="">Submit</button>
- 
   </div>
+   <button id="create_btn" style="float: right;display:none;" class="gradient-button gradient-btn" onclick="displayRulesCreationForm();"><i class="fa fa-plus">Create Rule</i></button>
+
+  <button id="submit_btn" style="float: right;display: none;" class="gradient-button gradient-btn" onclick="">Submit</button>
+ 
 </div>
 
 
-<div id="rules_form" class="container" style="display:block;border: 1px solid darkgreen;
+<div id="rules_form" class="container" style="display:none;border: 1px solid darkgreen;
     border-radius: 8px;"> 
 <form  style="margin: 10px;">
 	<label>Classifier</label>
-	<select name="classifier_spn" class="form-control" id="classifier_type" 
-	  onchange="">
+	<select name="classifier_list" class="form-control" id="classifier_type" 
+	  onchange="" required>
 	      <option value="0">Select Classifier</option>
 	       <option value="0">Men</option>
 	        <option value="0">Women</option>
 	         <option value="0">Family</option>    
    	</select>
 <label>Delay(sec)</label>
-<input type="input" name="delay duration" class="form-control" id="delay_duration">
+<input type="input" name="delay duration" class="form-control" id="delay_duration" 
+placeholder="0" value="0" required>
 
 <label>Players</label>
 	<select name="Player List" class="form-control"  id="players_list"
-	  onchange="">
+	  onchange="" required>
 	      <option value="0">Select Players</option>
 	       <option value="0">Men</option>
 	        <option value="0">Women</option>
@@ -73,7 +73,7 @@
 
    	<label>Campaigns</label>
 	<select name="Campaign List" class="form-control" id="campaigns_list" 
-	  onchange="">
+	  onchange="" required>
 	      <option value="0">Select Campaigns</option>
 	       <option value="0">Men</option>
 	        <option value="0">Women</option>
