@@ -20,7 +20,7 @@ function getCampaignInfo(playerId)
 		  success: function(data)
 		   {
 		   	 ajaxindicatorstop();
-			
+			console.log("data"+JSON.stringify(data));
             
             if(data['statusCode']==0)
 		    {
@@ -76,9 +76,10 @@ function displayPlayerCampaigns(campaigns,pId)
 		 table.classList.add("info")
 		 table.border = "0";
 		 table.style.borderSpacing = "20px";
+		 
 		 //Get the count of columns.
 		  var columnCount = 5;
-		 
+
 		    
 		  for (var i = 0; i < campaigns.length; i++) 
 		  {
@@ -91,6 +92,24 @@ function displayPlayerCampaigns(campaigns,pId)
 
               var cell = row.insertCell(-1);
               cell.innerHTML =campaign.campaign_name;
+              
+              //skip toggle 
+              var cell = row.insertCell(-1);
+              if((campaign['is_skip']==1?true:false)==true)
+              {
+              	cell.innerHTML = '<div style="margin:10px"> <label class="switch switch-yes-no">'+
+					'<input class="switch-input" type="checkbox" checked onclick="skipCampaign(this,'+campaign.id+','+pId+');"/>'+
+					'<span class="switch-label" data-on="Skipped" data-off="Skip"></span>'+ 
+					'<span class="switch-handle"></span> </label> </div>'
+				}else
+				{
+					cell.innerHTML = '<div style="margin:10px"> <label class="switch switch-yes-no">'+
+					'<input class="switch-input" type="checkbox"  onclick="skipCampaign(this,'+campaign.id+','+pId+');"/>'+
+					'<span class="switch-label" data-on="Skipped" data-off="Skip"></span>'+ 
+					'<span class="switch-handle"></span> </label> </div>'
+				}
+
+
               
               var scheduleCell = row.insertCell(-1);
               scheduleCell.innerHTML = "<a class='fa fa-calendar' href='/player/schedule_campaign/"+pId+"/"+campaign.id+"' alt='Schedule' title='Schedule' style='cursor:pointer;'></a>";
@@ -253,5 +272,62 @@ function removeCampaign(campaignId)
 				alert(Exception.message);
 		 }
 		
+}
+
+
+
+function skipCampaign(checkbox,cId,pId)
+{
+  try {
+        ajaxindicatorstart("<img src='/static/images/ajax-loader.gif'><br/> Please wait...!");
+       
+		$.ajax(
+		{
+
+		  type:'POST',
+		  url: '/player/skipCampaigns/',
+		  headers: {		        
+		        'X-CSRFToken': csrf_token
+		    },
+		  data:{
+                accessToken: 'web',
+                pId: pId,
+                cId:cId,
+                is_skip:(checkbox.checked==true?1:0)
+                
+		  },
+		  
+		  success: function(data)
+		   {
+		   	 ajaxindicatorstop();
+			console.log("data"+JSON.stringify(data));
+            
+            if(data['statusCode']==0)
+		    {
+             
+             //displayCampaignInfo(data,playerId);
+            
+			}
+			else
+			{
+
+             swal(data['status']);
+                                    
+			}
+
+		   },
+		
+		 error: function (jqXHR, exception) {
+		 	ajaxindicatorstop();
+		 	alert(exception+jqXHR.responseText);
+		 }
+
+		});
 	}
+	catch(Exception)
+    {
+    	ajaxindicatorstop();
+		alert(Exception.message);
+	}	
+}
 

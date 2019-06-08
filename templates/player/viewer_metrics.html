@@ -223,7 +223,7 @@ function display_reports(responseObj){
          date = date.getDate()+"-"+(date.getMonth()+1)+"-"+date.getFullYear() + " "+date.getHours()+":"+date.getMinutes()+":"+date.getSeconds();
 
         
-		      new_rows += '<tr><td style="color:#5FCF80;font-weight: bold">'+metrics.player__name+'</td><td>'+date+'</td><td>'+metrics.g_male+'</td><td>'+metrics.g_female+'</td><td>'+metrics.age_0_2+'</td><td>'+metrics.age_4_6+'</td><td>'+metrics.age_8_12+'</td><td>'+metrics.age_15_20+'</td><td>'+metrics.age_25_32+'</td><td>'+metrics.age_38_43+'</td><td>'+metrics.age_48_53+'</td><td>'+metrics.age_60_100+'</td></tr>';  
+		      new_rows += '<tr><td style="color:#5FCF80;font-weight: bold">'+metrics.iot_device__name+'</td><td>'+date+'</td><td>'+metrics.g_male+'</td><td>'+metrics.g_female+'</td><td>'+metrics.age_0_2+'</td><td>'+metrics.age_4_6+'</td><td>'+metrics.age_8_12+'</td><td>'+metrics.age_15_20+'</td><td>'+metrics.age_25_32+'</td><td>'+metrics.age_38_43+'</td><td>'+metrics.age_48_53+'</td><td>'+metrics.age_60_100+'</td></tr>';  
 		
     }
 
@@ -292,11 +292,12 @@ function display_reports(responseObj){
 		    swal('No internet');
 		  };
 
-    xhr.open('POST', '/player/get_v_metrics');
+    xhr.open('POST', '/iot_device/get_v_metrics');
      
     xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
 
     xhr.setRequestHeader("X-CSRFToken", '{{ csrf_token }}');
+    
     xhr.send(params);
 		}
 		
@@ -355,7 +356,7 @@ function display_reports(responseObj){
         swal('No internet');
       };
 
-    xhr.open('POST', '/player/exportViewerMetrics/');
+    xhr.open('POST', '/iot_device/exportViewerMetrics/');
      
     xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
 

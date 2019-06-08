@@ -333,9 +333,9 @@ def read_cv_image(path=None, stream=None, url=None):
 
 def calculateAutoCampaignRule(ages,genders,faces):
     if("Male" in genders and genders['Male']==len(faces)):
-        return "male";
+        return "Male";
     elif("Female" in genders and genders['Female']==len(faces)):
-        return "woman";
+        return "Female";
     elif(len(faces)==2 and "Female" in genders and "Male" in genders):
         #check for couples
         gender_pos=0;femaleAge=0;maleAge=0;
@@ -367,3 +367,119 @@ def calculateAutoCampaignRule(ages,genders,faces):
             return "family";
     else:
         return "family";
+
+@login_required
+def viewerMetrics(request):
+    if request.user.is_authenticated:
+        devices = IOT_Device.getMyPlayers(request.user.id);
+        return render(request,'player/viewer_metrics.html',{'devices':devices})
+    else:
+        return render(request,'signin.html');
+
+@api_view(['POST'])
+def getViewerMetrics(request):   
+    if(request.method == 'POST'):
+        postParams = request.POST;
+        if(postParams.get('player') and postParams.get('from_date') and postParams.get('to_date')
+            and postParams.get('accessToken')):     
+            isUserId = False;
+            secretKey = request.POST.get("accessToken")
+            if(secretKey=='web'):
+                isUserId = True;
+                if(request.user.is_authenticated):
+                    secretKey = request.user.id;
+                else:
+                    return JsonResponse(
+                        {'statusCode':2,'status':"Invalid accessToken please login"});
+            result = Age_Geder_Metrics.getViewerMetrics(secretKey,isUserId,postParams);
+            return JsonResponse(result); 
+        else:
+          return JsonResponse({'statusCode':6,
+            'status':'No data available'})
+
+from django.http import HttpResponse
+import xlsxwriter
+from datetime import timedelta
+import uuid 
+import time
+
+@api_view(['POST'])
+def exportViewerMetrics(request):   
+    if(request.method == 'POST'):
+        postParams = request.POST;
+        if(postParams.get('player') and postParams.get('from_date') and postParams.get('to_date')
+            and postParams.get('accessToken')):     
+            isUserId = False;
+            secretKey = request.POST.get("accessToken")
+            if(secretKey=='web'):
+                isUserId = True;
+                if(request.user.is_authenticated):
+                    secretKey = request.user.id;
+                else:
+                    return JsonResponse(
+                        {'statusCode':2,'status':"Invalid accessToken please login"});
+            result = Age_Geder_Metrics.getViewerMetrics(secretKey,isUserId,postParams,True);
+            if(result['statusCode']==0):
+               return prepareViewerMetricsExcel(result['metrics']);
+            else:
+                return prepareViewerMetricsExcel(False);
+        else:
+          return JsonResponse({'statusCode':6,
+            'status':'No data available'})
+import xlsxwriter
+import io
+
+def prepareViewerMetricsExcel(metrics):
+    
+    output = io.BytesIO()
+    workbook = xlsxwriter.Workbook(output);
+    worksheet = workbook.add_worksheet();
+    cell_format = workbook.add_format()
+    cell_format.set_align("center");
+    cell_format.set_align('vcenter');
+
+    worksheet.set_column('A:L', 25)
+    if(metrics==False):
+        worksheet.set_header("No reports found");
+        worksheet.set_column('A:A', 50)
+        worksheet.write('A1', "No reports found")
+    else:   
+        coloumn_names = ['Device Name', 'Date & Time', 'Male', 'Female','Age (0-2)',
+            'Age (4-6)','Age (8-12)','Age (15-20)','Age (25-32)',
+            'Age (38-43)','Age (48-53)','Age (60-100)'] 
+        row=0;coloumn=0;
+        for coloumnName in coloumn_names:
+            worksheet.write(row,coloumn,coloumnName,cell_format);
+            coloumn += 1;
+       
+        #add data
+        row=1;coloumn=0;
+        for report in metrics:
+            coloumn=0;
+            for value in (report):
+                if(coloumn==1):#date value
+                    naive_datetime = value.replace(tzinfo=None)
+                    naive_datetime = naive_datetime + timedelta(minutes=330)#add indian time zone
+                    date_format = workbook.add_format({'num_format': 'dd/mm/yy HH:mm:ss'})
+                    date_format.set_align("center");
+                    date_format.set_align('vcenter');
+                    worksheet.write(row, coloumn,naive_datetime,date_format);
+                else:
+                    worksheet.write(row, coloumn,value,cell_format);
+                coloumn +=1;
+            row +=1;
+
+
+    workbook.close() 
+    output.seek(0);
+
+    
+
+    filename = 'viewer_metrics_{}.xlsx'.format(str(round(time.time() * 1000))+uuid.uuid4().hex[:6]);
+    response = HttpResponse(
+             (output),
+            content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+        )
+    response['Content-Disposition'] = 'attachment; filename=%s' % filename
+
+    return response;

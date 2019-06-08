@@ -1,0 +1,161 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Green Content</title>
+  <meta name="description" content="green content to have your own account to store media content ">
+  <meta name="keywords" content="green content, campaigns, groups, video, images, text, url">
+  <link rel="shortcut icon" href="{% static 'Mentor/img/favicon.ico' %}" type="image/x-icon">
+<link rel="icon" href="{% static 'Mentor/img/favicon.ico' %}" type="image/x-icon">
+  <link rel="stylesheet" type="text/css" href="{% static 'Mentor/css/font-awesome.min.css' %}">
+  <link rel="stylesheet" type="text/css" href="{% static 'Mentor/css/bootstrap.min.css' %}">
+ 
+  <link rel="stylesheet" type="text/css" href="{% static 'Mentor/css/imagehover.min.css' %}">
+  <link rel="stylesheet" type="text/css" href="{% static 'Mentor/css/style.css' %}">
+ <!--alert style-->
+  <link rel="stylesheet" href="{% static 'css/sweetalert.css' %}">
+
+    <script src="{% static 'js/sweetalert.js' %}"></script>
+
+<style type="text/css">
+/*  SECTIONS  */
+.section {
+  clear: both;
+  padding: 0px;
+  margin: 0px;
+}
+
+/*  COLUMN SETUP  */
+.col {
+  display: block;
+  float:left;
+  margin: 1% 0 1% 1.6%;
+}
+.col:first-child { margin-left: 0; }
+
+/*  GROUPING  */
+.group:before,
+.group:after { content:""; display:table; }
+.group:after { clear:both;}
+.group { zoom:1; /* For IE 6/7 */ }
+
+  /*  GRID OF SEVEN  */
+.span_7_of_7 {
+  width: 100%;
+}
+
+.span_6_of_7 {
+    width: 85.48%;
+}
+
+.span_5_of_7 {
+    width: 70.97%;
+}
+
+.span_4_of_7 {
+    width: 56.45%;
+}
+
+.span_3_of_7 {
+    width: 41.94%;
+}
+
+.span_2_of_7 {
+    width: 27.42%;
+}
+
+.span_1_of_7 {
+    width: 12.91%;
+}
+
+/*  GO FULL WIDTH BELOW 480 PIXELS */
+@media only screen and (max-width: 480px) {
+  .col {  margin: 1% 0 1% 0%; }
+  .span_1_of_7, .span_2_of_7, .span_3_of_7, .span_4_of_7, .span_5_of_7, .span_6_of_7, .span_7_of_7 { width: 100%; }
+}
+</style>
+</head>
+
+<body>
+
+  <!--Navigation bar-->
+  <nav class="navbar navbar-default navbar-fixed-top" style="background-color: #ffffff;">
+    <div class="container">
+      <div class="navbar-header">
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="{% url 'listCampaignsWeb' %}" style="color:#5FCF80;margin: 5px 0 0 10px;"> <img src='{% static "Mentor/img/gc_logo1.png" %}' style='cursor:pointer;'></a>
+      </div>
+      <div class="collapse navbar-collapse" id="myNavbar">
+
+        <ul class="nav navbar-nav navbar-right col-md-8" id="header">
+              {% if request.user.is_authenticated %}
+
+            <li class="nav-item col span_1_of_7" id="management">
+              <a class="nav-link" href="{% url 'listCampaignsWeb' %}" style="text-align: center;padding:0px;margin-bottom: 0;">Campaign Management</a>
+            </li>
+            <li class="nav-item col span_1_of_7" id="device">
+              <a class="nav-link" href="{% url 'deviceMgmt' %}" style="text-align: center;padding: 0px;margin-bottom: 0;">Device Management</a>
+            </li>
+
+            <li class="nav-item col span_1_of_7" id="content">
+              <a class="nav-link" href="{% url 'web_search' %}" style="text-align: center;padding: 0px;margin-bottom: 0;">Content Management</a>
+            </li>
+
+            <li class="nav-item col span_1_of_7" id="gcGroups">
+              <a class="nav-link" href="{% url 'gcGroups' %}" style="text-align: center;padding: 0px;margin-bottom: 0;">Content Partners</a>
+            </li>
+            <li class="nav-item col span_1_of_7" id="campaigns">
+              <a class="nav-link" href="{% url 'campaignReports' %}" style="text-align: center;padding: 0px;margin-bottom: 0;">Campaign Reports</a>
+            </li> 
+            
+            <li class="nav-item col span_1_of_7" id="viewers">
+              <a class="nav-link"  href="{% url 'viewerMetrics' %}" style="text-align: center;padding: 0px;margin-bottom: 0;">ADview Reports</a>
+
+            </li>
+
+            <li class="nav-item col span_1_of_7" id="contextualAdsRules">
+              <a class="nav-link"  href="{% url 'contextualAdsRules' %}" style="text-align: center;padding: 0px;margin-bottom: 0;">Contextual Advertising</a>
+
+            </li>
+         
+            <li class="nav-item col span_1_of_7">
+              <a class="nav-link"  href="{% url 'logout' %}" style="text-align: center;padding: 0px;margin-bottom: 0;">{{ request.user.first_name}} (Logout)</a>
+            </li>
+
+             {% else %}
+
+              <li><a href="{% url 'contact_us' %}" >Contact us</a></li>
+              <li class="btn-trial"><a href="{% url 'signin' %}">Sign In</a></li>
+          
+            {% endif %}
+        </ul>
+      </div>
+    </div>
+  </nav>
+  <!--/ Navigation bar-->
+  <script type="text/javascript">
+  function comming_soon(msg) {
+
+      swal({
+  title: msg,
+  text: "Comming Soon.",
+  timer: 2000,
+  showConfirmButton: false
+}, function(){
+      window.location.href = "";
+});
+    }
+
+    
+
+
+  </script>
+</body>
+</html>
+           

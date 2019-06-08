@@ -239,7 +239,7 @@ class Last_Seen_Metrics(models.Model):
     metrics.save();
 
   def getMetrics(userId):
-    metrics = Last_Seen_Metrics.objects.filter(player__user_id = userId);
+    metrics = Last_Seen_Metrics.objects.filter(player__user_id = userId).order_by('-accessed_at');
     if(metrics.exists()):
       return {'statusCode':0,'metrics':list(metrics.values('player__id','player__name','accessed_at'))}
     else:

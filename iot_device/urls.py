@@ -14,4 +14,7 @@ urlpatterns = [
     path('getCARules',views.getCARules,name="getIOTDeviceCARules"),
     path('getCARuleInfo',views.getCARuleInfo,name="getIOTDeviceCARuleInfo"),
     path('metrics',views.metrics,name='iotDeviceMetrics'),
+    path('viewer_metrics',views.viewerMetrics,name="iotViewerMetrics"),
+    path('get_v_metrics',views.getViewerMetrics,name="getIOTViewerMetrics"),
+    path('exportViewerMetrics/',views.exportViewerMetrics, name="exportIOTViewerMetrics"),
     ]

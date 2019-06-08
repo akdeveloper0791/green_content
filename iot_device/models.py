@@ -58,10 +58,14 @@ class IOT_Device(models.Model):
       player = IOT_Device.objects.filter(user_id=userId);
       return list(player.values());
 
-    def isMyPlayer(playerKey,userId):
+    def isMyPlayer(playerKey,userId,isKey=True):
       try:
-        player = IOT_Device.objects.get(key=playerKey,
-          user_id=userId);
+        if(isKey):
+          player = IOT_Device.objects.get(key=playerKey,
+            user_id=userId);
+        else:
+          player = IOT_Device.objects.get(id=playerKey,
+            user_id=userId);
         return player;
       except IOT_Device.DoesNotExist:
         return False;
@@ -365,11 +369,10 @@ class CAR_Device(models.Model):
       if(playerInfo==False):
         return {'statusCode':6,'status':'Invalid player'}
       with connection.cursor() as cursor:
-        conditionQuery = '''SELECT rules.id as rule_id,rules.classifier,rules.delay_time, camInfo.info, campaigns.*  FROM iot_device_car_device as iot_devices 
+        conditionQuery = '''SELECT rules.id as rule_id,rules.classifier,rules.delay_time, campaigns.campaign_name,rule_campaigns.id as rc_id  FROM iot_device_car_device as iot_devices 
             INNER JOIN iot_device_contextual_ads_rule as rules ON iot_devices.car_id = rules.id INNER JOIN 
             iot_device_car_campaign as rule_campaigns ON rules.id = rule_campaigns.car_id INNER JOIN 
-            cmsapp_multiple_campaign_upload as campaigns ON rule_campaigns.campaign_id = campaigns.id LEFT JOIN 
-            campaign_campaigninfo as camInfo ON campaigns.id = camInfo.campaign_id_id WHERE (iot_devices.player_id=%s) 
+            cmsapp_multiple_campaign_upload as campaigns ON rule_campaigns.campaign_id = campaigns.id WHERE (iot_devices.player_id=%s) 
             group by campaigns.id ORDER BY campaigns.updated_date DESC'''
             
         cursor.execute(conditionQuery,[playerInfo.id])
@@ -430,3 +433,32 @@ class Age_Geder_Metrics(models.Model):
         return {'statusCode':1,'status':"Unable to save metrics"};
     except Exception as ex:
       return {'statusCode':1,'status':"Unable to save metrics - "+str(ex)};
+
+  def getViewerMetrics(secretKey,isUserId,postParams,exportExcel=False):
+      userId = secretKey;
+      if(isUserId==False):
+            userId = User_unique_id.getUserId(secretKey);
+            if(userId == False):
+                return {'statusCode':1,'status':
+                "Invalid session, please login"};
+      # check for player
+      player = postParams.get('player');
+      metrics={};
+      if(player=="All"):
+        #list all metrics
+        metrics = Age_Geder_Metrics.objects.filter(iot_device__user_id=userId,
+          created_at__range=[postParams.get('from_date'), postParams.get('to_date')]).select_related('iot_device').order_by('-created_at');
+      
+      elif(IOT_Device.isMyPlayer(player,userId,False)!=False):
+        metrics = Age_Geder_Metrics.objects.filter(iot_device_id=player,
+          created_at__range=[postParams.get('from_date'), postParams.get('to_date')]).order_by('-created_at');
+
+      if(metrics.exists()):
+          if(exportExcel==False):
+            return {'statusCode':0,'metrics':list(metrics.values('created_at','g_female','g_male','iot_device__name','age_0_2','age_4_6','age_8_12',
+              'age_15_20','age_25_32','age_38_43','age_48_53','age_60_100'))}
+          else:
+            return {'statusCode':0,'metrics':(metrics.values_list('iot_device__name','created_at','g_male','g_female','age_0_2','age_4_6','age_8_12',
+              'age_15_20','age_25_32','age_38_43','age_48_53','age_60_100'))}
+      else:
+          return {'statusCode':4,'status':"No metrics found for the selected dates"};

@@ -3,10 +3,10 @@
 <html lang="en">
 <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-{% block header %} {% include 'header2.html' %} {% endblock %}
+{% block header %} {% include 'header.html' %} {% endblock %}
 {% block body %}
 
-
+ 
 <body onload="afterLoad()">
 
 <script  src="{% static 'scripts/Dropbox-sdk.min.js' %}"></script>
@@ -25,27 +25,43 @@
     background:green;
 
 }
-a.btn:active{
-    background:green;
+
+
+td.campaign_row:hover { 
+  font-size: 18px
 }
+
+.campaign_row a {
+  color:#5D8AA8;
+}
+
 </style>
-<br/><br/>
+
 
 <section id="contact" class="section-padding">
   
 <div class='container' id="listemail">
 <div class='rows'>
   <a class="nav-link" href="{% url 'create' %}" style="float:right;font-weight:bold" >
-    <button class="btn btn-success"><i class='fa fa-plus'> Create Campaign</i></button></a><br/><br/>
+    <button class="btn btn-success"><i class='fa fa-plus'> Create Campaign</i></button></a><br /><br />
 <div class='panel panel-default'>
-	<div class='panel-heading' style='background: cornflowerblue;color: white;'>Campaign List</div>
+	<!--<div class='panel-heading' style='background: cornflowerblue;color: white;'>Campaign List</div> -->
 
 <!-- 	<ul class='list-group'> -->
   {% load tz %}
   {% timezone "Australia/Lord_Howe" %}<!-- temp solution convert to indian format-->
-	
+	<table class="table" style="border:0px;border-spacing: 2px;width: 100%;text-align: center;">
+    <thead style="border: 0px;">
+      <tr style="border: 0px;">
+        <th style="border: 0px;"></th>
+        <th style="border: 0px;"></th>
+        <th style="border: 0px;"></th>
+        <th style="border: 0px;"></th>
+        <th style="border: 0px;"></th>
+      </tr>
+    </thead>
 	{% for campaign in res.campaigns %}
-   <div class="col-md-12 col-xs-12" style="padding:0px;border-bottom: 1px solid darkgrey;">
+   
     <div class="rows" id="campaign_row_{{ campaign.id }}">
 
   <!--      <div class="col-md-2 col-xs-2" style="padding:0px;">
@@ -79,31 +95,33 @@ a.btn:active{
 
       </div> -->
 
-        <table border="1" cellpadding="10" style="border-spacing: 2px;width: 100%;text-align: center;">
+        
 
-          <tr>
-              <th rowspan="2" style="width: 12%"><img id="thumb_img_{{ campaign.id }}" src="{% static 'images/campaign/default_campaign.png' %}" style="width: 100%;
-    height: 100px;"></th>
-              <th colspan="4" style="border: 0px;">{{ campaign.campaign_name }}</th>
-          </tr>
-
-          <tr>
-              <td style="border: 0px;font-size: 12px;">{{ campaign.updated_date|localtime }}</td>
-              <td style="border: 0px;"><i class='fa fa-trash fa-lg' style='color:orangered;cursor: pointer;' alt="Delete" title="Delete" onclick='deleteCampaign("{{campaign.id}}")'></i></td>
-              <td style="border: 0px;"> <a href="/campaigns/previewCampaign/{{campaign.id}}" target='_blank'>
+          <tr class="campaign_row">
+              <td rowspan="2" style="width: 12%"><img id="thumb_img_{{ campaign.id }}" src="{% static 'images/campaign/default_campaign.png' %}" style="width: 100%;
+    height: 100px;"></td>
+              <td rowspan="2" class="campaign_row" style="text-align:center;">{{ campaign.campaign_name }} </td>
+              
+              <td ><i class='fa fa-trash fa-lg' style='color:orangered;cursor: pointer;' alt="Delete" title="Delete" onclick='deleteCampaign("{{campaign.id}}")'></i></td>
+              <td > <a href="/campaigns/previewCampaign/{{campaign.id}}" target='_blank'>
                 <i class='fa fa-eye fa-lg' style='color:yellowgreen;cursor:pointer;' alt="Preview" title="Preview"></i>
               </a></td>
-              <td style="border: 0px;">  <i class='fa fa-television fa-lg' style='color:darkblue;cursor: pointer;' alt="Delete" title="Publish" onclick='publishCampaign("{{campaign.id}}")'></i></td>
+              <td >  <i class='fa fa-television fa-lg' style='color:darkblue;cursor: pointer;' alt="Delete" title="Publish" onclick='publishCampaign("{{campaign.id}}")'></i></td>
+
           </tr>
 
-        </table>
+          <tr class="campaign_row">
+              <td colspan = "5" style="text-align:right;border:0px">{{ campaign.updated_date|localtime }}</td>
+              
+              
+          </tr>
+
+       
 
     </div>
-  </div>
-
-
+ 
 	{% endfor %}
-
+ </table>
   {% endtimezone %}
 
 <!-- 
@@ -217,7 +235,8 @@ function getDownloadThumbInfo()
 }
 
 function afterLoad()
-{  
+{
+   highliteSelectedLink("campaigns_nav");  
    checkAndDownloadThumbFile(); 
 }
 </script>

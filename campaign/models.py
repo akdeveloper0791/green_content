@@ -303,6 +303,7 @@ class Player_Campaign(models.Model):
     created_at = models.DateTimeField(default=datetime.datetime.now())
     schedule_type = models.SmallIntegerField(default=10)#10->schedule always
     pc_priority = models.IntegerField(default=0)
+    is_skip = models.SmallIntegerField(default=0)#0->false, 1->skip true
     
     class Meta(object):
         unique_together = [
@@ -327,9 +328,10 @@ class Player_Campaign(models.Model):
         try:
             #playerInfo = Player.objects.get(id=playerId,user_id=userId);
             with connection.cursor() as cursor:
-                conditionQuery = '''SELECT campaigns.*, camInfo.info  FROM cmsapp_multiple_campaign_upload as campaigns 
-                    LEFT JOIN campaign_campaigninfo as camInfo ON campaigns.id = camInfo.campaign_id_id WHERE (campaigns.id IN ( 
-                        SELECT campaign_id FROM campaign_player_campaign WHERE user_id=%s and player_id= %s)) 
+                conditionQuery = '''SELECT campaigns.*, camInfo.info,pc_campaign.is_skip as is_skip FROM campaign_player_campaign as pc_campaign 
+                    INNER JOIN cmsapp_multiple_campaign_upload as campaigns  ON pc_campaign.campaign_id = campaigns.id 
+                    LEFT JOIN campaign_campaigninfo as camInfo ON campaigns.id = camInfo.campaign_id_id WHERE ( 
+                         pc_campaign.user_id=%s and pc_campaign.player_id= %s) 
                     group by campaigns.id ORDER BY campaigns.updated_date DESC'''
                 
                 cursor.execute(conditionQuery,[userId,playerId])
@@ -504,7 +506,7 @@ class Player_Campaign(models.Model):
                 return {'statusCode':0,'status':
                     'Campaigns have been removed successfully'};
                 
-            except PLayer.DoesNotExist:
+            except Player_Campaign.DoesNotExist:
                 return {'statusCode':4,
                 'status':"Player not found please check and try again"};
             
@@ -512,6 +514,20 @@ class Player_Campaign(models.Model):
             return {'statusCode':3,'status':
                 "Invalid request parameters"};
     
+    def skipCampaigns(userId,pId,cId,isSkip,isWeb):
+        if(isWeb == False):
+            userId = User_unique_id.getUserId(userId);
+            if(userId == False):
+                return {'statusCode':1,'status':
+                "Invalid session, please login"};
+        try:
+           playerCampaign = Player_Campaign.objects.get(user_id=userId,player_id=pId,campaign_id=cId); 
+           playerCampaign.is_skip = isSkip;
+           playerCampaign.save();
+           return {'statusCode':0,'status':'Campaign has been skipped successfully'}
+        except Player_Campaign.DoesNotExist:
+            return {'statusCode':4,'status':'Campaign info not found, please try again later'};
+
     def getPlayerCampaignsWithInfo(player,secretKey):
         userId = User_unique_id.getUserId(secretKey);
         if(userId == False):
@@ -519,10 +535,11 @@ class Player_Campaign(models.Model):
                 "Invalid session, please login"};
         
         with connection.cursor() as cursor:
-            conditionQuery = '''SELECT campaigns.*, camInfo.info  FROM cmsapp_multiple_campaign_upload as campaigns 
-                LEFT JOIN campaign_campaigninfo as camInfo ON campaigns.id = camInfo.campaign_id_id WHERE (campaigns.id IN ( 
-                    SELECT campaign_id FROM campaign_player_campaign WHERE user_id=%s and player_id= %s)) 
-                group by campaigns.id ORDER BY campaigns.updated_date DESC'''
+            conditionQuery = '''SELECT campaigns.*, camInfo.info,pc_campaign.is_skip as is_skip FROM campaign_player_campaign as pc_campaign 
+                    INNER JOIN cmsapp_multiple_campaign_upload as campaigns  ON pc_campaign.campaign_id = campaigns.id 
+                    LEFT JOIN campaign_campaigninfo as camInfo ON campaigns.id = camInfo.campaign_id_id WHERE ( 
+                         pc_campaign.user_id=%s and pc_campaign.player_id= %s) 
+                    group by campaigns.id ORDER BY campaigns.updated_date DESC'''
             
             cursor.execute(conditionQuery,[userId,player])
             campaigns = dictfetchall(cursor);
@@ -543,7 +560,7 @@ class Player_Campaign(models.Model):
                 "Invalid session, please login"};
         
         with connection.cursor() as cursor:
-            conditionQuery = '''SELECT campaigns.*, camInfo.info,schedules.id as sc_id, schedules.schedule_from, schedules.schedule_to, pc.schedule_type,schedules.schedule_type as sc_schedule_type, pc.pc_priority, schedules.sc_priority,schedules.additional_info FROM  campaign_player_campaign as pc
+            conditionQuery = '''SELECT campaigns.*, camInfo.info,schedules.id as sc_id, schedules.schedule_from, schedules.schedule_to, pc.schedule_type,schedules.schedule_type as sc_schedule_type, pc.pc_priority, schedules.sc_priority,schedules.additional_info,pc.is_skip as is_skip FROM  campaign_player_campaign as pc
                 INNER JOIN cmsapp_multiple_campaign_upload as campaigns ON pc.campaign_id = campaigns.id
                 LEFT JOIN campaign_campaigninfo as camInfo ON campaigns.id = camInfo.campaign_id_id 
                 LEFT JOIN campaign_schedule_campaign as schedules ON pc.id = schedules.player_campaign_id WHERE (pc.user_id=%s and pc.player_id= %s)
