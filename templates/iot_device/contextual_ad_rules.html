@@ -3,8 +3,9 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+ <script src="{% static 'js/iot_device/contextual_ad_rules.js' %}"></script>
 
-	<meta name="description" content="green content to have your own display iot device based contextual ad rules">
+  <meta name="description" content="green content to have your own display iot device based contextual ad rules">
   <meta name="keywords" content="green content, rules,contextual ads,iot contextual ad tools, contextual ad rules, ad rules, male ads,female ads,family ads, text, url">
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -14,13 +15,75 @@
 		{
 			font-family: Arial,Helvetica,sans-serif;
 		}
+	
 	</style>
+
+	<link rel="stylesheet" href="{% static 'css/iot_device/contextual_ad_rules.css' %}">
 </head>
 
 {% block header %} {% include 'header.html' %} {% endblock %}
 
-
+{% block body %}
 <body>
+<script src="{% static 'jquery/2.1.3/jquery.min.js' %}"></script>
+<br /><br /><br /><br /><br /><br />
 
+<div class="container">
+ <div id="select_device" >
+	<label>IOT Devices</label>
+	<select name="device_spinner" class="form-control" id="dev_id" 
+	onchange="showRuleCreationBtn();">
+	             <option value="0">Select Device</option>
+                 {% for iot_dev in devices %}
+		         <option value='{{ iot_dev.id }}'>{{ iot_dev.name }}</option>
+		         {% endfor %}
+	          
+    </select>	
+  </div>
+   <button id="create_btn" style="float: right;display:none;" class="gradient-button gradient-btn" onclick="displayRulesCreationForm();"><i class="fa fa-plus">Create Rule</i></button>
+
+  <button id="submit_btn" style="float: right;display: none;" class="gradient-button gradient-btn" onclick="">Submit</button>
+ 
+</div>
+
+
+<div id="rules_form" class="container" style="display:none;border: 1px solid darkgreen;
+    border-radius: 8px;"> 
+<form  style="margin: 10px;">
+	<label>Classifier</label>
+	<select name="classifier_list" class="form-control" id="classifier_type" 
+	  onchange="" required>
+	      <option value="0">Select Classifier</option>
+	       <option value="0">Men</option>
+	        <option value="0">Women</option>
+	         <option value="0">Family</option>    
+   	</select>
+<label>Delay(sec)</label>
+<input type="input" name="delay duration" class="form-control" id="delay_duration" 
+placeholder="0" value="0" required>
+
+<label>Players</label>
+	<select name="Player List" class="form-control"  id="players_list"
+	  onchange="" required>
+	      <option value="0">Select Players</option>
+	       <option value="0">Men</option>
+	        <option value="0">Women</option>
+	         <option value="0">Family</option>    
+   	</select>
+
+   	<label>Campaigns</label>
+	<select name="Campaign List" class="form-control" id="campaigns_list" 
+	  onchange="" required>
+	      <option value="0">Select Campaigns</option>
+	       <option value="0">Men</option>
+	        <option value="0">Women</option>
+	         <option value="0">Family</option>    
+   	</select>
+</form>	
+</div>
+
+
+{% endblock %}
+{% block footer %} {% include 'footer.html' %} {% endblock %}
 </body>
 </html>
