@@ -15,10 +15,13 @@
 		{
 			font-family: Arial,Helvetica,sans-serif;
 		}
+		tr,td{
+			font-weight: 500
+		}
 	
 	</style>
 
-	<link rel="stylesheet" href="{% static 'css/iot_device/contextual_ad_rules.css' %}">
+	
 </head>
 
 {% block header %} {% include 'header.html' %} {% endblock %}
@@ -26,62 +29,84 @@
 {% block body %}
 <body>
 <script src="{% static 'jquery/2.1.3/jquery.min.js' %}"></script>
+<script type="text/javascript">
+var csrf_token = '{{ csrf_token }}'
+</script>
 <br /><br /><br /><br /><br /><br />
 
 <div class="container">
+
  <div id="select_device" >
 	<label>IOT Devices</label>
 	<select name="device_spinner" class="form-control" id="dev_id" 
-	onchange="showRuleCreationBtn();">
+	onchange="onSelectDevice();">
 	             <option value="0">Select Device</option>
                  {% for iot_dev in devices %}
-		         <option value='{{ iot_dev.id }}'>{{ iot_dev.name }}</option>
+		         <option value='{{ iot_dev.key }}'>{{ iot_dev.name }}</option>
 		         {% endfor %}
 	          
     </select>	
   </div>
    <button id="create_btn" style="float: right;display:none;" class="gradient-button gradient-btn" onclick="displayRulesCreationForm();"><i class="fa fa-plus">Create Rule</i></button>
 
-  <button id="submit_btn" style="float: right;display: none;" class="gradient-button gradient-btn" onclick="">Submit</button>
+  <button id="submit_btn" style="float: right;display: none;" class="gradient-button gradient-btn" onclick="createRule()">Submit</button>
  
 </div>
 
 
-<div id="rules_form" class="container" style="display:none;border: 1px solid darkgreen;
-    border-radius: 8px;"> 
-<form  style="margin: 10px;">
+<div id="rules_form" class="container" style="display:none;border: 1px solid darkgreen;border-radius: 8px;"> 
+
+<form  style="margin: 10px;" onSubmit="return createRule()">
 	<label>Classifier</label>
 	<select name="classifier_list" class="form-control" id="classifier_type" 
 	  onchange="" required>
 	      <option value="0">Select Classifier</option>
-	       <option value="0">Men</option>
-	        <option value="0">Women</option>
-	         <option value="0">Family</option>    
+	      <option value="Male">Male</option>
+	      <option value="Female">Female</option>
+	      <option value="Family">Family</option>  
+	      <option value="couple">couple</option>  
    	</select>
 <label>Delay(sec)</label>
 <input type="input" name="delay duration" class="form-control" id="delay_duration" 
 placeholder="0" value="0" required>
 
 <label>Players</label>
-	<select name="Player List" class="form-control"  id="players_list"
-	  onchange="" required>
-	      <option value="0">Select Players</option>
-	       <option value="0">Men</option>
-	        <option value="0">Women</option>
-	         <option value="0">Family</option>    
-   	</select>
+	
+	<input type="button" value="Select Players" style="width:100%;text-align:left;background-color:white"  onclick="toggleDisplayPlayers()"/>
+   	
+   	<table id="player_list" style="display:none;margin-left:1%;">
+
+   	</table>
 
    	<label>Campaigns</label>
-	<select name="Campaign List" class="form-control" id="campaigns_list" 
-	  onchange="" required>
-	      <option value="0">Select Campaigns</option>
-	       <option value="0">Men</option>
-	        <option value="0">Women</option>
-	         <option value="0">Family</option>    
-   	</select>
+	<input type="button" value="Select Campaigns" style="width:100%;text-align:left;background-color:white"  onclick="toggleDisplayCampaigns()"/>
+   	
+   	<table id="campaign_list" style="display:none;margin-left:1%">
+
+   	</table>
 </form>	
 </div>
 
+<div id="device_classifiers_div" class="container" style="display:none">
+<table class="table" style="border:0px;border-spacing: 2px;width: 100%;text-align: center;" id="device_classifiers_list">
+    <thead style="border: 0px;">
+      <tr style="border: 0px;">
+        <th style="border: 0px;"></th>
+        <th style="border: 0px;"></th>
+       
+      </tr>
+    </thead>
+    <tr>
+    	<td>
+    		Classifier
+    	</td>
+    	<td>
+    		Delete
+    	</td>
+    </tr>
+</table>
+
+</div>
 
 {% endblock %}
 {% block footer %} {% include 'footer.html' %} {% endblock %}

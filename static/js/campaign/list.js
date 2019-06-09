@@ -414,16 +414,16 @@ function downloadThumbFile()
              if(response.statusCode==0)
              {
               
-              var div = document.getElementById("campaign_row_"+campaignId);
-               if (div) {
-                    div.parentNode.removeChild(div);
+              deleteCampaignRow(campaignId);
+                {
+                  
                 
-                    swal({
-     title: "Deleted succesfully!",
-     text: "",
-     type: "success",
-     timer: 3000   
-     });
+                 swal({
+                 title: "Deleted succesfully!",
+                 text: "",
+                 type: "success",
+                 timer: 3000   
+                 });
                 }
              }else{
               deleteError(response.status);
@@ -468,4 +468,10 @@ function downloadThumbFile()
  function publishCampaign(campaignId)
  {
    lptpPublishCampaign(campaignId);
+ }
+
+ function deleteCampaignRow(campaignId)
+ {
+   document.getElementById("campaign_list_table").deleteRow(document.getElementById('campaign_title_'+campaignId).rowIndex);
+   document.getElementById("campaign_list_table").deleteRow(document.getElementById('campaign_title2_'+campaignId).rowIndex);
  }

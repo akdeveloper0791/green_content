@@ -43,14 +43,13 @@ td.campaign_row:hover {
 <div class='container' id="listemail">
 <div class='rows'>
   <a class="nav-link" href="{% url 'create' %}" style="float:right;font-weight:bold" >
-    <button class="btn btn-success"><i class='fa fa-plus'> Create Campaign</i></button></a><br /><br />
-<div class='panel panel-default'>
-	<!--<div class='panel-heading' style='background: cornflowerblue;color: white;'>Campaign List</div> -->
+    <button class="gradient-button gradient-btn"><i class='fa fa-plus'> Create Campaign</i></button></a><br /><br />
 
+	
 <!-- 	<ul class='list-group'> -->
   {% load tz %}
   {% timezone "Australia/Lord_Howe" %}<!-- temp solution convert to indian format-->
-	<table class="table" style="border:0px;border-spacing: 2px;width: 100%;text-align: center;">
+	<table id="campaign_list_table" class="table" style="border:0px;border-spacing: 2px;width: 100%;text-align: center;">
     <thead style="border: 0px;">
       <tr style="border: 0px;">
         <th style="border: 0px;"></th>
@@ -64,40 +63,7 @@ td.campaign_row:hover {
    
     <div class="rows" id="campaign_row_{{ campaign.id }}">
 
-  <!--      <div class="col-md-2 col-xs-2" style="padding:0px;">
-        <img id="thumb_img_{{ campaign.id }}" src="{% static 'images/campaign/default_campaign.png' %}" style="
-          border-radius: 4px;
-          padding: 2px 0px;
-          width: 75%;
-          height: 90px;
-          display: block;
-          margin-left: auto;
-          margin-right: auto;">
-      </div>
-
-      <div class="col-md-7 col-xs-7" style="padding: 20px 2px;">
-        <p class="btn-custom" style="color:dodgerblue;margin: 0px;font-weight: 700;">{{ campaign.campaign_name }}</p>
-        <p style="color:gray;font-size: 12px;">{{ campaign.updated_date|localtime }}</p>
-      </div>
-
-      <div class="col-md-1 col-xs-1" style="padding:30px 0px 0px 0px;">
-        <i class='fa fa-trash fa-lg' style='color:orangered;cursor: pointer;' alt="Delete" title="Delete" onclick='deleteCampaign("{{campaign.id}}")'></i>
-      </div>
-
-       <div class="col-md-1 col-xs-1" style="padding:30px 0px 0px 0px;">
-        <a href="/campaigns/previewCampaign/{{campaign.id}}" target='_blank'>
-          <i class='fa fa-eye fa-lg' style='color:yellowgreen;cursor:pointer;' alt="Preview" title="Preview"></i>
-        </a>
-       </div>
-
-       <div class="col-md-1 col-xs-1" style="padding:30px 0px 0px 0px;">
-        <i class='fa fa-television fa-lg' style='color:yellowgreen;cursor: pointer;' alt="Delete" title="Publish" onclick='publishCampaign("{{campaign.id}}")'></i>
-
-      </div> -->
-
-        
-
-          <tr class="campaign_row">
+          <tr id="campaign_title_{{ campaign.id }}" class="campaign_row">
               <td rowspan="2" style="width: 12%"><img id="thumb_img_{{ campaign.id }}" src="{% static 'images/campaign/default_campaign.png' %}" style="width: 100%;
     height: 100px;"></td>
               <td rowspan="2" class="campaign_row" style="text-align:center;">{{ campaign.campaign_name }} </td>
@@ -110,7 +76,7 @@ td.campaign_row:hover {
 
           </tr>
 
-          <tr class="campaign_row">
+          <tr id="campaign_title2_{{ campaign.id }}" class="campaign_row">
               <td colspan = "5" style="text-align:right;border:0px">{{ campaign.updated_date|localtime }}</td>
               
               
@@ -124,10 +90,7 @@ td.campaign_row:hover {
  </table>
   {% endtimezone %}
 
-<!-- 
-	</ul> -->
- 
-</div> 
+
 </div> 
 </div>
 </section>

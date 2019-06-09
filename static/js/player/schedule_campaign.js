@@ -10,7 +10,7 @@
 
   //var cell1 = row.insertCell(0);
   
-row.innerHTML='<div class="container" style="background-color: #F7F6F6; border: .2px solid #F7F6F6; margin: 1%;position: relative;">'+
+  row.innerHTML='<div class="container" style="background-color: #F7F6F6; border: .2px solid #F7F6F6; margin: 1%;position: relative;">'+
          '<div style="color:black;">Start: <span class="user_data" >'+response.schedules['schedule_from']+'</span></div>'+
          '<div style="color:black;">End: <span class="user_data" >'+response.schedules['schedule_to']+'</span></div>'+
          '<div style="color:black;">Priority: <span class="user_data" >'+response.schedules['sc_priority']+'</span></div>'+
