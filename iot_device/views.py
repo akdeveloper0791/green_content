@@ -284,17 +284,14 @@ def metrics(request):
                     ages[age]=1
             
 
-            '''#folder='C:/Users/Jitendra/python_projects/greencontent/media/player_metrics/{}'.format(str(player))
-            folder='/home/adskite/myproject/signagecms/media/player_metrics/{}'.format(str(player))
-            fs = FileSystemStorage(location=folder) #defaults to   MEDIA_ROOT
-            #saveResponse = fs.save(fileObj.name, fileObj)
-            file_location = '/player_metrics/{}/{}'.format(str(player),fs);'''
+            
             response = Age_Geder_Metrics.saveMetrics(player,genders,ages);
             if(response['statusCode']==0):
                 #calculate player auto campaign rule
                 auto_campaign_rule = calculateAutoCampaignRule(ages,genders,faces);  
+                devicesToPublish = CAR_Device.getDevicesToPublishRule(auto_campaign_rule,player);
                 return JsonResponse({'statusCode':0,'faces':len(faces),
-                'ages':(ages),'genders':genders,'rule':auto_campaign_rule})
+                'ages':(ages),'genders':genders,'rule':auto_campaign_rule,'devicesToPublish':devicesToPublish})
             else:
                 #fs.delete(saveResponse);
                 return JsonResponse({'statusCode':5,

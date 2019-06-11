@@ -171,12 +171,13 @@ class Contextual_Ads_Rule(models.Model):
 
                 CAR_Campaign.objects.bulk_create(bulkInsertCARCampaigns);
                 bulkInsertCARCampaigns.clear();
+                
+                if(len(players)>=1):
+                  bulkInsertCARPlayers = [];
+                  for playerId in players:
+                    bulkInsertCARPlayers.append(CAR_Device(car_id=ca_rule.id,player_id=playerId));
 
-                bulkInsertCARPlayers = [];
-                for playerId in players:
-                  bulkInsertCARPlayers.append(CAR_Device(car_id=ca_rule.id,player_id=playerId));
-
-                CAR_Device.objects.bulk_create(bulkInsertCARPlayers);
+                  CAR_Device.objects.bulk_create(bulkInsertCARPlayers);
 
            return {'statusCode':0,'status':'Rule has been created','id':ca_rule.id};
            
@@ -382,6 +383,14 @@ class CAR_Device(models.Model):
             'No rules Found'};
         else:
             return {'statusCode':0,'rules':rules};
+
+    def getDevicesToPublishRule(rule,player):
+      devices = CAR_Device.objects.exclude(
+        player__fcm_id='null').exclude(
+        player__fcm_id__isnull=True).filter(
+        car__classifier=rule,car__iot_device__id=player).values(
+        'player_id','player__name','player__fcm_id','player__mac','car__delay_time');
+      return list(devices);
 
 class Age_Geder_Metrics(models.Model):
   iot_device = models.ForeignKey('iot_device.IOT_Device',on_delete=models.CASCADE,db_index=True)
