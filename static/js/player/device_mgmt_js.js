@@ -73,7 +73,7 @@ function displayPlayerCampaigns(campaigns,pId)
         //Create a HTML Table element.
 		 var table = document.createElement("TABLE");
 		 table.id="player_info_campaigns_TABLE";
-		 table.classList.add("info")
+		 table.classList.add("info","table-hover")
 		 table.border = "0";
 		 table.style.borderSpacing = "20px";
 		 

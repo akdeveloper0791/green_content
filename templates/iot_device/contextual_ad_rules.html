@@ -10,6 +10,20 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
+<link rel="stylesheet"
+      href="{% static 'bootstrap/3.4.0/bootstrap.min.css' %}">
+
+    <!--<script src="{% static 'jquery/2.1.3/jquery.min.js' %}"></script> -->
+
+    <script src="{% static 'jquery/3.4.0/jquery.min.js' %}">
+
+  <script src="{% static 'bootstrap/3.4.0/bootstrap.min.js' %}">
+  </script>
+
+
+
+  </script>
+
 	<style type="text/css">
 		body
 		{
@@ -18,7 +32,25 @@
 		tr,td{
 			font-weight: 500
 		}
+    tr{
+  border-bottom: 1px solid #dddddd;
+      }
+
+   table.info {
+  font-family: arial, sans-serif;
+  border-collapse: collapse;
+  border: 1px solid #dddddd;
+  width: 100%;
+}
 	
+  table.tableModel
+  {
+  display: table;
+  border-collapse: separate;
+  border-spacing: 15px 10px;
+  border-color: gray;
+  font-size: 14px;
+  }
 	</style>
 
 	
@@ -28,7 +60,8 @@
 
 {% block body %}
 <body>
-<script src="{% static 'jquery/2.1.3/jquery.min.js' %}"></script>
+
+
 <script type="text/javascript">
 var csrf_token = '{{ csrf_token }}'
 </script>
@@ -88,26 +121,92 @@ placeholder="0" value="0" required>
 </form>	
 </div>
 
-<div id="device_classifiers_div" class="container" style="display:none">
-<table class="table" style="border:0px;border-spacing: 2px;width: 100%;text-align: center;" id="device_classifiers_list">
+<div id="device_classifiers_div" class="container" style="display:none;overflow-x:auto;">
+<table class=" table table-hover" id="device_classifiers_list">
     <thead style="border: 0px;">
       <tr style="border: 0px;">
         <th style="border: 0px;"></th>
         <th style="border: 0px;"></th>
-       
+        <th style="border: 0px;"></th>
+        <th style="border: 0px;"></th> 
       </tr>
     </thead>
-    <tr>
-    	<td>
-    		Classifier
-    	</td>
-    	<td>
-    		Delete
-    	</td>
-    </tr>
 </table>
 
 </div>
+
+
+{% include 'campaign/list_mycampaigns_cb.html' %}
+
+<!--Div to display campaigns assign dialog for the Rule  -->
+<div class="modal" id="rule_campaigns_info" >
+    <div class="modal-dialog">
+      <div class="modal-content">
+    
+        <!-- Modal Header -->
+        <div class="modal-header">
+         <p id="rule_info" style="color:#4CAF50;text-align: center;font-weight: 700;font-size:26px;">Rule</p>      
+        </div>
+         <!--  </div> 
+        </div> -->
+        
+        <!-- Modal body -->
+        <div class="modal-body">
+       <input type="hidden" id="rule_campaign_info_id" />
+          <div id="campaign_info">
+            <span style="float: right;" class="gradient-button gradient-btn" onclick="displayCampaignsToAdd()"><sapn class="fa fa-plus"> Assign New </sapn></span> <br/>
+            <h5 style="color:cornflowerblue;display:inline-block"> Assigned Campaigns</h5>           
+            <div id="rule_assigned_campaigns" 
+            style="margin-top:2px;">
+            </div>
+          </div>
+        </div>
+        
+        <!-- Modal footer -->
+        <div class="modal-footer"><center>
+          <button type="button" class="btn btn-danger" data-dismiss="modal" id="rule_campaign_info_close" onclick="closeRuleCampaignInfo()">Close</button></center>
+        </div>
+        
+      </div>
+    </div>
+  </div>
+
+
+  <!-- dialog for rule assigned  player/displays  -->
+  <!--Rule Players Model -->
+  <div class="modal" id="ctadr_players">
+    <div class="modal-dialog">
+      <div class="modal-content">
+      
+        <!-- Modal Header -->
+        <div class="modal-header"><center>
+          <p id="rule_name" style="color:#4CAF50;text-align: center;font-weight: 700;font-size:26px;">Rule</p>
+          <input type="hidden" id="ctad_rule_id" />
+          
+        </div>
+        
+        <!-- Modal body -->
+        <div class="modal-body">
+          <p style="color:black;">Players List</p>
+          <div id="ctadr_player_list" style="height: 300px;overflow-x: auto;">
+          </div>
+         
+
+        </div>
+        
+        <!-- Modal footer -->
+        <div class="modal-footer">
+          <center>
+          <button type="button" class="btn btn-success" data-dismiss="modal"  onclick="submitCTADrulePlayers()">Submit</button>
+
+          <button type="button" class="btn btn-danger" data-dismiss="modal"  onclick="closeCTADRplayers()">Close</button>
+          </center>
+        </div>
+        
+      </div>
+    </div>
+  </div>
+
 
 {% endblock %}
 {% block footer %} {% include 'footer.html' %} {% endblock %}
