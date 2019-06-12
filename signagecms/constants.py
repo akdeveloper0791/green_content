@@ -14,12 +14,15 @@ r4_2h_2v_50_50_json = ''' {"regions":[{"width":50,"height":50,"top_margin":0,"le
 
 file_storage_path="C:/Users/Jitendra/python_projects/green_content/media";
 
-STORE_LOCATION = 1; #2-> dropbox , 1-> local
+STORE_LOCATION = 2; #2-> dropbox , 1-> local
 
-setup = 1; #2 server, 1->local
+setup = 2; #2 server, 1->local
 project_local_path = "C:/Users/Jitendra/python_projects/green_content"
 project_server_path = "/home/adskite/myproject/signagecms"
 
 #schedule types
 schedule_always= 10
 schedule_custom = 100
+
+fcm_api_key = "AAAAABJU_OM:APA91bG3swWJ9xiiKjZNc_rkqLwNqzBud5MvPmD6uYIg8Axi6fKwmcwtZ1A8sVUBPKZCeRmFAXlLoUgzq_kvpcch04kRngp3vdPem8ozw_RWxAjG1LwTnY9m8ozTg04HyHJtKq38l282"
+fcm_handle_metrics_rule="1";

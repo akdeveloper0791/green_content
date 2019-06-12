@@ -216,13 +216,15 @@ from signagecms import constants
 import numpy as np
 import cv2
 from .models import Age_Geder_Metrics
+import datetime
 
 @api_view(['POST'])
 def metrics(request):    
     if('file' in request.FILES):
      player = IOT_Device.getPlayer(request.POST.get('player'),request.POST.get('p_key'))
      if(player!=False):
-        
+        playerMac = player.mac;
+
         #Init open cv DNN(age and gender) and cascades(face detetion)
         #server path --> /home/adskite/myproject/signagecms/
         #local path --> C:/Users/Jitendra/python_projects/green_content
@@ -289,11 +291,18 @@ def metrics(request):
             if(response['statusCode']==0):
                 #calculate player auto campaign rule
                 auto_campaign_rule = calculateAutoCampaignRule(ages,genders,faces);  
-                devicesToPublish = CAR_Device.getDevicesToPublishRule(auto_campaign_rule,player);
-                return JsonResponse({'statusCode':0,'faces':len(faces),
-                'ages':(ages),'genders':genders,'rule':auto_campaign_rule,'devicesToPublish':devicesToPublish})
+                
+                fcm_result = CAR_Device.publishRule(playerMac,auto_campaign_rule,player);
+                response = {'statusCode':0};
+                if(fcm_result!=False):
+
+                    if(fcm_result['includeThis']):
+                        response['rule']=auto_campaign_rule;
+                        response['delay_time'] = fcm_result['device']['car__delay_time'];
+                        response['push_time'] = str(datetime.datetime.now());
+                return JsonResponse(response)
             else:
-                #fs.delete(saveResponse);
+                
                 return JsonResponse({'statusCode':5,
                     'status':response['status']})
         else:

@@ -74,7 +74,7 @@ class IOT_Device(models.Model):
       try:
         player = IOT_Device.objects.get(id=playerId,
           key=playerKey);
-        return player.id;
+        return player;
       except IOT_Device.DoesNotExist:
         return False;
 
@@ -289,6 +289,10 @@ class CAR_Campaign(models.Model):
               return {'statusCode':3,'status':
                   "error "+str(e)};
 
+from pyfcm import FCMNotification
+import datetime
+from signagecms import constants
+
 #contextual ads rules associated DSP(signages)
 class CAR_Device(models.Model):
     car = models.ForeignKey('iot_device.Contextual_Ads_Rule',on_delete=models.CASCADE)
@@ -391,6 +395,56 @@ class CAR_Device(models.Model):
         car__classifier=rule,car__iot_device__id=player).values(
         'player_id','player__name','player__fcm_id','player__mac','car__delay_time');
       return list(devices);
+    
+    
+
+    def publishRule(playerMac,rule,player):
+      devicesToPublish = CAR_Device.getDevicesToPublishRule(rule,player);
+      if(len(devicesToPublish)>=1):
+        #prepare device to publish
+        response = {'includeThis':False,'devicesToPublish':devicesToPublish};
+        #return response;
+        deviceFcmRegIds = [];
+        deviceFcmRegIdsWithInfo={};
+        for device in devicesToPublish:
+          if(device['player__mac']==playerMac):
+            response['includeThis']=True;
+            response['device'] = device;
+          else:
+            deviceDelay = device['car__delay_time'];
+            if(deviceDelay in deviceFcmRegIdsWithInfo):
+              deviceInfo = deviceFcmRegIdsWithInfo[deviceDelay];
+              deviceFcmRegIds = deviceInfo['deviceFcmRegIds'];
+              deviceFcmRegIds.append(device['player__fcm_id']);
+              
+              
+            else:
+              deviceFcmRegIdsWithInfo[deviceDelay]={'deviceFcmRegIds':[device['player__fcm_id']]}
+            #deviceFcmRegIds.append(device['player__fcm_id']);
+        response['deviceFcmRegIdsWithInfo']=deviceFcmRegIdsWithInfo;
+        
+        push_service = FCMNotification(api_key=constants.fcm_api_key)
+        for delayTime,deviceWithInfo in deviceFcmRegIdsWithInfo.items():
+          data_message = {
+          "action":constants.fcm_handle_metrics_rule,
+          "rule":rule,
+          "delay_time":delayTime,
+          "push_time":str(datetime.datetime.now())
+          }
+          deviceFcmRegIds = deviceWithInfo['deviceFcmRegIds'];
+          if(len(deviceFcmRegIds)>=1):
+            if(len(deviceFcmRegIds)==1):
+              fcm_result = push_service.notify_single_device(registration_id=deviceFcmRegIds[0],data_message=data_message)
+              response['fcm_result'+str(delayTime)] = fcm_result;
+            else:
+              fcm_result = push_service.notify_multiple_devices(registration_ids=deviceFcmRegIds,data_message=data_message)
+              response['fcm_result'+str(delayTime)] = fcm_result;
+        
+        #fcm_result = push_service.notify_single_device(registration_id='fPauOP7j_Mw:APA91bFsez98VG5EVXgiqXkrpZKwb3mYmhfGyqfj2YuMQ3esOZvIW_LoGr0eHhkjKoJKdok6ARXXfg9uryX53ryn6o2BkVZQozgjSTv5dLcrR5D8lZ23byUrn3qQTxME54pzhHPo5Itc',data_message=data_message)
+        #response['fcm_Result']=fcm_result;
+        return response;
+      else:
+        return False;
 
 class Age_Geder_Metrics(models.Model):
   iot_device = models.ForeignKey('iot_device.IOT_Device',on_delete=models.CASCADE,db_index=True)
