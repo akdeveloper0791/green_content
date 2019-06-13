@@ -42,15 +42,17 @@
   border: 1px solid #dddddd;
   width: 100%;
 }
-	
-  table.tableModel
-  {
+
+table.data {
   display: table;
-  border-collapse: separate;
+   font-family: arial, sans-serif;
+  border-collapse: collapse;
   border-spacing: 15px 10px;
   border-color: gray;
-  font-size: 14px;
-  }
+  border: .3px solid #dddddd;
+  width: 100%;
+}
+	
 	</style>
 
 	
@@ -104,6 +106,13 @@ var csrf_token = '{{ csrf_token }}'
 <input type="input" name="delay duration" class="form-control" id="delay_duration" 
 placeholder="0" value="0" required>
 
+  <label>Campaigns</label>
+  <input type="button" value="Select Campaigns" style="width:100%;text-align:left;background-color:white"  onclick="toggleDisplayCampaigns()"/>
+    
+    <table id="campaign_list" style="display:none;margin-left:1%">
+
+    </table>
+
 <label>Players</label>
 	
 	<input type="button" value="Select Players" style="width:100%;text-align:left;background-color:white"  onclick="toggleDisplayPlayers()"/>
@@ -112,12 +121,7 @@ placeholder="0" value="0" required>
 
    	</table>
 
-   	<label>Campaigns</label>
-	<input type="button" value="Select Campaigns" style="width:100%;text-align:left;background-color:white"  onclick="toggleDisplayCampaigns()"/>
-   	
-   	<table id="campaign_list" style="display:none;margin-left:1%">
-
-   	</table>
+   
 </form>	
 </div>
 
@@ -145,7 +149,7 @@ placeholder="0" value="0" required>
     
         <!-- Modal Header -->
         <div class="modal-header">
-         <p id="rule_info" style="color:#4CAF50;text-align: center;font-weight: 700;font-size:26px;">Rule</p>      
+         <p id="rule_info" style="color:#4CAF50;text-align: center;font-weight:500;font-size:22px;">Rule</p>      
         </div>
          <!--  </div> 
         </div> -->
@@ -156,7 +160,7 @@ placeholder="0" value="0" required>
           <div id="campaign_info">
             <span style="float: right;" class="gradient-button gradient-btn" onclick="displayCampaignsToAdd()"><sapn class="fa fa-plus"> Assign New </sapn></span> <br/>
             <h5 style="color:cornflowerblue;display:inline-block"> Assigned Campaigns</h5>           
-            <div id="rule_assigned_campaigns" 
+         <div id="rule_assigned_campaigns" class="table-responsive"
             style="margin-top:2px;">
             </div>
           </div>
@@ -180,15 +184,16 @@ placeholder="0" value="0" required>
       
         <!-- Modal Header -->
         <div class="modal-header"><center>
-          <p id="rule_name" style="color:#4CAF50;text-align: center;font-weight: 700;font-size:26px;">Rule</p>
+          <p id="rule_name" style="color:#4CAF50;text-align: center;font-weight:500;font-size:22px;">Rule</p>
           <input type="hidden" id="ctad_rule_id" />
           
         </div>
         
         <!-- Modal body -->
         <div class="modal-body">
-          <p style="color:black;">Players List</p>
-          <div id="ctadr_player_list" style="height: 300px;overflow-x: auto;">
+          <p style="color:black;"><b>Players List</b></p>
+          <div  id="ctadr_player_list"class="table-responsive"
+            style="margin-top:3px;overflow-x: auto;">
           </div>
          
 
@@ -197,9 +202,9 @@ placeholder="0" value="0" required>
         <!-- Modal footer -->
         <div class="modal-footer">
           <center>
-          <button type="button" class="btn btn-success" data-dismiss="modal"  onclick="submitCTADrulePlayers()">Submit</button>
+          <button type="button" class="btn btn-success" data-dismiss="modal"  onclick="assignCADRselectedPlayers()">Submit</button>
 
-          <button type="button" class="btn btn-danger" data-dismiss="modal"  onclick="closeCTADRplayers()">Close</button>
+          <button type="button" class="btn btn-danger" data-dismiss="modal"  onclick="closeCADRplayers()">Close</button>
           </center>
         </div>
         

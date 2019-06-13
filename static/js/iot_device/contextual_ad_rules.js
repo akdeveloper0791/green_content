@@ -7,10 +7,7 @@ var isCampaignsShowing = false;
 var selectedCampaigns = [];
 
 
-var players_list=[];
-var asiignedPlayersList=[];
-var newPlayersList=[];
-var removedPlayersList=[];
+var carSelectedPlayers=[];
 
 
 function onSelectDevice()
@@ -295,11 +292,11 @@ function createRule()
       delayDuration = 0;
   }
 
-  if(selectedPlayers.length<=0)
+  /*if(selectedPlayers.length<=0)
   {
     swal("Please select atleast one player");
     return false;
-  }
+  }*/
 
   if(selectedCampaigns.length<=0)
   {
@@ -466,12 +463,11 @@ function displayClassifiers(rules)
     var cell =row.insertCell(-1);
     cell.innerHTML =rule.classifier;
     cell.style.textAlign = "left";
-    cell.style.marginLeft = "100";
              
     var campaignsCell=row.insertCell(-1);
      // campaignsCell.innerHTML="Campaigns";
       campaignsCell.innerHTML='<p style="margin:5px;cursor: pointer;color:blue;"'+
-      'onclick="getRuleCampaignInfo('+rule.id+');">Campaign</p>'
+      'onclick="getRuleCampaignInfo('+rule.id+');"><b>Campaign</b></p>'
 
       /*campaignsCell.style.cursor ="pointer";
       campaignsCell.style.color="blue";
@@ -481,11 +477,11 @@ function displayClassifiers(rules)
 
      var playersCell=row.insertCell(-1);
      playersCell.innerHTML='<p style="margin:5px;cursor: pointer;color:green;"'+
-      'onclick="getRulePlayersInfo('+rule.id+');">Players</p>'
+      'onclick="getRulePlayersInfo('+rule.id+');"><b>Players</b></p>'
 
     var deleteCell = row.insertCell(-1);
     ///deleteCell.innerHTML = "<i class='fa fa-trash fa-lg' style='color:orangered;cursor: pointer;' alt='Delete' title='Delete' onclick='deleteCampaign("+rule.id+")></i>";
-    deleteCell.innerHTML = '<span class="fa fa-trash"  style="cursor:pointer;color:orangered; display:inline-block;width:4%;float: left;margin-left: 01.5%;margin-right: 01.5%; "onclick="deleteRule('+rule.id+')"></span>';
+    deleteCell.innerHTML = '<span class="fa fa-trash"  style="cursor:pointer;color:orangered; display:inline-block;width:4%;float: left;margin;5px;" onclick="deleteRule('+rule.id+')"></span>';
   }
 }
 
@@ -632,13 +628,12 @@ function displayRuleCampaigns(campaigns,ruleId)
      table.border = "0";
      table.style.borderSpacing = "20px";  
      //Get the count of columns.
-      var columnCount = 5;
+     // var columnCount = 5;
 
         
       for (var i = 0; i < campaigns.length; i++) 
       {
          campaign = campaigns[i];
-
 
              row = table.insertRow(-1);
              row.id = "campaign_row_"+campaign.campaign__id;
@@ -647,12 +642,10 @@ function displayRuleCampaigns(campaigns,ruleId)
              {
               var cell = row.insertCell(-1);
               cell.innerHTML =campaign.campaign__campaign_name;
-            
-              
+
+             
               var deleteCell = row.insertCell(-1);
-              deleteCell.innerHTML = "<span class='fa fa-trash' alt='Remove' title='Remove' onclick='removeCampaign("+campaign.campaign__id+")'>"  
-              deleteCell.style.color="orangered";
-               deleteCell.style.cursor="pointer";           
+              deleteCell.innerHTML = "<span class='fa fa-trash' alt='Remove' title='Remove' style='cursor:pointer;color:orangered; display:inline-block; margin: 10px;' onclick='removeCampaign("+campaign.campaign__id+")'>"            
              }
 
          }
@@ -680,8 +673,8 @@ function closeRuleCampaignInfo()
 function sendLMCBselectedCampaigns()
 {
     closeLmcbCampaigns();
-    alert(lmcbselectedCampaigns);
-    //assignCampaignsApi(lmcbselectedCampaigns);
+   // alert(lmcbselectedCampaigns);
+    assignCampaignsApi(lmcbselectedCampaigns);
 }
 
 function assignCampaignsApi(campaigns)
@@ -694,7 +687,7 @@ function assignCampaignsApi(campaigns)
     {
 
       type:'POST',
-      url: '/player/assignCampaigns/',
+      url: '/iot_device/assignCampaignsToRule',
       headers: {            
             'X-CSRFToken': csrf_token
         },
@@ -747,7 +740,7 @@ function removeCampaign(campaignId)
     {
 
       type:'POST',
-      url: '/player/removeCampaigns/',
+      url: '/iot_device/removeCampaignsFromRule',
       headers: {            
             'X-CSRFToken': csrf_token 
         },
@@ -860,7 +853,9 @@ function getRulePlayersInfo(rule_id)
 
 function displayRulePlayersInfo(data ,rule_id)
 {
-  console.log("ruleId:"+rule_id);
+  var isPlayersAssigned=false;
+  carSelectedPlayers=[];
+  console.log("displayRulePlayersInfo:"+JSON.stringify(data));
   document.getElementById('ctad_rule_id').value =rule_id;
   document.getElementById('rule_name').innerHTML=data['rule'].classifier;
 
@@ -868,12 +863,13 @@ function displayRulePlayersInfo(data ,rule_id)
    var dvTable = document.getElementById("ctadr_player_list");
 
    var players=data['devices']
+    console.log("players:"+JSON.stringify(players));
     if(players.length>=0)
     {
             //Create a HTML Table element.
-        var table = document.createElement("TABLE");
-        table.border = "0";
-         table.classList.add("tableModel","table-hover");
+         var table = document.createElement("TABLE");
+         table.classList.add("data","table-hover"); 
+       
        
         //Add the header row.
        // var row = table.insertRow(-1);
@@ -883,35 +879,47 @@ function displayRulePlayersInfo(data ,rule_id)
 
           var player = players[i];
           // player_list.push(player.id);
-             row = table.insertRow(-1);
-              row.classList.add("tr");
+              row = table.insertRow(-1);
              {
               var cell = row.insertCell(-1);
-              /*cell.innerHTML = campaigns[i]['campaign_name'];*/
+
+        
              var ruleId = players[i]['car_device_Id'];
               
               if(ruleId>0)
               {
-                existedCampaigns.push(player.id);
-                cell.innerHTML = "<input id='ctadr_cb_"+player.id+"' type='checkbox' checked= true name='name1' onchange='carpOnchange(this,"+player['id']+")'/>";
+               isPlayersAssigned=true;
+                cell.innerHTML = "<input id='ctadr_cb_"+player.id+"' type='checkbox' checked= true disabled= true style='margin:5px;cursor:pointer;' name='name1' onchange='carpOnchange(this,"+player['id']+")'/>";
               }else
               {
-                cell.innerHTML = "<input type='checkbox'  name='name1' onchange='carpOnchange(this,"+players[i]['id']+")'/>";
+                cell.innerHTML = "<input type='checkbox' style='margin:5px;cursor:pointer;'  name='name1' onchange='carpOnchange(this,"+players[i]['id']+")'/>";
               }
               
               var cell = row.insertCell(-1);
-              cell.innerHTML = players[i]['name']
-           
+              cell.innerHTML = players[i]['name'];
+
+              if(ruleId>0)
+              {
+                var deleteCell = row.insertCell(-1);
+                deleteCell.innerHTML = "<input type='image'style='cursor:pointer;' id='ctadr_unassign_"+player.id+"'src='/static/images/ic_remove.png' alt='remove' title='remove' onclick='carPlayerRemove("+players[i]['id']+")'>"  
+              }
 
              }
         }
-      
+    
          dvTable.innerHTML = "";
          dvTable.appendChild(table);
+
+         /*if(!isPlayersAssigned)
+         {
+          swal("No players assigned to the rule.");
+         }*/
+
+
     }else
     {
       //no members
-      alert("No Players Assigned");
+      alert("No Players Found");
       //dvTable.innerHTML = "No Players Assigned";
     }
 
@@ -922,59 +930,142 @@ function carpOnchange(element,playerId)
  {
   if(element.checked == true)//check and add player Id to newPlayers List
   {
-      if(newPlayersList.includes(playerId)==false)
+      if(carSelectedPlayers.includes(playerId)==false)
       {
-        newPlayersList.push(playerId);
-      }
-
-        //check playerid is in removeList and remove it
-       if(removedPlayersList.includes(playerId)==true)
-      {
-      var elementIndex = removedPlayersList.indexOf(playerId);
-       if(elementIndex>=0)
-      {
-      removedPlayersList.splice(elementIndex,1);
-      }  
+        carSelectedPlayers.push(playerId);
       }
 
   }else
   {
-    carRemovePlayerFromSelected(playerId)
+    ctadrRemoveSelectedPlayer(playerId)
   }
   
  }
 
- function carRemovePlayerFromSelected(playerId)
+ function ctadrRemoveSelectedPlayer(playerId)
  {
-  //check and add palyerid to remove List
-  if(removedPlayersList.includes(playerId)==false)
-      {
-        removedPlayersList.push(playerId);
-      }
-
-      //if player id is in new players list check and remove it
-       if(newPlayersList.includes(playerId)==true)
-      {
-      var elementIndex = newPlayersList.indexOf(playerId);
+    //if player id is in new players list check and remove it
+      var elementIndex = carSelectedPlayers.indexOf(playerId);
        if(elementIndex>=0)
       {
-      newPlayersList.splice(elementIndex,1);
+      carSelectedPlayers.splice(elementIndex,1);
       }  
-      }
+  
  }
 
 
-function submitCTADrulePlayers()
+ function assignCADRselectedPlayers()
+ {
+  closeCADRplayers();
+  if(carSelectedPlayers.length>=1)
+  {
+    
+    ajaxindicatorstart("<img src='/static/images/ajax-loader.gif'><br/> Please wait...!");
+  var xhr = new XMLHttpRequest();
+    xhr.onload = function() {
+      ajaxindicatorstop();
+      if (xhr.status === 200) {
+       
+        var responseJSON = JSON.parse(xhr.response);
+        if(responseJSON['statusCode']==0)
+        {
+          console.log("newPlayersList:"+JSON.stringify(newPlayersList));
+          ///lptpDisplayPlayers(responseJSON['players']);
+          swal(responseJSON['status']);
+        }else
+        {
+          swal(responseJSON['status']);
+        }
+          
+      }
+      else {
+        
+          var errorMessage = xhr.response;
+           
+           swal(errorMessage);
+         
+          }
+  };
+  xhr.onerror = function()
+  {
+    ajaxindicatorstop();
+    console.log("Error");
+  };
+  
+  xhr.open('POST', '/iot_device/assignDevicesToRule');
+  xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+  xhr.setRequestHeader("X-CSRFToken", csrf_token);
+  
+  
+    var params = 'rule_id='+document.getElementById('ctad_rule_id').value+'&players='+JSON.stringify(carSelectedPlayers)+
+     '&accessToken=web';
+     
+    xhr.send(params);
+    
+  }
+   
+ }
+
+
+function carPlayerRemove(playerId)
 {
-  console.log("newPlayersList:"+JSON.stringify(newPlayersList));
-  console.log("removedPlayersList:"+JSON.stringify(removedPlayersList));
+   var players=[];
+   players.push(playerId);
+
+  ajaxindicatorstart("<img src='/static/images/ajax-loader.gif'><br/> Please wait...!");
+  var xhr = new XMLHttpRequest();
+    xhr.onload = function() {
+      ajaxindicatorstop();
+      if (xhr.status === 200) {
+        
+        var responseJSON = JSON.parse(xhr.response);
+        if(responseJSON['statusCode']==0)
+        {
+          ctadrRemoveSelectedPlayer(playerId);
+
+          document.getElementById('ctadr_cb_'+playerId).disabled=false;
+          document.getElementById('ctadr_cb_'+playerId).checked=false;
+
+          document.getElementById('ctadr_unassign_'+playerId).style.display="none";
+        }else
+        {
+          swal(responseJSON['status']);
+        }
+          
+      }
+      else {
+        
+          var errorMessage = xhr.response;
+           
+           swal(errorMessage);
+         
+          }
+  };
+  xhr.onerror = function()
+  {
+    ajaxindicatorstop();
+    console.log("Error");
+  };
+  
+  xhr.open('POST', '/iot_device/removeDevicesFromRule');
+  xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+  xhr.setRequestHeader("X-CSRFToken", csrf_token);
+  
+  console.log("deleteList:"+JSON.stringify(players));
+    var params = 'players='+JSON.stringify(players)+'&rule_id='+document.getElementById('ctad_rule_id').value+
+     '&accessToken=web';
+     
+    xhr.send(params);
+
 }
 
-function closeCTADRplayers()
+
+
+function closeCADRplayers()
 {
   document.getElementById('ctadr_players').style.display="none";
   newPlayersList=[];
-  removedPlayersList=[];
+ 
 }
 
 

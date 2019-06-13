@@ -91,13 +91,16 @@ function displayPlayerCampaigns(campaigns,pId)
              {
 
               var cell = row.insertCell(-1);
-              cell.innerHTML =campaign.campaign_name;
+               //cell.style.float="l";
+               //cell.style.text-align="left";
+               cell.innerHTML =campaign.campaign_name;
               
+               
               //skip toggle 
               var cell = row.insertCell(-1);
               if((campaign['is_skip']==1?true:false)==true)
               {
-              	cell.innerHTML = '<div style="margin:10px"> <label class="switch switch-yes-no">'+
+              	cell.innerHTML = '<div style="margin:10px;"> <label class="switch switch-yes-no">'+
 					'<input class="switch-input" type="checkbox" checked onclick="skipCampaign(this,'+campaign.id+','+pId+');"/>'+
 					'<span class="switch-label" data-on="Skipped" data-off="Skip"></span>'+ 
 					'<span class="switch-handle"></span> </label> </div>'
@@ -112,10 +115,10 @@ function displayPlayerCampaigns(campaigns,pId)
 
               
               var scheduleCell = row.insertCell(-1);
-              scheduleCell.innerHTML = "<a class='fa fa-calendar' href='/player/schedule_campaign/"+pId+"/"+campaign.id+"' alt='Schedule' title='Schedule' style='cursor:pointer;'></a>";
+              scheduleCell.innerHTML = "<a class='fa fa-calendar' href='/player/schedule_campaign/"+pId+"/"+campaign.id+"' alt='Schedule' title='Schedule' style='cursor:pointer;margin:10px;'></a>";
 
               var deleteCell = row.insertCell(-1);
-              deleteCell.innerHTML = "<span class='fa fa-trash' alt='Remove' title='Remove' onclick='removeCampaign("+campaign.id+")'>"             
+              deleteCell.innerHTML = "<span class='fa fa-trash' alt='Remove' style='margin:10px;' title='Remove' onclick='removeCampaign("+campaign.id+")'></span>"             
              }
             }
   

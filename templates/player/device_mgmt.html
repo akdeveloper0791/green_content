@@ -2,15 +2,20 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+ <meta name="description" content="green content to have your digital advertising devices on the go">
+  <meta name="keywords" content="green content, rules,digital ads,device management,campaigns,assign campaings,iot contextual ad tools, contextual ad rules, ad rules, male ads,female ads,family ads, text, url">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
 <script  src="{% static 'js/player/device_mgmt_js.js' %}"></script>
 <style>
 tr{
-  border-bottom: thin solid;
+  border-bottom: .3px solid #dddddd;
 }
 table.info {
   font-family: arial, sans-serif;
   border-collapse: collapse;
-  border: 1px solid #dddddd;
+  border: .3px solid #dddddd;
   width: 100%;
 }
 
@@ -89,7 +94,7 @@ a.btn:active{
   position: relative;
   display: block;
   vertical-align: top;
-  width: 100px;
+  width: 80px;
   height: 30px;
   padding: 3px;
   margin: 0 10px 10px 0;
@@ -292,7 +297,7 @@ a.btn:active{
           <div id="campaigns_info">
             <span style="float: right;" class="gradient-button gradient-btn" onclick="displayCampaignsToAdd()"><sapn class="fa fa-plus"> Assign New </sapn></span> <br/>
             <h5 style="color:cornflowerblue;display:inline-block"> Assigned Campaigns</h5>           
-            <div id="player_info_campaigns" style="margin-top:2px;">
+           <div id="player_info_campaigns" class="table-responsive" style="margin-top:2px;">
             </div>
           </div>
         </div>

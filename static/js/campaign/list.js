@@ -387,12 +387,12 @@ function downloadThumbFile()
    checkAndDownloadThumbFile();
  }
 
- function deleteCampaign(campaignId)
+ function deleteCampaign(campaignId,campName)
  {
 
    swal({
             title: "Are you sure?",
-            text: "You want to delete campaign!",
+            text: "You want to delete campaign\nCampaign name:"+campName,
             type: "warning",
             showCancelButton: true,
             confirmButtonColor: "#DD6B55",

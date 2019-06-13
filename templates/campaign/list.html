@@ -68,18 +68,20 @@ td.campaign_row:hover {
     height: 100px;"></td>
               <td rowspan="2" class="campaign_row" style="text-align:center;">{{ campaign.campaign_name }} </td>
               
-              <td ><i class='fa fa-trash fa-lg' style='color:orangered;cursor: pointer;' alt="Delete" title="Delete" onclick='deleteCampaign("{{campaign.id}}")'></i></td>
+              <td ><i class='fa fa-trash fa-lg' style='color:orangered;cursor: pointer;' alt="Delete" title="Delete"
+               onclick='deleteCampaign("{{campaign.id}}","{{ campaign.campaign_name }}")'></i></td>
+
               <td > <a href="/campaigns/previewCampaign/{{campaign.id}}" target='_blank'>
                 <i class='fa fa-eye fa-lg' style='color:yellowgreen;cursor:pointer;' alt="Preview" title="Preview"></i>
               </a></td>
+
               <td >  <i class='fa fa-television fa-lg' style='color:darkblue;cursor: pointer;' alt="Delete" title="Publish" onclick='publishCampaign("{{campaign.id}}")'></i></td>
 
           </tr>
 
-          <tr id="campaign_title2_{{ campaign.id }}" class="campaign_row">
-              <td colspan = "5" style="text-align:right;border:0px">{{ campaign.updated_date|localtime }}</td>
-              
-              
+          <tr id="campaign_title2_{{ campaign.id }}" 
+          class="campaign_row">
+              <td colspan = "5" style="text-align:right;border:0px">{{ campaign.updated_date|localtime }}</td>   
           </tr>
 
        
