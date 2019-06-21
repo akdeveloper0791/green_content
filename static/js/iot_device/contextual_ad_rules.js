@@ -10,17 +10,17 @@ var selectedCampaigns = [];
 var carSelectedPlayers=[];
 
 
-function onSelectDevice()
+function onSelectDevice(isDefault = false)
 {
-  showRuleCreationBtn();
-  displayDeviceClassifiers();
+   showRuleCreationBtn();
+  displayDeviceClassifiers(isDefault);
 }
 
 function showRuleCreationBtn() 
  {
 	var creation_btn = document.getElementById("create_btn");
 	var deviceId=document.getElementById("dev_id");
-    if(deviceId.value=="0")
+    if(deviceId.value=="1")
     {
      creation_btn.style.display = "none";  
      dismissRuleCreation();
@@ -391,7 +391,7 @@ function hideClassifiers()
    document.getElementById("device_classifiers_div").style.display="none";
 }
 
-function displayDeviceClassifiers()
+function displayDeviceClassifiers(isDefault = false)
 {
 
    resetClassifierList();
@@ -401,7 +401,11 @@ function displayDeviceClassifiers()
     return false;
 
     try {
-   ajaxindicatorstart("<img src='/static/images/ajax-loader.gif'><br/> Please wait...!");    
+      if(isDefault==false)
+      {
+        ajaxindicatorstart("<img src='/static/images/ajax-loader.gif'><br/> Please wait...!");
+      }
+       
     $.ajax(
     {
 
@@ -418,7 +422,11 @@ function displayDeviceClassifiers()
      
       success: function(data)
        {
-        ajaxindicatorstop();
+         if(isDefault==false)
+      {
+       ajaxindicatorstop();
+      }
+        
         if(data['statusCode']==0)
         {
           console.log(JSON.stringify(data));   
@@ -439,7 +447,10 @@ function displayDeviceClassifiers()
     
      error: function (jqXHR, exception) {
       console.log(jqXHR.responseText);
-      ajaxindicatorstop();
+        if(isDefault==false)
+      {
+       ajaxindicatorstop();
+      }
       swal(exception+jqXHR.responseText);
      }
 
@@ -447,7 +458,10 @@ function displayDeviceClassifiers()
     }
       catch(Exception)
       {
-        ajaxindicatorstop();
+         if(isDefault==false)
+      {
+       ajaxindicatorstop();
+      }
         swal(Exception.message);
       }
 }
@@ -460,13 +474,26 @@ function displayClassifiers(rules)
     var rule = rules[i];
     var row=table.insertRow(-1);
     row.id="classifier_"+rule.id;
-    var cell =row.insertCell(-1);
-    cell.innerHTML =rule.classifier;
-    cell.style.textAlign = "left";
+
+//device name
+    var deviceName =row.insertCell(-1);
+    deviceName.innerHTML =rule.iot_device__name;
+  //  deviceName.style.textAlign = "left";
+
+   //device type
+    var deviceType =row.insertCell(-1);
+    deviceType.innerHTML =rule.iot_device__device_type;
+  
+
+  //classifier
+    var classifier =row.insertCell(-1);
+    classifier.innerHTML =rule.classifier;
+
+
              
     var campaignsCell=row.insertCell(-1);
      // campaignsCell.innerHTML="Campaigns";
-      campaignsCell.innerHTML='<p style="margin:5px;cursor: pointer;color:blue;"'+
+      campaignsCell.innerHTML='<p style="cursor: pointer;color:blue;"'+
       'onclick="getRuleCampaignInfo('+rule.id+');"><b>Campaign</b></p>'
 
       /*campaignsCell.style.cursor ="pointer";
@@ -476,7 +503,7 @@ function displayClassifiers(rules)
         };*/
 
      var playersCell=row.insertCell(-1);
-     playersCell.innerHTML='<p style="margin:5px;cursor: pointer;color:green;"'+
+     playersCell.innerHTML='<p style="cursor: pointer;color:green;"'+
       'onclick="getRulePlayersInfo('+rule.id+');"><b>Players</b></p>'
 
     var deleteCell = row.insertCell(-1);

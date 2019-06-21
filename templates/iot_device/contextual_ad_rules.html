@@ -78,13 +78,14 @@ var csrf_token = '{{ csrf_token }}'
  
 	<select name="device_spinner" class="form-control" id="dev_id" 
 	onchange="onSelectDevice();">
-	             <option value="0">Select Device</option>
+               <option selected value="1">All Devices</option>
                  {% for iot_dev in devices %}
 		         <option value='{{ iot_dev.key }}'>{{ iot_dev.name }}</option>
 		         {% endfor %}
 	          
     </select>	
   </div>
+
    <button id="create_btn" style="float: right;display:none;" class="gradient-button gradient-btn" onclick="displayRulesCreationForm();"><i class="fa fa-plus">Create Rule</i></button>
 
   <button id="submit_btn" style="float: right;display: none;" class="gradient-button gradient-btn" onclick="createRule()">Submit</button>
@@ -216,6 +217,9 @@ placeholder="0" value="0" required>
     </div>
   </div>
 
+<script type="text/javascript">
+  window.onload=onSelectDevice(true);
+</script>
 
 {% endblock %}
 {% block footer %} {% include 'footer.html' %} {% endblock %}
