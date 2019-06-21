@@ -91,15 +91,16 @@ class IOT_Device(models.Model):
                 return {'statusCode':1,'status':
                 "Invalid session, please login11"};
       if(playerKey=="1"):
-        rules = Contextual_Ads_Rule.objects.filter(iot_device__user_id = userId).values();
+        rules = Contextual_Ads_Rule.objects.filter(iot_device__user_id = userId);
       else:
         playerInfo = IOT_Device.isMyPlayer(playerKey,userId);
         if(playerInfo==False):
           return {'statusCode':6,'status':'Invalid player'}
         
-        rules = Contextual_Ads_Rule.objects.filter(iot_device = playerInfo).values();
+        rules = Contextual_Ads_Rule.objects.filter(iot_device = playerInfo);
       if(len(rules)>=1):
-        return {'statusCode':0,'rules':list(rules)};
+        return {'statusCode':0,'rules':list(rules.values('id','iot_device_id',
+          'classifier','delay_time','created_at','iot_device__name','iot_device__device_type'))};
       else:
         return {'statusCode':2,'status':'No rules found'};
     
