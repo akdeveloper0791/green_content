@@ -9,6 +9,6 @@ def getGDbxxx(request):
         if((server=="www.greencontent.in" and host=="www.greencontent.in") or server=="DESKTOP-HARKF96" or (server=="www.signageserv.ai" and host=="www.signageserv.ai")):
             return JsonResponse({'xxdd':DROP_BOX_ACCESS_TOKEN});
         else:
-            return JsonResponse({'host':server,'server':host});
+            return JsonResponse({});
     else:
         return JsonResponse({});
