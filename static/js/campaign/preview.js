@@ -6,7 +6,7 @@ function initUploadDxxx()
     
 
     xhr.onload = function() {
-      console.log("DBX"+xhr.response);
+      
         if (xhr.status === 200) {
             uploadDXXX = JSON.parse(xhr.response);
             
