@@ -2,12 +2,106 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style type="text/css">
+.switch {
+  position: relative;
+  display: inline-block;
+  width: 90px;
+  height: 35px;
+}
+
+.switch input {display:none;}
+
+.slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color:darkgray;
+  -webkit-transition: .4s;
+  transition: .4s;
+}
+
+.slider:before {
+  position: absolute;
+  content: "";
+  height: 26px;
+  width: 26px;
+  left: 4px;
+  bottom: 4px;
+  background-color: white;
+  -webkit-transition: .4s;
+  transition: .4s;
+}
+
+input:checked + .slider {
+  background-color: #2ab934;
+}
+
+input:focus + .slider {
+  box-shadow: 0 0 1px #2196F3;
+}
+
+input:checked + .slider:before {
+  -webkit-transform: translateX(55px);
+  -ms-transform: translateX(55px);
+  transform: translateX(55px);
+}
+
+/*------ ADDED CSS ---------*/
+.on
+{
+  display: none;
+}
+
+.on, .off
+{
+  color: white;
+  position: absolute;
+  transform: translate(-50%,-50%);
+  top: 50%;
+  left: 50%;
+  font-size: 10px;
+  font-family: Verdana, sans-serif;
+}
+
+input:checked+ .slider .on
+{display: block;}
+
+input:checked + .slider .off
+{display: none;}
+
+/*--------- END --------*/
+
+/* Rounded sliders */
+.slider.round {
+  border-radius: 35px;
+}
+
+.slider.round:before {
+  border-radius: 50%;}
+    
+  </style>
 
 </head>
 <body >
 {% block header %} {% include 'header.html' %} {% endblock %}
 
 {% block body %}
+
+<script type="text/javascript">
+        function toggleState(item)
+        {
+           if(item.className == "on") {
+              item.className="off";
+           } else {
+              item.className="on";
+           }
+        }
+</script>
 
 <script src="{% static 'jquery/1.12.4/jquery.min.js' %}"></script>
 <script src="{% static 'jquery/2.15.1/moment.min.js' %}"></script>
@@ -56,20 +150,40 @@
     </div>
 </div>
   </div>
-			<div class="rows">
-				<div class="col-sm-12" style="text-align: center;padding: 10px;">
-					<input type="button" value="View" class="gradient-button gradient-btn" style="padding: 8px 20px;" onclick="viewer_matrics_list()">
 
-          <input type="button" value="Export" class="gradient-button gradient-btn" style="padding: 8px 20px;" onclick="export_viewer_matrics()">
+ 
+<div class="rows">
 
-			  	</div>
+	<div class="col-sm-12" style="text-align: center;">
 
-			</div>
+		<input type="button" value="View" class="gradient-button gradient-btn" style="padding: 8px 20px;"  onclick="viewer_matrics_list()">
+
+          <input type="button" value="Export" class="gradient-button gradient-btn" style="padding: 8px 20px;" 
+          onclick="export_viewer_matrics()">
+			  
+</div>
+
+  <div  style="display:inline-block; 
+  text-align: center;float: right;" >
+    <h5 style="text-align: center;float: left;margin-right: 5px;color: gray">
+      <b>Auto Refresh</b></h5>
+    <label  class="switch"
+    style="text-align: center;float: right;" >
+    <input type="checkbox" id="togBtn" onclick="autoRefreshADRMetrics(this)">
+    <div class="slider round">
+    <span class="on">ON</span><span class="off">OFF</span>
+  </label>
+  </div>
+
+</div>
+
 </div>
 
 
+
 <!-- table -->
-<div class="container" style="overflow-x: auto;">
+<div class="container" style="overflow-x: auto;width: 100%">
+
 	<table class="testTable table table-hover" >
 		<thead>
 			<tr>
@@ -155,6 +269,8 @@ $(document).ready(function() {
 });
 
 window.onload=formatDate();
+window.onload=checkADRFlag();
+
 
 function formatDate() {
     var d = new Date(),
@@ -167,7 +283,41 @@ function formatDate() {
 
   var curr_date = [year, month, day].join('-');
   document.getElementById('from_date').value=curr_date+" 06:00:00";
+
+
 }
+
+function checkADRFlag() 
+{
+  var flag=localStorage.getItem("auto_refresh_flag");
+  if(flag=="true")
+  {
+    document.getElementById('togBtn').checked=true; 
+    setInterval(autoRefreshTask, 30000);
+  }else
+  {
+    document.getElementById('togBtn').checked=false; 
+      clearInterval()
+      
+  }
+}
+
+function autoRefreshTask()
+{
+   var d = new Date(),
+        month = '' + (d.getMonth() + 1),
+        day = '' + d.getDate(),
+        year = d.getFullYear();
+
+    if (month.length < 2) month = '0' + month;
+    if (day.length < 2) day = '0' + day;
+
+         d = year+"-"+month+"-"+day + 
+         " "+d.getHours()+":"+d.getMinutes()+":"+d.getSeconds();
+         document.getElementById('to_date').value=d;
+         viewer_matrics_list(true);
+}
+
 
 	  $('#datetimepicker2').datetimepicker({
             format: 'YYYY-MM-DD HH:mm:ss'
@@ -239,10 +389,11 @@ function display_reports(responseObj){
 	}
 }
 
-	function viewer_matrics_list(){
+	function viewer_matrics_list(isAuto){
 		var dev_id = document.getElementById('dev_id').value;
 		var from_date = document.getElementById('from_date').value;
 		var to_date = document.getElementById('to_date').value;
+
 		if(from_date == null || from_date == "")
 		{
 			swal("please select From_Date");
@@ -274,7 +425,11 @@ function display_reports(responseObj){
               
               document.getElementById('metrix_list').innerHTML = responseObj.status;
               dismissBusyDialog();
-              swal(responseObj.status);
+              if(!isAuto)
+              {
+               swal(responseObj.status);
+              }
+          
             }
             
         }
@@ -302,6 +457,10 @@ function display_reports(responseObj){
 		}
 		
 	}
+
+
+
+
 
   function export_viewer_matrics(){
     var dev_id = document.getElementById('dev_id').value;
@@ -367,7 +526,39 @@ function display_reports(responseObj){
     
   }
 
+
+function autoRefreshADRMetrics(checkbox)
+ {
+  //Save Auto Refresh Switch flag in cache 
+   storeADRFlag(checkbox.checked);
+  if(checkbox.checked==true)
+  {
+    //start auto refresh metrics info timer
+    setInterval(autoRefreshTask, 30000);
+  }else
+  {
+     //stop auto refresh metrics info timer
+    clearInterval()
  
+  }
+
+  }
+
+function storeADRFlag(flag)
+{
+  // Check browser support
+if (typeof(Storage) !== "undefined") {
+  // Store
+  localStorage.setItem("auto_refresh_flag", flag);
+  // Retrieve
+    var mFlag=localStorage.getItem("auto_refresh_flag");
+} else {
+  document.getElementById("auto_refresh").innerHTML = "Sorry, your browser does not support Web Storage...";
+}
+}
+
+
+
 </script>
 
 {% endblock %}
