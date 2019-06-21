@@ -69,10 +69,13 @@ var csrf_token = '{{ csrf_token }}'
 </script>
 <br /><br /><br /><br /><br /><br />
 
+
 <div class="container">
 
  <div id="select_device" >
 	<label>IOT Devices</label>
+
+ 
 	<select name="device_spinner" class="form-control" id="dev_id" 
 	onchange="onSelectDevice();">
 	             <option value="0">Select Device</option>
@@ -176,14 +179,15 @@ placeholder="0" value="0" required>
   </div>
 
 
-  <!-- dialog for rule assigned  player/displays  -->
+  <!-- dialog for rule assigned  
+    player/displays  -->
   <!--Rule Players Model -->
   <div class="modal" id="ctadr_players">
     <div class="modal-dialog">
       <div class="modal-content">
       
         <!-- Modal Header -->
-        <div class="modal-header"><center>
+        <div class="modal-header">
           <p id="rule_name" style="color:#4CAF50;text-align: center;font-weight:500;font-size:22px;">Rule</p>
           <input type="hidden" id="ctad_rule_id" />
           

@@ -263,7 +263,8 @@ a.btn:active{
       <td class="info1" style="color:dodgerblue;font-weight: bold" id="{{ metrics.player__id }}_player_name">{{ metrics.player__name }} </td>
       <td class="info1" >Approved</td>
       <td class="info1" >{{ metrics.accessed_at}}</td>
-      <td class="info1" style="cursor:pointer;color:#5D8AA8;" onclick='getCampaignInfo({{ metrics.player__id }});' ><u style="text-decoration-line:none;">Select</u></td> 
+      <td class="info1" style="cursor:pointer;color:#5D8AA8;"
+       onclick='getCampaignInfo({{ metrics.player__id }});' ><u style="text-decoration-line:none;">Select</u></td> 
      <!-- <td class="info1" style="cursor:pointer;color:#5D8AA8"><u>Edit</u></td>
       <td class="info" style="cursor:pointer;color:#5D8AA8"><u>Schedule</u></td> -->
     </tr>
@@ -311,6 +312,45 @@ a.btn:active{
       </div>
     </div>
   </div>
+
+
+ <!-- dialog to delete campaign from the rule  -->
+  <!--campaign delete alert dialog -->
+  <div class="modal" id="campaign_alert_dialog">
+    <div class="modal-dialog">
+
+      <div class="modal-content">  
+        <!-- Modal Header -->
+        <div class="modal-header"><center>
+          <p style="color:#4CAF50;text-align: center;
+          font-weight:500;font-size:22px;">
+            <i style="margin:10px;color:red;font-size:24px;
+            "class="fa fa-warning"></i>Are you sure?</p>
+        </center>
+        </div>
+        
+        <!-- Modal body -->
+        <div id="alert_dialog_msg" class="modal-body"
+        style="margin-top:3px; overflow-x: auto;">
+        <p>You want to delete campaign</p>
+        <div id="camp_name"
+        style="margin-top:3px; overflow-x: auto;">
+        </div>
+        </div>
+
+         <!-- Modal footer -->
+        <div class="modal-footer">
+          <center>
+          <button  type="button" class="btn btn-success" data-dismiss="modal" onclick="closeCampaignAlertDialog()">Cancel</button>
+
+          <button type="button"  class='btn btn-danger' id="delete_camp_btn"></button>
+         </center>
+        </div> 
+
+        </div>
+       
+      </div>
+    </div>
 
  <script>
   csrf_token = "{{ csrf_token }}"
