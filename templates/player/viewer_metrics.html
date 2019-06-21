@@ -389,7 +389,7 @@ function display_reports(responseObj){
 	}
 }
 
-	function viewer_matrics_list(isAuto){
+	function viewer_matrics_list(isAuto=false){
 		var dev_id = document.getElementById('dev_id').value;
 		var from_date = document.getElementById('from_date').value;
 		var to_date = document.getElementById('to_date').value;
@@ -405,8 +405,11 @@ function display_reports(responseObj){
 			swal("Invalid Date Range!\nStart Date cannot be after End Date!")
 			return false;
 		}else{
-
-			 displayInitUploadBusyDialog();
+      if(isAuto==false)
+      {
+        displayInitUploadBusyDialog();
+      }
+			 
 			 var xhr = new XMLHttpRequest();
     var params = 'accessToken=web&player='+dev_id+'&from_date='+from_date+'&to_date='+to_date;
     
