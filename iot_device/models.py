@@ -29,12 +29,17 @@ class IOT_Device(models.Model):
     registered_at = models.DateTimeField(default=timezone.now)
     updated_at = models.DateTimeField(default=timezone.now)
     
+    class Meta(object):
+        unique_together = [
+        ['mac','device_type']
+        ]
+
     def registerPlayer(data,userId):
         try:
            data =  json.loads(data);
            uniqueKey = str(uuid.uuid4().hex[:6].upper())+str(round(time.time() * 1000))+uuid.uuid4().hex[:6];
            try:
-            player = IOT_Device.objects.get(mac=data['mac'])
+            player = IOT_Device.objects.get(mac=data['mac'],device_type=data["device_type"])
             
            except IOT_Device.DoesNotExist:
             player = IOT_Device(mac=data['mac'],key=uniqueKey);
