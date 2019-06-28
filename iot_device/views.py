@@ -489,3 +489,17 @@ def prepareViewerMetricsExcel(metrics):
     response['Content-Disposition'] = 'attachment; filename=%s' % filename
 
     return response;
+
+@api_view(["POST"])
+def broadCastMicPhoneRule(request):
+    fcm_result = CAR_Device.publishMicPhoneRule(request.POST.get("device"),request.POST.get("classifiers"));
+    return JsonResponse(fcm_result);
+
+@api_view(["POST","GET"])
+def micPhoneClassifiers(request):
+    if request.user.is_authenticated:
+        classifiers = Contextual_Ads_Rule.listMicPhoneClassifiers(request.user.id);
+        return JsonResponse(classifiers);
+    else:
+        return JsonResponse({"statusCode":2,
+            "status":"Invalid user,please login"});

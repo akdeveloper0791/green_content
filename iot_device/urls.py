@@ -17,4 +17,6 @@ urlpatterns = [
     path('viewer_metrics',views.viewerMetrics,name="iotViewerMetrics"),
     path('get_v_metrics',views.getViewerMetrics,name="getIOTViewerMetrics"),
     path('exportViewerMetrics/',views.exportViewerMetrics, name="exportIOTViewerMetrics"),
+    path('broadCastMicPhoneRule/',views.broadCastMicPhoneRule, name="broadCastMicPhoneRule"),
+    path('micPhoneClassifiers/',views.micPhoneClassifiers, name="micPhoneClassifiers"),
     ]

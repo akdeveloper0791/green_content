@@ -1,13 +1,12 @@
-
+var selectedDeviceType=null;
 var campaignsList=[];
 var playersList=[];
 var selectedPlayers = [];
 var isPlayersShowing=false;
 var isCampaignsShowing = false;
 var selectedCampaigns = [];
-
-
 var carSelectedPlayers=[];
+var micClassifierUserList=[];
 
 
 function onSelectDevice(isDefault = false)
@@ -20,6 +19,7 @@ function showRuleCreationBtn()
  {
 	var creation_btn = document.getElementById("create_btn");
 	var deviceId=document.getElementById("dev_id");
+   
     if(deviceId.value=="1")
     {
      creation_btn.style.display = "none";  
@@ -47,6 +47,18 @@ function displayRulesCreationForm()
 	creation_btn.style.display ="none";
 	submit_btn.style.display="block";
 	document.getElementById("rules_form").style.display="block";
+  if(selectedDeviceType=="Microphone")
+  {
+    document.getElementById("mic_classifier").style.display="block";
+    document.getElementById("mic_classifier_user_list").style.display="block";
+    document.getElementById("classifier_type").style.display="none";
+    checkAndDisplayMicClassifiers();
+  }else
+  {
+    document.getElementById("mic_classifier").style.display="none";
+    document.getElementById("classifier_type").style.display="block";
+    document.getElementById("mic_classifier_user_list").style.display="none";
+  }
   hideClassifiers();
 
     
@@ -160,7 +172,7 @@ function getCampaignsFromServer()
 
   function displayCampaigns()
   {
-    for (var i = 0; i < campaignsList.length; i++) 
+    
     {
       var table = document.getElementById('campaign_list');
       for (var i = 0; i < campaignsList.length; i++) 
@@ -279,13 +291,29 @@ function createRule()
     return false;
   }
 
-  var classifier = document.getElementById('classifier_type').value;
-  if(classifier=="0")
+  var classifier = "0";
+  if(selectedDeviceType=="Microphone")
   {
-    swal("Please select one classifier");
-    return false;
-  }
+    classifier = document.getElementById("mic_classifier").value;
+    
+    if(classifier=="" || classifier==null)
+    {
 
+      swal("Please enter classifier");
+      return false;
+    }
+    classifier = classifier.toLowerCase();
+  }else
+  {
+    classifier = document.getElementById('classifier_type').value;
+    if(classifier=="0")
+    {
+      swal("Please select one classifier");
+      return false;
+    }
+  }
+  
+  
   var delayDuration = document.getElementById('delay_duration').value;
   if(Number.isInteger(parseInt(delayDuration)) == false)
   {
@@ -417,6 +445,7 @@ function displayDeviceClassifiers(isDefault = false)
       data:{
            accessToken: 'web',
            iot_device: deviceKey,
+           is_info:true,
               
       },
      
@@ -426,10 +455,11 @@ function displayDeviceClassifiers(isDefault = false)
       {
        ajaxindicatorstop();
       }
-        
+      
+        setDeviceType(data);
         if(data['statusCode']==0)
         {
-          console.log(JSON.stringify(data));   
+          
           displayClassifiers(data.rules);
            
         }
@@ -464,6 +494,27 @@ function displayDeviceClassifiers(isDefault = false)
       }
         swal(Exception.message);
       }
+}
+
+function setDeviceType(data)
+{
+  
+  if('playerInfo' in data)
+  {
+     var playerInfo = data['playerInfo'];
+     if(playerInfo!=null)
+     {
+      selectedDeviceType = playerInfo['type'];
+     }else
+     {
+       selectedDeviceType = null;
+     }
+  }else
+  {
+    selectedDeviceType = null;
+  }
+
+  
 }
 
 function displayClassifiers(rules)
@@ -1093,6 +1144,69 @@ function closeCADRplayers()
   document.getElementById('ctadr_players').style.display="none";
   newPlayersList=[];
  
+}
+
+function checkAndDisplayMicClassifiers()
+{
+  console.log("checkAndDisplayMicClassifiers length-"+micClassifierUserList.length)
+  if(micClassifierUserList.length<=0)
+  {
+    //get classifiers
+    ajaxindicatorstart("<img src='/static/images/ajax-loader.gif'><br/> Please wait...!");
+    var xhr = new XMLHttpRequest();
+    xhr.onload = function() {
+      ajaxindicatorstop();
+      if (xhr.status === 200) {
+        
+        var responseJSON = JSON.parse(xhr.response);
+        console.log("responseJSON"+JSON.stringify(responseJSON));
+        if(responseJSON['statusCode']==0)
+        {
+          displayMicClassifiers(responseJSON['classifiers']);
+        }
+          
+      }
+      
+  };
+  xhr.onerror = function()
+  {
+    ajaxindicatorstop();
+    
+    
+  };
+  
+  xhr.open('GET', '/iot_device/micPhoneClassifiers/');
+  xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+  xhr.setRequestHeader("X-CSRFToken", csrf_token);
+  
+  xhr.send();
+  }
+}
+
+function displayMicClassifiers(classifiers)
+{
+  console.log("displayMicClassifiers");
+    micClassifierUserList = classifiers;
+    var table = document.getElementById('mic_classifier_user_list');
+    
+    for (var i = 0; i < classifiers.length; i++) 
+      var row = table.insertRow(-1);  
+      {   
+        var classifier = classifiers[i];
+        console.log("classifier "+JSON.stringify(classifier));
+        
+        var cell = row.insertCell(-1);
+        cell.innerHTML = "<input style='cursor:pointer' value='"+classifier["classifier"]+"'"+
+          " onclick='micClassifierSelected(this)' readonly>"
+        
+      }
+  
+}
+
+function micClassifierSelected(element)
+{
+  
+  document.getElementById('mic_classifier').value=element.value;
 }
 
 

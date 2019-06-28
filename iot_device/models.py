@@ -22,7 +22,7 @@ def dictfetchall(cursor):
 
 class IOT_Device(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL,on_delete=models.CASCADE)
-    mac = models.CharField(max_length=125,blank=False,null=False,unique=True,db_index=True)
+    mac = models.CharField(max_length=125,blank=False,null=False,unique=False,db_index=True)
     key = models.CharField(max_length=125,blank=False,null=False,unique=True,db_index=True,default="adskite")#auto generate
     name = models.CharField(max_length=50,blank=False,null=False)
     device_type = models.CharField(max_length=50,blank=False,null=False)
@@ -90,6 +90,8 @@ class IOT_Device(models.Model):
             if(userId == False):
                 return {'statusCode':1,'status':
                 "Invalid session, please login11"};
+      
+      playerInfo1=None;
       if(playerKey=="1"):
         rules = Contextual_Ads_Rule.objects.filter(iot_device__user_id = userId);
       else:
@@ -97,12 +99,14 @@ class IOT_Device(models.Model):
         if(playerInfo==False):
           return {'statusCode':6,'status':'Invalid player'}
         
+        playerInfo1={'type':playerInfo.device_type};
+
         rules = Contextual_Ads_Rule.objects.filter(iot_device = playerInfo);
       if(len(rules)>=1):
         return {'statusCode':0,'rules':list(rules.values('id','iot_device_id',
-          'classifier','delay_time','created_at','iot_device__name','iot_device__device_type'))};
+          'classifier','delay_time','created_at','iot_device__name','iot_device__device_type')),'playerInfo':playerInfo1};
       else:
-        return {'statusCode':2,'status':'No rules found'};
+        return {'statusCode':2,'status':'No rules found','playerInfo':playerInfo1};
     
     def getContextualAdRuleInfo(secretKey,isUserId,ruleId,isCampaigns=True,isDevices=True):
       userId = secretKey;
@@ -137,7 +141,7 @@ class IOT_Device(models.Model):
       except Contextual_Ads_Rule.DoesNotExist:
         return {'statusCode':2,'status':'Invalid rule, info not found'}
 
-
+from django.db.models import Count
 class Contextual_Ads_Rule(models.Model):
     iot_device = models.ForeignKey('iot_device.IOT_Device',on_delete=models.CASCADE)
     classifier = models.CharField(max_length=125,blank=False,null=False,db_index=True)
@@ -227,6 +231,13 @@ class Contextual_Ads_Rule(models.Model):
         except Exception as e:
             return {'statusCode':3,'status':
                 "error "+str(e)};
+    
+    def listMicPhoneClassifiers(userId):
+      #classifiers = Contextual_Ads_Rule.objects.filter(
+      #  iot_device__user_id=userId,iot_device__device_type="Microphone").values('classifier');
+      classifiers = Contextual_Ads_Rule.objects.values('classifier').annotate(
+        name_count=Count('classifier')).filter(iot_device__user_id=userId,iot_device__device_type="Microphone").values('classifier');
+      return {"statusCode":0,"classifiers":list(classifiers)};
 
 #contextual ads rules associated campaigns
 class CAR_Campaign(models.Model):
@@ -454,6 +465,70 @@ class CAR_Device(models.Model):
         return response;
       else:
         return False;
+
+    def getDevicesToPublishMicPhoneRule(rule,player):
+        devices = CAR_Device.objects.exclude(
+          player__fcm_id='null').exclude(
+          player__fcm_id__isnull=True).filter(
+          car__classifier__in=rule,car__iot_device__key=player).values(
+          'player_id','player__name','player__fcm_id','player__mac','car__delay_time');
+        return list(devices);
+    
+    
+
+    def publishMicPhoneRule(player,rule):
+
+      try:
+
+        rule = json.loads(rule);
+        devicesToPublish = CAR_Device.getDevicesToPublishMicPhoneRule(rule,player);
+        if(len(devicesToPublish)>=1):
+          #prepare device to publish
+          response = {'includeThis':False,'devicesToPublish':devicesToPublish};
+          #return response;
+          deviceFcmRegIds = [];
+          deviceFcmRegIdsWithInfo={};
+          duplicateDevice=[];
+          for device in devicesToPublish:
+            deviceFCM = device['player__fcm_id'];
+            if deviceFCM not in duplicateDevice:
+              duplicateDevice.append(deviceFCM);
+              deviceDelay = device['car__delay_time'];
+              if(deviceDelay in deviceFcmRegIdsWithInfo):
+                deviceInfo = deviceFcmRegIdsWithInfo[deviceDelay];
+                deviceFcmRegIds = deviceInfo['deviceFcmRegIds'];
+                deviceFcmRegIds.append(deviceFCM);      
+              else:
+                deviceFcmRegIdsWithInfo[deviceDelay]={'deviceFcmRegIds':[deviceFCM]}
+              #deviceFcmRegIds.append(device['player__fcm_id']);
+          response['deviceFcmRegIdsWithInfo']=deviceFcmRegIdsWithInfo;
+          
+          push_service = FCMNotification(api_key=constants.fcm_api_key)
+          for delayTime,deviceWithInfo in deviceFcmRegIdsWithInfo.items():
+            
+            data_message = {
+            "action":constants.fcm_handle_mic_rule,
+            "rule":json.dumps(rule),
+            "delay_time":delayTime,
+            "push_time":str(datetime.datetime.now())
+            }
+
+            deviceFcmRegIds = deviceWithInfo['deviceFcmRegIds'];
+            if(len(deviceFcmRegIds)>=1):
+              if(len(deviceFcmRegIds)==1):
+                fcm_result = push_service.notify_single_device(registration_id=deviceFcmRegIds[0],data_message=data_message)
+                response['fcm_result'+str(delayTime)] = fcm_result;
+              else:
+                fcm_result = push_service.notify_multiple_devices(registration_ids=deviceFcmRegIds,data_message=data_message)
+                response['fcm_result'+str(delayTime)] = fcm_result;
+          
+          #fcm_result = push_service.notify_single_device(registration_id='fPauOP7j_Mw:APA91bFsez98VG5EVXgiqXkrpZKwb3mYmhfGyqfj2YuMQ3esOZvIW_LoGr0eHhkjKoJKdok6ARXXfg9uryX53ryn6o2BkVZQozgjSTv5dLcrR5D8lZ23byUrn3qQTxME54pzhHPo5Itc',data_message=data_message)
+          #response['fcm_Result']=fcm_result;
+          return response;
+        else:
+          return {'statusCode':6,'status':'No devices to publish'};
+      except ValueError as ex:
+        return {'statusCode':6,'status':'Invalid classifier'+str(ex)};
 
 class Age_Geder_Metrics(models.Model):
   iot_device = models.ForeignKey('iot_device.IOT_Device',on_delete=models.CASCADE,db_index=True)

@@ -81,6 +81,7 @@ var csrf_token = '{{ csrf_token }}'
                <option selected value="1">All Devices</option>
                  {% for iot_dev in devices %}
 		         <option value='{{ iot_dev.key }}'>{{ iot_dev.name }}</option>
+
 		         {% endfor %}
 	          
     </select>	
@@ -106,6 +107,12 @@ var csrf_token = '{{ csrf_token }}'
 	      
    	</select>
 
+  <input type="input" name="classifier" class="form-control" id="mic_classifier" style="display:none" placeholder="Please enter classifier"required>
+
+  <table id="mic_classifier_user_list" style="display:none;margin-left:1%;margin-top:1%;margin-bottom:1%;" >
+  </table>
+
+    
 <label>Delay(sec)</label>
 <input type="input" name="delay duration" class="form-control" id="delay_duration" 
 placeholder="0" value="0" required>
