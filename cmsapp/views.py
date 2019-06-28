@@ -43,7 +43,7 @@ def home(request):
     
 
 def web_search(request):
-    return render(request,'signageserv.html')
+    return render(request,'webcontent.html')
 
 def signageserv(request):
     return render(request,'signageserv.html')

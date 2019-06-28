@@ -21,6 +21,7 @@
     box-shadow: 0 10px 20px rgba(0,0,0,0.19), 0 6px 6px rgba(0,0,0,0.23);
     color: #FFF;
     margin: 8px 10px 12px;
+
 }
-.gradient-btn {background-image: linear-gradient(to right, #32CD32 0%,  #228B22 51%, #32CD32 100%)}
+.gradient-btn {background: #a64bf4; background-image: linear-gradient(to right, #21d4fd 10%,  #8026F7 50%, #b721ff 80%)}
 .gradient-btn:hover { background-position: right center; }

@@ -10,7 +10,8 @@ urlpatterns = [
         url(r'^$',cView.listCampaignsWeb,name='listCampaignsWeb'),
         url(r'^home/$',cView.listCampaignsWeb,name='listCampaignsWeb'),
         url(r'^mycontent/$',cView.listCampaignsWeb,name='listCampaignsWeb'),
-        url(r'^signageserv/$',views.web_search,name='web_search'),
+        url(r'^web_search/$',views.web_search,name='web_search'),
+         url(r'^signageserv/$',views.signageserv,name='signageserv'),
         url(r'^search/$',cView.listCampaignsWeb,name='listCampaignsWeb'),
 
 

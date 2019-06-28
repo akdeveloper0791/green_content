@@ -7,6 +7,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Digital Signage Platform | SignageServ</title>
+    <link rel="icon" type="image/png" href="{% static 'images/favicon-32.png' %}"/>
   <meta name="description" content="green content to have your own account to store media content ">
   <meta name="keywords" content="green content, campaigns, groups, video, images, text, url">
   <link rel="shortcut icon" href="{% static 'Mentor/img/favicon.ico' %}" type="image/x-icon">
@@ -26,6 +27,7 @@
     <style>
 .topnav_logo {
   overflow: hidden;
+
   
 }
 
@@ -40,7 +42,7 @@
   display: block;
   color: gray;
   text-align: center;
-  padding: 14px 16px;
+  padding: 16px 18px;
   text-decoration: none;
   font-size: 13px;
 }
@@ -89,10 +91,11 @@
 
 <body>
 
-    <a  href="{% url 'listCampaignsWeb' %}" style="color:#5FCF80;margin: 55px 0 0 10px;"> <img src='{% static "Mentor/img/gc_logo1.png" %}' style='cursor:pointer;'></a>
+   <nav class="navbar navbar-default navbar-fixed-top" style="background-color: lightblue">
+    <div class="container">
+        <a class="navbar-brand" href="/accounts/signin/" style="color:lightblue;margin: 5px 0 0 10px;"><img src='{% static "images/signageserv.png" %}' style='cursor:pointer'></a>
 
- 
- <div class="topnav" id="myTopnav">
+  <div class="topnav" id="myTopnav">
   {% if request.user.is_authenticated %}
   <a id="campaigns_nav" href="{% url 'listCampaignsWeb' %}" >Campaign <br /> Management</a>
   <a id="deviceMgmt_nav" href="{% url 'deviceMgmt' %}" >Device <br />Management</a>
@@ -113,6 +116,11 @@
     <i class="fa fa-bars"></i>
   </a>
 </div>
+  
+    </div>
+  </nav>
+
+ 
 
 
 <script>
@@ -165,8 +173,5 @@ else if(loadedURL.includes("iot_device/rules"))
   highliteSelectedLink("contextualAdsRules_nav");
 }
 
-
-
-
 </script>
-  </body>
+</body>

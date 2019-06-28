@@ -154,26 +154,28 @@ input:checked + .slider .off
  
 <div class="rows">
 
-	<div class="col-sm-12" style="text-align: center;">
+	<div class="col-sm-16" style="text-align: center;padding: 10px;">
 
-		<input type="button" value="View" class="gradient-button gradient-btn" style="padding: 8px 20px;"  onclick="viewer_matrics_list()">
+	<input type="button" value="View" class="gradient-button gradient-btn" style="padding: 8px 20px;"  onclick="viewer_matrics_list()">
 
           <input type="button" value="Export" class="gradient-button gradient-btn" style="padding: 8px 20px;" 
           onclick="export_viewer_matrics()">
-			  
-</div>
 
-  <div  style="display:inline-block; 
-  text-align: center;float: right;" >
+   <div style="display:inline-block; 
+  text-align: center;
+    font-family: Arial Black, Gadget, sans-serif;">
     <h5 style="text-align: center;float: left;margin-right: 5px;color: gray">
-      <b>Auto Refresh</b></h5>
-    <label  class="switch"
-    style="text-align: center;float: right;" >
+      <b>Auto </br>Refresh</b></h5>
+    <label class="switch" style="text-align: center;float: right;">
     <input type="checkbox" id="togBtn" onclick="autoRefreshADRMetrics(this)">
     <div class="slider round">
     <span class="on">ON</span><span class="off">OFF</span>
-  </label>
-  </div>
+  
+  </div>   
+
+</div>
+
+  
 
 </div>
 

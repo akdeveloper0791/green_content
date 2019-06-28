@@ -74,6 +74,12 @@ input[type=number]::-webkit-outer-spin-button {
   -webkit-appearance: none; 
   margin: 0; 
 }
+
+.sticky {
+  position: fixed;
+  top: 0;
+  width: 100%;
+}
 </style>
 </head>
 
@@ -81,41 +87,41 @@ input[type=number]::-webkit-outer-spin-button {
     
     <div class="pre-loader">
         <div class="load-con">
-            <img src="{% static 'images/xibologo.png' %}" class="animated fadeInDown" alt="">
+           <a class="navbar-brand" href="/signageserv">
+            <img  src="{% static 'images/xibologo.png' %}" 
+            alt="" class="logo animated fadeInDown"></a>
             <div class="spinner">
               <div class="bounce1"></div>
               <div class="bounce2"></div>
               <div class="bounce3"></div>
             </div>
+           
         </div>
     </div>
    
    
     <header>
         
-        <nav class="navbar navbar-default navbar-fixed-top" role="navigation">
+        <nav class="navbar navbar-fixed-top sticky" style="background-color:lightblue;"  role="navigation">
                 <div class="container">
                     <!-- Brand and toggle get grouped for better mobile display -->
                     <div class="navbar-header">
                         <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
                             <span class="fa fa-bars fa-lg"></span>
                         </button>
-                        <a class="navbar-brand" href="login">
-                            <img src="{% static 'images/xibologo.png' %}" alt="" class="logo">
-                        </a>
+                        <a class="navbar-brand" href="/signageserv">
+                       <img  src="{% static 'images/xibologo.png' %}" alt="" class="logo animated fadeInDown"></a>
                     </div>
 
                     <!-- Collect thi nav links, forms, and other content for toggling -->
-                    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1" style="margin-top: 10px;">
 
                         <ul class="nav navbar-nav navbar-right">
                             <li><a href="#about_us">About</a>
                             </li>
-			    <li><a href="#about">Products</a>
+			                      <li><a href="#about">Products</a>
                             </li>
                             <li><a href="#features">Features</a>
-                            </li>
-                            <li><a href="http://www.greencontent.in/">Green Content</a>
                             </li>
                             <li><a href="#screens">Case Studies</a>
                             </li>
@@ -125,7 +131,7 @@ input[type=number]::-webkit-outer-spin-button {
                             </li>
                             <li><a href="#support">Contact Us</a>
                             </li>
-                <li><a class="btn btn-info btn-lg" data-toggle="modal" data-target="#myModal">Login</a>                                                                         
+                <li><a class="btn btn-info btn-lg" style="color: " data-toggle="modal"  href="/accounts/signin/">Login</a>                                                                         
                             </li> 
                         </ul>
                     </div>
