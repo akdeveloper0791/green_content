@@ -1188,9 +1188,9 @@ function displayMicClassifiers(classifiers)
   console.log("displayMicClassifiers");
     micClassifierUserList = classifiers;
     var table = document.getElementById('mic_classifier_user_list');
-    
+    var row = table.insertRow(-1);  
     for (var i = 0; i < classifiers.length; i++) 
-      var row = table.insertRow(-1);  
+      
       {   
         var classifier = classifiers[i];
         console.log("classifier "+JSON.stringify(classifier));

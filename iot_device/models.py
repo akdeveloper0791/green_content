@@ -484,7 +484,7 @@ class CAR_Device(models.Model):
         devicesToPublish = CAR_Device.getDevicesToPublishMicPhoneRule(rule,player);
         if(len(devicesToPublish)>=1):
           #prepare device to publish
-          response = {'includeThis':False,'devicesToPublish':devicesToPublish};
+          response = {'statusCode':0,'includeThis':False};
           #return response;
           deviceFcmRegIds = [];
           deviceFcmRegIdsWithInfo={};
@@ -501,7 +501,7 @@ class CAR_Device(models.Model):
               else:
                 deviceFcmRegIdsWithInfo[deviceDelay]={'deviceFcmRegIds':[deviceFCM]}
               #deviceFcmRegIds.append(device['player__fcm_id']);
-          response['deviceFcmRegIdsWithInfo']=deviceFcmRegIdsWithInfo;
+          #response['deviceFcmRegIdsWithInfo']=deviceFcmRegIdsWithInfo;
           
           push_service = FCMNotification(api_key=constants.fcm_api_key)
           for delayTime,deviceWithInfo in deviceFcmRegIdsWithInfo.items():
