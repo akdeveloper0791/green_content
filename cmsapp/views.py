@@ -45,6 +45,9 @@ def home(request):
 def web_search(request):
     return render(request,'webcontent.html')
 
+def signageserv(request):
+    return render(request,'signageserv.html')
+
 def all_content(request):
     if request.user.is_authenticated():
         if request.method == 'GET':

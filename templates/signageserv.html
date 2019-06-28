@@ -1,0 +1,913 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en" class="no-js">
+<head>
+ <meta charset="UTF-8">
+<meta id="meta_keywords" name="keywords" content="Digital signage, digital signage software, digital signage displays, digital signage solutions, digital signage system, interactive signage"/>
+<meta id="meta_description" name="description" content="SignageServ is a digital signage product from Adskite, that meets the needs of both enterprise and
+business users. This feature packed product will enable you in managing the content eciently by
+delivering high quality visuals through an easy to use Web and mobile app. Our state-of-the-art technology
+enables you host 4K & full HD videos. Our SignageServ media player can handle variety of
+media types like JPEG/PNG/TIFF Image, H.265 Video, PDF, PPT, HTML5 (URLs), Ticker Text etc. You can
+directly play content from YouTube, Whatsapp, Facebook, Twitter, Mobile etc. SignageServ is used by
+our customers for dierent purposes like Entertainment, Informational, Dashboards, Promotional,
+Visitor engagement, Production Line Management and Other."/>  
+
+<title>Digital Signage Platform | SignageServ</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+
+<link rel="icon" type="image/png" href="{% static 'images/favicon-32.png' %}"/>
+
+
+<link rel="stylesheet" href="{% static 'font-awsome/4.7.0/font-awesome.min.css' %}">
+        <!-- Bootstrap 3.3.2 -->
+    <link rel="stylesheet"
+     href="{% static 'js/Oleose-master/assets/css/bootstrap.min.css' %}">
+     <link rel="stylesheet"
+     href="{% static 'js/Oleose-master/assets/css/animate.css' %}">
+     <link rel="stylesheet"
+     href="{% static 'js/Oleose-master/assets/css/font-awesome.min.css' %}">
+     <link rel="stylesheet"
+     href="{% static 'js/Oleose-master/assets/css/slick.css' %}">
+      <link rel="stylesheet"
+   href="{% static 'js/Oleose-master/assets/js/rs-plugin/css/settings.css' %}">
+      <link rel="stylesheet"
+     href="{% static 'js/Oleose-master/assets/css/styles.css' %}">
+
+  <script type="text/javascript" 
+  src="{% static 'js/Oleose-master/assets/js/modernizr.custom.32033.js' %}"></script>
+  <script src="{% static 'js/Oleose-master/assets/js/jquery-1.11.1.min.js' %}"></script>
+   <script src="{% static 'js/Oleose-master/assets/js/bootstrap.min.js' %}"></script>
+
+   <script src="{% static 'js/Oleose-master/assets/js/slick.min.js' %}"></script>
+   <script src="{% static 'js/Oleose-master/assets/js/placeholdem.min.js' %}"></script>
+
+   <script src="{% static 'js/Oleose-master/assets/js/rs-plugin/js/jquery.themepunch.plugins.min.js' %}"></script>
+   <script src="{% static 'js/Oleose-master/assets/js/rs-plugin/js/jquery.themepunch.revolution.min.js' %}"></script>
+   <script src="{% static 'js/Oleose-master/assets/js/waypoints.min.js' %}"></script>
+   <script src="{% static 'js/Oleose-master/assets/js/scripts.js' %}"></script>
+
+
+   <link rel="stylesheet"
+     href="{% static 'css/sweetalert-magnify.css' %}">
+    <link rel="stylesheet" href="{% static 'js/tables/style.css' %}">
+    <script type="text/javascript" 
+    src="{% static 'js/tables/index.js' %}">   
+    </script>
+
+
+<style>
+
+.card-cont{
+  height:280px;
+}
+
+.card-cont img{
+  max-width: 100%;
+  min-width: 100%;
+  min-height: 280px;
+  height: 100%;
+}
+input[type=number]::-webkit-inner-spin-button, 
+input[type=number]::-webkit-outer-spin-button { 
+  -webkit-appearance: none; 
+  margin: 0; 
+}
+
+.sticky {
+  position: fixed;
+  top: 0;
+  width: 100%;
+}
+</style>
+</head>
+
+<body>
+    
+    <div class="pre-loader">
+        <div class="load-con">
+           <a class="navbar-brand" href="/signageserv">
+            <img  src="{% static 'images/xibologo.png' %}" 
+            alt="" class="logo animated fadeInDown"></a>
+            <div class="spinner">
+              <div class="bounce1"></div>
+              <div class="bounce2"></div>
+              <div class="bounce3"></div>
+            </div>
+           
+        </div>
+    </div>
+   
+   
+    <header>
+        
+        <nav class="navbar navbar-fixed-top sticky" style="background-color:lightblue;"  role="navigation">
+                <div class="container">
+                    <!-- Brand and toggle get grouped for better mobile display -->
+                    <div class="navbar-header">
+                        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                            <span class="fa fa-bars fa-lg"></span>
+                        </button>
+                        <a class="navbar-brand" href="/signageserv">
+                       <img  src="{% static 'images/xibologo.png' %}" alt="" class="logo animated fadeInDown"></a>
+                    </div>
+
+                    <!-- Collect thi nav links, forms, and other content for toggling -->
+                    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1" style="margin-top: 10px;">
+
+                        <ul class="nav navbar-nav navbar-right">
+                            <li><a href="#about_us">About</a>
+                            </li>
+			                      <li><a href="#about">Products</a>
+                            </li>
+                            <li><a href="#features">Features</a>
+                            </li>
+                            <li><a href="#screens">Case Studies</a>
+                            </li>
+                            <li><a href="#demo">Demo</a>
+                            </li>
+                            <li><a class="getApp" href="#getApp">Downloads</a>
+                            </li>
+                            <li><a href="#support">Contact Us</a>
+                            </li>
+                <li><a class="btn btn-info btn-lg" style="color: " data-toggle="modal"  href="/accounts/signin/">Login</a>                                                                         
+                            </li> 
+                        </ul>
+                    </div>
+                    <!-- /.navbar-collapse -->
+                </div>
+                <!-- /.container-->
+        </nav>
+	
+	 <!--RevSlider-->
+        <div class="tp-banner-container hidden-sm hidden-xs">
+	<img src="{% static 'images/architec.png' %}" alt="" style="width:100%;background-size:cover;background-repeat:no-repeat;">	
+
+	</div>
+	
+	 <div class="tp-banner-container hidden-md hidden-lg">
+        <img src="{% static 'images/achitectures.jpg' %}" alt="" style="padding-top:105px;width:100%;backgreund-size:cover;background-repeat:no-repeat;">
+        </div>
+	
+
+    </header>
+
+
+    <div class="wrapper">
+      <section id="about_us" style="padding-bottom:30px;">
+	<div class="container">
+
+                <div class="section-heading scrollpoint sp-effect3" style="margin:30px 0;">
+                    <h1>About Us</h1>
+                    <div class="divider"></div>
+
+                </div>
+
+                <div class="row">
+<h4 style="text-align:center;padding:5px 15px;color:#66cdcc;font-size:20px;">Next Gen, Feature Rich Digital Signage at your finger tips</h4>
+                   <p style="text-align:justify;padding:5px 15px;color:black;font-size:16px;">SignageServ is a digital signage product from Adskite, that meets the needs of both enterprise and
+business users. This feature packed product will enable you in managing the content efficiently by
+delivering high quality visuals through an easy to use Web and mobile app. Our state-of-the-art technology
+enables you host 4K & full HD videos. Our SignageServ media player can handle variety of
+media types like JPEG/PNG/TIFF Image, H.265 Video, PDF, PPT, HTML5 (URLs), Ticker Text etc. You can
+directly play content from YouTube, Whatsapp, Facebook, Twitter, Mobile etc. SignageServ is used by
+our customers for different purposes like Entertainment, Informational, Dashboards, Promotional,
+Visitor engagement, Production Line Management and Other. </p>
+		 </div>
+	</div>
+	</section>
+
+       <section id="about" style="padding-bottom:30px;">
+            <div class="container">
+                
+                <div class="section-heading scrollpoint sp-effect3" style="margin:30px 0;">
+                    <h1>Our Products</h1>
+                    <div class="divider"></div>
+                
+                </div>
+
+        <!--        <div class="row">
+	
+			 <div class="col-md-12 col-sm-12 col-xs-12" style="margin:5px 5px;">
+                        <div class="about-item scrollpoint sp-effect2">
+                             <div style=" background: url(https://www.signageserv.com/theme/default/img/sol1/cloud1.jpg);
+    border-radius: 10px;
+    background-repeat: no-repeat;
+    background-size:cover;
+    border: 3px solid #336799;">
+                            <h3 style="text-align:center;padding:5px 15px;color:#66cdcc;">Cloud Digital Signage</h3>
+                          <p style="text-align:justify;padding:5px 15px;color:black;">"SIGNAGESERV Cloud"  is  Display anywhere and Operate from anywhere Digital Signage Solution concept with Cloud Content and Campaign Schedules Management for Small , Medium , Large organizations spread across geo-location boundaries.  Adding our AI based Green Content CaaS (Content as a Service) Platform makes your life easy in getting High Quality Content for your campaigns.
+                     </p> <p style="text-align:right;color: floralwhite;padding:5px 15px;"><a href="#features" style="color:white;text-decoration: none;">Learn more..</a></p> 
+
+                                </div>
+
+			
+
+                          </div>
+                    </div>
+
+                	 <div class="col-md-12 col-sm-12 col-xs-12" style="margin:5px 5px;">
+                        <div class="about-item scrollpoint sp-effect5">
+                         <div  style="  background: url(https://www.signageserv.com/theme/default/img/sol1/enterprise1.jpg);
+    border-radius: 10px;
+    background-repeat: no-repeat;
+    background-size:cover;
+    border: 3px solid #336799;float:right;">
+                            <h3 style="text-align:center;padding:5px 15px;color:#66cdcc;">Enterprise Digital Signage</h3>
+                          <p style="text-align:justify;padding:5px 15px;color:black;">"SIGNAGESERV Enterprise"  is  one stop Digital Signage Solution for  Public  Place Campaigns ( Like Reception , Lounge, Cafeteria, corridor , Directions ) and Private Data Campaigns ( Project Dash boards, Quality Metrics, Sales Reports, KPI Dashboards, with auto-refreshed data ) within Organization private secured network controlled by Enterprise Authorized  staff with ease and real-time effect.
+                       </p><p style="text-align:right;color: floralwhite;padding:5px 15px;"><a href="#features" style="color:white;text-decoration: none;">Learn more..</a></p> 
+			</div>
+                       
+		
+                 
+                        </div>
+                    </div>
+
+	
+
+      
+                        <div class="col-md-12 col-sm-12 col-xs-12" style="margin:5px 5px;">
+                        <div class="about-item scrollpoint sp-effect1" >
+                                 <div style="background: url(https://www.signageserv.com/theme/default/img/sol1/local1.png);
+    border-radius: 10px;
+    background-repeat: no-repeat;
+    background-size:cover;
+    border: 3px solid #336799;">
+                            <h3 style="text-align:center;padding:5px 15px;color:#66cdcc;">Hyper Local Digital Signage</h3>
+                          <p style="text-align:left;padding:5px 15px;color:black;">"SIGNAGESERV Nearby" is first-ever innovative, Plug n Play (PnP), easy to operate Digital Signage Solution for Small and Medium Businesses. No Internet cost, No Cabling, No USB copying, No Laptop needed. Operate at finger touch with no time.
+                    </p> <p style="text-align:right;color: floralwhite;padding:5px 10px;"><a href="#features" style="color:white;text-decoration: none;">Learn more..</a></p> </div>
+
+			
+
+			
+                     </div>
+                    </div>
+						
+      
+          
+               </div>-->
+			
+	<div class="row" style="padding:10px;">
+	<div class="col-md-12 col-xs-12">
+	<div class="row">
+		<div class="col-md-6 card-cont">
+			<img src="{% static 'images/signagecs.png' %}">
+		</div>
+
+		<div class="col-md-6">
+			<h3 style="text-align:center;padding:5px 15px;color:#66cdcc;">SignageServ CS Series</h3>
+			<p style="text-align:justify;padding:5px 15px;color:black;font-size:16px;">
+			You are an organization spread across multiple locations or large
+			number of signages in a single location. You want to manage the
+			content on the signages efficiently.<br/>
+			With the CS Series of SignageServ you gain the advantage of
+			managing your signage content in multiple formats using a
+			central, secure cloud server.<br/>
+			You can create multiple layouts of your content and have
+			complete control on the content, layout and schedule of each
+			signage or a group of signages.
+			</p>
+		</div>
+	</div>
+	</div>
+	</div>
+
+	<div class="row" style="padding:10px;">
+	<div class="col-md-12 col-xs-12">
+	<div class="row">
+		<div class="col-md-6 card-cont">
+			<img src="{% static 'images/signagees.png' %}">
+		</div>
+
+		<div class="col-md-6">
+			<h3 style="text-align:center;padding:5px 15px;color:#66cdcc;">SignageServ ES Series</h3>
+			<p style="text-align:justify;padding:5px 15px;color:black;font-size:16px;">
+			You are an enterpise with a need to maintain your content
+			within the organizational network.You want to manage your
+			content efficiently and in a targeted manner.<br/>
+			With the ES series of SignageServ you can maintain your
+			content and the signage players with your enterpise LAN.
+			Location specific content can be played using the layout
+			creation and scheduling capabilities.<br/>
+			The solution easily integrates into your corporate security
+			policies.<br/>
+			URL play supports display of Operations dashboards,
+			Production metrics, Sales reports, Defect reports etc.
+			</p>
+		</div>
+	</div>
+	</div>
+	</div>
+
+	<div class="row" style="padding:10px;">
+	<div class="col-md-12 col-xs-12">
+	<div class="row" >
+		<div class="col-md-6 card-cont">
+			<img src="{% static 'images/signagens.png' %}">
+		</div>
+		<div class="col-md-6">
+			<h3 style="text-align:center;padding:5px 15px;color:#66cdcc;">SignageServ NS Series</h3>
+			<p style="text-align:justify;padding:5px 15px;color:black;font-size:16px;">
+			You are looking for an easy to use signage app for easy
+			management of content and signages at your business
+			without the need for internet connectivity.<br/>
+			With the NS series of Signageserv, You have a plug-n-play
+			signage manager that lets you create campaigns with multiple
+			formats of content and push them to the signage display.<br/>
+			Instantaneous content like product campaigns, rate card
+			display, welcome messages, voice announcements can be
+			managed at the signage location.
+			</p>
+		</div>
+	</div>
+	</div>
+	</div>
+
+            </div>
+        </section>
+
+<section id="features" >
+<div class="container">
+                <div class="section-heading scrollpoint sp-effect3" style="    margin: 30px 0;">
+                    <h1>Features</h1>
+                    <div class="divider"></div>
+                 
+                </div>
+		 <div class="row">
+                 <div class="col-xs-12">
+        <div class="table-responsive">
+        <table summary="This table shows how to create responsive tables using Bootstrap's default functionality" class="table table-bordered table-hover">
+        
+          <thead>
+            <tr style="background-color: darkturquoise; color: ghostwhite;">
+                    <th >FEATURES</th>
+                    <th style="text-align: center;">CLOUD MODE</th>
+                    <th style="text-align: center;">ENTERPRISE MODE</th>
+                    <th style="text-align: center;">NEARBY MODE</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td >Multi Region</td>
+            	    <td style="text-align: center;"><img src="{% static 'images/right.png' %}"></td>
+                    <td style="text-align: center;"><img src="{% static 'images/right.png' %}"></td>
+                    <td style="text-align: center;"><img src="{% static 'images/right.png' %}"></td>
+            </tr>
+            <tr>
+               <td >Images</td>
+                    <td style="text-align: center;"><img src="{% static 'images/right.png' %}"></td>
+                    <td style="text-align: center;"><img src="{% static 'images/right.png' %}"></td>
+                    <td style="text-align: center;"><img src="{% static 'images/right.png' %}"></td>
+            </tr>
+            <tr>
+              <td >Videos</td>
+                     <td style="text-align: center;"><img src="{% static 'images/right.png' %}"></td>
+                    <td style="text-align: center;"><img src="{% static 'images/right.png' %}"></td>
+                    <td style="text-align: center;"><img src="{% static 'images/right.png' %}"></td>
+            </tr>
+            <tr>
+              <td >Text Scrolling</td>
+                     <td style="text-align: center;"><img src="{% static 'images/right.png' %}"></td>
+                    <td style="text-align: center;"><img src="{% static 'images/right.png' %}"></td>
+                    <td style="text-align: center;"><img src="{% static 'images/right.png' %}"></td>
+            </tr>
+            <tr>
+              <td >URL-JIRA</td>
+                     <td style="text-align: center;"><img src="{% static 'images/right.png' %}"></td>
+                    <td style="text-align: center;"><img src="{% static 'images/right.png' %}"></td>
+                    <td style="text-align: center;"><img src="{% static 'images/right.png' %}"></td>
+            </tr>
+            <tr>
+              <td >URL-Facebook</td>
+                     <td style="text-align: center;"><img src="{% static 'images/right.png' %}"></td>
+                    <td style="text-align: center;"><img src="{% static 'images/right.png' %}"></td>
+                    <td style="text-align: center;"><img src="{% static 'images/right.png' %}"></td>
+            </tr>
+
+               <tr>
+              <td >URL-Youtube/News Channel</td>
+                     <td style="text-align: center;"><img src="{% static 'images/right.png' %}"></td>
+                    <td style="text-align: center;"><img src="{% static 'images/right.png' %}"></td>
+                    <td style="text-align: center;"><img src="{% static 'images/right.png' %}"></td>
+            </tr>
+               <tr>
+             <td >Sequential Play</td>
+                    <td style="text-align: center;"><img src="{% static 'images/right.png' %}"></td>
+                    <td style="text-align: center;"><img src="{% static 'images/right.png' %}"></td>
+                    <td style="text-align: center;"><img src="{% static 'images/right.png' %}"></td>
+            </tr>
+               <tr>
+                <td>Multi User Control</td>
+                     <td style="text-align: center;"><img src="{% static 'images/right.png' %}"></td>
+                    <td style="text-align: center;"><img src="{% static 'images/right.png' %}"></td>
+                    <td style="text-align: center;"><img src="{% static 'images/right.png' %}"></td>
+            </tr>
+               <tr>
+            <td >PDF Display</td>
+                    <td style="text-align: center;"><img src="{% static 'images/right.png' %}"></td>
+                    <td style="text-align: center;"><img src="{% static 'images/error.png' %}"></td>
+                    <td style="text-align: center;"><img src="{% static 'images/error.png' %}"></td>
+            </tr>
+               <tr>
+               <td >Clock  Analog & Digital</td>
+                     <td style="text-align: center;"><img src="{% static 'images/right.png' %}"></td>
+                    <td style="text-align: center;"><img src="{% static 'images/error.png' %}"></td>
+                    <td style="text-align: center;"><img src="{% static 'images/error.png' %}"></td>
+            </tr>
+               <tr>
+            <td >Green Content CaaS Support</td>
+                     <td style="text-align: center;"><img src="{% static 'images/right.png' %}"></td>
+                    <td style="text-align: center;"><img src="{% static 'images/error.png' %}"></td>
+                    <td style="text-align: center;"><img src="{% static 'images/error.png' %}"></td>
+            </tr>
+               <tr>
+             <td >Scheduling</td>
+                    <td style="text-align: center;"><img src="{% static 'images/right.png' %}"></td>
+                    <td style="text-align: center;"><img src="{% static 'images/error.png' %}"></td>
+                    <td style="text-align: center;"><img src="{% static 'images/error.png' %}"></td>
+            </tr>
+               <tr>
+              <td >Background Audio</td>
+                    <td style="text-align: center;"><img src="{% static 'images/error.png' %}"></td>
+                    <td style="text-align: center;"><img src="{% static 'images/right.png' %}"></td>
+                    <td style="text-align: center;"><img src="{% static 'images/right.png' %}"></td>
+            </tr>
+               <tr>
+                                                    <td ><abbr title="Author:
+This is unique feature to set Audio per Image. As and when Imgage displayed. Corresponding music/recoded announcement will be played till the Image in display. This will take the attention of viwers. ">Background Audio per Image (i)</abbr></td>
+                    <td style="text-align: center;"><img src="{% static 'images/error.png' %}"></td>
+                    <td style="text-align: center;"><img src="{% static 'images/right.png' %}"></td>
+                    <td style="text-align: center;"><img src="{% static 'images/right.png' %}"></td>
+            </tr>
+               <tr>
+              <td ><abbr title="Author:
+As and when new content or new image pushed to player, it will give defined announcment. Like New Offer Arrived. New Stock Arrived. This will grab customer  attention for new offers.">Announce on New Content   (i)</abbr></td>
+                   <td style="text-align: center;"><img src="{% static 'images/error.png' %}"></td>
+                    <td style="text-align: center;"><img src="{% static 'images/right.png' %}"></td>
+                    <td style="text-align: center;"><img src="{% static 'images/right.png' %}"></td>
+            </tr>
+               <tr>
+              <td >Auto Web Scroll up</td>
+                    <td style="text-align: center;"><img src="{% static 'images/error.png' %}"></td>
+                    <td style="text-align: center;"><img src="{% static 'images/right.png' %}"></td>
+                    <td style="text-align: center;"><img src="{% static 'images/right.png' %}"></td>
+            </tr>
+               <tr>
+              <td >Skip Media Instant</td>
+                    <td style="text-align: center;"><img src="{% static 'images/error.png' %}"></td>
+                    <td style="text-align: center;"><img src="{% static 'images/right.png' %}"></td>
+                    <td style="text-align: center;"><img src="{% static 'images/right.png' %}"></td>
+            </tr>
+               <tr>
+             <td >Pause & Resume Player</td>
+                    <td style="text-align: center;"><img src="{% static 'images/error.png' %}"></td>
+                    <td style="text-align: center;"><img src="{% static 'images/right.png' %}"></td>
+                    <td style="text-align: center;"><img src="{% static 'images/right.png' %}"></td>
+            </tr>
+               <tr>
+             <td >Volume Control </td>
+                    <td style="text-align: center;"><img src="{% static 'images/error.png' %}"></td>
+                    <td style="text-align: center;"><img src="{% static 'images/right.png' %}"></td>
+                    <td style="text-align: center;"><img src="{% static 'images/right.png' %}"></td>
+            </tr>
+               <tr>
+              <td >Campaign Text per Image</td>
+                    <td style="text-align: center;"><img src="{% static 'images/error.png' %}"></td>
+                    <td style="text-align: center;"><img src="{% static 'images/right.png' %}"></td>
+                    <td style="text-align: center;"><img src="{% static 'images/right.png' %}"></td>
+            </tr>
+               <tr>
+              <td >Announcements</td>
+                    <td style="text-align: center;"><img src="{% static 'images/error.png' %}"></td>
+                    <td style="text-align: center;"><img src="{% static 'images/right.png' %}"></td>
+                    <td style="text-align: center;"><img src="{% static 'images/right.png' %}"></td>
+            </tr>
+             <tr>
+                    <td >Interactive</td>
+                    <td style="text-align: center;"><img src="{% static 'images/error.png' %}"></td>
+                    <td style="text-align: center;"><img src="{% static 'images/right.png' %}"></td>
+                    <td style="text-align: center;"><img src="{% static 'images/right.png' %}"></td>
+                 
+                </tr>
+                   <tr>
+                    <td>Need Internet</td>
+                   <td style="text-align: center;"><img src="{% static 'images/right.png' %}"></td>
+                    <td style="text-align: center;"><img src="{% static 'images/error.png' %}"></td>
+                    <td style="text-align: center;"><img src="{% static 'images/error.png' %}"></td>
+                  
+                </tr>
+                     <tr>
+                    <td> SIM Support</td>
+                    <td style="text-align: center;"><img src="{% static 'images/right.png' %}"></td>
+                    <td style="text-align: center;"><img src="{% static 'images/error.png' %}"></td>
+                   <td style="text-align: center;"><img src="{% static 'images/error.png' %}"></td>
+                 
+                </tr>
+                       <tr>
+                    <td > Control Coverage Range</td>
+                    <td style="text-align: center;">Worldwide</td>
+                    <td style="text-align: center;">Enterprise</td>
+                   <td style="text-align: center;">30 mts</td>
+          
+                </tr>
+               
+          </tbody>
+
+        </table>
+      </div><!--end of .table-responsive-->
+  </div>
+</div>	
+</div>
+</section>
+
+
+
+
+         <section id="screens">
+            <div class="container">
+
+                <div class="section-heading scrollpoint sp-effect3">
+                    <h1>Case studies</h1>
+                    <div class="divider"></div>
+           
+                </div>
+
+                      <div class="row">
+   
+				
+			  <div class="col-md-6" style="margin:10px 0px;"><table style="width:100%;background-color: ghostwhite;">
+    <caption style="
+    color: white;
+    font-weight: 600;
+    background-color: #336799;padding: 5px 5px;
+    font-size: 16px;">Recent Entries<span style="float:right;"> <img src="{% static 'images/arrow2.png' %}"> </span></caption>
+    <tbody><tr style="padding:2.5px; width: 100%;">
+        <th style="padding:2.5px;width:30%;">
+         <img src="{% static 'images/skflogo.jpg' %}" alt="" 
+         class="img-responsive" style="margin:auto;">
+        </th>
+        <th style="padding:2.5px;width:70%;text-align:justify;" rowspan="2">Industrial digital signage helping all employees to view the manufacturing defects instantly from various channels. A web interface captures all the bearings defect images through a high quality Carrason camera and publishes for the benefit of production staff. It helps all the staff to transform to digital in defect mornitoring and exterminate the need for using paper records.</th>
+        </tr>
+    </tbody></table>
+    
+    </div>
+  
+	 <div class="col-md-6" style="margin:10px 0px;"><table style="width:100%;background-color: ghostwhite;">
+    <caption style="
+    color: white;
+    font-weight: 600;
+    background-color: #336799;padding: 5px 5px;
+    font-size: 16px;">Popular Entries<span style="float:right;"> <img src="{% static 'images/arrow2.png' %}"> </span></caption>
+    <tbody><tr style="padding:2.5px; width: 100%;">
+        <th style="padding:2.5px;width:30%;"> <img src="{% static 'images/bz-logo.png' %}" alt="" class="img-responsive" style="margin:auto;height:100px;"></th>
+        <th style="padding:2.5px;width:70%;text-align:justify;" rowspan="2">Restaurant Signage helping customers entertained, engaged and interactive. Bangalore's posh biryani zone displays all special foods related video & offers. They use for background music, anouncements and for collecting the feedback & orders.</th>
+        </tr>
+    </tbody></table>
+
+    </div>
+
+	
+                </div>                       
+</div>
+</section>
+
+        
+            <section id="demo" class="doublediagonal" style="padding:10px 0;">
+            <div class="container">
+                <div class="section-heading scrollpoint sp-effect3" style="margin:30px 0;">
+                    <h1>Request for Free Demo</h1>
+                    <div class="divider"></div>
+                  
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="row">
+				
+                            <form action="" id="enqform123" name="send_enquiry" method="GET" enctype="multipart/form-data">
+        <div class="col-md-12">
+         <div class="col-md-6">
+            <div class="col-md-12" style="margin-bottom: 10px;">
+                <input type="text" id="names_name" name="names_name" placeholder="Enter Name" class="form-control" style="margin-bottom: 4px;">
+            </div>
+            <div class="col-md-12" style="margin-bottom: 10px;">
+                <input type="text" id="emails" name="emails" placeholder="Enter Email" class="form-control" style="margin-bottom: 4px;">
+            </div>
+            <div class="col-md-12" style="margin-bottom: 30px;">
+                <input type="text" id="phones_phone" name="phones_phone" class="form-control" style="margin-bottom:4px;" placeholder="Enter Phone Number">
+            </div>
+        </div>
+            
+        <div class="col-md-6">
+           
+            <div class="col-md-12">
+                <textarea class="form-control" id="messages_message" name="messages_message" placeholder="Type your message here..." rows="8" required="" data-gramm="true" data-txt_gramm_id="b68f938f-6756-bf8a-fb2d-e0d5c39d02b6" data-gramm_id="b68f938f-6756-bf8a-fb2d-e0d5c39d02b6" spellcheck="false" data-gramm_editor="true" style="z-index: auto; position: relative;font-size: 14px; transition: none; "></textarea>                
+            </div>
+        </div> 
+
+    </div>
+    <p align="center" style="margin:10px 10px;"><input type="submit" class="btn btn-success" name="submit" value="Send Request"></p>
+    <div class="loader" style="display: none;"></div>
+  </form>
+  <a href="skype:rambabu.tanimki?call" style="text-decoration:none;color: white;"><p style="font-size:14px;font-family: sans-serif;text-align:right;color:#66cdcc;"><b>&nbsp;&nbsp;Call us at: <i class="fa fa-skype fa-lg"></i> +91-9900819475</b></p></a>     
+                                
+                           
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="getApp" style="padding:0px;">
+            <div class="container-fluid">
+                <div class="section-heading inverse scrollpoint sp-effect3" style="margin: 15px 0;">
+                    <h1>Downloads</h1>
+                    <div class="divider"></div>
+               
+                </div>
+                
+                <div class="row">
+                    <div class="col-md-12 col-sm-12 col-xs-12">
+              
+		<div class="col-md-4 col-sm-12 col-xs-12 center-block">
+			                                                
+			<div class="platforms" style="margin: 5px auto;">
+				 <img src="{% static 'images/app/sm.png' %}"alt="" >
+			</div>
+			 <div class="platforms"  style="margin: 5px auto;">
+                            <a class="btn btn-primary inverse scrollpoint sp-effect1" data-toggle=modal data-target="#myModal1">
+                                <i class="fa fa-android fa-3x pull-left"></i>
+                                <span>Download Signage Manager for</span><br>
+                                <b>Android</b>
+                            </a>
+			</div>
+		</div>
+		
+		 <div class="col-md-4  col-sm-12 col-xs-12 center-block">
+
+
+                        <div class="platforms"  style="margin: 5px auto;">
+                                 <img src="{% static 'images/app/ss.png' %}"alt="">
+                        </div>
+                         <div class="platforms"  style="margin: 5px auto;">
+                         <a class="btn btn-primary inverse scrollpoint sp-effect2" data-toggle=modal data-target="#myModal2">
+                                <i class="fa fa-android fa-3x pull-left"></i>
+                                <span>Download SignageServ for</span><br>
+                                <b>Android</b>
+                            </a>
+                        </div>
+                </div>
+
+		<div class="col-md-4  col-sm-12 col-xs-12 center-block">
+
+
+                        <div class="platforms"  style="margin: 5px auto;">
+                                 <img src="{% static 'images/app/smweb.png' %}" alt="" style="margin-top: 25px;margin-bottom: 22px;">
+                        </div>
+                         <div class="platforms"  style="margin: 5px auto;">
+                         <a class="btn btn-primary inverse scrollpoint sp-effect2" href="smweb.exe">
+                                <i class="fa fa-desktop fa-3x pull-left"></i>
+                                <span>Download Enterprise Signage Manager for</span><br>
+                                <b>Desktop</b>
+                            </a>
+                        </div>
+                </div>
+
+
+
+                    
+
+                    </div>
+                </div>
+
+                
+
+            </div>
+        </section>
+
+ <section id="support" class="doublediagonal" style="padding: 0 0 50px 0;">
+        <div class="container">
+      <div class="section-heading scrollpoint sp-effect3" style=" margin: 30px 0;">
+                    <h1>Contact Us</h1>
+                    <div class="divider"></div>
+                   
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="row">
+                            <div class="col-md-4 col-sm-12 scrollpoint sp-effect1">
+                                 <div class="media">
+                                    <a class="pull-left" href="#" >
+                                        <i class="fa fa-map-marker fa-2x"></i>
+                                    </a>
+                                    <div class="media-body">
+                                        <h4 class="media-heading"><b>AdsKite India Pvt Ltd.,</b><br/>2nd Floor, Gokul Mansion, Opposite to Krishna Community Hall, Ayyappa Nagar,K.R Puram, Bengaluru, Karnataka -560036.
+                                    </div>
+                                </div> 
+                            </div>
+                            <div class="col-md-4 col-sm-12 contact-details scrollpoint sp-effect2">
+                                 <div class="media">
+                                    <a class="pull-left" href="#" >
+                                        <i class="fa fa-envelope fa-2x"></i>
+                                    </a>
+                                    <div class="media-body">
+                                        <h4 class="media-heading">
+                                    <p><a href="mailto:contact@adskite.com" style="text-decoration:none;">contact@adskite.com</a></p>
+                                                               </h4>
+                                    </div>
+                                </div>
+                </div>
+                 <div class="col-md-4 col-sm-12 contact-details scrollpoint sp-effect2">
+                                <div class="media">
+                                    <a class="pull-left" href="#" >
+                                        <i class="fa fa-phone fa-2x"></i>
+                                    </a>
+                                    <div class="media-body">
+                                        <h4 class="media-heading"><p>+91 9900819475</p>
+                                        <p style="padding-left: 20px;">080-25617355</p></h4>   
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>                                                                                                                                               
+      
+        </div> <!-- /container -->  
+    </section>
+
+        <footer style="padding:0 0 15px 0;">
+            <div class="container">
+              
+                <div class="social">
+                    <a href="https://twitter.com/Adskite1/status/664062917726224385" class="scrollpoint sp-effect3"><i class="fa fa-twitter fa-lg"></i></a>
+                    <a href="https://plus.google.com/101115373606937070219/about" class="scrollpoint sp-effect3"><i class="fa fa-google-plus fa-lg"></i></a>
+                    <a href="https://www.facebook.com/Adskite-1659890184252995/" class="scrollpoint sp-effect3"><i class="fa fa-facebook fa-lg"></i></a>
+                </div>
+                <div class="rights">
+		 Copyright (c) 2018 SignageServ.ai, All Rights Reserved. Powered by AdsKite India Pvt. Ltd.
+                </div>
+            </div>
+        </footer>
+ 
+
+    </div>
+
+   
+  
+    <script>
+        $(document).ready(function() {
+            appMaster.preLoader();
+        });
+    </script>
+	
+<script src="{% static 'js/sweetalert-dev-min.js' %}"></script>
+
+<script>
+/*function timeout() {
+    setTimeout(function () {
+      
+       document.getElementById("test").style.display = "none";
+       document.getElementById("test1").style.display = "block";
+	 document.getElementById("test2").style.display = "block";
+       document.getElementById("test3").style.display = "none";
+        timeout1();
+    }, 3000);
+}
+timeout();
+function timeout1() {
+    setTimeout(function () {
+    
+       document.getElementById("test").style.display = "block";
+       document.getElementById("test1").style.display = "none";
+	document.getElementById("test2").style.display = "none";
+       document.getElementById("test3").style.display = "block";
+        timeout();
+    }, 3000);
+}*/
+</script>
+<script type="text/javascript">
+$( "#enqform123" ).submit(function( event ) {
+var names_name = $("#names_name").val();
+var emails = $("#emails").val();
+var phones_phone = $("#phones_phone").val();
+var messages_message = $("#messages_message").val();
+var reg = /^([A-Za-z0-9_\-\.])+\@([A-Za-z0-9_\-\.])+\.([A-Za-z]{2,4})$/;
+var pattern = /^[0-9]{10}$/;
+if (names_name == "Enter Name" || names_name == "" || names_name == null)
+
+ {
+    swal("Please enter your name.");  
+
+    } else if (reg.test(emails) == false)  {
+     swal('Invalid Email Address');
+       
+ } else if (pattern.test(phones_phone) == false) {
+    swal("Please enter valid mobile number.");  
+} else if (messages_message == "Type your message here..." || messages_message == "")  {
+     swal('Enter message..');
+}else{
+$('.loader').show();
+var dataString = 'names_name='+ names_name + '&emails=' + emails + '&phones_phone=' + phones_phone + '&messages_message=' + messages_message;
+
+$.ajax({
+type: "POST",
+url: "https://bizmaxer.com/campaign_enquiry.php",
+data: dataString,
+success: function(data){
+var frm = document.getElementById('enqform123'); 
+frm.reset();  // Reset
+$('.loader').hide();
+$('#myModal_campaign').hide(function () {
+ window.location.reload();
+})
+}
+});
+swal("Your request has been sent Successfully.");
+}
+
+event.preventDefault();
+});
+</script>
+
+ 
+
+<div class="modal fade" id=myModal1 role=dialog>
+<div class="modal-dialog modal-sm">
+<div class=modal-content>
+<div class=modal-header style="background-color: #66cdcc;">
+<button type=button class=close data-dismiss=modal>&times;</button>
+<h4 class=modal-title style="color:white;"><b>Download Signage Manager App</b></h4>
+</div>
+<div class=modal-body>
+<div class=row>
+<div class="col-md-12 sendsms">
+<p>Enter mobile number to send download link</p>
+<form action="" id=smsform1 name=send_enquiry enctype="multipart/form-data">
+<div class=form-group>
+<label for=phonee>Phone:</label>
+<input type=number name=phonee id=phonee class=form-control value="" required>
+</div>
+<div class=form-group>
+<label for=pwd>Message:</label>
+<textarea name=messagee class="form-control smsta" rows=4 id=messagee readonly>Hi, Download app using below link. https://goo.gl/aPRSKJ</textarea>
+</div>
+<center><input type=submit name=submit class="btn btn-primary" value="Send Now" ></center>
+<div class=loader3 style="display:none;">Sending... please wait.</div>
+</form>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+
+<div class="modal fade" id=myModal2 role=dialog>
+<div class="modal-dialog modal-sm">
+<div class=modal-content>
+<div class=modal-header style="background-color: #66cdcc;">
+<button type=button class=close data-dismiss=modal>&times;</button>
+<h4 class=modal-title style="color:white;"><b>Download SignageServ App</b></h4>
+</div>
+<div class=modal-body>
+<div class=row>
+<div class="col-md-12 sendsms">
+<p>Enter mobile number to send download link</p>
+<form action="" id=smsform2 name=send_enquiry enctype="multipart/form-data">
+<div class=form-group>
+<label for=phones>Phone:</label>
+<input type=number name=phones id=phones class=form-control value="" required>
+</div>
+<div class=form-group>
+<label for=pwd>Message:</label>
+<textarea name=messages class="form-control smsta" rows=4 id=messages readonly>Hi, Download app using below link. https://goo.gl/b82v3p</textarea>
+</div>
+<center><input type=submit name=submit class="btn btn-primary" value="Send Now" ></center>
+<div class=loader4 style="display:none;">Sending... please wait.</div>
+</form>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+
+<script>$(document).ready(function($){var w,mHeight,tests=$("#testimonials");w=tests.outerWidth();mHeight=0;tests.find(".testimonial").each(function(index){$("#t_pagers").find(".pager:eq(0)").addClass("active");if(index==0)
+$(this).addClass("active");if($(this).height()>mHeight)
+mHeight=$(this).height();var l=index*w;$(this).css("left",l);tests.find("#test_container").height(mHeight);});});$(".pager").on("click",function(e){e.preventDefault();next=$(this).index(".pager");clearInterval(t_int);moveIt(next);});function moveIt(next){var c=parseInt($(".testimonial.active").removeClass("active").css("left"));var n=parseInt($(".testimonial").eq(next).addClass("active").css("left"));$(".testimonial").each(function(){if(n>c)
+$(this).animate({'left':'-='+(n-c)+'px'});else
+$(this).animate({'left':'+='+Math.abs(n-c)+'px'});});$(".pager.active").removeClass("active");$("#t_pagers").find(".pager").eq(next).addClass("active");}
+var t_int=setInterval(function(){var i=$(".testimonial.active").index(".testimonial");if(i==$(".testimonial").length-1)
+next=0;else
+next=i+1;moveIt(next);},10000);</script>
+<script>$(function(){$('#slider1').Thumbelina({$bwdBut:$('#slider1 .left'),$fwdBut:$('#slider1 .right')});$('#slider2').Thumbelina({$bwdBut:$('#slider2 .left'),$fwdBut:$('#slider2 .right')});})</script>
+<script>$(".dropdown dt a").on('click',function(){$(".dropdown dd ul").slideToggle('fast');});$(".dropdown dd ul li a").on('click',function(){$(".dropdown dd ul").hide();});function getSelectedValue(id){return $("#"+id).find("dt a span.value").html();}
+$(document).bind('click',function(e){var $clicked=$(e.target);if(!$clicked.parents().hasClass("dropdown"))$(".dropdown dd ul").hide();});$('.mutliSelect input[type="checkbox"]').on('click',function(){var title=$(this).closest('.mutliSelect').find('input[type="checkbox"]').val(),title=$(this).val()+",";if($(this).is(':checked')){var html='<span title="'+title+'">'+title+'</span>';$('.multiSel').append(html);$(".hida").hide();}else{$('span[title="'+title+'"]').remove();var ret=$(".hida");$('.dropdown dt a').append(ret);}});function submitform()
+{document.forms["searchform"].submit();}
+$("#smsform").submit(function(event){$('.loader2').show();var phone=$("#phone").val();var message=$("#message").val();var dataString='phone='+phone+'&message='+message;$.ajax({type:"POST",url:"https://www.adskite.com/send_sms.php",data:dataString,success:function(data){var frm=document.getElementById('smsform');frm.reset();$('.loader2').html("Download link sent successfully!");}});event.preventDefault();});$("#smsform1").submit(function(event){$('.loader3').show();var phonee=$("#phonee").val();var messagee=$("#messagee").val();var dataString='phonee='+phonee+'&messagee='+messagee;$.ajax({type:"POST",url:"https://www.signageserv.com/send_sms1.php",data:dataString,success:function(data){var frm=document.getElementById('smsform1');frm.reset();$('.loader3').html("Download link sent successfully!");}});event.preventDefault();});$("#smsform2").submit(function(event){$('.loader4').show();var phones=$("#phones").val();var messages=$("#messages").val();var dataString='phones='+phones+'&messages='+messages;$.ajax({type:"POST",url:"https://www.signageserv.com/send_sms2.php",data:dataString,success:function(data){var frm=document.getElementById('smsform2');frm.reset();$('.loader4').html("Download link sent successfully!");}});event.preventDefault();});</script>
+
+
+
+
+</body>
+</html>
+
