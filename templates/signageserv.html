@@ -75,11 +75,6 @@ input[type=number]::-webkit-outer-spin-button {
   margin: 0; 
 }
 
-.sticky {
-  position: fixed;
-  top: 0;
-  width: 100%;
-}
 </style>
 </head>
 
@@ -88,7 +83,7 @@ input[type=number]::-webkit-outer-spin-button {
     <div class="pre-loader">
         <div class="load-con">
            <a class="navbar-brand" href="/signageserv">
-            <img  src="{% static 'images/xibologo.png' %}" 
+            <img  src="{% static 'images/signageserv.png' %}" 
             alt="" class="logo animated fadeInDown"></a>
             <div class="spinner">
               <div class="bounce1"></div>
@@ -110,7 +105,7 @@ input[type=number]::-webkit-outer-spin-button {
                             <span class="fa fa-bars fa-lg"></span>
                         </button>
                         <a class="navbar-brand" href="/signageserv">
-                       <img  src="{% static 'images/xibologo.png' %}" alt="" class="logo animated fadeInDown"></a>
+                       <img  src="{% static 'images/signageserv.png' %}" alt="" class="logo animated fadeInDown"></a>
                     </div>
 
                     <!-- Collect thi nav links, forms, and other content for toggling -->
@@ -140,18 +135,118 @@ input[type=number]::-webkit-outer-spin-button {
                 <!-- /.container-->
         </nav>
 	
-	 <!--RevSlider-->
-        <div class="tp-banner-container hidden-sm hidden-xs">
-	<img src="{% static 'images/architec.png' %}" alt="" style="width:100%;background-size:cover;background-repeat:no-repeat;">	
-
-	</div>
-	
-	 <div class="tp-banner-container hidden-md hidden-lg">
-        <img src="{% static 'images/achitectures.jpg' %}" alt="" style="padding-top:105px;width:100%;backgreund-size:cover;background-repeat:no-repeat;">
-        </div>
-	
-
     </header>
+
+  
+
+ <!--RevSlider-->
+
+  <style type="text/css">
+
+    .bg_section
+    {
+         width: 100%;
+        height: auto;
+        opacity: 0.9;
+       background-image: url("/static/images/ss_background.png");
+       background-repeat:no-repeat;
+       background-color: white;  
+       background-size: 100% 100%;
+       background-position: 100%;
+    }
+.heroContent {
+    padding: 160px 0 50px 0;
+
+  
+
+} 
+.heroContent__title {
+    margin-bottom: 20px;
+    color: #fff;
+    font-size: 36px;
+    font-weight: 900;
+    text-align: center;
+    line-height: 42px;
+}
+.heroContent__subText {
+    margin-bottom: 20px;
+    color: #fff;
+    font-size: 20px;
+    font-weight: 500;
+    text-align: center;
+    line-height: 24px;
+}   
+.u-tac, .u-TAC, .tac, TAC {
+    text-align: center;
+    margin-top: 10px;
+}
+.c-btn {
+    white-space: nowrap;
+    display: inline-block;
+    height: 40px;
+    line-height: 40px;
+    padding: 0 20px;
+    box-shadow: 0 5px 10px 0 rgba(3,41,103,0.76);
+    background: blue;
+    border-radius: 4px;
+    font-size: 16px;
+    font-weight: 600;
+    letter-spacing: .025em;
+    color: #fff;
+    text-decoration: none;
+    transition: all .15s ease;
+    margin-bottom: 150px;
+}  
+ .u-tac a:hover{color:lightblue;text-decoration:underline}
+
+  </style>
+
+   <style> .mbl_img_logo{ display: none; }
+    @media screen and (max-width: 400px) 
+   { .dsktp_img_logo{ display: none; } 
+.mbl_img_logo{ display: block; 
+    } }
+
+/* For width 400px and larger: */
+@media only screen and (max-width: 400px)
+ {
+ .bg_section
+ {
+     width: 100%;
+        height: auto;
+        opacity: 0.9;
+        background-image: url('/static/images/ss_background_mob.png');  
+       background-repeat:no-repeat;
+       background-color: white;  
+       background-position: center;
+  
+    }
+}
+</style>
+
+  <div class="bg_section">
+     <div class="heroContent">
+      <h1 class="heroContent__title scrollpoint sp-effect3">Enhanced On-Premise Experience</h1>
+       <h2 class="heroContent__subText scrollpoint sp-effect3">Digital Signage Solutions to Drive Growth</h2> 
+       <div class="u-tac"> <a class="open-modal schedule c-btn" name="signUpP" title="Schedule a Demo" type="button" role="button" data-modal="signUpP" href="#demo">Schedule a Demo</a>  </div>    
+  </div>
+
+</div>
+
+       <div class="scrollpoint sp-effect3" >
+          <h5  style="color: #a0a3b1;font-size: 14px;font-weight: bold;
+    line-height: 17px;text-align: center;padding-bottom: 10px;margin-top: 15px;">Trusted by Today's Top Entreprises</h5>
+
+<div style="text-align: center;display: block;">
+       <img class="mbl_img_logo" 
+       src="{% static 'images/entreprise_mobile.png' %}"
+        alt="Entreprises" style="height: 30px;text-align: center;    line-height: 45px;">
+     <img class="dsktp_img_logo" 
+       src="{% static 'images/entreprises.png' %}" 
+        alt="Entreprises" style="height: 45px;text-align: center;   line-height: 45px;">
+</div>
+
+     </div>
 
 
     <div class="wrapper">

@@ -8,6 +8,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
 <script  src="{% static 'js/player/device_mgmt_js.js' %}"></script>
+<script src="{% static 'jquery/1.12.4/jquery.min.js' %}"></script>
 <style>
 tr{
   border-bottom: .3px solid #dddddd;
@@ -46,11 +47,10 @@ td.info1, th.info1 {
 {% block header %} {% include 'header.html' %} {% endblock %}
 
 
-
 {% block body %}
 <body>
 
-<script src="{% static 'jquery/1.12.4/jquery.min.js' %}"></script>
+
 
 
 <style>
@@ -356,8 +356,6 @@ a.btn:active{
   csrf_token = "{{ csrf_token }}"
  </script>
 {% endblock %}
-
-
 
 {% block footer %} {% include 'footer.html' %} {% endblock %}
   <script type="text/javascript">

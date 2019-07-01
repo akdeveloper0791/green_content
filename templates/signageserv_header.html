@@ -1,0 +1,177 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Digital Signage Platform | SignageServ</title>
+    <link rel="icon" type="image/png" href="{% static 'images/favicon-32.png' %}"/>
+  <meta name="description" content="green content to have your own account to store media content ">
+  <meta name="keywords" content="green content, campaigns, groups, video, images, text, url">
+  <link rel="shortcut icon" href="{% static 'Mentor/img/favicon.ico' %}" type="image/x-icon">
+<link rel="icon" href="{% static 'Mentor/img/favicon.ico' %}" type="image/x-icon">
+  <link rel="stylesheet" type="text/css" href="{% static 'Mentor/css/font-awesome.min.css' %}">
+  <link rel="stylesheet" type="text/css" href="{% static 'Mentor/css/bootstrap.min.css' %}">
+ 
+  <link rel="stylesheet" type="text/css" href="{% static 'Mentor/css/imagehover.min.css' %}">
+  <link rel="stylesheet" type="text/css" href="{% static 'Mentor/css/style.css' %}">
+ <!--alert style-->
+  <link rel="stylesheet" href="{% static 'css/sweetalert.css' %}">
+
+  <link rel="stylesheet" href="{% static 'css/header.css' %}">
+
+    <script src="{% static 'js/sweetalert.js' %}"></script>
+
+    <style>
+.topnav_logo {
+  overflow: hidden;
+
+  
+}
+
+.topnav {
+  overflow: hidden;
+  float: right;
+  
+}
+
+.topnav a {
+  float: left;
+  display: block;
+  color: gray;
+  text-align: center;
+  padding: 16px 18px;
+  text-decoration: none;
+  font-size: 13px;
+}
+
+.topnav a:hover {
+  font-size: 14px;
+  color: black;
+  font-weight: bold;
+}
+
+.topnav a.active_nav {
+ font-weight: bold;
+  color: black;
+  font-size: 15px;
+}
+
+.topnav .icon {
+  display: none;
+}
+
+@media screen and (max-width: 600px) {
+  .topnav a {display: none;}
+  .topnav a.icon {
+    float: right;
+    display: block;
+  }
+}
+
+@media screen and (max-width: 600px) {
+  .topnav.responsive {position: relative;
+    width:100%;}
+  .topnav.responsive .icon {
+    position: absolute;
+    right: 0;
+    top: 0;
+  }
+  .topnav.responsive a {
+    float: none;
+    display: block;
+    text-align: left;
+    background-color: white;
+  }
+}
+</style>
+</head>
+
+<body>
+
+   <nav class="navbar navbar-default navbar-fixed-top" style="background-color: lightblue">
+    <div class="container">
+        <a class="navbar-brand" href="/accounts/signin/" style="color:lightblue;margin: 5px 0 0 10px;"><img src='{% static "images/signageserv.png" %}' style='cursor:pointer'></a>
+
+  <div class="topnav" id="myTopnav">
+
+<a id="about_us_nav" href="#about_us">About</a>
+<a id="about_nav" href="#about">Products</a>
+<a id="features_nav" href="#features">Features</a>
+<a id="screens_nav" href="#screens">Case Studies</a>
+<a id="demo_nav" href="#demo">Demo</a>
+<a id="getApp_nav" class="support" href="#getApp">Downloads</a>
+<a id="support_nav" href="#support">Contact Us</a>
+<a  class="btn btn-info btn-lg"
+ style="margin-top: 5px;"
+  data-toggle="modal"  href="/accounts/signin/">Login</a>
+                
+<a href="javascript:void(0);" class="icon" onclick="screenOrientationChange()"> <i class="fa fa-bars"></i></a>
+
+  </div>
+    </div>
+  </nav>
+
+ 
+
+
+<script>
+var loadedVar = "";
+function screenOrientationChange() {
+  var x = document.getElementById("myTopnav");
+  if (x.className === "topnav") {
+    x.className += " responsive";
+  } else {
+    x.className = "topnav";
+  }
+}
+
+function highliteSelectedLink(loaded)
+{
+  loadedVar = loaded;
+
+  var current = document.getElementsByClassName("active_nav");
+  if (current.length > 0) { 
+    current[0].className =
+     current[0].className.replace("active_nav", "");
+  }
+
+  document.getElementById(loadedVar).className = "active_nav";
+  
+}
+
+var loadedURL = window.location.href;
+
+if(loadedURL.includes("about_us"))
+{
+  highliteSelectedLink("about_us_nav");
+
+}else if(loadedURL.includes("about"))
+{
+  highliteSelectedLink("about_nav");
+}
+else if(loadedURL.includes("features"))
+{
+  highliteSelectedLink("features_nav");
+}
+else if(loadedURL.includes("screens"))
+{
+  highliteSelectedLink("screens_nav");
+}
+else if(loadedURL.includes("demo"))
+{
+  highliteSelectedLink("demo_nav");
+}
+else if(loadedURL.includes("getApp"))
+{
+  highliteSelectedLink("getApp_nav");
+}
+else if(loadedURL.includes("support"))
+{
+  highliteSelectedLink("support_nav");
+}
+
+
+</script>
+</body>
