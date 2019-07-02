@@ -1850,3 +1850,16 @@ def sample(request):
     #x=str(data)
     return HttpResponse('raheem')'''
 
+import os
+from django.conf import settings
+from django.http import HttpResponse, Http404
+def downloadSoftIOT(request):
+    fileName='soft_iot.apk';
+    file_path = os.path.join(settings.MEDIA_ROOT, fileName)
+    if os.path.exists(file_path):
+        with open(file_path, 'rb') as fh:
+            response = HttpResponse(fh, content_type="application/vnd.android.package-archive") 
+            response["Content-disposition"] = "attachment; filename={}".format(os.path.basename(file_path))
+            return response
+    raise Http404
+    #return JsonResponse({'status':'inside download soft iot'});
