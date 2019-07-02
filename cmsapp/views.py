@@ -1854,6 +1854,9 @@ import os
 from django.conf import settings
 from django.http import HttpResponse, Http404
 def downloadSoftIOT(request):
+    if(request.user.is_authenticated==False):
+       return redirect('/accounts/signin/?next=/download_softiot')
+
     fileName='soft_iot.apk';
     file_path = os.path.join(settings.MEDIA_ROOT, fileName)
     if os.path.exists(file_path):
