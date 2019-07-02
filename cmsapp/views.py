@@ -741,7 +741,7 @@ def news_remove(request,pk):
 
 def signout(request):
     logout(request)
-    return redirect('/accounts/signin/')
+    return redirect('/signageserv/')
 
 
 def about_us(request):
