@@ -69,6 +69,14 @@ Visitor engagement, Production Line Management and Other."/>
   min-height: 280px;
   height: 100%;
 }
+
+@media screen and (max-width: 600px) 
+{
+   #main-img{      
+        content:url("/static/images/Green_logo.png");
+    }
+
+}
 input[type=number]::-webkit-inner-spin-button, 
 input[type=number]::-webkit-outer-spin-button { 
   -webkit-appearance: none; 
@@ -82,8 +90,8 @@ input[type=number]::-webkit-outer-spin-button {
     
     <div class="pre-loader">
         <div class="load-con">
-           <a class="navbar-brand" href="/signageserv">
-            <img  src="{% static 'images/signageserv.png' %}" 
+           <a class="brand-logo" href="/signageserv">
+            <img id="main-img" src="{% static 'images/signage_serv.png' %}" 
             alt="" class="logo animated fadeInDown"></a>
             <div class="spinner">
               <div class="bounce1"></div>
@@ -104,12 +112,13 @@ input[type=number]::-webkit-outer-spin-button {
                         <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
                             <span class="fa fa-bars fa-lg"></span>
                         </button>
-                        <a class="navbar-brand" href="/signageserv">
-                       <img  src="{% static 'images/signageserv.png' %}" alt="" class="logo animated fadeInDown"></a>
+                        <a class="brand-logo" href="/signageserv">
+                       <img class="signage_logo"  src="{% static 'images/signage_serv.png' %}" alt="" class="logo animated fadeInDown"></a>
                     </div>
 
                     <!-- Collect thi nav links, forms, and other content for toggling -->
-                    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1" style="margin-top: 10px;">
+                    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1" style="margin-top: 10px;
+                    height: 350px;overflow-y: auto;overflow: auto;">
 
                         <ul class="nav navbar-nav navbar-right">
                             <li><a href="#about_us">Why SignageServ</a>
