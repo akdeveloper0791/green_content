@@ -70,13 +70,6 @@ Visitor engagement, Production Line Management and Other."/>
   height: 100%;
 }
 
-@media screen and (max-width: 600px) 
-{
-   #main-img{      
-        content:url("/static/images/Green_logo.png");
-    }
-
-}
 input[type=number]::-webkit-inner-spin-button, 
 input[type=number]::-webkit-outer-spin-button { 
   -webkit-appearance: none; 
@@ -109,33 +102,34 @@ input[type=number]::-webkit-outer-spin-button {
                 <div class="container">
                     <!-- Brand and toggle get grouped for better mobile display -->
                     <div class="navbar-header">
-                        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                        <button style="background-color: transparent;" type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
                             <span class="fa fa-bars fa-lg"></span>
                         </button>
                         <a class="brand-logo" href="/signageserv">
-                       <img class="signage_logo"  src="{% static 'images/signage_serv.png' %}" alt="" class="logo animated fadeInDown"></a>
+                       <img class="signage_logo"  src="{% static 'images/signage_serv.png' %}" alt="" class="logo animated fadeInDown" style="cursor:pointer;"></a>
                     </div>
 
                     <!-- Collect thi nav links, forms, and other content for toggling -->
-                    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1" style="margin-top: 10px;
-                    height: 350px;overflow-y: auto;overflow: auto;">
+                    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1" 
+                    style="margin-top: 10px;height: 350px;">
 
-                        <ul class="nav navbar-nav navbar-right">
-                            <li><a href="#about_us">Why SignageServ</a>
+                        <ul style="text-align: center;" class="nav navbar-nav navbar-right">
+                            <li><a href="#about_us">Why SignageServ?</a>
                             </li>
-			                      <li><a href="#about">Products</a>
+			                      <li><a href="#about">Solutions</a>
                             </li>
                             <li><a href="#features">Features</a>
                             </li>
-                            <li><a href="#screens">Case Studies</a>
+                            <li><a href="#screens">Resources</a>
                             </li>
                             <li><a href="#demo">Demo</a>
                             </li>
-                            <li><a class="getApp" href="#getApp">Downloads</a>
+                            <li><a class="getApp" href="#getApp">Products</a>
                             </li>
                             <li><a href="#support">Contact Us</a>
                             </li>
-                <li><a class="btn btn-info btn-lg" style="color: " data-toggle="modal"  href="/accounts/signin/">Login</a>                                                                         
+                <li style="text-align:center;"><a class="btn btn-info btn-lg " 
+                    data-toggle="modal" style="color: blue;font-weight: bold;font-size: 13px;" href="/accounts/signin/">Login</a>                                                                         
                             </li> 
                         </ul>
                     </div>
@@ -204,7 +198,7 @@ input[type=number]::-webkit-outer-spin-button {
     color: #fff;
     text-decoration: none;
     transition: all .15s ease;
-    margin-bottom: 150px;
+    margin-bottom: 100px;
 }  
  .u-tac a:hover{color:lightblue;text-decoration:underline}
 
@@ -219,24 +213,33 @@ input[type=number]::-webkit-outer-spin-button {
 /* For width 400px and larger: */
 @media only screen and (max-width: 400px)
  {
+    .heroContent {
+    padding: 120px 0 50px 0;
+}
  .bg_section
  {
      width: 100%;
         height: auto;
         opacity: 0.9;
-        background-image: url('/static/images/ss_background_mob.png');  
+        background-image: url('/static/images/ss_background_mobi.png');  
        background-repeat:no-repeat;
        background-color: white;  
        background-position: center;
   
     }
+
+    .c-btn {
+       margin-bottom: 20px; 
+    }
+
+
 }
 </style>
 
   <div class="bg_section">
      <div class="heroContent">
-      <h1 class="heroContent__title scrollpoint sp-effect3">Digital Signage Solutions to Drive Growth</h1>
-       <h2 class="heroContent__subText scrollpoint sp-effect3">Enhanced On-Premises Experience</h2> 
+      <h1 class="heroContent__title scrollpoint sp-effect3">Enhanced On-Premises Experience</h1>
+       <h2 class="heroContent__subText scrollpoint sp-effect3">Digital Signage Solutions to Drive Growth</h2> 
        <div class="u-tac"> <a class="open-modal schedule c-btn" name="signUpP" title="Schedule a Demo" type="button" role="button" data-modal="signUpP" href="#demo">Schedule a Demo</a>  </div>    
   </div>
 
@@ -246,10 +249,10 @@ input[type=number]::-webkit-outer-spin-button {
           <h5  style="color: #a0a3b1;font-size: 14px;font-weight: bold;
     line-height: 17px;text-align: center;padding-bottom: 10px;margin-top: 15px;">Trusted by</h5>
 
-<div style="text-align: center;display: block;">
+<div style="text-align: center;display: block;align-content: center;">
        <img class="mbl_img_logo" 
-       src="{% static 'images/entreprise_mob.png' %}"
-        alt="Entreprises" style="height: 30px;text-align: center;    line-height: 45px;">
+       src="{% static 'images/entreprise_mobi.png' %}"
+        alt="Entreprises" style="align-content: center;">
      <img class="dsktp_img_logo" 
        src="{% static 'images/entreprises.png' %}" 
         alt="Entreprises" style="height: 45px;text-align: center;   line-height: 45px;">
@@ -259,27 +262,27 @@ input[type=number]::-webkit-outer-spin-button {
 
 
     <div class="wrapper">
-      <section id="about_us" style="padding-bottom:30px;">
+      <section id="about_us" >
 	<div class="container">
 
-                <div class="section-heading scrollpoint sp-effect3" style="margin:30px 0;">
+                <div class="section-heading scrollpoint sp-effect3" >
                     <h1>Why SignageServ</h1>
                     <div class="divider"></div>
 
                 </div>
 
                 <div class="row">
-<h4 style="text-align:center;padding:5px 15px;color:#66cdcc;font-size:20px;">Next Gen, Feature Rich Digital Signage at your finger tips</h4>
-                   <p style="text-align:justify;padding:5px 15px;color:black;font-size:16px;">SignageServ enables engagement and growth teams to manage and improve the impact of visual communication across the organisation.<br/> Leverage Demographics,  realtime IOT data,  automation , AI/ML and personalisation techniques into one enterprise platform.</p>
+
+                   <p style="text-align:justify;padding:5px 5px;color:black;font-size:16px;">SignageServ enables engagement and growth teams to manage and turn enhanced on-premises experience into a strategic differentiator for organisation growth. Leverage Demographics, realtime IOT data, automation, AI/ML and personalisation techniques into one enterprise platform.</p>
 		 </div>
 	</div>
 	</section>
 
-       <section id="about" style="padding-bottom:30px;">
+       <section id="about" >
             <div class="container">
                 
-                <div class="section-heading scrollpoint sp-effect3" style="margin:30px 0;">
-                    <h1>Our Products</h1>
+                <div class="section-heading scrollpoint sp-effect3" >
+                    <h1>Our Solutions for your Business Growth</h1>
                     <div class="divider"></div>
                 
                 </div>
@@ -366,188 +369,127 @@ input[type=number]::-webkit-outer-spin-button {
 
 <section id="features" >
 <div class="container">
-                <div class="section-heading scrollpoint sp-effect3" style="    margin: 30px 0;">
+                <div class="section-heading scrollpoint sp-effect3" >
                     <h1>Features</h1>
                     <div class="divider"></div>
                  
                 </div>
 		 <div class="row">
                  <div class="col-xs-12">
-        <div class="table-responsive">
+        <div style="text-align: center;"  class="table-responsive">
         <table summary="This table shows how to create responsive tables using Bootstrap's default functionality" class="table table-bordered table-hover">
         
           <thead>
-            <tr style="background-color: darkturquoise; color: ghostwhite;">
-                    <th >FEATURES</th>
-                    <th style="text-align: center;">CLOUD MODE</th>
-                    <th style="text-align: center;">ENTERPRISE MODE</th>
-                    <th style="text-align: center;">NEARBY MODE</th>
+            <tr style="background-color: #336799; color: ghostwhite;">
+              <th style="text-align: center;width: 50%;">Basic Essentials</th>
+             <th style="text-align: center;width: 50%;">Premium Add-Ons
+             </th>
             </tr>
           </thead>
           <tbody>
             <tr>
-              <td >Multi Region</td>
-            	    <td style="text-align: center;"><img src="{% static 'images/right.png' %}"></td>
-                    <td style="text-align: center;"><img src="{% static 'images/right.png' %}"></td>
-                    <td style="text-align: center;"><img src="{% static 'images/right.png' %}"></td>
+              <td >Images</td>
+              <td >ADview Reports with Demographics</td>   
             </tr>
-            <tr>
-               <td >Images</td>
-                    <td style="text-align: center;"><img src="{% static 'images/right.png' %}"></td>
-                    <td style="text-align: center;"><img src="{% static 'images/right.png' %}"></td>
-                    <td style="text-align: center;"><img src="{% static 'images/right.png' %}"></td>
-            </tr>
-            <tr>
+              <tr>
               <td >Videos</td>
-                     <td style="text-align: center;"><img src="{% static 'images/right.png' %}"></td>
-                    <td style="text-align: center;"><img src="{% static 'images/right.png' %}"></td>
-                    <td style="text-align: center;"><img src="{% static 'images/right.png' %}"></td>
+              <td >Real Time Contextual Campaigning</td>   
+            </tr>
+              <tr>
+              <td >Table</td>
+              <td >Real Time Location Based Camapaiging </td>   
+            </tr>
+              <tr>
+              <td >Text Scrolling -Ticker</td>
+              <td >Content Partner Management</td>   
+            </tr>
+             <tr>
+              <td >Multi Layouts</td>
+              <td >SoftIOT Input Support</td>   
+            </tr>
+             <tr>
+              <td >Sequential Play</td>
+              <td >APIs for 3rd Party AI Engines/Softwares based Campaigning </td>   
+            </tr>
+             <tr>
+              <td >Scheduled Campaigning</td>
+              <td >Enterprise Private Cloud/Intranet</td>   
             </tr>
             <tr>
-              <td >Text Scrolling</td>
-                     <td style="text-align: center;"><img src="{% static 'images/right.png' %}"></td>
-                    <td style="text-align: center;"><img src="{% static 'images/right.png' %}"></td>
-                    <td style="text-align: center;"><img src="{% static 'images/right.png' %}"></td>
+              <td >Logo Overlay</td>
+              <td >TV & Signage Mix</td>   
+            </tr>
+            <tr>
+              <td >Multi User Control</td>
+              <td >4G SIM Support</td>   
+            </tr>
+            <tr>
+              <td >Background Audio</td>
+              <td></td>
+             
+            </tr>
+            <tr>
+              <td ><abbr title="Author:
+This is unique feature to set Audio per Image. As and when Imgage displayed. Corresponding music/recoded announcement will be played till the Image in display. This will take the attention of viwers. ">Background Audio per Image (i)</abbr></td>
+          <td></td>
+            </tr>
+            <tr>
+            <td ><abbr title="Author:
+This is unique feature to set Audio per Image. As and when Imgage displayed. Corresponding music/recoded announcement will be played till the Image in display. This will take the attention of viwers. "> Announce on New Content (i)</abbr></td>
+             <td></td>
+            </tr>
+            <tr>
+              <td >Auto Web Scroll up</td>
+             <td></td>
+            </tr>
+            <tr>
+              <td >Skip Media Instant</td>
+           <td></td>
+            </tr>
+            <tr>
+              <td >Pause & Resume Player</td>
+              <td></td>
+            </tr>
+            <tr>
+              <td >Volume Control</td>
+               <td></td>
+            </tr>
+            <tr>
+              <td >Campaign Text per Image</td>
+                <td></td>
+            </tr>
+            <tr>
+              <td >Announcements</td>
+                 <td></td>
+            </tr>
+            <tr>
+              <td >Neary By Mode Mobile App</td>
+                <td></td> 
+            </tr>
+            <tr>
+              <td >Cloud Mode Web Interface</td>
+           <td></td>
+            </tr>
+            <tr>
+              <td >Campaign Reports (Cloud Mode)</td>
+               <td></td>
             </tr>
             <tr>
               <td >URL-JIRA</td>
-                     <td style="text-align: center;"><img src="{% static 'images/right.png' %}"></td>
-                    <td style="text-align: center;"><img src="{% static 'images/right.png' %}"></td>
-                    <td style="text-align: center;"><img src="{% static 'images/right.png' %}"></td>
+               <td></td>
             </tr>
             <tr>
               <td >URL-Facebook</td>
-                     <td style="text-align: center;"><img src="{% static 'images/right.png' %}"></td>
-                    <td style="text-align: center;"><img src="{% static 'images/right.png' %}"></td>
-                    <td style="text-align: center;"><img src="{% static 'images/right.png' %}"></td>
+              <td></td>
             </tr>
-
-               <tr>
+            <tr>
               <td >URL-Youtube/News Channel</td>
-                     <td style="text-align: center;"><img src="{% static 'images/right.png' %}"></td>
-                    <td style="text-align: center;"><img src="{% static 'images/right.png' %}"></td>
-                    <td style="text-align: center;"><img src="{% static 'images/right.png' %}"></td>
+                <td></td>
             </tr>
-               <tr>
-             <td >Sequential Play</td>
-                    <td style="text-align: center;"><img src="{% static 'images/right.png' %}"></td>
-                    <td style="text-align: center;"><img src="{% static 'images/right.png' %}"></td>
-                    <td style="text-align: center;"><img src="{% static 'images/right.png' %}"></td>
+            <tr>
+              <td >Clock Analog & Digital</td>
+               <td></td>
             </tr>
-               <tr>
-                <td>Multi User Control</td>
-                     <td style="text-align: center;"><img src="{% static 'images/right.png' %}"></td>
-                    <td style="text-align: center;"><img src="{% static 'images/right.png' %}"></td>
-                    <td style="text-align: center;"><img src="{% static 'images/right.png' %}"></td>
-            </tr>
-               <tr>
-            <td >PDF Display</td>
-                    <td style="text-align: center;"><img src="{% static 'images/right.png' %}"></td>
-                    <td style="text-align: center;"><img src="{% static 'images/error.png' %}"></td>
-                    <td style="text-align: center;"><img src="{% static 'images/error.png' %}"></td>
-            </tr>
-               <tr>
-               <td >Clock  Analog & Digital</td>
-                     <td style="text-align: center;"><img src="{% static 'images/right.png' %}"></td>
-                    <td style="text-align: center;"><img src="{% static 'images/error.png' %}"></td>
-                    <td style="text-align: center;"><img src="{% static 'images/error.png' %}"></td>
-            </tr>
-               <tr>
-            <td >Green Content CaaS Support</td>
-                     <td style="text-align: center;"><img src="{% static 'images/right.png' %}"></td>
-                    <td style="text-align: center;"><img src="{% static 'images/error.png' %}"></td>
-                    <td style="text-align: center;"><img src="{% static 'images/error.png' %}"></td>
-            </tr>
-               <tr>
-             <td >Scheduling</td>
-                    <td style="text-align: center;"><img src="{% static 'images/right.png' %}"></td>
-                    <td style="text-align: center;"><img src="{% static 'images/error.png' %}"></td>
-                    <td style="text-align: center;"><img src="{% static 'images/error.png' %}"></td>
-            </tr>
-               <tr>
-              <td >Background Audio</td>
-                    <td style="text-align: center;"><img src="{% static 'images/error.png' %}"></td>
-                    <td style="text-align: center;"><img src="{% static 'images/right.png' %}"></td>
-                    <td style="text-align: center;"><img src="{% static 'images/right.png' %}"></td>
-            </tr>
-               <tr>
-                                                    <td ><abbr title="Author:
-This is unique feature to set Audio per Image. As and when Imgage displayed. Corresponding music/recoded announcement will be played till the Image in display. This will take the attention of viwers. ">Background Audio per Image (i)</abbr></td>
-                    <td style="text-align: center;"><img src="{% static 'images/error.png' %}"></td>
-                    <td style="text-align: center;"><img src="{% static 'images/right.png' %}"></td>
-                    <td style="text-align: center;"><img src="{% static 'images/right.png' %}"></td>
-            </tr>
-               <tr>
-              <td ><abbr title="Author:
-As and when new content or new image pushed to player, it will give defined announcment. Like New Offer Arrived. New Stock Arrived. This will grab customer  attention for new offers.">Announce on New Content   (i)</abbr></td>
-                   <td style="text-align: center;"><img src="{% static 'images/error.png' %}"></td>
-                    <td style="text-align: center;"><img src="{% static 'images/right.png' %}"></td>
-                    <td style="text-align: center;"><img src="{% static 'images/right.png' %}"></td>
-            </tr>
-               <tr>
-              <td >Auto Web Scroll up</td>
-                    <td style="text-align: center;"><img src="{% static 'images/error.png' %}"></td>
-                    <td style="text-align: center;"><img src="{% static 'images/right.png' %}"></td>
-                    <td style="text-align: center;"><img src="{% static 'images/right.png' %}"></td>
-            </tr>
-               <tr>
-              <td >Skip Media Instant</td>
-                    <td style="text-align: center;"><img src="{% static 'images/error.png' %}"></td>
-                    <td style="text-align: center;"><img src="{% static 'images/right.png' %}"></td>
-                    <td style="text-align: center;"><img src="{% static 'images/right.png' %}"></td>
-            </tr>
-               <tr>
-             <td >Pause & Resume Player</td>
-                    <td style="text-align: center;"><img src="{% static 'images/error.png' %}"></td>
-                    <td style="text-align: center;"><img src="{% static 'images/right.png' %}"></td>
-                    <td style="text-align: center;"><img src="{% static 'images/right.png' %}"></td>
-            </tr>
-               <tr>
-             <td >Volume Control </td>
-                    <td style="text-align: center;"><img src="{% static 'images/error.png' %}"></td>
-                    <td style="text-align: center;"><img src="{% static 'images/right.png' %}"></td>
-                    <td style="text-align: center;"><img src="{% static 'images/right.png' %}"></td>
-            </tr>
-               <tr>
-              <td >Campaign Text per Image</td>
-                    <td style="text-align: center;"><img src="{% static 'images/error.png' %}"></td>
-                    <td style="text-align: center;"><img src="{% static 'images/right.png' %}"></td>
-                    <td style="text-align: center;"><img src="{% static 'images/right.png' %}"></td>
-            </tr>
-               <tr>
-              <td >Announcements</td>
-                    <td style="text-align: center;"><img src="{% static 'images/error.png' %}"></td>
-                    <td style="text-align: center;"><img src="{% static 'images/right.png' %}"></td>
-                    <td style="text-align: center;"><img src="{% static 'images/right.png' %}"></td>
-            </tr>
-             <tr>
-                    <td >Interactive</td>
-                    <td style="text-align: center;"><img src="{% static 'images/error.png' %}"></td>
-                    <td style="text-align: center;"><img src="{% static 'images/right.png' %}"></td>
-                    <td style="text-align: center;"><img src="{% static 'images/right.png' %}"></td>
-                 
-                </tr>
-                   <tr>
-                    <td>Need Internet</td>
-                   <td style="text-align: center;"><img src="{% static 'images/right.png' %}"></td>
-                    <td style="text-align: center;"><img src="{% static 'images/error.png' %}"></td>
-                    <td style="text-align: center;"><img src="{% static 'images/error.png' %}"></td>
-                  
-                </tr>
-                     <tr>
-                    <td> SIM Support</td>
-                    <td style="text-align: center;"><img src="{% static 'images/right.png' %}"></td>
-                    <td style="text-align: center;"><img src="{% static 'images/error.png' %}"></td>
-                   <td style="text-align: center;"><img src="{% static 'images/error.png' %}"></td>
-                 
-                </tr>
-                       <tr>
-                    <td > Control Coverage Range</td>
-                    <td style="text-align: center;">Worldwide</td>
-                    <td style="text-align: center;">Enterprise</td>
-                   <td style="text-align: center;">30 mts</td>
-          
-                </tr>
                
           </tbody>
 
@@ -565,7 +507,7 @@ As and when new content or new image pushed to player, it will give defined anno
             <div class="container">
 
                 <div class="section-heading scrollpoint sp-effect3">
-                    <h1>Case studies</h1>
+                    <h1>Resources</h1>
                     <div class="divider"></div>
            
                 </div>
@@ -612,7 +554,7 @@ As and when new content or new image pushed to player, it will give defined anno
         
             <section id="demo" class="doublediagonal" style="padding:10px 0;">
             <div class="container">
-                <div class="section-heading scrollpoint sp-effect3" style="margin:30px 0;">
+                <div class="section-heading scrollpoint sp-effect3">
                     <h1>Request for Free Demo</h1>
                     <div class="divider"></div>
                   
@@ -643,7 +585,7 @@ As and when new content or new image pushed to player, it will give defined anno
         </div> 
 
     </div>
-    <p align="center" style="margin:10px 10px;"><input type="submit" class="btn btn-success" name="submit" value="Send Request"></p>
+    <p align="center" style="margin:10px 10px;"><input type="submit" class="btn btn-info" name="submit" value="Send Request"></p>
     <div class="loader" style="display: none;"></div>
   </form>
   <a href="skype:kalyankumarthalluri?call" style="text-decoration:none;color: white;"><p style="font-size:14px;font-family: sans-serif;text-align:right;color:#66cdcc;"><b>&nbsp;&nbsp;Call us at: 
@@ -656,10 +598,10 @@ As and when new content or new image pushed to player, it will give defined anno
             </div>
         </section>
 
-        <section id="getApp" style="padding:0px;">
+        <section id="getApp" style="padding:10px 0;">
             <div class="container-fluid">
-                <div class="section-heading inverse scrollpoint sp-effect3" style="margin: 15px 0;">
-                    <h1>Downloads</h1>
+                <div class="section-heading inverse scrollpoint sp-effect3" >
+                    <h1>Products</h1>
                     <div class="divider"></div>
                
                 </div>
@@ -723,9 +665,9 @@ As and when new content or new image pushed to player, it will give defined anno
             </div>
         </section>
 
- <section id="support" class="doublediagonal" style="padding: 0 0 50px 0;">
+ <section id="support" class="doublediagonal" style="padding:10px 0;">
         <div class="container">
-      <div class="section-heading scrollpoint sp-effect3" style=" margin: 30px 0;">
+      <div class="section-heading scrollpoint sp-effect3">
                     <h1>Contact Us</h1>
                     <div class="divider"></div>
                    
