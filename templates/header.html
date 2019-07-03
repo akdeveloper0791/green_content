@@ -80,18 +80,22 @@
   }
   .topnav.responsive .icon 
   {
- 
+ display: none;
    right: 0;
     top: 0;
   }
+
   .topnav.responsive a {
     float: none;
     overflow-y: scroll;
     overflow: auto;
     display:block;
-    text-align: left;
+    text-align: center;
     background-color: white;
+
+
   }
+
 }
 </style>
 </head>
@@ -100,7 +104,9 @@
 
    <nav class="navbar navbar-default navbar-fixed-top " style="background-color: lightblue">
     <div class="container">
-        <a class="navbar-brand" href="/signageserv" style="color:lightblue;margin: 5px 0 0 10px;"><img src='{% static "images/signageserv.png" %}' style='cursor:pointer'></a>
+
+        <a class="navbar-brand" href="/signageserv" style="color:lightblue;margin: 5px 0 0 10px;"><img 
+        src='{% static "images/signageserv.png" %}' style='cursor:pointer'></a>
 
   <div class="topnav" id="myTopnav">
   {% if request.user.is_authenticated %}
