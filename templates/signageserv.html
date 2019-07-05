@@ -129,9 +129,17 @@ input[type=number]::-webkit-outer-spin-button {
                             </li>
                             <li><a href="#support">Contact Us</a>
                             </li>
-                <li style="text-align:center;"><a class="btn btn-info btn-lg " 
-                    data-toggle="modal" style="color: blue;font-weight: bold;font-size: 13px;" href="/accounts/signin/">Login</a>                                                                         
-                            </li> 
+                            {% if request.user.is_authenticated %}
+
+                <li>
+                    <a class="btn btn-primary  btn-lg" data-toggle="modal" 
+                    style="color: green;font-weight: bold;font-size: 14px;" href="/accounts/signin/">
+                {{ request.user.first_name}} </a></li> 
+
+                      {% else %}  
+                       <li ><a class="btn btn-info btn-lg " 
+                    data-toggle="modal" style="text-align: center;color: blue;font-weight: bold;font-size: 14px;" href="/accounts/signin/">Login</a>                                            </li> 
+                      {% endif %}
                         </ul>
                     </div>
                     <!-- /.navbar-collapse -->
