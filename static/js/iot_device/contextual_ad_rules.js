@@ -519,6 +519,7 @@ function setDeviceType(data)
 
 function displayClassifiers(rules)
 {
+  console.log(JSON.stringify(rules));
   var table =document.getElementById("device_classifiers_list");
   for(var i=0;i<rules.length;i++)
   {
@@ -540,7 +541,9 @@ function displayClassifiers(rules)
     var classifier =row.insertCell(-1);
     classifier.innerHTML =rule.classifier;
 
-
+  //last notified time
+  var lastNotified = row.insertCell(-1);
+  lastNotified.innerHTML = getRuleAccessedTime(rule.accessed_at);
              
     var campaignsCell=row.insertCell(-1);
      // campaignsCell.innerHTML="Campaigns";
@@ -561,6 +564,19 @@ function displayClassifiers(rules)
     ///deleteCell.innerHTML = "<i class='fa fa-trash fa-lg' style='color:orangered;cursor: pointer;' alt='Delete' title='Delete' onclick='deleteCampaign("+rule.id+")></i>";
     deleteCell.innerHTML = '<span class="fa fa-trash"  style="cursor:pointer;color:orangered; display:inline-block;width:4%;float: left;margin;5px;" onclick="deleteRule('+rule.id+')"></span>';
   }
+}
+
+function getRuleAccessedTime(serverTime)
+{
+  if(serverTime!=null)
+  {
+    var date = new Date(serverTime);
+    return date.toLocaleString();
+  }else
+  {
+    return null;
+  }
+  
 }
 
 function displayDeviceClassifiersError(error)
