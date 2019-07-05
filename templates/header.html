@@ -32,8 +32,8 @@
 
 .topnav {
   float: right;
-  
 }
+
 
 .topnav a {
   float: left;
@@ -57,13 +57,14 @@
   font-size: 15px;
 }
 
-.topnav .icon {
+.navbar-header .icon {
   display: none;
 }
 
 @media screen and (max-width: 600px) {
+   
   .topnav a {display: none;}
-  .topnav a.icon {
+  .navbar-header a.icon {
     float: right;
     display: block;
   }
@@ -72,13 +73,14 @@
 @media screen and (max-width: 600px) {
   .topnav.responsive 
   {
+    margin-top: 10px;
      width:100%;
-     height: 410px;
-     overflow-y: auto;
+     height: 340px;
+     margin-bottom:5px;
     overflow: auto;
 
   }
-  .topnav.responsive .icon 
+  .navbar-header .icon 
   {
  display: none;
    right: 0;
@@ -87,14 +89,14 @@
 
   .topnav.responsive a {
     float: none;
-    overflow-y: scroll;
     overflow: auto;
     display:block;
+    padding: 12px 12px;
     text-align: center;
-    background-color: white;
-
-
+    background-color: transparent;
   }
+
+ 
 
 }
 </style>
@@ -102,11 +104,21 @@
 
 <body>
 
-   <nav class="navbar navbar-default navbar-fixed-top " style="background-color: lightblue">
+   <nav class="navbar navbar-default navbar-fixed-top " style="background-color: lightblue;">
     <div class="container">
-
-        <a class="navbar-brand" href="/signageserv" style="color:lightblue;margin: 5px 0 0 10px;"><img 
+ <div class="navbar-header">
+        <a class="navbar-brand" href="/signageserv" style="color:lightblue;margin: 5px 0 0 5px;"><img 
         src='{% static "images/signageserv.png" %}' style='cursor:pointer'></a>
+
+         <a style="color: gray;margin-top: 10px;margin-right: 20px;font-size: 18px;" href="javascript:void(0);" class="icon" 
+  onclick="screenOrientationChange()">
+    <i class="fa fa-bars"></i>
+  </a>
+
+
+      
+</div>
+
 
   <div class="topnav" id="myTopnav">
   {% if request.user.is_authenticated %}
@@ -119,15 +131,13 @@
 
   <a id="contextualAdsRules_nav"  href="{% url 'contextualAdsRules' %}" >Contextual <br />Campaigns</a>
    
-  <a href="{% url 'logout' %}" >{{ request.user.first_name}}<br /> (Logout)</a>
+  <a id="logout" href="{% url 'logout' %}" >{{ request.user.first_name}}<br /> (Logout)</a>
   {% else %}
   <a href="{% url 'contact_us' %}" >Contact us</a>
   <a href="{% url 'signin' %}">Sign In</a> 
   {% endif %}
 
-  <a href="javascript:void(0);" class="icon" onclick="screenOrientationChange()">
-    <i class="fa fa-bars"></i>
-  </a>
+
 </div>
   
     </div>
@@ -140,11 +150,23 @@
 var loadedVar = "";
 function screenOrientationChange() {
   var x = document.getElementById("myTopnav");
-  if (x.className === "topnav") {
+  if (x.className === "topnav") 
+  {
     x.className += " responsive";
-  } else {
+document.getElementById('campaigns_nav').innerHTML = "Campaign Management ";
+document.getElementById('deviceMgmt_nav').innerHTML = "Device Management";
+document.getElementById('web_search_nav').innerHTML = "Content Management";
+document.getElementById('gcGroups_nav').innerHTML = "Content Partners";
+document.getElementById('campaignReports_nav').innerHTML="Campaign Reports";
+document.getElementById('viewerMetrics_nav').innerHTML = "ADview Reports";
+document.getElementById('contextualAdsRules_nav').innerHTML = "Contextual Campaigns";
+document.getElementById('logout').innerHTML ="{{ request.user.first_name}}(Logout)";
+
+  } else 
+  {
     x.className = "topnav";
   }
+ 
 }
 
 function highliteSelectedLink(loaded)

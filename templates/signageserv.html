@@ -59,6 +59,7 @@ Visitor engagement, Production Line Management and Other."/>
 
 <style>
 
+
 .card-cont{
   height:280px;
 }
@@ -128,9 +129,17 @@ input[type=number]::-webkit-outer-spin-button {
                             </li>
                             <li><a href="#support">Contact Us</a>
                             </li>
-                <li style="text-align:center;"><a class="btn btn-info btn-lg " 
-                    data-toggle="modal" style="color: blue;font-weight: bold;font-size: 13px;" href="/accounts/signin/">Login</a>                                                                         
-                            </li> 
+                            {% if request.user.is_authenticated %}
+
+                <li>
+                    <a class="btn btn-primary  btn-lg" data-toggle="modal" 
+                    style="color: green;font-weight: bold;font-size: 14px;" href="/accounts/signin/">
+                {{ request.user.first_name}} </a></li> 
+
+                      {% else %}  
+                       <li ><a class="btn btn-info btn-lg " 
+                    data-toggle="modal" style="text-align: center;color: blue;font-weight: bold;font-size: 14px;" href="/accounts/signin/">Login</a>                                            </li> 
+                      {% endif %}
                         </ul>
                     </div>
                     <!-- /.navbar-collapse -->
@@ -202,6 +211,49 @@ input[type=number]::-webkit-outer-spin-button {
 }  
  .u-tac a:hover{color:lightblue;text-decoration:underline}
 
+ .block_title
+ {
+    color: #414761;
+    font-size: 25px;
+    line-height: 34px;
+    font-weight: bold;
+    text-align: center;
+ }
+ .block_content
+ {
+    text-align: center;
+    color: #5A627B;
+    font-size: 17px;
+    font-weight: 500;
+    line-height: 24px;
+    max-width: 840px;
+    margin: 20px auto 0 auto;
+ }
+
+ .info_sec
+ {
+    color: #84899C;
+    font-size: 15px;
+    font-weight: 500;
+    line-height: 21px;
+    padding-top: 10px;
+ }
+
+ td
+{
+   color: #4B4A4A;
+    font-weight: 500;
+    line-height: 18px;
+}
+ section
+ {
+    padding-bottom:0px;
+ }
+ .section-heading {
+    margin: 55px 0 20px;
+    text-align: center;
+}
+
   </style>
 
    <style> .mbl_img_logo{ display: none; }
@@ -239,7 +291,7 @@ input[type=number]::-webkit-outer-spin-button {
   <div class="bg_section">
      <div class="heroContent">
       <h1 class="heroContent__title scrollpoint sp-effect3">Enhanced On-Premises Experience</h1>
-       <h2 class="heroContent__subText scrollpoint sp-effect3">Digital Signage Solutions to Drive Growth</h2> 
+       <h2  class="heroContent__subText scrollpoint sp-effect3">Digital Signage Solutions to Drive Growth</h2> 
        <div class="u-tac"> <a class="open-modal schedule c-btn" name="signUpP" title="Schedule a Demo" type="button" role="button" data-modal="signUpP" href="#demo">Schedule a Demo</a>  </div>    
   </div>
 
@@ -247,7 +299,7 @@ input[type=number]::-webkit-outer-spin-button {
 
        <div class="scrollpoint sp-effect3" >
           <h5  style="color: #a0a3b1;font-size: 14px;font-weight: bold;
-    line-height: 17px;text-align: center;padding-bottom: 10px;margin-top: 15px;">Trusted by</h5>
+    line-height: 17px;text-align: center;padding-bottom: 10px;margin-top: 10px;">Trusted by</h5>
 
 <div style="text-align: center;display: block;align-content: center;">
        <img class="mbl_img_logo" 
@@ -262,29 +314,30 @@ input[type=number]::-webkit-outer-spin-button {
 
 
     <div class="wrapper">
-      <section id="about_us" >
-	<div class="container">
 
-                <div class="section-heading scrollpoint sp-effect3" >
-                    <h1>Why SignageServ</h1>
+      <section style="max-width: 980px;text-align: center;
+          box-sizing: border-box;" id="about_us" >
+	<div  class="container">
+
+ <div class="section-heading scrollpoint sp-effect3" >
+                    <h2 class="block_title">Why SignageServ</h2>
                     <div class="divider"></div>
-
+                 
                 </div>
 
-                <div class="row">
+                <div class="block_content">
 
-                   <p style="text-align:justify;padding:5px 5px;color:black;font-size:16px;">SignageServ enables engagement and growth teams to manage and turn enhanced on-premises experience into a strategic differentiator for organisation growth. Leverage Demographics, realtime IOT data, automation, AI/ML and personalisation techniques into one enterprise platform.</p>
+             SignageServ enables engagement and growth teams to manage and turn enhanced on-premises experience into a strategic differentiator for organisation growth. Leverage Demographics, realtime IOT data, automation, AI/ML and personalisation techniques into one enterprise platform.
 		 </div>
 	</div>
 	</section>
 
        <section id="about" >
-            <div class="container">
-                
-                <div class="section-heading scrollpoint sp-effect3" >
-                    <h1>Our Solutions for your Business Growth</h1>
+        <div class="container" >
+              <div class="section-heading scrollpoint sp-effect3" >
+                    <h2 class="block_title">Our Solutions for your Business Growth</h2>
                     <div class="divider"></div>
-                
+                 
                 </div>
 
 
@@ -296,8 +349,8 @@ input[type=number]::-webkit-outer-spin-button {
 		</div>
 
 		<div class="col-md-6">
-			<h3 style="text-align:center;padding:5px 15px;color:#66cdcc;">SignageServ CS Series</h3>
-			<p style="text-align:justify;padding:5px 15px;color:black;font-size:16px;">
+			<h3 style="text-align:center;padding:5px 15px;color:#66cdcc;font-weight: 500;">One Platform for Enterprises with multiple branches across the world</h3>
+			<p class="info_sec" style="text-align:justify;padding:5px 15px;font-size:16px;">
 			You are an organization spread across multiple locations or large
 			number of signages in a single location. You want to manage the
 			content on the signages efficiently.<br/>
@@ -321,8 +374,8 @@ input[type=number]::-webkit-outer-spin-button {
 		</div>
 
 		<div class="col-md-6">
-			<h3 style="text-align:center;padding:5px 15px;color:#66cdcc;">SignageServ ES Series</h3>
-			<p style="text-align:justify;padding:5px 15px;color:black;font-size:16px;">
+			<h3 style="text-align:center;padding:5px 15px;color:#66cdcc;font-weight: 500;">Corporates who want to operate in their private Networks for Additional Security</h3>
+			<p class="info_sec" style="text-align:justify;padding:5px 15px;font-size:16px;">
 			You are an enterpise with a need to maintain your content
 			within the organizational network.You want to manage your
 			content efficiently and in a targeted manner.<br/>
@@ -347,8 +400,8 @@ input[type=number]::-webkit-outer-spin-button {
 			<img src="{% static 'images/signagens.png' %}">
 		</div>
 		<div class="col-md-6">
-			<h3 style="text-align:center;padding:5px 15px;color:#66cdcc;">SignageServ NS Series</h3>
-			<p style="text-align:justify;padding:5px 15px;color:black;font-size:16px;">
+			<h3 style="text-align:center;padding:5px 15px;color:#66cdcc;font-weight: 500;">Stand alone Entity, No internet, No network cabling. Simple Operation</h3>
+			<p class="info_sec" style="text-align:justify;padding:5px 15px;font-size:16px;">
 			You are looking for an easy to use signage app for easy
 			management of content and signages at your business
 			without the need for internet connectivity.<br/>
@@ -363,24 +416,24 @@ input[type=number]::-webkit-outer-spin-button {
 	</div>
 	</div>
 	</div>
-
-            </div>
+</div>
         </section>
 
+
 <section id="features" >
-<div class="container">
+<div class="container" >
                 <div class="section-heading scrollpoint sp-effect3" >
-                    <h1>Features</h1>
+                    <h2 class="block_title">Features</h2>
                     <div class="divider"></div>
                  
                 </div>
 		 <div class="row">
                  <div class="col-xs-12">
         <div style="text-align: center;"  class="table-responsive">
-        <table summary="This table shows how to create responsive tables using Bootstrap's default functionality" class="table table-bordered table-hover">
+        <table style="font-family: sans-serif;" summary="This table shows how to create responsive tables using Bootstrap's default functionality" class="table table-bordered table-hover">
         
           <thead>
-            <tr style="background-color: #336799; color: ghostwhite;">
+            <tr  style="background-color: #336799; color: ghostwhite;font-family: sans-serif;">
               <th style="text-align: center;width: 50%;">Basic Essentials</th>
              <th style="text-align: center;width: 50%;">Premium Add-Ons
              </th>
@@ -393,11 +446,11 @@ input[type=number]::-webkit-outer-spin-button {
             </tr>
               <tr>
               <td >Videos</td>
-              <td >Real Time Contextual Campaigning</td>   
+              <td >Real Time Contextual Campaigns</td>   
             </tr>
               <tr>
               <td >Table</td>
-              <td >Real Time Location Based Camapaiging </td>   
+              <td >Real Time Location Based Campaigns </td>   
             </tr>
               <tr>
               <td >Text Scrolling -Ticker</td>
@@ -409,29 +462,33 @@ input[type=number]::-webkit-outer-spin-button {
             </tr>
              <tr>
               <td >Sequential Play</td>
-              <td >APIs for 3rd Party AI Engines/Softwares based Campaigning </td>   
+              <td >APIs for 3rd Party AI Engines based Campaigns </td>   
             </tr>
              <tr>
-              <td >Scheduled Campaigning</td>
+              <td >Scheduled Campaigns</td>
               <td >Enterprise Private Cloud/Intranet</td>   
             </tr>
             <tr>
               <td >Logo Overlay</td>
-              <td >TV & Signage Mix</td>   
+              <td>Interactive Campaigns</td>
+               
             </tr>
             <tr>
               <td >Multi User Control</td>
-              <td >4G SIM Support</td>   
+              <td>Voice Controlled Campaigns</td>
+              
+            
             </tr>
             <tr>
               <td >Background Audio</td>
-              <td></td>
+              <td >TV & Signage Mix</td>  
+                
              
             </tr>
             <tr>
               <td ><abbr title="Author:
 This is unique feature to set Audio per Image. As and when Imgage displayed. Corresponding music/recoded announcement will be played till the Image in display. This will take the attention of viwers. ">Background Audio per Image (i)</abbr></td>
-          <td></td>
+           <td >4G SIM Support</td>  
             </tr>
             <tr>
             <td ><abbr title="Author:
@@ -507,7 +564,7 @@ This is unique feature to set Audio per Image. As and when Imgage displayed. Cor
             <div class="container">
 
                 <div class="section-heading scrollpoint sp-effect3">
-                    <h1>Resources</h1>
+                    <h2 class="block_title">Resources</h2>
                     <div class="divider"></div>
            
                 </div>
@@ -526,7 +583,11 @@ This is unique feature to set Audio per Image. As and when Imgage displayed. Cor
          <img src="{% static 'images/skflogo.jpg' %}" alt="" 
          class="img-responsive" style="margin:auto;">
         </th>
-        <th style="padding:2.5px;width:70%;text-align:justify;" rowspan="2">Industrial digital signage helping all employees to view the manufacturing defects instantly from various channels. A web interface captures all the bearings defect images through a high quality Carrason camera and publishes for the benefit of production staff. It helps all the staff to transform to digital in defect mornitoring and exterminate the need for using paper records.</th>
+        <th style="padding:2.5px;width:70%;text-align:justify;color: #84899C;
+    font-size: 15px;
+    font-weight: 500;
+    line-height: 21px;
+    padding-top: 10px;" rowspan="2">Industrial digital signage helping all employees to view the manufacturing defects instantly from various channels. A web interface captures all the bearings defect images through a high quality Carrason camera and publishes for the benefit of production staff. It helps all the staff to transform to digital in defect mornitoring and exterminate the need for using paper records.</th>
         </tr>
     </tbody></table>
     
@@ -540,7 +601,11 @@ This is unique feature to set Audio per Image. As and when Imgage displayed. Cor
     font-size: 16px;">Popular Entries<span style="float:right;"> <img src="{% static 'images/arrow2.png' %}"> </span></caption>
     <tbody><tr style="padding:2.5px; width: 100%;">
         <th style="padding:2.5px;width:30%;"> <img src="{% static 'images/bz-logo.png' %}" alt="" class="img-responsive" style="margin:auto;height:100px;"></th>
-        <th style="padding:2.5px;width:70%;text-align:justify;" rowspan="2">Restaurant Signage helping customers entertained, engaged and interactive. Bangalore's posh biryani zone displays all special foods related video & offers. They use for background music, anouncements and for collecting the feedback & orders.</th>
+        <th style="padding:2.5px;width:70%;text-align:justify;color: #84899C;
+    font-size: 15px;
+    font-weight: 500;
+    line-height: 21px;
+    padding-top: 10px;" rowspan="2">Restaurant Signage helping customers entertained, engaged and interactive. Bangalore's posh biryani zone displays all special foods related video & offers. They use for background music, anouncements and for collecting the feedback & orders.</th>
         </tr>
     </tbody></table>
 
@@ -552,10 +617,10 @@ This is unique feature to set Audio per Image. As and when Imgage displayed. Cor
 </section>
 
         
-            <section id="demo" class="doublediagonal" style="padding:10px 0;">
+            <section id="demo" class="doublediagonal">
             <div class="container">
                 <div class="section-heading scrollpoint sp-effect3">
-                    <h1>Request for Free Demo</h1>
+                   <h2 class="block_title">Request for Free Demo</h2>
                     <div class="divider"></div>
                   
                 </div>
@@ -589,7 +654,7 @@ This is unique feature to set Audio per Image. As and when Imgage displayed. Cor
     <div class="loader" style="display: none;"></div>
   </form>
   <a href="skype:kalyankumarthalluri?call" style="text-decoration:none;color: white;"><p style="font-size:14px;font-family: sans-serif;text-align:right;color:#66cdcc;"><b>&nbsp;&nbsp;Call us at: 
-    <i class="fa fa-skype fa-lg"></i> +91-8105303245</b></p></a>     
+    <i class="fa fa-skype fa-lg"></i> +91-9900819475</b></p></a>     
                                 
                            
                         </div>
@@ -598,13 +663,14 @@ This is unique feature to set Audio per Image. As and when Imgage displayed. Cor
             </div>
         </section>
 
-        <section id="getApp" style="padding:10px 0;">
-            <div class="container-fluid">
-                <div class="section-heading inverse scrollpoint sp-effect3" >
-                    <h1>Products</h1>
+        <section style="padding: 10px;text-align: center;" id="getApp">
+    
+                <div class="section-heading scrollpoint sp-effect3">
+                    <h2 class="block_title" style="color: #fff;">Products</h2>
                     <div class="divider"></div>
-               
+           
                 </div>
+               
                 
                 <div class="row">
                     <div class="col-md-12 col-sm-12 col-xs-12">
@@ -660,15 +726,13 @@ This is unique feature to set Audio per Image. As and when Imgage displayed. Cor
                     </div>
                 </div>
 
-                
-
-            </div>
+    
         </section>
 
- <section id="support" class="doublediagonal" style="padding:10px 0;">
+ <section id="support" style="padding: 0 0 60px 0;" class="doublediagonal">
         <div class="container">
       <div class="section-heading scrollpoint sp-effect3">
-                    <h1>Contact Us</h1>
+                    <h2 class="block_title">Contact Us</h2>
                     <div class="divider"></div>
                    
                 </div>
@@ -724,7 +788,7 @@ This is unique feature to set Audio per Image. As and when Imgage displayed. Cor
                     <a href="https://www.facebook.com/Adskite-1659890184252995/" class="scrollpoint sp-effect3"><i class="fa fa-facebook fa-lg"></i></a>
                 </div>
                 <div class="rights">
-		 Copyright (c) 2018 SignageServ.ai, All Rights Reserved. Powered by AdsKite India Pvt. Ltd.
+		 Copyright (c) 2019 SignageServ.ai, All Rights Reserved. Powered by AdsKite India Pvt. Ltd.
                 </div>
             </div>
         </footer>
