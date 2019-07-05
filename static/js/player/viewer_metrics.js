@@ -101,8 +101,7 @@ function showAnalytics()
 		  success: function(data)
 		   {
 		   	//ajaxindicatorstop();
-			console.log("data"+JSON.stringify(data));
-            
+			
             if(data['statusCode']==0)
 		    {
              displayAgeBarReports(data['labels'],data['data']);
@@ -156,8 +155,7 @@ function generateGenderPieCharts(dev_id,from_date,to_date)
 		  success: function(data)
 		   {
 		   	//ajaxindicatorstop();
-			console.log("data"+JSON.stringify(data));
-            
+			
             if(data['statusCode']==0)
 		    {
              displayGenderPieCharts(data['labels'],data['data']);
