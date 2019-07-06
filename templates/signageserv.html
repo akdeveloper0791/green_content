@@ -45,7 +45,7 @@ Visitor engagement, Production Line Management and Other."/>
 
    <script src="{% static 'js/Oleose-master/assets/js/rs-plugin/js/jquery.themepunch.plugins.min.js' %}"></script>
    <script src="{% static 'js/Oleose-master/assets/js/rs-plugin/js/jquery.themepunch.revolution.min.js' %}"></script>
-   <script src="{% static 'js/Oleose-master/assets/js/waypoints.min.js' %}"></script>
+   <script src="{% static 'js/Oleose-master/assets/js/waypoints.min.js' %}"></script> 
    <script src="{% static 'js/Oleose-master/assets/js/scripts.js' %}"></script>
 
 
@@ -55,6 +55,8 @@ Visitor engagement, Production Line Management and Other."/>
     <script type="text/javascript" 
     src="{% static 'js/tables/index.js' %}">   
     </script>
+
+      <link rel="stylesheet" href="{% static 'css/styles.css' %}">
 
 
 <style>
@@ -131,7 +133,7 @@ input[type=number]::-webkit-outer-spin-button {
                             </li>
                             {% if request.user.is_authenticated %}
 
-                <li>
+                  <li>
                     <a class="btn btn-primary  btn-lg" data-toggle="modal" 
                     style="color: green;font-weight: bold;font-size: 14px;" href="/accounts/signin/">
                 {{ request.user.first_name}} </a></li> 
@@ -154,7 +156,6 @@ input[type=number]::-webkit-outer-spin-button {
  <!--RevSlider-->
 
   <style type="text/css">
-
     .bg_section
     {
          width: 100%;
@@ -191,6 +192,10 @@ input[type=number]::-webkit-outer-spin-button {
 .u-tac, .u-TAC, .tac, TAC {
     text-align: center;
     margin-top: 10px;
+}
+section
+{
+    padding-top: 0px;
 }
 .c-btn {
     white-space: nowrap;
@@ -286,6 +291,12 @@ input[type=number]::-webkit-outer-spin-button {
 
 
 }
+
+.brand_names
+{
+    width: 80px;
+    height: 60px;
+}
 </style>
 
   <div class="bg_section">
@@ -297,25 +308,107 @@ input[type=number]::-webkit-outer-spin-button {
 
 </div>
 
-       <div class="scrollpoint sp-effect3" >
+ <div class="scrollpoint sp-effect3" >
           <h5  style="color: #a0a3b1;font-size: 14px;font-weight: bold;
     line-height: 17px;text-align: center;padding-bottom: 10px;margin-top: 10px;">Trusted by</h5>
+ <script src="{% static 'js/logo_slider/jssor.slider-24.0.1.min.js' %}">
+ </script>
 
-<div style="text-align: center;display: block;align-content: center;">
-       <img class="mbl_img_logo" 
-       src="{% static 'images/entreprise_mobi.png' %}"
-        alt="Entreprises" style="align-content: center;">
-     <img class="dsktp_img_logo" 
-       src="{% static 'images/entreprises.png' %}" 
-        alt="Entreprises" style="height: 45px;text-align: center;   line-height: 45px;">
+
+<script>jssor_1_slider_init=function(){var jssor_1_options={$AutoPlay:1,$Idle:0,$SlideDuration:5000,$SlideEasing:$Jease$.$Linear,$PauseOnHover:4,$SlideWidth:140,$Cols:7};var jssor_1_slider=new $JssorSlider$("jssor_1",jssor_1_options);function ScaleSlider(){var refSize=jssor_1_slider.$Elmt.parentNode.clientWidth;if(refSize){refSize=Math.min(refSize,980);jssor_1_slider.$ScaleWidth(refSize);}
+else{window.setTimeout(ScaleSlider,30);}}
+ScaleSlider();$Jssor$.$AddEvent(window,"load",ScaleSlider);$Jssor$.$AddEvent(window,"resize",ScaleSlider);$Jssor$.$AddEvent(window,"orientationchange",ScaleSlider);};</script>
+<style></style>
+<div id=jssor_1>
+<div data-u=loading id=jssor_2></div>
+<div data-u=slides id=jssor_3>
+<div>
+<img data-u=image id=aligns src="{% static 'images/logo_slider_img/00.png' %}"/>
+</div>
+<div>
+<img data-u=image id=aligns src="{% static 'images/logo_slider_img/02.jpg' %}"/>
+</div>
+<div>
+<img data-u=image id=aligns src="{% static 'images/logo_slider_img/03.jpg' %}"/>
+</div>
+<div>
+<img data-u=image id=aligns src="{% static 'images/logo_slider_img/04.png' %}"/>
+</div>
+<div>
+<img data-u=image id=aligns src="{% static 'images/logo_slider_img/05.jpg' %}"/>
+</div>
+<div>
+<img data-u=image id=aligns src="{% static 'images/logo_slider_img/06.jpg' %}"/>
+</div>
+<div>
+<img data-u=image id=aligns src="{% static 'images/logo_slider_img/07.jpg' %}"/>
 </div>
 
-     </div>
+<div>
+<img data-u=image id=aligns src="{% static 'images/logo_slider_img/09.png' %}"/>
+</div>
+<div>
+<img data-u=image id=aligns src="{% static 'images/logo_slider_img/10.png' %}"/>
+</div>
+<div>
+<img data-u=image id=aligns src="{% static 'images/logo_slider_img/11.png' %}"/>
+</div>
+<div>
+<img data-u=image id=aligns src="{% static 'images/logo_slider_img/12.png' %}"/>
+</div>
+<div>
+<img data-u=image id=aligns src="{% static 'images/logo_slider_img/13.png' %}"/>
+</div>
+<div>
+<img data-u=image id=aligns src="{% static 'images/logo_slider_img/14.png' %}"/>
+</div>
+<div>
+<img data-u=image id=aligns src="{% static 'images/logo_slider_img/15.jpg' %}"/>
+</div>
+<div>
+<img data-u=image id=aligns src="{% static 'images/logo_slider_img/16.jpg' %}"/>
+</div>
+<div>
+<img data-u=image id=aligns src="{% static 'images/logo_slider_img/17.jpg' %}"/>
+</div>
+
+<div>
+<img data-u=image id=aligns src="{% static 'images/logo_slider_img/19.jpg' %}"/>
+</div>
+<div>
+<img data-u=image id=aligns src="{% static 'images/logo_slider_img/20.jpg' %}"/>
+</div>
+<div>
+<img data-u=image id=aligns src="{% static 'images/logo_slider_img/21.jpg' %}"/>
+</div>
+<div>
+<img data-u=image id=aligns src="{% static 'images/logo_slider_img/22.jpg' %}"/>
+</div>
+<div>
+<img data-u=image id=aligns src="{% static 'images/logo_slider_img/23.jpg' %}"/>
+</div>
+<div>
+<img data-u=image id=aligns src="{% static 'images/logo_slider_img/24.jpg' %}"/>
+</div>
+<div>
+<img data-u=image id=aligns src="{% static 'images/logo_slider_img/25.jpg' %}"/>
+</div>
+<div>
+<img data-u=image id=aligns src="{% static 'images/logo_slider_img/26.jpg' %}"/>
+</div>
+<div>
+<img data-u=image id=aligns src="{% static 'images/logo_slider_img/27.jpg' %}"/>
+</div>
+</div>
+</div>
+<script>jssor_1_slider_init();</script>
+</div>
+
 
 
     <div class="wrapper">
 
-      <section style="max-width: 980px;text-align: center;
+      <section style="text-align: center;
           box-sizing: border-box;" id="about_us" >
 	<div  class="container">
 
@@ -325,8 +418,7 @@ input[type=number]::-webkit-outer-spin-button {
                  
                 </div>
 
-                <div class="block_content">
-
+         <div class="block_content">
              SignageServ enables engagement and growth teams to manage and turn enhanced on-premises experience into a strategic differentiator for organisation growth. Leverage Demographics, realtime IOT data, automation, AI/ML and personalisation techniques into one enterprise platform.
 		 </div>
 	</div>
@@ -349,7 +441,7 @@ input[type=number]::-webkit-outer-spin-button {
 		</div>
 
 		<div class="col-md-6">
-			<h3 style="text-align:center;padding:5px 15px;color:#66cdcc;font-weight: 500;">One Platform for Enterprises with multiple branches across the world</h3>
+			<h3 style="text-align:center;padding:5px 15px;color:#43CFE5;font-weight: 500;">Own Communication Channel for Enterprises</h3>
 			<p class="info_sec" style="text-align:justify;padding:5px 15px;font-size:16px;">
 			You are an organization spread across multiple locations or large
 			number of signages in a single location. You want to manage the
@@ -374,7 +466,7 @@ input[type=number]::-webkit-outer-spin-button {
 		</div>
 
 		<div class="col-md-6">
-			<h3 style="text-align:center;padding:5px 15px;color:#66cdcc;font-weight: 500;">Corporates who want to operate in their private Networks for Additional Security</h3>
+			<h3 style="text-align:center;padding:5px 15px;color:#43CFE5;font-weight: 500;">Corporates who want to communicate in their private Networks for Additional Security</h3>
 			<p class="info_sec" style="text-align:justify;padding:5px 15px;font-size:16px;">
 			You are an enterpise with a need to maintain your content
 			within the organizational network.You want to manage your
@@ -400,7 +492,7 @@ input[type=number]::-webkit-outer-spin-button {
 			<img src="{% static 'images/signagens.png' %}">
 		</div>
 		<div class="col-md-6">
-			<h3 style="text-align:center;padding:5px 15px;color:#66cdcc;font-weight: 500;">Stand alone Entity, No internet, No network cabling. Simple Operation</h3>
+			<h3 style="text-align:center;padding:5px 15px;color:#43CFE5;font-weight: 500;">Stand alone Small Business  want to get advantage of On-Premises Engagement/Branding  without any IT infrastructure</h3>
 			<p class="info_sec" style="text-align:justify;padding:5px 15px;font-size:16px;">
 			You are looking for an easy to use signage app for easy
 			management of content and signages at your business
@@ -445,109 +537,68 @@ input[type=number]::-webkit-outer-spin-button {
               <td >ADview Reports with Demographics</td>   
             </tr>
               <tr>
-              <td >Videos</td>
+              <td >Multi Layouts</td>
               <td >Real Time Contextual Campaigns</td>   
             </tr>
               <tr>
-              <td >Table</td>
+              <td >Scheduled Campaigns</td>
               <td >Real Time Location Based Campaigns </td>   
             </tr>
               <tr>
-              <td >Text Scrolling -Ticker</td>
+              <td >Logo Overlay</td>
               <td >Content Partner Management</td>   
             </tr>
              <tr>
-              <td >Multi Layouts</td>
+              <td >Multi User Control</td>
               <td >SoftIOT Input Support</td>   
             </tr>
              <tr>
-              <td >Sequential Play</td>
+              <td >Background Audio</td>
               <td >APIs for 3rd Party AI Engines based Campaigns </td>   
             </tr>
              <tr>
-              <td >Scheduled Campaigns</td>
+              <td >Pause & Resume Player</td>
               <td >Enterprise Private Cloud/Intranet</td>   
             </tr>
             <tr>
-              <td >Logo Overlay</td>
+              <td >Volume Control</td>
               <td>Interactive Campaigns</td>
                
             </tr>
             <tr>
-              <td >Multi User Control</td>
+              <td >Campaign Text per Image</td>
               <td>Voice Controlled Campaigns</td>
               
             
             </tr>
             <tr>
-              <td >Background Audio</td>
-              <td >TV & Signage Mix</td>  
+              <td ><abbr title="Author:
+This is unique feature to announcement will be played. This will take the attention of viwers. ">Announcements</abbr></td>
+              <td >Scan to Campaign</td>  
                 
              
             </tr>
             <tr>
-              <td ><abbr title="Author:
-This is unique feature to set Audio per Image. As and when Imgage displayed. Corresponding music/recoded announcement will be played till the Image in display. This will take the attention of viwers. ">Background Audio per Image (i)</abbr></td>
-           <td >4G SIM Support</td>  
+              <td >Mobile App</td>
+           <td >Touch to Action </td>  
             </tr>
             <tr>
-            <td ><abbr title="Author:
-This is unique feature to set Audio per Image. As and when Imgage displayed. Corresponding music/recoded announcement will be played till the Image in display. This will take the attention of viwers. "> Announce on New Content (i)</abbr></td>
-             <td></td>
-            </tr>
-            <tr>
-              <td >Auto Web Scroll up</td>
-             <td></td>
-            </tr>
-            <tr>
-              <td >Skip Media Instant</td>
-           <td></td>
-            </tr>
-            <tr>
-              <td >Pause & Resume Player</td>
-              <td></td>
-            </tr>
-            <tr>
-              <td >Volume Control</td>
-               <td></td>
-            </tr>
-            <tr>
-              <td >Campaign Text per Image</td>
-                <td></td>
-            </tr>
-            <tr>
-              <td >Announcements</td>
-                 <td></td>
-            </tr>
-            <tr>
-              <td >Neary By Mode Mobile App</td>
-                <td></td> 
-            </tr>
-            <tr>
-              <td >Cloud Mode Web Interface</td>
-           <td></td>
+            <td >Cloud Mode Web Interface</td>
+             <td>Recommendation System for Up-sll/Cross-Sell</td>
             </tr>
             <tr>
               <td >Campaign Reports (Cloud Mode)</td>
-               <td></td>
+             <td>TV & Signage Mix</td>
             </tr>
             <tr>
-              <td >URL-JIRA</td>
-               <td></td>
+              <td >URL-JIRA, Facebook, Youtube/News Channel</td>
+           <td>4G SIM Support</td>
             </tr>
             <tr>
-              <td >URL-Facebook</td>
-              <td></td>
+              <td >Online & Offline Player</td>
+              <td>FP Sensor Based Campaigns</td>
             </tr>
-            <tr>
-              <td >URL-Youtube/News Channel</td>
-                <td></td>
-            </tr>
-            <tr>
-              <td >Clock Analog & Digital</td>
-               <td></td>
-            </tr>
-               
+           
           </tbody>
 
         </table>
