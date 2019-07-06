@@ -209,5 +209,10 @@ else if(loadedURL.includes("iot_device/rules"))
   highliteSelectedLink("contextualAdsRules_nav");
 }
 
+function isMobileBrowser()
+  {
+    return (typeof window.orientation !== "undefined") || (navigator.userAgent.indexOf('IEMobile') !== -1);
+  }
+
 </script>
 </body>

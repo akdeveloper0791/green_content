@@ -105,8 +105,7 @@ function getCampaignsFromServer()
        },
     
      error: function (jqXHR, exception) {
-      console.log(jqXHR.responseText);
-
+      
       swal(exception+jqXHR.responseText);
      }
 
@@ -141,7 +140,7 @@ function getCampaignsFromServer()
         
         if(data['statusCode']==0)
         {
-          console.log(JSON.stringify(data));   
+          //console.log(JSON.stringify(data));   
           playersList = data.players;
           displayPlayers()
            
@@ -236,7 +235,7 @@ function handlePlayerSelectEvent(checkBox)
       selectedPlayers.splice(index,1);
     }
   }
-  console.log(JSON.stringify(selectedPlayers));
+  
 }
 
 function dismissSelectCampaignList()
@@ -278,7 +277,7 @@ function handleCampaignSelectEvent(checkBox)
       selectedCampaigns.splice(index,1);
     }
   }
-  console.log(JSON.stringify(selectedCampaigns));
+  
 }
 
 function createRule()
@@ -356,7 +355,7 @@ function createRule()
         ajaxindicatorstop();
         if(data['statusCode']==0)
         {
-          console.log(JSON.stringify(data));   
+          
           resetFormData();
           dismissCreateRuleForm();
           displayDeviceClassifiers();
@@ -477,7 +476,7 @@ function displayDeviceClassifiers(isDefault = false)
     
      error: function (jqXHR, exception) {
       console.log(jqXHR.responseText);
-        if(isDefault==false)
+      if(isDefault==false)
       {
        ajaxindicatorstop();
       }
@@ -519,6 +518,7 @@ function setDeviceType(data)
 
 function displayClassifiers(rules)
 {
+  
   var table =document.getElementById("device_classifiers_list");
   for(var i=0;i<rules.length;i++)
   {
@@ -540,7 +540,9 @@ function displayClassifiers(rules)
     var classifier =row.insertCell(-1);
     classifier.innerHTML =rule.classifier;
 
-
+  //last notified time
+  var lastNotified = row.insertCell(-1);
+  lastNotified.innerHTML = getRuleAccessedTime(rule.accessed_at);
              
     var campaignsCell=row.insertCell(-1);
      // campaignsCell.innerHTML="Campaigns";
@@ -561,6 +563,19 @@ function displayClassifiers(rules)
     ///deleteCell.innerHTML = "<i class='fa fa-trash fa-lg' style='color:orangered;cursor: pointer;' alt='Delete' title='Delete' onclick='deleteCampaign("+rule.id+")></i>";
     deleteCell.innerHTML = '<span class="fa fa-trash"  style="cursor:pointer;color:orangered; display:inline-block;width:4%;float: left;margin;5px;" onclick="deleteRule('+rule.id+')"></span>';
   }
+}
+
+function getRuleAccessedTime(serverTime)
+{
+  if(serverTime!=null)
+  {
+    var date = new Date(serverTime);
+    return date.toLocaleString();
+  }else
+  {
+    return null;
+  }
+  
 }
 
 function displayDeviceClassifiersError(error)
@@ -623,7 +638,7 @@ function deleteRule(ruleId)
 
 function deleteRowClassifer(id)
 {
-    console.log("delete sc row "+id);
+    
     document.getElementById("device_classifiers_list").deleteRow(document.getElementById("classifier_"+id).rowIndex);
 }
 
@@ -652,8 +667,7 @@ function getRuleCampaignInfo(rule_id)
       success: function(data)
        {
          ajaxindicatorstop();
-      console.log("data"+JSON.stringify(data));
-            
+           
         if(data['statusCode']==0)
         {
         displayRuleCampaignInfo(data,rule_id);       
@@ -781,7 +795,7 @@ function assignCampaignsApi(campaigns)
        {
          ajaxindicatorstop();
        
-       console.log("data-"+JSON.stringify(data));
+       
               swal(data['status']);
               if(data['statusCode']==0)
               {
@@ -903,8 +917,7 @@ function getRulePlayersInfo(rule_id)
       success: function(data)
        {
          ajaxindicatorstop();
-      console.log("data"+JSON.stringify(data));
-            
+           
         if(data['statusCode']==0)
         {
         displayRulePlayersInfo(data,rule_id);       
@@ -933,7 +946,7 @@ function displayRulePlayersInfo(data ,rule_id)
 {
   var isPlayersAssigned=false;
   carSelectedPlayers=[];
-  console.log("displayRulePlayersInfo:"+JSON.stringify(data));
+  
   document.getElementById('ctad_rule_id').value =rule_id;
   document.getElementById('rule_name').innerHTML=data['rule'].classifier;
 
@@ -941,7 +954,7 @@ function displayRulePlayersInfo(data ,rule_id)
    var dvTable = document.getElementById("ctadr_player_list");
 
    var players=data['devices']
-    console.log("players:"+JSON.stringify(players));
+    
     if(players.length>=0)
     {
             //Create a HTML Table element.
@@ -1047,7 +1060,7 @@ function carpOnchange(element,playerId)
         var responseJSON = JSON.parse(xhr.response);
         if(responseJSON['statusCode']==0)
         {
-          console.log("newPlayersList:"+JSON.stringify(newPlayersList));
+          
           ///lptpDisplayPlayers(responseJSON['players']);
           swal(responseJSON['status']);
         }else
@@ -1067,7 +1080,7 @@ function carpOnchange(element,playerId)
   xhr.onerror = function()
   {
     ajaxindicatorstop();
-    console.log("Error");
+    
   };
   
   xhr.open('POST', '/iot_device/assignDevicesToRule');
@@ -1122,14 +1135,14 @@ function carPlayerRemove(playerId)
   xhr.onerror = function()
   {
     ajaxindicatorstop();
-    console.log("Error");
+    
   };
   
   xhr.open('POST', '/iot_device/removeDevicesFromRule');
   xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
   xhr.setRequestHeader("X-CSRFToken", csrf_token);
   
-  console.log("deleteList:"+JSON.stringify(players));
+  
     var params = 'players='+JSON.stringify(players)+'&rule_id='+document.getElementById('ctad_rule_id').value+
      '&accessToken=web';
      
@@ -1148,7 +1161,7 @@ function closeCADRplayers()
 
 function checkAndDisplayMicClassifiers()
 {
-  console.log("checkAndDisplayMicClassifiers length-"+micClassifierUserList.length)
+  
   if(micClassifierUserList.length<=0)
   {
     //get classifiers
@@ -1159,7 +1172,7 @@ function checkAndDisplayMicClassifiers()
       if (xhr.status === 200) {
         
         var responseJSON = JSON.parse(xhr.response);
-        console.log("responseJSON"+JSON.stringify(responseJSON));
+        
         if(responseJSON['statusCode']==0)
         {
           displayMicClassifiers(responseJSON['classifiers']);
@@ -1185,7 +1198,7 @@ function checkAndDisplayMicClassifiers()
 
 function displayMicClassifiers(classifiers)
 {
-  console.log("displayMicClassifiers");
+  
     micClassifierUserList = classifiers;
     var table = document.getElementById('mic_classifier_user_list');
     var row = table.insertRow(-1);  
@@ -1193,7 +1206,7 @@ function displayMicClassifiers(classifiers)
       
       {   
         var classifier = classifiers[i];
-        console.log("classifier "+JSON.stringify(classifier));
+        
         
         var cell = row.insertCell(-1);
         cell.innerHTML = "<input style='cursor:pointer' value='"+classifier["classifier"]+"'"+

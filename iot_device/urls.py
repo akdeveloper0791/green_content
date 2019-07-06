@@ -19,4 +19,6 @@ urlpatterns = [
     path('exportViewerMetrics/',views.exportViewerMetrics, name="exportIOTViewerMetrics"),
     path('broadCastMicPhoneRule/',views.broadCastMicPhoneRule, name="broadCastMicPhoneRule"),
     path('micPhoneClassifiers/',views.micPhoneClassifiers, name="micPhoneClassifiers"),
+    path('vm_bar_reports',views.getViewerBarMetrics,name="getViewerBarMetrics"),
+    path('vm_gender_pie_reports',views.vmGenderPieReports,name="vmGenderPieReports"),
     ]

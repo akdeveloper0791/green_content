@@ -104,7 +104,7 @@ class IOT_Device(models.Model):
         rules = Contextual_Ads_Rule.objects.filter(iot_device = playerInfo);
       if(len(rules)>=1):
         return {'statusCode':0,'rules':list(rules.values('id','iot_device_id',
-          'classifier','delay_time','created_at','iot_device__name','iot_device__device_type')),'playerInfo':playerInfo1};
+          'classifier','delay_time','created_at','accessed_at','iot_device__name','iot_device__device_type')),'playerInfo':playerInfo1};
       else:
         return {'statusCode':2,'status':'No rules found','playerInfo':playerInfo1};
     
@@ -147,7 +147,7 @@ class Contextual_Ads_Rule(models.Model):
     classifier = models.CharField(max_length=125,blank=False,null=False,db_index=True)
     delay_time = models.IntegerField(default=0)
     created_at = models.DateTimeField(default=timezone.now)
-
+    accessed_at = models.DateTimeField(null=True)
     def createRule(iotDeviceKey,userId,players,campaigns,calssifier,delayTime,isWeb):
         if(isWeb == False):
             userId = User_unique_id.getUserId(userId);
@@ -232,6 +232,12 @@ class Contextual_Ads_Rule(models.Model):
             return {'statusCode':3,'status':
                 "error "+str(e)};
     
+    def updateAccessAt(classifiers):
+      if(len(classifiers)>=1):
+        Contextual_Ads_Rule.objects.filter(id__in=classifiers).update(accessed_at=timezone.now());
+        return True;
+      return False;
+
     def listMicPhoneClassifiers(userId):
       #classifiers = Contextual_Ads_Rule.objects.filter(
       #  iot_device__user_id=userId,iot_device__device_type="Microphone").values('classifier');
@@ -413,7 +419,7 @@ class CAR_Device(models.Model):
         player__fcm_id='null').exclude(
         player__fcm_id__isnull=True).filter(
         car__classifier=rule,car__iot_device__id=player).values(
-        'player_id','player__name','player__fcm_id','player__mac','car__delay_time');
+        'player_id','player__name','player__fcm_id','player__mac','car__delay_time','car');
       return list(devices);
     
     
@@ -426,7 +432,9 @@ class CAR_Device(models.Model):
         #return response;
         deviceFcmRegIds = [];
         deviceFcmRegIdsWithInfo={};
+        classifiersList = [];
         for device in devicesToPublish:
+          classifiersList.append(device['car']);
           if(device['player__mac']==playerMac):
             response['includeThis']=True;
             response['device'] = device;
@@ -462,6 +470,9 @@ class CAR_Device(models.Model):
         
         #fcm_result = push_service.notify_single_device(registration_id='fPauOP7j_Mw:APA91bFsez98VG5EVXgiqXkrpZKwb3mYmhfGyqfj2YuMQ3esOZvIW_LoGr0eHhkjKoJKdok6ARXXfg9uryX53ryn6o2BkVZQozgjSTv5dLcrR5D8lZ23byUrn3qQTxME54pzhHPo5Itc',data_message=data_message)
         #response['fcm_Result']=fcm_result;
+        #update classifiers last notified time
+        response['classifiersList'] = classifiersList;
+        Contextual_Ads_Rule.updateAccessAt(classifiersList);
         return response;
       else:
         return False;
@@ -471,7 +482,7 @@ class CAR_Device(models.Model):
           player__fcm_id='null').exclude(
           player__fcm_id__isnull=True).filter(
           car__classifier__in=rule,car__iot_device__key=player).values(
-          'player_id','player__name','player__fcm_id','player__mac','car__delay_time');
+          'player_id','player__name','player__fcm_id','player__mac','car__delay_time','car');
         return list(devices);
     
     
@@ -485,12 +496,15 @@ class CAR_Device(models.Model):
         if(len(devicesToPublish)>=1):
           #prepare device to publish
           response = {'statusCode':0,'includeThis':False};
+          response['devicesToPublish'] = devicesToPublish;
           #return response;
           deviceFcmRegIds = [];
           deviceFcmRegIdsWithInfo={};
           duplicateDevice=[];
+          classifiersList = [];
           for device in devicesToPublish:
             deviceFCM = device['player__fcm_id'];
+            classifiersList.append(device['car']);
             if deviceFCM not in duplicateDevice:
               duplicateDevice.append(deviceFCM);
               deviceDelay = device['car__delay_time'];
@@ -524,12 +538,16 @@ class CAR_Device(models.Model):
           
           #fcm_result = push_service.notify_single_device(registration_id='fPauOP7j_Mw:APA91bFsez98VG5EVXgiqXkrpZKwb3mYmhfGyqfj2YuMQ3esOZvIW_LoGr0eHhkjKoJKdok6ARXXfg9uryX53ryn6o2BkVZQozgjSTv5dLcrR5D8lZ23byUrn3qQTxME54pzhHPo5Itc',data_message=data_message)
           #response['fcm_Result']=fcm_result;
+          response['classifiersList'] = classifiersList;
+          #update classifiers last notified time
+          Contextual_Ads_Rule.updateAccessAt(classifiersList);
           return response;
         else:
           return {'statusCode':6,'status':'No devices to publish'};
       except ValueError as ex:
         return {'statusCode':6,'status':'Invalid classifier'+str(ex)};
 
+from django.db.models import Sum
 class Age_Geder_Metrics(models.Model):
   iot_device = models.ForeignKey('iot_device.IOT_Device',on_delete=models.CASCADE,db_index=True)
   created_at = models.DateTimeField(default=timezone.now,blank=False,null=False)
@@ -609,3 +627,61 @@ class Age_Geder_Metrics(models.Model):
               'age_15_20','age_25_32','age_38_43','age_48_53','age_60_100'))}
       else:
           return {'statusCode':4,'status':"No metrics found for the selected dates"};
+
+
+  def getViewerBarMetrics(userId,postParams):
+      # check for player
+      player = postParams.get('player');
+      metrics={};
+      if(player=="All"):
+        #list all metrics
+        metrics = Age_Geder_Metrics.objects.filter(iot_device__user_id=userId,
+          created_at__range=[postParams.get('from_date'), postParams.get('to_date')]).aggregate(
+          Sum('age_0_2'),Sum('age_4_6'),Sum('age_8_12'),Sum('age_15_20'),
+          Sum('age_25_32'),Sum('age_38_43'),Sum('age_48_53'),
+          Sum('age_60_100'))
+      
+      elif(IOT_Device.isMyPlayer(player,userId,False)!=False):
+        metrics = Age_Geder_Metrics.objects.filter(iot_device_id=player,
+          created_at__range=[postParams.get('from_date'), postParams.get('to_date')]).aggregate(
+          Sum('age_0_2'),Sum('age_4_6'),Sum('age_8_12'),Sum('age_15_20'),
+          Sum('age_25_32'),Sum('age_38_43'),Sum('age_48_53'),
+          Sum('age_60_100'))
+      #return {'metrics':metrics};
+      if(metrics['age_0_2__sum'] == None):
+        return {'statusCode':4,'status':"No metrics found for the selected dates"};
+      else:
+         #prepare metrics
+         total=0;
+         for key,value in metrics.items():
+          total += value;
+         labels = ["0-15","15-24","25-37","38-47","48-60","60+"];
+         data = [(metrics['age_0_2__sum']+metrics['age_4_6__sum']+metrics['age_8_12__sum']),metrics['age_15_20__sum'],metrics['age_25_32__sum'],
+            metrics['age_38_43__sum'],metrics['age_48_53__sum'],metrics['age_60_100__sum']];
+         return {'statusCode':0,'metrics':metrics,'total':total,'data':data,'labels':labels} 
+      
+  def vmGenderPieReports(userId,postParams):
+      # check for player
+      player = postParams.get('player');
+      metrics={};
+      if(player=="All"):
+        #list all metrics
+        metrics = Age_Geder_Metrics.objects.filter(iot_device__user_id=userId,
+          created_at__range=[postParams.get('from_date'), postParams.get('to_date')]).aggregate(
+          Sum('g_male'),Sum('g_female'))
+      
+      elif(IOT_Device.isMyPlayer(player,userId,False)!=False):
+        metrics = Age_Geder_Metrics.objects.filter(iot_device_id=player,
+          created_at__range=[postParams.get('from_date'), postParams.get('to_date')]).aggregate(
+          Sum('g_male'),Sum('g_female'))
+      #return {'metrics':metrics};
+      if(metrics['g_male__sum'] == None):
+        return {'statusCode':4,'status':"No metrics found for the selected dates"};
+      else:
+         #prepare metrics
+         total=0;
+         for key,value in metrics.items():
+          total += value;
+         labels = ["Male","Female"];
+         data = [metrics['g_male__sum'],metrics['g_female__sum']];
+         return {'statusCode':0,'metrics':metrics,'total':total,'data':data,'labels':labels}         

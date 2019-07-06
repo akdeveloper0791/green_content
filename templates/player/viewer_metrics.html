@@ -83,6 +83,24 @@ input:checked + .slider .off
 
 .slider.round:before {
   border-radius: 50%;}
+
+.graphs_div_left
+{
+  
+  flex: 0 0 65%;
+}
+
+.graphs_div_right
+{
+  
+  flex: 1;
+}
+
+#graphs1_wrapper {
+  display: flex;
+  margin-top: 10px;
+}
+
     
   </style>
 
@@ -93,6 +111,7 @@ input:checked + .slider .off
 {% block body %}
 
 <script type="text/javascript">
+  csrf_token = "{{ csrf_token }}";
         function toggleState(item)
         {
            if(item.className == "on") {
@@ -107,7 +126,8 @@ input:checked + .slider .off
 <script src="{% static 'jquery/2.15.1/moment.min.js' %}"></script>
 <script src="{% static 'twitter-bootstrap/3.3.7/bootstrap.min.js' %}"></script>
 <link rel="stylesheet" href="{% static 'twitter-bootstrap/3.3.7/bootstrap.min.css' %}">
-
+<script src="{% static 'js/player/viewer_metrics.js' %}"></script>
+<script src="{% static 'js/charts/Chart.js/2.5.0/Chart.min.js' %}"></script>
 <script src="{% static 'bootstrap-datetimepicker/bootstrap-datetimepicker.min.js' %}"></script>
 <link rel="stylesheet" href="{% static 'bootstrap-datetimepicker/bootstrap-datetimepicker.min.css' %}">
 
@@ -156,7 +176,7 @@ input:checked + .slider .off
 
 	<div class="col-sm-16" style="text-align: center;padding: 10px;">
 
-      <input type="button" value="Analytics" class="gradient-button gradient-btn" style="padding: 8px 20px;"  onclick="swal('Coming soon...')">
+      <input type="button" value="Analytics" class="gradient-button gradient-btn" style="padding: 8px 20px;"  onclick="showAnalytics()">
 
         <input type="button" value="Trends" class="gradient-button gradient-btn" style="padding: 8px 20px;"  onclick="swal('Coming soon...')">
 
@@ -188,7 +208,7 @@ input:checked + .slider .off
 
 
 <!-- table -->
-<div class="container" style="overflow-x: auto;width: 100%">
+<div class="container" style="overflow-x: auto;width: 100%" id="tabular_display">
 
 	<table class="testTable table table-hover" >
 		<thead>
@@ -214,9 +234,18 @@ input:checked + .slider .off
 </div>
 <!-- end table -->
 
+<!-- bar graphs -->
 
+<div class ="graphs1_wrapper" id="analytics_grpahs1" style="display:none" >
 
+<div class="graphs_div_left" id="age_bar_reports" >
+  <canvas id="bar_reports_cnv"></canvas>
+</div>
 
+<div class="graphs_div_right" id="gender_reports" >
+  <canvas id="gender_pie_reports_cnv"></canvas>
+</div>
+</div>
 
 <div class="container">
   <div class="modal fade centered-modal" tabindex="-1" role="dialog" id="busy_dialog">
@@ -396,6 +425,8 @@ function display_reports(responseObj){
 }
 
 	function viewer_matrics_list(isAuto=false){
+    displayTabularView();
+    dismissGraphs();
 		var dev_id = document.getElementById('dev_id').value;
 		var from_date = document.getElementById('from_date').value;
 		var to_date = document.getElementById('to_date').value;

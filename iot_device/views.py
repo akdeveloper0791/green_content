@@ -294,6 +294,7 @@ def metrics(request):
                 
                 fcm_result = CAR_Device.publishRule(playerMac,auto_campaign_rule,player);
                 response = {'statusCode':0};
+                response['fcm_result'] = fcm_result;
                 if(fcm_result!=False):
 
                     if(fcm_result['includeThis']):
@@ -503,3 +504,17 @@ def micPhoneClassifiers(request):
     else:
         return JsonResponse({"statusCode":2,
             "status":"Invalid user,please login"});
+
+@api_view(['POST'])
+def getViewerBarMetrics(request):
+    if(request.user.is_authenticated==False):
+        return JsonResponse({'statusCode':2,'status':'Invalid session, please login'});
+    metricsResponse = Age_Geder_Metrics.getViewerBarMetrics(request.user.id,request.POST);
+    return JsonResponse(metricsResponse);
+
+@api_view(['POST'])
+def vmGenderPieReports(request):
+    if(request.user.is_authenticated==False):
+        return JsonResponse({'statusCode':2,'status':'Invalid session, please login'});
+    metricsResponse = Age_Geder_Metrics.vmGenderPieReports(request.user.id,request.POST);
+    return JsonResponse(metricsResponse);
