@@ -1,3 +1,5 @@
+var displayMetrics = "metrics";
+
 function dismissTabularView()
 {
 	document.getElementById("tabular_display").style.display="none";
@@ -7,6 +9,7 @@ function displayTabularView()
 {
 	document.getElementById("tabular_display").style.display="block";
 }
+
 function dismissGraphs()
 {
 	document.getElementById("analytics_grpahs1").style.display="none";
@@ -54,11 +57,33 @@ function displayAgeBarReports(labels,data)
 	});
 
 }
-function showAnalytics()
+
+function highliteSelectedMetrics(metrics,selectedButtonId)
+{
+	if(metrics!=displayMetrics)
+	{
+       displayMetrics = metrics;
+       //deactivate change the class name
+       var x = document.getElementsByClassName("selected_metrics");
+		
+		for (var i = 0; i < x.length; i++) {
+		  x[i].className = "gradient-button gradient-btn";
+		}
+	}
+
+	document.getElementById(selectedButtonId).className="selected_metrics"
+}
+function showAnalytics(isAutoRefresh=false)
 {   
+	highliteSelectedMetrics("metrics","analytics_view");
+	
 	dismissTabularView();
-	dismissGraphs()
-	displayGraphs();
+	if(!isAutoRefresh)
+	{
+        dismissGraphs();
+	}
+	
+	
 
 	var dev_id = document.getElementById('dev_id').value;
 	var from_date = document.getElementById('from_date').value;
@@ -76,7 +101,7 @@ function showAnalytics()
     }
 
     generateGenderPieCharts(dev_id,
-    	from_date,to_date);
+    	from_date,to_date,isAutoRefresh);
 
 	//get reports 
 	try {
@@ -105,13 +130,16 @@ function showAnalytics()
             if(data['statusCode']==0)
 		    {
              displayAgeBarReports(data['labels'],data['data']);
-             //displayCampaignInfo(data,playerId);
+             displayGraphs();
             
 			}
 			else
 			{
-
-             swal(data['status']);
+             if(!isAutoRefresh)
+             {
+             	swal(data['status']);
+             }
+             
                                     
 			}
 
@@ -163,8 +191,11 @@ function generateGenderPieCharts(dev_id,from_date,to_date)
 			}
 			else
 			{
-
-             swal(data['status']);
+             if(!isAutoRefresh)
+             {
+             swal(data['status']);	
+             }
+             
                                     
 			}
 

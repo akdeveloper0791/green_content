@@ -101,6 +101,17 @@ input:checked + .slider .off
   margin-top: 10px;
 }
 
+.selected_metrics {
+    box-shadow: 0 10px 20px rgba(0,0,0,0.19), 0 6px 6px rgba(0,0,0,0.23);
+    color: #FFF;
+    margin: 8px 10px 12px;
+    border-radius: 25px;
+    width: 180px;
+    background-position: right center; 
+    background: #a64bf4; background-image: linear-gradient(to right, #21d4fd 10%,  #8026F7 50%, #b721ff 80%)
+    
+}
+
     
   </style>
 
@@ -176,39 +187,38 @@ input:checked + .slider .off
 
 	<div class="col-sm-16" style="text-align: center;padding: 10px;">
 
-      <input type="button" value="Analytics" class="gradient-button gradient-btn" style="padding: 8px 20px;"  onclick="showAnalytics()">
+      <input type="button" value="Analytics" id="analytics_view" class="gradient-button gradient-btn" style="padding: 8px 20px;"  onclick="showAnalytics()">
 
         <input type="button" value="Trends" class="gradient-button gradient-btn" style="padding: 8px 20px;"  onclick="swal('Coming soon...')">
 
-	<input type="button" value="View" class="gradient-button gradient-btn" style="padding: 8px 20px;"  onclick="viewer_matrics_list()">
+	<input type="button" value="View" id="tabular_view" class="gradient-button gradient-btn" style="padding: 8px 20px;"  onclick="viewer_matrics_list()">
 
           <input type="button" value="Export" class="gradient-button gradient-btn" style="padding: 8px 20px;" 
           onclick="export_viewer_matrics()">
 
-   <div style="display:inline-block; 
-  text-align: center;
+   
+</div>
+<div class="col-sm-16" style="text-align: right;padding: 10px;">
+  <div style="display:inline-block; 
+  text-align: right;
     font-family: Arial Black, Gadget, sans-serif;">
-    <h5 style="text-align: center;float: left;margin-right: 5px;color: gray">
-      <b>Auto </br>Refresh</b></h5>
-    <label class="switch" style="text-align: center;float: right;">
+    <h5 style="text-align: right;float: left;margin-right: 5px;color: gray">
+      <b>Auto Refresh</b></h5>
+
+<label class="switch" style="text-align: right;float: right;">
     <input type="checkbox" id="togBtn" onclick="autoRefreshADRMetrics(this)">
     <div class="slider round">
     <span class="on">ON</span><span class="off">OFF</span>
   
-  </div>   
-
+  </div> 
 </div>
-
-  
-
 </div>
-
 </div>
 
 
 
 <!-- table -->
-<div class="container" style="overflow-x: auto;width: 100%" id="tabular_display">
+<div class="container" style="overflow-x: auto;width: 100%;display:none" id="tabular_display">
 
 	<table class="testTable table table-hover" >
 		<thead>
@@ -329,6 +339,8 @@ function checkADRFlag()
   {
     document.getElementById('togBtn').checked=true; 
     setInterval(autoRefreshTask, 30000);
+
+    autoRefreshTask();
   }else
   {
     document.getElementById('togBtn').checked=false; 
@@ -350,7 +362,14 @@ function autoRefreshTask()
          d = year+"-"+month+"-"+day + 
          " "+d.getHours()+":"+d.getMinutes()+":"+d.getSeconds();
          document.getElementById('to_date').value=d;
-         viewer_matrics_list(true);
+    if(displayMetrics=="metrics")
+    {
+        showAnalytics(true);
+    }else
+    {
+      viewer_matrics_list(true);
+    }
+    
 }
 
 
@@ -425,6 +444,7 @@ function display_reports(responseObj){
 }
 
 	function viewer_matrics_list(isAuto=false){
+    highliteSelectedMetrics("tabular","tabular_view");
     displayTabularView();
     dismissGraphs();
 		var dev_id = document.getElementById('dev_id').value;
@@ -569,12 +589,13 @@ function display_reports(responseObj){
 
 function autoRefreshADRMetrics(checkbox)
  {
-  //Save Auto Refresh Switch flag in cache 
-   storeADRFlag(checkbox.checked);
-  if(checkbox.checked==true)
-  {
-    //start auto refresh metrics info timer
-    setInterval(autoRefreshTask, 30000);
+  //Save Auto Refre(sh Switch flag in cache 
+     storeADRFlag(checkbox.checked);
+    if(checkbox.checked==true)
+    {
+      //start auto refresh metrics info timer
+      setInterval(autoRefreshTask, 30000);
+      autoRefreshTask();
   }else
   {
      //stop auto refresh metrics info timer
