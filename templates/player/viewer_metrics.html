@@ -338,13 +338,14 @@ function checkADRFlag()
   if(flag=="true")
   {
     document.getElementById('togBtn').checked=true; 
-    setInterval(autoRefreshTask, 30000);
+   autoRefreshIntervalVar =  setInterval(autoRefreshTask, 30000);
 
     autoRefreshTask();
   }else
   {
     document.getElementById('togBtn').checked=false; 
-      clearInterval()
+
+   clearInterval(autoRefreshIntervalVar);
       
   }
 }
@@ -594,12 +595,12 @@ function autoRefreshADRMetrics(checkbox)
     if(checkbox.checked==true)
     {
       //start auto refresh metrics info timer
-      setInterval(autoRefreshTask, 30000);
+     autoRefreshIntervalVar = setInterval(autoRefreshTask, 30000);
       autoRefreshTask();
   }else
   {
      //stop auto refresh metrics info timer
-    clearInterval()
+    clearInterval(autoRefreshIntervalVar);
  
   }
 

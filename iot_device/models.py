@@ -562,7 +562,7 @@ class Age_Geder_Metrics(models.Model):
   age_48_53 = models.IntegerField(default=0)
   age_60_100 = models.IntegerField(default=0)
 
-  def saveMetrics(player,genders,ages):
+  def saveMetrics(player,genders,ages,m_f_ages):
     try:
       metrics = Age_Geder_Metrics(iot_device_id=player);
       #save gender metrics
@@ -684,4 +684,27 @@ class Age_Geder_Metrics(models.Model):
           total += value;
          labels = ["Male","Female"];
          data = [metrics['g_male__sum'],metrics['g_female__sum']];
-         return {'statusCode':0,'metrics':metrics,'total':total,'data':data,'labels':labels}         
+         return {'statusCode':0,'metrics':metrics,'total':total,'data':data,'labels':labels}
+
+class Geder_Age_Metrics(models.Model):
+  iot_device = models.ForeignKey('iot_device.IOT_Device',on_delete=models.CASCADE,db_index=True)
+  created_at = models.DateTimeField(default=timezone.now,blank=False,null=False)
+  f_age_0_2 = models.IntegerField(default=0)
+  f_age_4_6 = models.IntegerField(default=0)
+  f_age_8_12 = models.IntegerField(default=0)
+  f_age_15_20 = models.IntegerField(default=0)
+  f_age_25_32 = models.IntegerField(default=0)
+  f_age_38_43 = models.IntegerField(default=0)
+  f_age_48_53 = models.IntegerField(default=0)
+  f_age_60_100 = models.IntegerField(default=0)
+  m_age_0_2 = models.IntegerField(default=0)
+  m_age_4_6 = models.IntegerField(default=0)
+  m_age_8_12 = models.IntegerField(default=0)
+  m_age_15_20 = models.IntegerField(default=0)
+  m_age_25_32 = models.IntegerField(default=0)
+  m_age_38_43 = models.IntegerField(default=0)
+  m_age_48_53 = models.IntegerField(default=0)
+  m_age_60_100 = models.IntegerField(default=0)
+
+  def saveMetrics(device,m_f_ages):
+    return False;

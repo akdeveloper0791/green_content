@@ -12,6 +12,8 @@ function displayTabularView()
 
 function dismissGraphs()
 {
+	displayAgeBarReports([],[]);
+	displayAgeBarReports([],[]);
 	document.getElementById("analytics_grpahs1").style.display="none";
 }
 
@@ -27,7 +29,12 @@ function displayGraphs()
 	    wrapperElm.scrollIntoView();
 	}else
 	{
-	 document.getElementById("analytics_grpahs1").style.display="flex";	
+	 var graphsDiv1 = document.getElementById("analytics_grpahs1");
+	 if(graphsDiv1.style.display=="none")
+	 {
+       graphsDiv1.style.display = "flex";
+	 }
+	 	
 	}
 	
 }
@@ -78,13 +85,9 @@ function showAnalytics(isAutoRefresh=false)
 	highliteSelectedMetrics("metrics","analytics_view");
 	
 	dismissTabularView();
-	if(!isAutoRefresh)
-	{
-        dismissGraphs();
-	}
 	
+    dismissGraphs();
 	
-
 	var dev_id = document.getElementById('dev_id').value;
 	var from_date = document.getElementById('from_date').value;
 	var to_date = document.getElementById('to_date').value;
@@ -129,8 +132,10 @@ function showAnalytics(isAutoRefresh=false)
 			
             if(data['statusCode']==0)
 		    {
+
+		     displayGraphs();
              displayAgeBarReports(data['labels'],data['data']);
-             displayGraphs();
+             
             
 			}
 			else
@@ -158,7 +163,7 @@ function showAnalytics(isAutoRefresh=false)
 	}
 }
 
-function generateGenderPieCharts(dev_id,from_date,to_date)
+function generateGenderPieCharts(dev_id,from_date,to_date,isAutoRefresh)
 {
    //get reports 
 	try {
@@ -183,7 +188,7 @@ function generateGenderPieCharts(dev_id,from_date,to_date)
 		  success: function(data)
 		   {
 		   	//ajaxindicatorstop();
-			
+			console.log(JSON.stringify(data));
             if(data['statusCode']==0)
 		    {
              displayGenderPieCharts(data['labels'],data['data']);

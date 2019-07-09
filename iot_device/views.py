@@ -217,6 +217,7 @@ import numpy as np
 import cv2
 from .models import Age_Geder_Metrics
 import datetime
+import pandas as pd
 
 @api_view(['POST'])
 def metrics(request):    
@@ -260,7 +261,7 @@ def metrics(request):
         MODEL_MEAN_VALUES = (78.4263377603, 87.7689143744, 114.895847746)
         gender_list = ['Male', 'Female']
         genders = {};
-        
+        m_f_ages = np.zeros((2,8),dtype=int);
         if len(faces)>=1:
             for (x,y,w,h) in faces:        
                 face_img = image[y:y+h, x:x+w].copy()
@@ -284,17 +285,24 @@ def metrics(request):
                     ages[age]=ages[age]+1;
                 else:
                     ages[age]=1
-            
+                
+                genderPosition = 1;
+                if(gender=="Female"):
+                    genderPosition=0;
+                
+                m_f_ages[genderPosition,int(age)] += 1;
 
             
-            response = Age_Geder_Metrics.saveMetrics(player,genders,ages);
+            response = Age_Geder_Metrics.saveMetrics(player,genders,ages,m_f_ages);
             if(response['statusCode']==0):
                 #calculate player auto campaign rule
                 auto_campaign_rule = calculateAutoCampaignRule(ages,genders,faces);  
                 
                 fcm_result = CAR_Device.publishRule(playerMac,auto_campaign_rule,player);
                 response = {'statusCode':0};
-                response['fcm_result'] = fcm_result;
+                #dumped = json.dumps(m_f_ages, cls=NumpyEncoder)
+                response['m_ages'] = pd.Series(m_f_ages[1,0:8]).to_json(orient='values');
+                response['f_ages'] = pd.Series(m_f_ages[0,0:8]).to_json(orient='values');
                 if(fcm_result!=False):
 
                     if(fcm_result['includeThis']):
