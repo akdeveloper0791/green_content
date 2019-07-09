@@ -593,6 +593,7 @@ class Age_Geder_Metrics(models.Model):
       
       metrics.save();
       if(metrics.id>=1):
+        Geder_Age_Metrics.saveMetrics(player,m_f_ages)
         return {'statusCode':0}
       else:
         return {'statusCode':1,'status':"Unable to save metrics"};
@@ -707,4 +708,22 @@ class Geder_Age_Metrics(models.Model):
   m_age_60_100 = models.IntegerField(default=0)
 
   def saveMetrics(device,m_f_ages):
+    metrics = Geder_Age_Metrics(iot_device_id=device);
+    metrics.f_age_0_2 = m_f_ages[0,0]
+    metrics.f_age_4_6 = m_f_ages[0,1]
+    metrics.f_age_8_12 = m_f_ages[0,2]
+    metrics.f_age_15_20 = m_f_ages[0,3]
+    metrics.f_age_25_32 = m_f_ages[0,4]
+    metrics.f_age_38_43 = m_f_ages[0,5]
+    metrics.f_age_48_53 = m_f_ages[0,6]
+    metrics.f_age_60_100 = m_f_ages[0,7]
+    metrics.m_age_0_2 = m_f_ages[1,0]
+    metrics.m_age_4_6 = m_f_ages[1,1]
+    metrics.m_age_8_12 = m_f_ages[1,2]
+    metrics.m_age_15_20 = m_f_ages[1,3]
+    metrics.m_age_25_32 = m_f_ages[1,4]
+    metrics.m_age_38_43 = m_f_ages[1,5]
+    metrics.m_age_48_53 = m_f_ages[1,6]
+    metrics.m_age_60_100 = m_f_ages[1,7]
+    metrics.save();
     return False;
