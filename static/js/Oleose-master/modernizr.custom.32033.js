@@ -35,7 +35,7 @@ window.Modernizr = (function( window, document, undefined ) {
 
     domPrefixes = omPrefixes.toLowerCase().split(' '),
 
-    ns = {'svg': 'http://www.w3.org/2000/svg'},
+    ns = {'svg': 'https://www.w3.org/2000/svg'},
 
     tests = {},
     inputs = {},
