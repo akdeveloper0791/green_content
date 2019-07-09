@@ -15,6 +15,7 @@ function dismissGraphs()
 	displayAgeBarReports([],[]);
 	displayAgeBarReports([],[]);
 	document.getElementById("analytics_grpahs1").style.display="none";
+	document.getElementById("analytics_grpahs2").style.display="none";
 }
 
 function displayGraphs()
@@ -24,15 +25,27 @@ function displayGraphs()
 		var wrapperElm = document.getElementById("analytics_grpahs1");
         wrapperElm.style.display="block";
         wrapperElm.class="";
+
+        var graphs2  = document.getElementById("analytics_grpahs2");
+        graphs2.style.display="block";
+        graphs2.class="";
+
         document.getElementById("age_bar_reports").class="";
         document.getElementById("gender_reports").class="";
+        document.getElementById("gender_age_bar_reports").class="";
 	    wrapperElm.scrollIntoView();
 	}else
 	{
 	 var graphsDiv1 = document.getElementById("analytics_grpahs1");
+	 var graphsDiv2 = document.getElementById("analytics_grpahs2");
 	 if(graphsDiv1.style.display=="none")
 	 {
        graphsDiv1.style.display = "flex";
+	 }
+
+	 if(graphsDiv2.style.display=="none")
+	 {
+       graphsDiv2.style.display = "flex";
 	 }
 	 	
 	}
@@ -104,6 +117,9 @@ function showAnalytics(isAutoRefresh=false)
     }
 
     generateGenderPieCharts(dev_id,
+    	from_date,to_date,isAutoRefresh);
+    
+    generateGenderAgeBarCharts(dev_id,
     	from_date,to_date,isAutoRefresh);
 
 	//get reports 
@@ -239,4 +255,89 @@ function displayGenderPieCharts(labels,data)
 	      }
 	    }
     });
+}
+
+function generateGenderAgeBarCharts(dev_id,from_date,to_date,isAutoRefresh)
+{
+   //get reports 
+	try {
+        //ajaxindicatorstart("<img src='/static/images/ajax-loader.gif'><br/> Please wait...!");
+       
+		$.ajax(
+		{
+
+		  type:'POST',
+		  url: '/iot_device/vm_age_gender_bar_reports',
+		  headers: {		        
+		        'X-CSRFToken': csrf_token
+		    },
+		  data:{
+                accessToken: 'web',
+                player: dev_id,
+                from_date:from_date,
+                to_date:to_date
+                
+		  },
+		  
+		  success: function(data)
+		   {
+		   	//ajaxindicatorstop();
+			console.log(JSON.stringify(data));
+            if(data['statusCode']==0)
+		    {
+             displayGenderAgeCharts(data['labels'],data['f_data'],
+             	data['m_data']);
+            
+			}
+			else
+			{
+             if(!isAutoRefresh)
+             {
+             swal(data['status']);	
+             }
+             
+                                    
+			}
+
+		   },
+		
+		 error: function (jqXHR, exception) {
+		 	//ajaxindicatorstop();
+		 	alert(exception+jqXHR.responseText);
+		 }
+
+		});
+	}
+	catch(Exception)
+    {
+		alert(Exception.message);
+	}	
+}
+
+function displayGenderAgeCharts(labels,femaleData,maleData)
+{
+	//document.getElementById("gender_reports").style.display="inline-block";
+	new Chart(document.getElementById("gender_age_chart_grouped"), {
+    type: 'bar',
+    data: {
+      labels: labels,
+      datasets: [
+        {
+          label: "Female",
+          backgroundColor: "#8e5ea2",
+          data: femaleData
+        }, {
+          label: "Male",
+          backgroundColor: "#3e95cd",
+          data: maleData
+        }
+      ]
+    },
+    options: {
+      title: {
+        display: true,
+        text: 'Gender and Age based metrics'
+      }
+    }
+});
 }

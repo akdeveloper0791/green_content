@@ -21,4 +21,5 @@ urlpatterns = [
     path('micPhoneClassifiers/',views.micPhoneClassifiers, name="micPhoneClassifiers"),
     path('vm_bar_reports',views.getViewerBarMetrics,name="getViewerBarMetrics"),
     path('vm_gender_pie_reports',views.vmGenderPieReports,name="vmGenderPieReports"),
+    path('vm_age_gender_bar_reports',views.vmGenderAgeBarReports,name="vmGenderAgeBarReports"),
     ]

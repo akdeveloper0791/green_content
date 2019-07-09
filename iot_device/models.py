@@ -727,3 +727,40 @@ class Geder_Age_Metrics(models.Model):
     metrics.m_age_60_100 = m_f_ages[1,7]
     metrics.save();
     return False;
+
+  def vmGenderAgeBarReports(userId,postParams):
+      # check for player
+      player = postParams.get('player');
+      metrics={};
+      if(player=="All"):
+        #list all metrics
+        metrics = Geder_Age_Metrics.objects.filter(iot_device__user_id=userId,
+          created_at__range=[postParams.get('from_date'), postParams.get('to_date')]).aggregate(
+          Sum('f_age_0_2'),Sum('f_age_4_6'),Sum('f_age_8_12'),Sum('f_age_15_20'),
+          Sum('f_age_25_32'),Sum('f_age_38_43'),Sum('f_age_48_53'),
+          Sum('f_age_60_100'),Sum('m_age_0_2'),Sum('m_age_4_6'),Sum('m_age_8_12'),Sum('m_age_15_20'),
+          Sum('m_age_25_32'),Sum('m_age_38_43'),Sum('m_age_48_53'),
+          Sum('m_age_60_100'))
+      
+      elif(IOT_Device.isMyPlayer(player,userId,False)!=False):
+        metrics = Geder_Age_Metrics.objects.filter(iot_device_id=player,
+          created_at__range=[postParams.get('from_date'), postParams.get('to_date')]).aggregate(
+          Sum('f_age_0_2'),Sum('f_age_4_6'),Sum('f_age_8_12'),Sum('f_age_15_20'),
+          Sum('f_age_25_32'),Sum('f_age_38_43'),Sum('f_age_48_53'),
+          Sum('f_age_60_100'),Sum('m_age_0_2'),Sum('m_age_4_6'),Sum('m_age_8_12'),Sum('m_age_15_20'),
+          Sum('m_age_25_32'),Sum('m_age_38_43'),Sum('m_age_48_53'),
+          Sum('m_age_60_100'))
+      #return {'metrics':metrics};
+      if(metrics['f_age_0_2__sum'] == None):
+        return {'statusCode':4,'status':"No metrics found for the selected dates"};
+      else:
+         #prepare metrics
+         
+         labels = ["0-15","15-24","25-37","38-47","48-60","60+"];
+         f_data = [(metrics['f_age_0_2__sum']+metrics['f_age_4_6__sum']+metrics['f_age_8_12__sum']),metrics['f_age_15_20__sum'],metrics['f_age_25_32__sum'],
+            metrics['f_age_38_43__sum'],metrics['f_age_48_53__sum'],metrics['f_age_60_100__sum']];
+
+         m_data = [(metrics['m_age_0_2__sum']+metrics['m_age_4_6__sum']+metrics['m_age_8_12__sum']),metrics['m_age_15_20__sum'],metrics['m_age_25_32__sum'],
+            metrics['m_age_38_43__sum'],metrics['m_age_48_53__sum'],metrics['m_age_60_100__sum']];
+        
+         return {'statusCode':0,'metrics':metrics,'f_data':f_data,'labels':labels,'m_data':m_data} 

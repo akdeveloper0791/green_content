@@ -217,7 +217,7 @@ import numpy as np
 import cv2
 from .models import Age_Geder_Metrics
 import datetime
-import pandas as pd
+
 
 @api_view(['POST'])
 def metrics(request):    
@@ -300,9 +300,7 @@ def metrics(request):
                 
                 fcm_result = CAR_Device.publishRule(playerMac,auto_campaign_rule,player);
                 response = {'statusCode':0};
-                #dumped = json.dumps(m_f_ages, cls=NumpyEncoder)
-                response['m_ages'] = pd.Series(m_f_ages[1,0:8]).to_json(orient='values');
-                response['f_ages'] = pd.Series(m_f_ages[0,0:8]).to_json(orient='values');
+                
                 if(fcm_result!=False):
 
                     if(fcm_result['includeThis']):
@@ -526,3 +524,11 @@ def vmGenderPieReports(request):
         return JsonResponse({'statusCode':2,'status':'Invalid session, please login'});
     metricsResponse = Age_Geder_Metrics.vmGenderPieReports(request.user.id,request.POST);
     return JsonResponse(metricsResponse);
+
+from .models import Geder_Age_Metrics
+@api_view(['POST'])
+def vmGenderAgeBarReports(request):
+    if(request.user.is_authenticated==False):
+        return JsonResponse({'statusCode':2,'status':'Invalid session, please login'});
+    metricsResponse = Geder_Age_Metrics.vmGenderAgeBarReports(request.user.id,request.POST);
+    return JsonResponse(metricsResponse);    
