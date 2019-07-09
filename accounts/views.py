@@ -22,15 +22,15 @@ def signin(request):
             #return HttpResponse("ok")
             else:
                 #/home/
-                return redirect('/player/device_mgmt')
+                return redirect('/home/')
 
         else:
             return render(request,'signin.html',{'error':"Please enter correct credentials"})
 
     else:
         if(request.user.is_authenticated):
-             #/home/
-            return redirect('/player/device_mgmt')
+             #/player/device_mgmt
+            return redirect('/home/')
         else:
             return render(request,'signin.html')
 import uuid
@@ -91,7 +91,7 @@ def signup(request):
             #return HttpResponse("ok")
                 else:
                      #/mycontent/
-                    return redirect('/player/device_mgmt')
+                    return redirect('/mycontent/')
 
 
 
