@@ -75,8 +75,8 @@
   {
     margin-top: 10px;
      width:100%;
-     height: 340px;
-     margin-bottom:10px;
+     height: 320px;
+     margin-bottom:5px;
     overflow: auto;
 
   }
@@ -91,7 +91,7 @@
     float: none;
     overflow: auto;
     display:block;
-    padding: 12px 12px;
+    padding: 8px 12px;
     text-align: center;
     background-color: transparent;
   }
@@ -160,11 +160,17 @@ document.getElementById('gcGroups_nav').innerHTML = "Content Partners";
 document.getElementById('campaignReports_nav').innerHTML="Campaign Reports";
 document.getElementById('viewerMetrics_nav').innerHTML = "ADview Reports";
 document.getElementById('contextualAdsRules_nav').innerHTML = "Contextual Campaigns";
-document.getElementById('logout').innerHTML ="{{ request.user.first_name}}(Logout)";
-document.getElementById('logout').className +="btn-info";
+var logg=document.getElementById('logout');
+if (logg.className !="btn btn-lg btn-info")
+{
+  logg.className ="btn btn-lg btn-info"; 
+}
 
-  } else 
+logg.innerHTML ="{{ request.user.first_name}}(Logout)";
+ 
+ } else 
   {
+   
     x.className = "topnav";
   }
  
