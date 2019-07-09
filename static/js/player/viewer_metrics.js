@@ -12,10 +12,14 @@ function displayTabularView()
 
 function dismissGraphs()
 {
+	if(!isMobileBrowser())
+	{
 	displayAgeBarReports([],[]);
-	displayAgeBarReports([],[]);
+	displayAgeBarReports([],[]);	
+	}
+	
 	document.getElementById("analytics_grpahs1").style.display="none";
-	//document.getElementById("analytics_grpahs2").style.display="none";
+	document.getElementById("analytics_grpahs2").style.display="none";
 }
 
 function displayGraphs()
@@ -119,8 +123,8 @@ function showAnalytics(isAutoRefresh=false)
     generateGenderPieCharts(dev_id,
     	from_date,to_date,isAutoRefresh);
     
-    //generateGenderAgeBarCharts(dev_id,
-    //	from_date,to_date,isAutoRefresh);
+    generateGenderAgeBarCharts(dev_id,
+    	from_date,to_date,isAutoRefresh);
 
 	//get reports 
 	try {
