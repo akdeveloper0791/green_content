@@ -20,6 +20,13 @@ Visitor engagement, Production Line Management and Other."/>
 <link rel="icon" type="image/png" href="{% static 'images/favicon-32.png' %}"/>
 
 
+  <link rel="stylesheet"
+ href="{% static 'bootstrap/3.4.0/bootstrap.min.css' %}">
+ <script src="{% static 'jquery/3.4.0/jquery.min.js' %}">
+  </script>
+  <script src="{% static 'bootstrap/3.4.0/bootstrap.min.js' %}">
+  </script>
+
 <link rel="stylesheet" href="{% static 'font-awsome/4.7.0/font-awesome.min.css' %}">
         <!-- Bootstrap 3.3.2 -->
     <link rel="stylesheet"
@@ -59,6 +66,10 @@ Visitor engagement, Production Line Management and Other."/>
       <link rel="stylesheet" href="{% static 'css/styles.css' %}">
 
 
+   
+
+
+
 <style>
 
 
@@ -79,7 +90,8 @@ input[type=number]::-webkit-outer-spin-button {
   margin: 0; 
 }
 
-</style>
+ </style>
+
 </head>
 
 <body>
@@ -127,11 +139,9 @@ input[type=number]::-webkit-outer-spin-button {
                             </li>
                             <li><a class="getApp" href="#getApp">Products</a>
                             </li>
-                        
+                           <li><a href="#hardware">Gallery</a></li>
                             <li><a href="#demo">Demo</a>
                             </li>
-                           <!-- <li><a class="getApp" href="#getApp">Hardware</a>
-                            </li>-->
                             <li><a href="#support">Contact Us</a>
                             </li>
                             {% if request.user.is_authenticated %}
@@ -570,6 +580,21 @@ ScaleSlider();$Jssor$.$AddEvent(window,"load",ScaleSlider);$Jssor$.$AddEvent(win
     <div class="col-md-12 col-xs-12">
     <div class="row" >
         <div class="col-md-6 card-cont">
+            <img src="{% static 'images/signage_hlc.jpg' %}">
+        </div>
+        <div  class="col-md-6">
+            <h4 style="text-align:center;margin-top: 0px;color:#43CFE5;font-weight: 500;">Augment the journey with Hyperlocal content for memorable Experience</h4>
+            <p class="info_sec" style="text-align:justify;padding:5px 15px;font-size:16px;">Location based Dynamic campaign feature supported by SignageServ Platform helps in-vehicle passengers to get relevant information about Local Events, Shopping, most happening Places, Offers to give a memorable Experience.</p>
+            <div style="text-align:justify;padding: :0px 15px;background-color:#43CFE5;width: 100%;height:0.8px;"></div>
+        </div>
+    </div>
+    </div>
+    </div>
+
+    <div class="row" style="padding:10px;">
+    <div class="col-md-12 col-xs-12">
+    <div class="row" >
+        <div class="col-md-6 card-cont">
             <img src="{% static 'images/signage_mdas.png' %}">
         </div>
         <div  class="col-md-6">
@@ -580,6 +605,8 @@ ScaleSlider();$Jssor$.$AddEvent(window,"load",ScaleSlider);$Jssor$.$AddEvent(win
     </div>
     </div>
     </div>
+
+
 </div>
         </section>
 
@@ -733,8 +760,7 @@ This is unique feature to announcement will be played. This will take the attent
 
     </div>
 
-	
-                </div>                       
+	</div>                       
 </div>
 </section>
 
@@ -805,6 +831,185 @@ This is unique feature to announcement will be played. This will take the attent
     
         </section>
 
+        <style type="text/css">
+          
+            /* carousel */
+      .media-carousel 
+      {
+        margin-bottom: 0;
+        padding: 0 40px 30px 40px;
+        margin-top: 30px;
+      }
+      /* Previous button  */
+      .media-carousel .carousel-control.left 
+      {
+        left: -12px;
+        background-image: none;
+        background: none repeat scroll 0 0 #222222;
+        border: 4px solid #FFFFFF;
+        border-radius: 23px 23px 23px 23px;
+        height: 40px;
+        width : 40px;
+        margin-top: 100px;
+      }
+      /* Next button  */
+      .media-carousel .carousel-control.right 
+      {
+        right: -12px !important;
+        background-image: none;
+        background: none repeat scroll 0 0 #222222;
+        border: 4px solid #FFFFFF;
+        border-radius: 23px 23px 23px 23px;
+        height: 40px;
+        width : 40px;
+        /*margin-top: 30px;*/
+        margin-top: 100px;
+      }
+      /* Changes the position of the indicators */
+      .media-carousel .carousel-indicators 
+      {
+        right: 50%;
+        top: auto;
+        bottom: 0px;
+        margin-right: -19px;
+      }
+      /* Changes the colour of the indicators */
+      .media-carousel .carousel-indicators li 
+      {
+        background: #c0c0c0;
+      }
+      .media-carousel .carousel-indicators .active 
+      {
+        background: #333333;
+      }
+      .media-carousel img
+      {
+        width: 100%;
+        height: 220px;
+      }
+
+      .media-carousel video
+      {
+        width: 100%;
+        height: 220px;
+      }
+
+       /* Media Queries start of 600px down  */
+    @media only screen and (max-width: 700px)
+    {
+       .media-carousel img
+      {
+        width: 100%;
+        height: 100px;
+      }
+
+      .media-carousel video
+      {
+        width: 100%;
+        height: 100px;
+      }
+
+
+
+      /* Previous button  */
+      .media-carousel .carousel-control.left 
+      {
+        left: -3px;
+        background-image: none;
+        background: none repeat scroll 0 0 #222222;
+        border: 4px solid #FFFFFF;
+        border-radius: 23px 23px 23px 23px;
+        height: 40px;
+        width : 40px;
+        margin-top: 40px;
+      }
+      /* Next button  */
+      .media-carousel .carousel-control.right 
+      {
+        right: -3px !important;
+        background-image: none;
+        background: none repeat scroll 0 0 #222222;
+        border: 4px solid #FFFFFF;
+        border-radius: 23px 23px 23px 23px;
+        height: 40px;
+        width : 40px;
+        /*margin-top: 30px;*/
+        margin-top: 40px;
+      }
+
+
+    }
+        </style>
+
+  <section id="hardware" >
+    <div class="container">
+   <div class='row'>
+       <div class="section-heading scrollpoint sp-effect3" >
+             <h2 class="block_title">Supported Digital Signage Displays</h2>
+                    <div class="divider"></div>
+                  </div>
+<div id="carouselExampleControls" class="carousel slide media-carousel" data-ride="carousel">
+
+  <div class="carousel-inner">
+                    <div class="item  active"  >
+                      <div class="row" >
+              
+                        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6" >
+                          <a class="thumbnail" ><img alt="" src="{% static 'images/hardware/mobile.jpg' %}"></a>
+                        </div> 
+                        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6" >
+                          <a class="thumbnail" ><img alt="" src="{% static 'images/hardware/shop.JPEG' %}"></a>
+                        </div> 
+                      </div>
+                    </div>
+                    <div class="item">
+                      <div class="row">
+                        
+                        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6" >
+                          <a class="thumbnail" ><img alt="" src="{% static 'images/hardware/tablet.jpg' %}"></a>
+                        </div> 
+                        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6" >
+                          <a class="thumbnail" ><video controls type="video/mp4" alt="" src="{% static 'images/hardware/signage_vid.mp4' %}"></video></a>
+                        </div> 
+                        
+
+                      </div>
+                    </div>
+
+                    <div class="item">
+                      <div class="row">
+                        
+                        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6" >
+                          <a class="thumbnail" ><img alt="" src="{% static 'images/hardware/video_wall.jpg' %}"></a>
+                        </div> 
+                        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6" >
+                          <a class="thumbnail" ><img alt="" src="{% static 'images/hardware/travel.jpg' %}"></a>
+                        </div> 
+                        
+
+                      </div>
+                    </div>
+                  </div>
+   <a style="display: none;" data-slide="prev" href="#carouselExampleControls" class="left carousel-control">‹</a>
+  <a style="display: none;" data-slide="next" href="#carouselExampleControls" class="right carousel-control">›</a>
+</div>
+
+ </div>
+ </div>
+ </section>
+
+
+      <script>
+
+       $(document).ready(function() {
+            $('#Carousel').carousel({
+                interval: 4000
+            })
+        });
+
+    </script>
+
+
 
             <section id="demo" class="doublediagonal">
             <div class="container">
@@ -866,17 +1071,18 @@ This is unique feature to announcement will be played. This will take the attent
                         <div class="row">
                             <div class="col-md-4 col-sm-12 scrollpoint sp-effect1">
                                  <div class="media">
-                                    <a class="pull-left" href="#" >
-                                        <i class="fa fa-map-marker fa-2x"></i>
+                                 <a class="pull-left" 
+                          href="https://goo.gl/maps/RbCqMh66KX8fdJfg7">
+                              <i class="fa fa-map-marker fa-2x"></i>
                                     </a>
                                     <div class="media-body">
-                                        <h4 class="media-heading"><b>AdsKite India Pvt Ltd.,</b><br/>2nd Floor, Gokul Mansion, Opposite to Krishna Community Hall, Ayyappa Nagar,K.R Puram, Bengaluru, Karnataka -560036.
+                                        <h4  class="media-heading"><b>AdsKite India Pvt Ltd.,</b><br/>2nd Floor, Gokul Mansion, Opposite to Krishna Community Hall, Ayyappa Nagar,K.R Puram, Bengaluru, Karnataka -560036.
                                     </div>
                                 </div> 
                             </div>
                             <div class="col-md-4 col-sm-12 contact-details scrollpoint sp-effect2">
                                  <div class="media">
-                                    <a class="pull-left" href="#" >
+                                    <a class="pull-left"  href="mailto:contact@adskite.com" >
                                         <i class="fa fa-envelope fa-2x"></i>
                                     </a>
                                     <div class="media-body">
@@ -888,12 +1094,15 @@ This is unique feature to announcement will be played. This will take the attent
                 </div>
                  <div class="col-md-4 col-sm-12 contact-details scrollpoint sp-effect2">
                                 <div class="media">
-                                    <a class="pull-left" href="#" >
-                                        <i class="fa fa-phone fa-2x"></i>
+                                    <a class="pull-left" href="tel:9900819475" >
+                                     <i class="fa fa-phone fa-2x"></i>
                                     </a>
                                     <div class="media-body">
-                                        <h4 class="media-heading"><p>+91 9900819475</p>
-                                        <p style="padding-left: 20px;">080-25617355</p></h4>   
+                                        <h4 class="media-heading">
+                          <a href="tel:08025617355">080-25617355</a>
+                          <br/>
+                          <a  href="tel:9900819475">+91 9900819475</a>
+                                        </h4>   
                                     </div>
                                 </div>
                             </div>
@@ -913,7 +1122,8 @@ This is unique feature to announcement will be played. This will take the attent
                     <a href="https://www.facebook.com/Adskite-1659890184252995/" class="scrollpoint sp-effect3"><i class="fa fa-facebook fa-lg"></i></a>
                 </div>
                 <div class="rights">
-		 Copyright (c) 2019 SignageServ.ai, All Rights Reserved. Powered by AdsKite India Pvt. Ltd.
+		 Copyright (c) 2019 <a style="color: white;" href="https://www.signageserv.ai"><b>SignageServ.ai</b></a>, All Rights Reserved. Powered by 
+     <a style="color: white;" href="https://www.adskite.com"><b>AdsKite India Pvt Ltd</b></a>.
                 </div>
             </div>
         </footer>
