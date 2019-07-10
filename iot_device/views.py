@@ -532,3 +532,10 @@ def vmGenderAgeBarReports(request):
         return JsonResponse({'statusCode':2,'status':'Invalid session, please login'});
     metricsResponse = Geder_Age_Metrics.vmGenderAgeBarReports(request.user.id,request.POST);
     return JsonResponse(metricsResponse);    
+
+@api_view(["POST"])
+def vmGenderLineReports(request):
+    if(request.user.is_authenticated==False):
+        return JsonResponse({'statusCode':2,'status':'Invalid session, please login'});
+    metricsResponse = Geder_Age_Metrics.vmGenderLineReports(request.user.id,request.POST);
+    return JsonResponse(metricsResponse);    

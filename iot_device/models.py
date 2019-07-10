@@ -764,3 +764,37 @@ class Geder_Age_Metrics(models.Model):
             metrics['m_age_38_43__sum'],metrics['m_age_48_53__sum'],metrics['m_age_60_100__sum']];
         
          return {'statusCode':0,'metrics':metrics,'f_data':f_data,'labels':labels,'m_data':m_data} 
+
+  def vmGenderLineReports(userId,postParams):
+      # check for player
+      
+      player = postParams.get('player');
+      metrics={};
+      if(player=="All"):
+        #list all metrics
+        with connection.cursor() as cursor:
+          query = '''SELECT sum(f_age_0_2+f_age_4_6+f_age_8_12+f_age_15_20+f_age_25_32+f_age_38_43+f_age_48_53+f_age_60_100) as f_graph,
+          sum(m_age_0_2+m_age_4_6+m_age_8_12+m_age_15_20+m_age_25_32+m_age_38_43+m_age_48_53+m_age_60_100) as m_graph,strftime(%s, created_at) as time_graph FROM iot_device_geder_age_metrics 
+          WHERE iot_device_id IN (SELECT id FROM iot_device_iot_device WHERE user_id=%s)  AND (created_at between %s AND %s ) group by time_graph'''
+          cursor.execute(query,['%d-%m-%Y %H',userId,postParams.get('from_date'),postParams.get('to_date')])
+          metrics = dictfetchall(cursor);
+          
+  
+      elif(IOT_Device.isMyPlayer(player,userId,False)!=False):
+        with connection.cursor() as cursor:
+          query='''SELECT sum(f_age_0_2+f_age_4_6+f_age_8_12+f_age_15_20+f_age_25_32+f_age_38_43+f_age_48_53+f_age_60_100) as f_graph,
+          sum(m_age_0_2+m_age_4_6+m_age_8_12+m_age_15_20+m_age_25_32+m_age_38_43+m_age_48_53+m_age_60_100) as m_graph,strftime(%s, created_at) as time_graph FROM iot_device_geder_age_metrics 
+          WHERE iot_device_id = %s  AND (created_at between %s AND %s ) group by time_graph'''
+          cursor.execute(query,['%d-%m-%Y %H',player,postParams.get('from_date'),postParams.get('to_date')])
+          metrics = dictfetchall(cursor);
+          
+      if(len(metrics)>=1):
+        labels = [];mGraph=[];fGraph=[];
+        for info in metrics:
+          labels.append(info['time_graph']+str(":00:00"));
+          mGraph.append(info['m_graph']);
+          fGraph.append(info['f_graph']);
+
+        return {'statusCode':0,'metrics':metrics,'labels':labels,'f_graph':fGraph,'m_graph':mGraph};
+      else:
+        return {'statusCode':2,'status':'No Metrics found for the selected dates'};
