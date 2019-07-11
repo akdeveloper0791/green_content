@@ -92,7 +92,7 @@ input[type=number]::-webkit-outer-spin-button {
 
 .navbar-nav
 {
- margin-right: 40px;
+  padding-right: 20px;
 }
 
 @media only screen and (max-width: 420px)
@@ -100,7 +100,7 @@ input[type=number]::-webkit-outer-spin-button {
 
 .navbar-nav
 {
- margin-right: 0px;
+padding-right: 0px;
 }
   .navbar-nav>li>a {
     padding-top: 5px;
@@ -111,7 +111,7 @@ input[type=number]::-webkit-outer-spin-button {
 .nav>li>a {
     position: relative;
     display: block;
-    padding: 7px 7px;
+    padding: 5px 5px;
 }
 
 }
@@ -127,8 +127,8 @@ input[type=number]::-webkit-outer-spin-button {
            <a class="brand-logo" href="/signageserv">
             <img id="main-img" src="{% static 'images/signage_serv.png' %}" 
             alt="" class="logo animated fadeInDown"></a>
-            <div class="spinner" data-toggle="collapse" 
-                        data-target="#bs-example-navbar-collapse-1">
+            <div class="spinner"
+                        >
               <div class="bounce1"></div>
               <div class="bounce2"></div>
               <div class="bounce3"></div>
@@ -144,10 +144,10 @@ input[type=number]::-webkit-outer-spin-button {
               
                     <!-- Brand and toggle get grouped for better mobile display -->
                     <div class="navbar-header">
-                        <button style="background-color: transparent;" type="button" class="navbar-toggle" data-toggle="collapse" 
+                        <button style="background-color: transparent;" type="button" class="navbar-toggle" 
+                        data-toggle="collapse" 
                         data-target="#bs-example-navbar-collapse-1">
-                            <span data-toggle="collapse" 
-                        data-target="#bs-example-navbar-collapse-1" class="fa fa-bars fa-lg"></span>
+                            <span class="fa fa-bars fa-lg"></span>
                         </button>
                         <a class="brand-logo" href="/signageserv">
                        <img class="signage_logo"  src="{% static 'images/signage_serv.png' %}" alt="" class="logo animated fadeInDown" style="cursor:pointer;padding-left:10px;"></a>
