@@ -90,6 +90,32 @@ input[type=number]::-webkit-outer-spin-button {
   margin: 0; 
 }
 
+.navbar-nav
+{
+ margin-right: 40px;
+}
+
+@media only screen and (max-width: 420px)
+{
+
+.navbar-nav
+{
+ margin-right: 0px;
+}
+  .navbar-nav>li>a {
+    padding-top: 5px;
+    padding-bottom: 5px;
+    padding: 5px 5px;
+}
+
+.nav>li>a {
+    position: relative;
+    display: block;
+    padding: 7px 7px;
+}
+
+}
+
  </style>
 
 </head>
@@ -101,7 +127,8 @@ input[type=number]::-webkit-outer-spin-button {
            <a class="brand-logo" href="/signageserv">
             <img id="main-img" src="{% static 'images/signage_serv.png' %}" 
             alt="" class="logo animated fadeInDown"></a>
-            <div class="spinner">
+            <div class="spinner" data-toggle="collapse" 
+                        data-target="#bs-example-navbar-collapse-1">
               <div class="bounce1"></div>
               <div class="bounce2"></div>
               <div class="bounce3"></div>
@@ -112,23 +139,26 @@ input[type=number]::-webkit-outer-spin-button {
    
    
     <header>
-        
-        <nav class="navbar navbar-fixed-top sticky" style="background-color:lightblue;"  role="navigation">
-                <div class="container">
+    
+        <nav class="navbar navbar-fixed-top sticky" style="background-color:lightblue;margin-bottom: 10px;" role="navigation">
+              
                     <!-- Brand and toggle get grouped for better mobile display -->
                     <div class="navbar-header">
-                        <button style="background-color: transparent;" type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
-                            <span class="fa fa-bars fa-lg"></span>
+                        <button style="background-color: transparent;" type="button" class="navbar-toggle" data-toggle="collapse" 
+                        data-target="#bs-example-navbar-collapse-1">
+                            <span data-toggle="collapse" 
+                        data-target="#bs-example-navbar-collapse-1" class="fa fa-bars fa-lg"></span>
                         </button>
                         <a class="brand-logo" href="/signageserv">
-                       <img class="signage_logo"  src="{% static 'images/signage_serv.png' %}" alt="" class="logo animated fadeInDown" style="cursor:pointer;"></a>
+                       <img class="signage_logo"  src="{% static 'images/signage_serv.png' %}" alt="" class="logo animated fadeInDown" style="cursor:pointer;padding-left:10px;"></a>
                     </div>
 
                     <!-- Collect thi nav links, forms, and other content for toggling -->
-                    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1" 
-                    style="margin-top: 10px;height: 350px;">
+                    <div class="collapse navbar-collapse" 
+                    id="bs-example-navbar-collapse-1" 
+                    style="padding-top: 5px; height: 330px;">
 
-                        <ul style="text-align: center;" class="nav navbar-nav navbar-right">
+                    <ul style="text-align: center;" class="nav navbar-nav navbar-right">
                             <li><a href="#about_us">Why SignageServ?</a>
                             </li>
 			                      <li><a href="#about">Solutions</a>
@@ -158,7 +188,7 @@ input[type=number]::-webkit-outer-spin-button {
                         </ul>
                     </div>
                     <!-- /.navbar-collapse -->
-                </div>
+    
                 <!-- /.container-->
         </nav>
 	
@@ -171,6 +201,7 @@ input[type=number]::-webkit-outer-spin-button {
   <style type="text/css">
     .bg_section
     {
+
          width: 100%;
         height: auto;
         opacity: 0.9;
@@ -955,10 +986,10 @@ This is unique feature to announcement will be played. This will take the attent
                       <div class="row" >
               
                         <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6" >
-                          <a class="thumbnail" ><img alt="" src="{% static 'images/hardware/mobile.jpg' %}"></a>
+                          <a class="thumbnail" ><img alt="" src="{% static 'images/hardware/gallery1.png' %}"></a>
                         </div> 
                         <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6" >
-                          <a class="thumbnail" ><img alt="" src="{% static 'images/hardware/shop.jpeg' %}"></a>
+                          <a class="thumbnail" ><img alt="" src="{% static 'images/hardware/gallery2.png' %}"></a>
                         </div> 
                       </div>
                     </div>
@@ -966,24 +997,10 @@ This is unique feature to announcement will be played. This will take the attent
                       <div class="row">
                         
                         <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6" >
-                          <a class="thumbnail" ><img alt="" src="{% static 'images/hardware/tablet.jpg' %}"></a>
+                          <a class="thumbnail" ><img alt="" src="{% static 'images/hardware/gallery3.png' %}"></a>
                         </div> 
                         <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6" >
-                          <a class="thumbnail" ><video controls type="video/mp4" alt="" src="{% static 'images/hardware/signage_vid.mp4' %}"></video></a>
-                        </div> 
-                        
-
-                      </div>
-                    </div>
-
-                    <div class="item">
-                      <div class="row">
-                        
-                        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6" >
-                          <a class="thumbnail" ><img alt="" src="{% static 'images/hardware/video_wall.jpg' %}"></a>
-                        </div> 
-                        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6" >
-                          <a class="thumbnail" ><img alt="" src="{% static 'images/hardware/travel.jpg' %}"></a>
+                          <a class="thumbnail" ><img alt="" src="{% static 'images/hardware/gallery4.png' %}"></a>
                         </div> 
                         
 
