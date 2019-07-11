@@ -1,5 +1,5 @@
 var displayMetrics = "metrics";
-
+var isMobileBrowser = isMobileBrowser();
 function dismissTabularView()
 {
 	document.getElementById("tabular_display").style.display="none";
@@ -12,7 +12,7 @@ function displayTabularView()
 
 function dismissGraphs()
 {
-	if(!isMobileBrowser())
+	if(!isMobileBrowser)
 	{
 
 	//displayAgeBarReports([],[]);
@@ -24,31 +24,16 @@ function dismissGraphs()
 
 function displayGraphs()
 {
-	if(isMobileBrowser())
+	if(isMobileBrowser)
 	{
-		var ageBarReports = document.getElementById("age_bar_reports");
-		ageBarReports.width="1000";
-		ageBarReports.height="1000";
-
-		var genderReports = document.getElementById("gender_reports");
-		genderReports.width="1000";
-		genderReports.height="1000";
-
-		var ageBarReports = document.getElementById("gender_age_bar_reports");
-		ageBarReports.width="1000";
-		ageBarReports.height="1000";
-
-		var ageBarReports = document.getElementById("gender_age_line_reports");
-		ageBarReports.style.width="1000";
-		ageBarReports.style.height="1000";
-
-        /*document.getElementById("age_bar_reports").class="";
-        document.getElementById("gender_reports").class="";
-        document.getElementById("gender_age_bar_reports").class="";
-        document.getElementById("gender_age_line_reports").class="";
- 
-	    wrapperElm.scrollIntoView();*/
-	    document.getElementById("web_graphs").style.display="block";
+		var elmnt = document.getElementById("mobile_graphs");
+		if(elmnt.style.display=="none")
+		{
+			elmnt.style.display="block";
+			elmnt.scrollIntoView();
+		}
+		
+	    
 	}else
 	{
 	  
@@ -56,56 +41,14 @@ function displayGraphs()
 	}
 }
 
-function displayGraphs1()
-{
-	if(isMobileBrowser())
-	{
-		var wrapperElm = document.getElementById("analytics_grpahs1");
-        wrapperElm.style.display="block";
-        wrapperElm.class="";
-
-        var graphs2  = document.getElementById("analytics_grpahs2");
-        graphs2.style.display="block";
-        graphs2.class="";
-
-        var graphs3  = document.getElementById("analytics_grpahs3");
-        graphs3.style.display="block";
-        graphs3.class="";
-
-        document.getElementById("age_bar_reports").class="";
-        document.getElementById("gender_reports").class="";
-        document.getElementById("gender_age_bar_reports").class="";
-        document.getElementById("gender_age_line_reports").class="";
-
-	    wrapperElm.scrollIntoView();
-	}else
-	{
-	 var graphsDiv1 = document.getElementById("analytics_grpahs1");
-	 var graphsDiv2 = document.getElementById("analytics_grpahs2");
-	 if(graphsDiv1.style.display=="none")
-	 {
-       graphsDiv1.style.display = "flex";
-	 }
-
-	 if(graphsDiv2.style.display=="none")
-	 {
-       graphsDiv2.style.display = "flex";
-	 }
-
-	 var graphsDiv3 = document.getElementById("analytics_grpahs3");
-	 if(graphsDiv3.style.display=="none")
-	 {
-       graphsDiv3.style.display = "flex";
-	 }
-	 	
-	}
-	
-}
-
 function displayAgeBarReports(labels,data)
 {
-	//document.getElementById("age_bar_reports").style.display="inline-block";
-	new Chart(document.getElementById("bar_reports_cnv"), {
+	var canvas = document.getElementById("bar_reports_cnv");
+	if(isMobileBrowser)
+	{
+      canvas = document.getElementById("bar_reports_cnv_mobile");
+	}
+	new Chart(canvas, {
 	    type: 'bar',
 	    data: {
 	      labels: labels,
@@ -284,21 +227,26 @@ function generateGenderPieCharts(dev_id,from_date,to_date,isAutoRefresh)
 		
 		 error: function (jqXHR, exception) {
 		 	//ajaxindicatorstop();
-		 	alert(exception+jqXHR.responseText);
+		 	//alert(exception+jqXHR.responseText);
 		 }
 
 		});
 	}
 	catch(Exception)
     {
-		alert(Exception.message);
+		//alert(Exception.message);
 	}	
 }
 
 function displayGenderPieCharts(labels,data)
 {
-	//document.getElementById("gender_reports").style.display="inline-block";
-	new Chart(document.getElementById("gender_pie_reports_cnv"), {
+	var canvas = document.getElementById("gender_pie_reports_cnv");
+	if(isMobileBrowser)
+	{
+		canvas = document.getElementById("gender_pie_reports_cnv_mobile");
+	}
+
+	new Chart(canvas, {
 	    type: 'pie',
 	    data: {
 	      labels: labels,
@@ -362,21 +310,25 @@ function generateGenderAgeBarCharts(dev_id,from_date,to_date,isAutoRefresh)
 		
 		 error: function (jqXHR, exception) {
 		 	//ajaxindicatorstop();
-		 	alert(exception+jqXHR.responseText);
+		 	//alert(exception+jqXHR.responseText);
 		 }
 
 		});
 	}
 	catch(Exception)
     {
-		alert(Exception.message);
+		//alert(Exception.message);
 	}	
 }
 
 function displayGenderAgeCharts(labels,femaleData,maleData)
 {
-	//document.getElementById("gender_reports").style.display="inline-block";
-	new Chart(document.getElementById("gender_age_chart_grouped"), {
+	var canvas = document.getElementById("gender_age_chart_grouped");
+	if(isMobileBrowser)
+	{
+		canvas = document.getElementById("gender_age_chart_grouped_mobile");
+	}
+	new Chart(canvas, {
     type: 'bar',
     data: {
       labels: labels,
@@ -447,22 +399,26 @@ function generateGenderLineCharts(dev_id,from_date,to_date,isAutoRefresh)
 		
 		 error: function (jqXHR, exception) {
 		 	//ajaxindicatorstop();
-		 	alert(exception+jqXHR.responseText);
+		 	//alert(exception+jqXHR.responseText);
 		 }
 
 		});
 	}
 	catch(Exception)
     {
-		alert(Exception.message);
+		//alert(Exception.message);
 	}	
 }
 
 function displayGenderLineCharts(labels,femaleData,maleData)
 {
 	
-	//document.getElementById("gender_reports").style.display="inline-block";
-	new Chart(document.getElementById("gender_line"), {
+	var canvas = document.getElementById("gender_line");
+	if(isMobileBrowser)
+	{
+		canvas = document.getElementById("gender_line_mobile");
+	}
+	new Chart(canvas, {
 	  type: 'line',
 	  data: {
 	    labels: labels,
