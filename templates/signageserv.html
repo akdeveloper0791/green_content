@@ -22,8 +22,7 @@ Visitor engagement, Production Line Management and Other."/>
 
   <link rel="stylesheet"
  href="{% static 'bootstrap/3.4.0/bootstrap.min.css' %}">
- <script src="{% static 'jquery/3.4.0/jquery.min.js' %}">
-  </script>
+
   <script src="{% static 'bootstrap/3.4.0/bootstrap.min.js' %}">
   </script>
 
@@ -92,12 +91,30 @@ input[type=number]::-webkit-outer-spin-button {
 
 .navbar-nav
 {
-  padding-right: 20px;
+padding-right: 20px;
 }
 
-@media only screen and (max-width: 420px)
+@media only screen and (max-width: 991px) and (min-width: 768px)
 {
+.navbar-nav
+{
+padding-right: 10px;
+}
+.navbar-nav>li>a {
+    padding-top: 7px;
+    padding-bottom: 7px;
+    padding: 7px 7px;
+}
 
+.nav>li>a {
+    position: relative;
+    display: block;
+    padding: 7px 7px;
+}
+}
+
+@media only screen and (max-width:400px)
+{
 .navbar-nav
 {
 padding-right: 0px;
@@ -137,14 +154,13 @@ padding-right: 0px;
         </div>
     </div>
    
-   
     <header>
     
         <nav class="navbar navbar-fixed-top sticky" style="background-color:lightblue;margin-bottom: 10px;" role="navigation">
               
                     <!-- Brand and toggle get grouped for better mobile display -->
                     <div class="navbar-header">
-                        <button style="background-color: transparent;" type="button" class="navbar-toggle" 
+                        <button  style="background-color: transparent;" type="button" class="navbar-toggle" 
                         data-toggle="collapse" 
                         data-target="#bs-example-navbar-collapse-1">
                             <span class="fa fa-bars fa-lg"></span>
@@ -154,9 +170,9 @@ padding-right: 0px;
                     </div>
 
                     <!-- Collect thi nav links, forms, and other content for toggling -->
-                    <div class="collapse navbar-collapse" 
-                    id="bs-example-navbar-collapse-1" 
-                    style="padding-top: 5px; height: 330px;">
+                  <div class="collapse navbar-collapse" 
+                    id="bs-example-navbar-collapse-1"  
+                    style="padding-top: 5px; height: 340px;">
 
                     <ul style="text-align: center;" class="nav navbar-nav navbar-right">
                             <li><a href="#about_us">Why SignageServ?</a>
@@ -1064,8 +1080,8 @@ This is unique feature to announcement will be played. This will take the attent
     <p align="center" style="margin:10px 10px;"><input type="submit" class="btn btn-info" name="submit" value="Send Request"></p>
     <div class="loader" style="display: none;"></div>
   </form>
-  <a href="skype:kalyankumarthalluri?call" style="text-decoration:none;color: white;"><p style="font-size:14px;font-family: sans-serif;text-align:right;color:#66cdcc;"><b>&nbsp;&nbsp;Call us at: 
-    <i class="fa fa-skype fa-lg"></i> +91-9900819475</b></p></a>     
+  <a href="tel:+91 9900819475" style="text-decoration:none;color: white;"><p style="font-size:14px;font-family: sans-serif;text-align:right;color:#66cdcc;"><b>&nbsp;&nbsp;Call us at: 
+    <i class="fa fa-phone fa-lg"></i>+91-9900819475</b></p></a>     
                                 
                            
                         </div>
