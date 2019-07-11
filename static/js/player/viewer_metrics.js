@@ -15,16 +15,48 @@ function dismissGraphs()
 	if(!isMobileBrowser())
 	{
 
-	displayAgeBarReports([],[]);
-	displayAgeBarReports([],[]);	
+	//displayAgeBarReports([],[]);
+	//displayAgeBarReports([],[]);	
 	}
 	
-	document.getElementById("analytics_grpahs1").style.display="none";
-	document.getElementById("analytics_grpahs2").style.display="none";
-	document.getElementById("analytics_grpahs3").style.display="none";
+	document.getElementById("web_graphs").style.display="none"; 	
 }
 
 function displayGraphs()
+{
+	if(isMobileBrowser())
+	{
+		var ageBarReports = document.getElementById("age_bar_reports");
+		ageBarReports.width="1000";
+		ageBarReports.height="1000";
+
+		var genderReports = document.getElementById("gender_reports");
+		genderReports.width="1000";
+		genderReports.height="1000";
+
+		var ageBarReports = document.getElementById("gender_age_bar_reports");
+		ageBarReports.width="1000";
+		ageBarReports.height="1000";
+
+		var ageBarReports = document.getElementById("gender_age_line_reports");
+		ageBarReports.style.width="1000";
+		ageBarReports.style.height="1000";
+
+        /*document.getElementById("age_bar_reports").class="";
+        document.getElementById("gender_reports").class="";
+        document.getElementById("gender_age_bar_reports").class="";
+        document.getElementById("gender_age_line_reports").class="";
+ 
+	    wrapperElm.scrollIntoView();*/
+	    document.getElementById("web_graphs").style.display="block";
+	}else
+	{
+	  
+	  document.getElementById("web_graphs").style.display="block"; 	
+	}
+}
+
+function displayGraphs1()
 {
 	if(isMobileBrowser())
 	{
@@ -36,9 +68,15 @@ function displayGraphs()
         graphs2.style.display="block";
         graphs2.class="";
 
+        var graphs3  = document.getElementById("analytics_grpahs3");
+        graphs3.style.display="block";
+        graphs3.class="";
+
         document.getElementById("age_bar_reports").class="";
         document.getElementById("gender_reports").class="";
         document.getElementById("gender_age_bar_reports").class="";
+        document.getElementById("gender_age_line_reports").class="";
+
 	    wrapperElm.scrollIntoView();
 	}else
 	{
@@ -111,7 +149,7 @@ function showAnalytics(isAutoRefresh=false)
 	
 	dismissTabularView();
 	
-    dismissGraphs();
+   
 	
 	var dev_id = document.getElementById('dev_id').value;
 	var from_date = document.getElementById('from_date').value;
@@ -136,7 +174,14 @@ function showAnalytics(isAutoRefresh=false)
     
     generateGenderLineCharts(dev_id,
     	from_date,to_date,isAutoRefresh);
+    
+    generateAgeBarCharts(dev_id,
+    	from_date,to_date,isAutoRefresh);
+	
+}
 
+function generateAgeBarCharts(dev_id,from_date,to_date,isAutoRefresh)
+{
 	//get reports 
 	try {
         //ajaxindicatorstart("<img src='/static/images/ajax-loader.gif'><br/> Please wait...!");

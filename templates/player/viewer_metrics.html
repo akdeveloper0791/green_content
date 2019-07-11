@@ -87,13 +87,14 @@ input:checked + .slider .off
 .graphs_div_left
 {
   
-  flex: 0 0 65%;
+  flex: 0 0 50%;
 }
 
 .graphs_div_right
 {
   
-  flex: 1;
+  flex: 0 0 0 50%;
+
 }
 
 #graphs1_wrapper {
@@ -215,7 +216,7 @@ input:checked + .slider .off
 </div>
 </div>
 
-
+</div>
 
 <!-- table -->
 <div class="container" style="overflow-x: auto;width: 100%;display:none" id="tabular_display">
@@ -245,30 +246,44 @@ input:checked + .slider .off
 <!-- end table -->
 
 <!-- bar graphs -->
-<div class="container">
+
 <div class ="graphs1_wrapper" id="analytics_grpahs1" style="display:none" >
 
 <div class="graphs_div_left" id="age_bar_reports" >
-  <canvas id="bar_reports_cnv"></canvas>
+  
 </div>
 
 <div class="graphs_div_right" id="gender_reports" >
-  <canvas id="gender_pie_reports_cnv"></canvas>
+ 
+
 </div>
 </div> 
-</div>
+
+<div class ="container" id="web_graphs" style="display:none">
+  <canvas id="gender_age_chart_grouped" width="200" height="50"></canvas>
+
+<canvas id="bar_reports_cnv" width="200" height="50" > </canvas>
+
+<canvas id="gender_line" width="200" height="50"></canvas>
+
+<canvas id="gender_pie_reports_cnv" width="200" height="50" ></canvas>
 
 <div class ="graphs1_wrapper" id="analytics_grpahs2" style="display:none" >
 
 <div class="graphs_div_left" id="gender_age_bar_reports" >
- <canvas id="gender_age_chart_grouped" ></canvas>
+</div>
+
+ 
+ 
+
+
 </div>
 </div>
 
 <div class ="graphs1_wrapper" id="analytics_grpahs3" style="display:none" >
 
-<div class="graphs_div_left" id="gender_age_bar_reports" >
- <canvas id="gender_line" ></canvas>
+<div class="graphs_div_left" id="gender_age_line_reports" >
+ 
 </div>
 </div>  
 
