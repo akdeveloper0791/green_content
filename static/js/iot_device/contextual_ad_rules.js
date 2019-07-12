@@ -7,6 +7,7 @@ var isCampaignsShowing = false;
 var selectedCampaigns = [];
 var carSelectedPlayers=[];
 var micClassifierUserList=[];
+var gps_car_data=false;
 
 
 function onSelectDevice(isDefault = false)
@@ -53,15 +54,22 @@ function displayRulesCreationForm()
     document.getElementById("mic_classifier_user_list").style.display="block";
     document.getElementById("classifier_type").style.display="none";
     checkAndDisplayMicClassifiers();
-  }else
+     document.getElementById("gps-input").style.display="none";
+  }else if(selectedDeviceType=="GPS")
+  {
+    document.getElementById("gps-input").style.display="block";
+   document.getElementById("mic_classifier").style.display="none";
+    document.getElementById("mic_classifier_user_list").style.display="none";
+    document.getElementById("classifier_type").style.display="none";
+  }
+  else
   {
     document.getElementById("mic_classifier").style.display="none";
     document.getElementById("classifier_type").style.display="block";
     document.getElementById("mic_classifier_user_list").style.display="none";
+     document.getElementById("gps-input").style.display="none";
   }
   hideClassifiers();
-
-    
 
 }
 
@@ -96,7 +104,6 @@ function getCampaignsFromServer()
         }
        else
        {
-
              swal(data['status']);
                                  
        }
@@ -302,7 +309,19 @@ function createRule()
       return false;
     }
     classifier = classifier.toLowerCase();
-  }else
+  }else if(selectedDeviceType=="GPS")
+  {
+    
+    classifier = document.getElementById("gps-input").value;
+    
+    if(classifier=="" || classifier==null)
+    {
+      swal("Please enter valid classifier");
+      return false;
+    }
+    classifier = classifier.toLowerCase();
+  }
+  else
   {
     classifier = document.getElementById('classifier_type').value;
     if(classifier=="0")
@@ -331,6 +350,16 @@ function createRule()
     return false;
   }
 
+  if(selectedDeviceType=="GPS")
+  {
+    var obj = new Object();
+    obj.classifier_lat = document.getElementById('loc_lat').value;
+   obj.classifier_lng  =document.getElementById('loc_lng').value;
+   gps_car_data= JSON.stringify(obj);
+   console.log("gps_car_data:"+ JSON.stringify(gps_car_data));
+  }
+   console.log("gps_car_data:"+gps_car_data);
+
  try {
    ajaxindicatorstart("<img src='/static/images/ajax-loader.gif'><br/> Please wait...!");    
     $.ajax(
@@ -347,7 +376,8 @@ function createRule()
            players:JSON.stringify(selectedPlayers),
            campaigns: JSON.stringify(selectedCampaigns),
            classifier:classifier,
-           delay_time:delayDuration,   
+           delay_time:delayDuration,
+           gps_car_data,  
       },
      
       success: function(data)
@@ -358,8 +388,14 @@ function createRule()
           
           resetFormData();
           dismissCreateRuleForm();
+          if(selectedDeviceType=="GPS")
+         {
+          gps_car_data=false;
+          document.getElementById("gps-input").value="";
+          document.getElementById('loc_lat').value="";
+          document.getElementById('loc_lng').value="";
+         }
           displayDeviceClassifiers();
-           
         }
        else
        {
@@ -456,6 +492,7 @@ function displayDeviceClassifiers(isDefault = false)
       }
       
         setDeviceType(data);
+        //console.log("displayDeviceClassifiers:"+JSON.stringify(data));
         if(data['statusCode']==0)
         {
           
@@ -1221,6 +1258,5 @@ function micClassifierSelected(element)
   
   document.getElementById('mic_classifier').value=element.value;
 }
-
 
 
