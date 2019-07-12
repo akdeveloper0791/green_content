@@ -64,7 +64,8 @@ def createRule(request):
         
         result = Contextual_Ads_Rule.createRule(request.POST.get('iot_device'),
             accessToken,request.POST.get('players'),
-            request.POST.get('campaigns'),request.POST.get('classifier'),request.POST.get('delay_time'),isWeb);
+            request.POST.get('campaigns'),request.POST.get('classifier'),request.POST.get('delay_time'),
+            (request.POST.get('gps_car_data') if 'gps_car_data' in request.POST else False) ,isWeb);
 
         return JsonResponse(result);
     else:
