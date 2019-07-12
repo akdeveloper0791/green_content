@@ -148,7 +148,7 @@ class Contextual_Ads_Rule(models.Model):
     delay_time = models.IntegerField(default=0)
     created_at = models.DateTimeField(default=timezone.now)
     accessed_at = models.DateTimeField(null=True)
-    def createRule(iotDeviceKey,userId,players,campaigns,calssifier,delayTime,isWeb):
+    def createRule(iotDeviceKey,userId,players,campaigns,calssifier,delayTime,gpsCARData,isWeb):
         if(isWeb == False):
             userId = User_unique_id.getUserId(userId);
             if(userId == False):
@@ -191,6 +191,12 @@ class Contextual_Ads_Rule(models.Model):
                     bulkInsertCARPlayers.append(CAR_Device(car_id=ca_rule.id,player_id=playerId));
 
                   CAR_Device.objects.bulk_create(bulkInsertCARPlayers);
+                
+                if(gpsCARData!=False):
+                  gpsCARData = json.loads(gpsCARData);
+                  gpsCarDataObj = GPS_CAR_Data(car_id=ca_rule.id,
+                    classifier_lat=gpsCARData['classifier_lat'],classifier_lng=gpsCARData['classifier_lng']);
+                  gpsCARData.save();
 
            return {'statusCode':0,'status':'Rule has been created','id':ca_rule.id};
            
@@ -798,3 +804,8 @@ class Geder_Age_Metrics(models.Model):
         return {'statusCode':0,'metrics':metrics,'labels':labels,'f_graph':fGraph,'m_graph':mGraph};
       else:
         return {'statusCode':2,'status':'No Metrics found for the selected dates'};
+
+class GPS_CAR_Data(models.Model):
+  car = models.OneToOneField('iot_device.Contextual_Ads_Rule',on_delete=models.CASCADE,unique=True)
+  classifier_lat = models.DecimalField(decimal_places=8,max_digits=10)
+  classifier_lng = models.DecimalField(decimal_places=8,max_digits=11)
