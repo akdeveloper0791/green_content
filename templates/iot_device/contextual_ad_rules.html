@@ -113,7 +113,7 @@ var csrf_token = '{{ csrf_token }}'
  <div id="select_device" >
 	<label>IOT Devices</label>
 
- 
+
 	<select name="device_spinner" class="form-control" id="dev_id" 
 	onchange="onSelectDevice();">
                <option selected value="1">All Devices</option>
@@ -149,6 +149,15 @@ var csrf_token = '{{ csrf_token }}'
 
   <table id="mic_classifier_user_list" style="display:none;margin-left:1%;margin-top:1%;margin-bottom:1%;" >
   </table>
+
+   <input id="gps-input" class="form-control" type="text" placeholder="Please enter city name "style="display: none;">
+    <input type="hidden" name="loc_lat" id="loc_lat" value="">
+    <input type="hidden" name="loc_lng" id="loc_lng" value="">
+
+<!-- Place API for GPS IOT device to fetch loaction info to create Rule for GPS IOT device  -->
+ <script src="https://maps.googleapis.com/maps/api/js?sensor=false&libraries=places&key=AIzaSyBhIIcRJ0J0C5P46eqIBw2D3Fk7drNq_6A"></script>
+
+ <script>google.maps.event.addDomListener(window,'load',function(){var places=new google.maps.places.Autocomplete(document.getElementById('gps-input'));google.maps.event.addListener(places,'place_changed',function(){var place=places.getPlace();var address=place.formatted_address;var latitude=place.geometry.location.lat();var longitude=place.geometry.location.lng();var mesg="Address: "+address;mesg+="\nLatitude: "+latitude;mesg+="\nLongitude: "+longitude;document.getElementById("loc_lat").value=latitude;document.getElementById("loc_lng").value=longitude;});});</script>
 
     
 <label>Delay(sec)</label>
