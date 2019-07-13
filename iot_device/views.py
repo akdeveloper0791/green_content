@@ -196,6 +196,22 @@ def getCARules(request):
         return JsonResponse(result); 
 
 @api_view(['POST'])
+def getIOTDevicesCARules(request):
+    if(request.method == 'POST'):
+        postParams = request.POST;
+        isUserId = False;
+        secretKey = request.POST.get("accessToken")
+        if(secretKey=='web'):
+            isUserId = True;
+            if(request.user.is_authenticated):
+                secretKey = request.user.id;
+            else:
+                return JsonResponse(
+                    {'statusCode':2,'status':"Invalid accessToken please login"});
+            
+        result = IOT_Device.getIOTDevicesCARules(secretKey,isUserId,postParams.get('iot_devices'));
+        return JsonResponse(result);  
+@api_view(['POST'])
 def getCARuleInfo(request):   
     if(request.method == 'POST'):
         postParams = request.POST;

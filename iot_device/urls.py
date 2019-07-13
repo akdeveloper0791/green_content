@@ -12,6 +12,7 @@ urlpatterns = [
     path('assignDevicesToRule',views.assignDevicesToRule,name="assignDevicesToRule"),
     path('removeDevicesFromRule',views.removeDevicesFromRule,name="removeDevicesFromRule"),
     path('getCARules',views.getCARules,name="getIOTDeviceCARules"),
+    path('get_iot_devices_rules',views.getIOTDevicesCARules,name="getIOTDevicesCARules"),
     path('getCARuleInfo',views.getCARuleInfo,name="getIOTDeviceCARuleInfo"),
     path('metrics',views.metrics,name='iotDeviceMetrics'),
     path('viewer_metrics',views.viewerMetrics,name="iotViewerMetrics"),

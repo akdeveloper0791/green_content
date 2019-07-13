@@ -74,6 +74,20 @@ class IOT_Device(models.Model):
         return player;
       except IOT_Device.DoesNotExist:
         return False;
+    
+    def checkMyPlayers(players,userId,isKey=True):
+      try:
+        if(isKey):
+          player = IOT_Device.objects.filter(key__in=players,
+            user_id=userId);
+        else:
+          player = IOT_Device.objects.get(id__in=players,
+            user_id=userId);
+
+        if(len(player) == len(players)):
+          return player;
+      except IOT_Device.DoesNotExist:
+        return False;
 
     def getPlayer(playerId,playerKey):
       try:
@@ -107,6 +121,37 @@ class IOT_Device(models.Model):
           'classifier','delay_time','created_at','accessed_at','iot_device__name','iot_device__device_type')),'playerInfo':playerInfo1};
       else:
         return {'statusCode':2,'status':'No rules found','playerInfo':playerInfo1};
+
+    def getIOTDevicesCARules(secretKey,isUserId,players):
+      userId = secretKey;
+      if(isUserId==False):
+            userId = User_unique_id.getUserId(secretKey);
+            if(userId == False):
+                return {'statusCode':1,'status':
+                "Invalid session, please login11"};
+      
+      try:
+        players = json.loads(players);
+        playerInfo = IOT_Device.checkMyPlayers(players,userId);
+        if(playerInfo==False):
+          return {'statusCode':6,'status':'Invalid player'}
+         
+        playerIds = [playerId for playerId in playerInfo.values_list('id')][0];
+        
+        with connection.cursor() as cursor:
+          query = '''SELECT car.*,carGps.classifier_lat,carGps.classifier_lng FROM  iot_device_contextual_ads_rule as car LEFT JOIN 
+          iot_device_gps_car_data as carGPS ON carGPS.car_id = car.id WHERE 
+          car.iot_device_id IN ({}) '''.format(','.join(['%s' for _ in range(len(playerIds))])) 
+          cursor.execute(query,playerIds);
+          rules = dictfetchall(cursor);
+          if(len(rules)>=1):
+            return {'statusCode':0,'rules':rules};
+          else:
+            return {'statusCode':2,'status':'No rules found'};
+      except ValueError:
+        return {'statusCode':7,'status':'Invalid players'};
+
+      
     
     def getContextualAdRuleInfo(secretKey,isUserId,ruleId,isCampaigns=True,isDevices=True):
       userId = secretKey;
