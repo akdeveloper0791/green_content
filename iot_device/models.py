@@ -241,7 +241,7 @@ class Contextual_Ads_Rule(models.Model):
                   gpsCARData = json.loads(gpsCARData);
                   gpsCarDataObj = GPS_CAR_Data(car_id=ca_rule.id,
                     classifier_lat=gpsCARData['classifier_lat'],classifier_lng=gpsCARData['classifier_lng']);
-                  gpsCARData.save();
+                  gpsCarDataObj.save();
 
            return {'statusCode':0,'status':'Rule has been created','id':ca_rule.id};
            
