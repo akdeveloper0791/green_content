@@ -204,8 +204,7 @@ function getCampaignsFromServer()
           selectedCamp+=perfix+(document.getElementById(selectedCampaigns[i]).name);
                 perfix=" ,";
        }
-      console.log("displaySelectedCampaigns:"+selectedCampaigns);
-      console.log("campaignsList:"+selectedCamp);
+    
      
       document.getElementById('selected_campaigns').style.display="block";
       document.getElementById('selected_campaigns').innerHTML=selectedCamp; 
@@ -238,8 +237,7 @@ if(selectedPlayers!=null)
           players+=perfix+(document.getElementById(selectedPlayers[i]).name);
                 perfix=" ,";
        }
-      console.log("displaySelectedPlayers:"+selectedPlayers);
-      console.log("playersList:"+players);
+
      
       document.getElementById('selected_players').style.display="block";
       document.getElementById('selected_players').innerHTML=players; 
