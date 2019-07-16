@@ -185,11 +185,32 @@ function getCampaignsFromServer()
       {   var campaign = campaignsList[i];
           var row = table.insertRow(-1);
           var cell = row.insertCell(-1);
-          cell.innerHTML = "<input type='checkbox' value="+campaign.id+
+          cell.innerHTML = "<input type='checkbox' name="+campaign.campaign_name+" id="+campaign.id+" value="+campaign.id+
           " onclick='handleCampaignSelectEvent(this)'>"+campaign.campaign_name
       }
     }
     
+  }
+
+  function displaySelectedCampaigns()
+  {
+
+    if(selectedCampaigns!=null)
+    {
+       var selectedCamp="";
+        var perfix="";
+       for (var i = 0; i < selectedCampaigns.length; i++) 
+       {
+          selectedCamp+=perfix+(document.getElementById(selectedCampaigns[i]).name);
+                perfix=" ,";
+       }
+      console.log("displaySelectedCampaigns:"+selectedCampaigns);
+      console.log("campaignsList:"+selectedCamp);
+     
+      document.getElementById('selected_campaigns').style.display="block";
+      document.getElementById('selected_campaigns').innerHTML=selectedCamp; 
+    }
+
   }
 
   function displayPlayers()
@@ -199,11 +220,32 @@ function getCampaignsFromServer()
       {   var player = playersList[i];
           var row = table.insertRow(-1);
           var cell = row.insertCell(-1);
-          cell.innerHTML = "<input type='checkbox' value="+player.id+
-          " onclick='handlePlayerSelectEvent(this)'>"+player.name
+          cell.innerHTML = 
+          "<input type='checkbox' name="+player.name+" id="+player.id+" value="+player.id+ 
+          " onclick='handlePlayerSelectEvent(this)'>"+player.name;
       }
   	
 }
+
+function displaySelectedPlayers()
+{
+if(selectedPlayers!=null)
+    {
+        var players="";
+        var perfix="";
+       for (var i = 0; i < selectedPlayers.length; i++) 
+       {
+          players+=perfix+(document.getElementById(selectedPlayers[i]).name);
+                perfix=" ,";
+       }
+      console.log("displaySelectedPlayers:"+selectedPlayers);
+      console.log("playersList:"+players);
+     
+      document.getElementById('selected_players').style.display="block";
+      document.getElementById('selected_players').innerHTML=players; 
+    }
+}
+
 function dismissSelectPlayerList()
 {
   document.getElementById('player_list').style.display="none";
@@ -214,8 +256,10 @@ function toggleDisplayPlayers()
   if(isPlayersShowing)
   {
     dismissSelectPlayerList();
+    displaySelectedPlayers();
   }else
   {
+    document.getElementById('selected_players').style.display="none";
     dismissSelectCampaignList();
     document.getElementById('player_list').style.display="block";
      isPlayersShowing=true; 
@@ -256,8 +300,10 @@ function toggleDisplayCampaigns()
   if(isCampaignsShowing)
   {
     dismissSelectCampaignList();
+    displaySelectedCampaigns();
   }else
   {
+    document.getElementById('selected_campaigns').style.display="none";
     dismissSelectPlayerList();
     document.getElementById('campaign_list').style.display="block";
      isCampaignsShowing=true; 

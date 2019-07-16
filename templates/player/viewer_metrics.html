@@ -190,7 +190,7 @@ input:checked + .slider .off
 
       <input type="button" value="Analytics" id="analytics_view" class="gradient-button gradient-btn" style="padding: 8px 20px;"  onclick="showAnalytics()">
 
-        <input type="button" value="Trends" class="gradient-button gradient-btn" style="padding: 8px 20px;"  onclick="swal('Coming soon...')">
+        <input type="button" value="Trends" id="trends_view" class="gradient-button gradient-btn" style="padding: 8px 20px;" onclick="showTrends()">
 
 	<input type="button" value="View" id="tabular_view" class="gradient-button gradient-btn" style="padding: 8px 20px;"  onclick="viewer_matrics_list()">
 
@@ -246,13 +246,21 @@ input:checked + .slider .off
 <!-- end table -->
 
 
+<!--Trends Graphs div  -->
+<div class ="container" id="web_trends" style="display:none">
+    <canvas id="gender_line" ></canvas>
+
+</div>
+<div class ="container" id="mobile_trends" style="display:none">
+<canvas id="gender_line_mobile" ></canvas>
+</div>
+<!--End of Trends graph div -->
+
 
 <div class ="container" id="web_graphs" style="display:none">
   <canvas id="gender_age_chart_grouped" width="200" height="50"></canvas>
 
 <canvas id="bar_reports_cnv" width="200" height="50" > </canvas>
-
-<canvas id="gender_line" width="200" height="50"></canvas>
 
 <canvas id="gender_pie_reports_cnv" width="200" height="50" ></canvas>
 </div>
@@ -261,8 +269,6 @@ input:checked + .slider .off
   <canvas id="gender_age_chart_grouped_mobile" ></canvas>
 
 <canvas id="bar_reports_cnv_mobile" > </canvas>
-
-<canvas id="gender_line_mobile" ></canvas>
 
 <canvas id="gender_pie_reports_cnv_mobile" ></canvas>
 </div>
@@ -375,7 +381,11 @@ function autoRefreshTask()
     if(displayMetrics=="metrics")
     {
         showAnalytics(true);
-    }else
+    }else if(displayMetrics=="trends")
+    {
+      showTrends(true);
+    }
+    else
     {
       viewer_matrics_list(true);
     }
@@ -527,9 +537,6 @@ function display_reports(responseObj){
 		}
 		
 	}
-
-
-
 
 
   function export_viewer_matrics(){
