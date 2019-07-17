@@ -555,4 +555,11 @@ def vmGenderLineReports(request):
     if(request.user.is_authenticated==False):
         return JsonResponse({'statusCode':2,'status':'Invalid session, please login'});
     metricsResponse = Geder_Age_Metrics.vmGenderLineReports(request.user.id,request.POST);
-    return JsonResponse(metricsResponse);    
+    return JsonResponse(metricsResponse);
+
+@api_view(["POST"])
+def broadCastCAR(request):
+    response = Contextual_Ads_Rule.broadCastCAR(
+        request.POST.get("player_key"),
+        request.POST.get("cars"));
+    return JsonResponse(response);

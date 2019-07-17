@@ -295,6 +295,8 @@ class Contextual_Ads_Rule(models.Model):
       classifiers = Contextual_Ads_Rule.objects.values('classifier').annotate(
         name_count=Count('classifier')).filter(iot_device__user_id=userId,iot_device__device_type="Microphone").values('classifier');
       return {"statusCode":0,"classifiers":list(classifiers)};
+    
+    
 
 #contextual ads rules associated campaigns
 class CAR_Campaign(models.Model):
@@ -537,7 +539,7 @@ class CAR_Device(models.Model):
         return list(devices);
     
     
-
+    
     def publishMicPhoneRule(player,rule):
 
       try:

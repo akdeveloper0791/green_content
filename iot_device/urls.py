@@ -24,4 +24,5 @@ urlpatterns = [
     path('vm_gender_pie_reports',views.vmGenderPieReports,name="vmGenderPieReports"),
     path('vm_age_gender_bar_reports',views.vmGenderAgeBarReports,name="vmGenderAgeBarReports"),
     path('vm_gender_line_reports',views.vmGenderLineReports,name="vmGenderLineReports"),
+    
     ]
