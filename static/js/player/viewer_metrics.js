@@ -71,6 +71,8 @@ function displayAgeBarReports(labels,data)
 
 }
 
+
+
 function highliteSelectedMetrics(metrics,selectedButtonId)
 {
 	if(metrics!=displayMetrics)
@@ -84,15 +86,46 @@ function highliteSelectedMetrics(metrics,selectedButtonId)
 		}
 	}
 
+	if(isMobileBrowser)
+	{
+		if(metrics=="metrics")
+	   {
+		var elmnt = document.getElementById("mobile_graphs");
+		if(elmnt.style.display=="none")
+		{
+			elmnt.style.display="block";
+			elmnt.scrollIntoView();
+		}
+	    }else if(metrics=="trends"){
+       var elmnt = document.getElementById("mobile_trends");
+		if(elmnt.style.display=="none")
+		{
+			elmnt.style.display="block";
+			elmnt.scrollIntoView();
+		}
+        }
+           
+	}
+	if(metrics=="metrics")
+	{
+document.getElementById("web_graphs").style.display="block";
+document.getElementById("web_trends").style.display="none";
+	}else if(metrics=="trends")
+	{
+document.getElementById("web_graphs").style.display="none";
+document.getElementById("web_trends").style.display="block";
+
+	}
+
+
 	document.getElementById(selectedButtonId).className="selected_metrics"
 }
+
 function showAnalytics(isAutoRefresh=false)
 {   
 	highliteSelectedMetrics("metrics","analytics_view");
 	
 	dismissTabularView();
-	
-   
 	
 	var dev_id = document.getElementById('dev_id').value;
 	var from_date = document.getElementById('from_date').value;
@@ -115,12 +148,36 @@ function showAnalytics(isAutoRefresh=false)
     generateGenderAgeBarCharts(dev_id,
     	from_date,to_date,isAutoRefresh);
     
-    generateGenderLineCharts(dev_id,
-    	from_date,to_date,isAutoRefresh);
+    //generateGenderLineCharts(dev_id,from_date,to_date,isAutoRefresh);
     
     generateAgeBarCharts(dev_id,
     	from_date,to_date,isAutoRefresh);
 	
+}
+
+
+function showTrends(isAutoRefresh=false)
+{
+	highliteSelectedMetrics("trends","trends_view");
+	
+	dismissTabularView();
+	
+	var dev_id = document.getElementById('dev_id').value;
+	var from_date = document.getElementById('from_date').value;
+	var to_date = document.getElementById('to_date').value;
+    if(from_date == null || from_date == "")
+	{
+	  swal("please select From_Date");
+	}else if(to_date==null || to_date == ""){
+      swal("please select To_Date");
+	}
+		
+	if (Date.parse(from_date) > Date.parse(to_date)) {
+		swal("Invalid Date Range!\nStart Date cannot be after End Date!")
+		return false;
+    }
+
+    generateGenderLineCharts(dev_id,from_date,to_date,isAutoRefresh); 
 }
 
 function generateAgeBarCharts(dev_id,from_date,to_date,isAutoRefresh)
@@ -302,8 +359,7 @@ function generateGenderAgeBarCharts(dev_id,from_date,to_date,isAutoRefresh)
              {
              //swal(data['status']);	
              }
-             
-                                    
+                                   
 			}
 
 		   },
