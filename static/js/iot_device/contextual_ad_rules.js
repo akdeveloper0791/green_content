@@ -342,7 +342,7 @@ function createRule()
   }
 
   var classifier = "0";
-  if(selectedDeviceType=="Microphone")
+  if(selectedDeviceType=="Microphone" || selectedDeviceType=="third_party")
   {
     classifier = document.getElementById("mic_classifier").value;
     

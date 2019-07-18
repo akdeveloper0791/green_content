@@ -185,7 +185,7 @@ class IOT_Device(models.Model):
 
       except Contextual_Ads_Rule.DoesNotExist:
         return {'statusCode':2,'status':'Invalid rule, info not found'}
-
+  
 from django.db.models import Count
 class Contextual_Ads_Rule(models.Model):
     iot_device = models.ForeignKey('iot_device.IOT_Device',on_delete=models.CASCADE)
@@ -237,7 +237,7 @@ class Contextual_Ads_Rule(models.Model):
 
                   CAR_Device.objects.bulk_create(bulkInsertCARPlayers);
                 
-                if(gpsCARData!=False):
+                if(gpsCARData != "false"):
                   gpsCARData = json.loads(gpsCARData);
                   gpsCarDataObj = GPS_CAR_Data(car_id=ca_rule.id,
                     classifier_lat=gpsCARData['classifier_lat'],classifier_lng=gpsCARData['classifier_lng']);
@@ -296,7 +296,8 @@ class Contextual_Ads_Rule(models.Model):
         name_count=Count('classifier')).filter(iot_device__user_id=userId,iot_device__device_type="Microphone").values('classifier');
       return {"statusCode":0,"classifiers":list(classifiers)};
     
-    
+    def broadRulesByNames(playerKey,classifiers):
+      return {'status':'true'};
 
 #contextual ads rules associated campaigns
 class CAR_Campaign(models.Model):

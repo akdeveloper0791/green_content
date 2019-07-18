@@ -453,7 +453,9 @@ function generateGenderLineCharts(dev_id,from_date,to_date,isAutoRefresh)
 			{
              if(!isAutoRefresh)
              {
-             swal(data['status']);	
+      
+              swal(data['status']);	
+
              }
              
                                     
@@ -469,18 +471,20 @@ function generateGenderLineCharts(dev_id,from_date,to_date,isAutoRefresh)
              alert(exception+jqXHR.responseText);
              }
 		 	//alert(exception+jqXHR.responseText);
+	
 		 }
 
 		});
 	}
 	catch(Exception)
     {
+
      //dismissProgressbar();
+    
     	if(!isAutoRefresh)
-             {
-           alert(Exception.message);	
-             }
-		//alert(Exception.message);
+        {
+		 alert(Exception.message);
+		}
 	}	
 }
 
