@@ -48,7 +48,7 @@ function displayRulesCreationForm()
 	creation_btn.style.display ="none";
 	submit_btn.style.display="block";
 	document.getElementById("rules_form").style.display="block";
-  if(selectedDeviceType=="Microphone")
+  if(selectedDeviceType=="Microphone" || selectedDeviceType=="third_party")
   {
     document.getElementById("mic_classifier").style.display="block";
     document.getElementById("mic_classifier_user_list").style.display="block";
@@ -342,7 +342,7 @@ function createRule()
   }
 
   var classifier = "0";
-  if(selectedDeviceType=="Microphone")
+  if(selectedDeviceType=="Microphone" || selectedDeviceType=="third_party")
   {
     classifier = document.getElementById("mic_classifier").value;
     
