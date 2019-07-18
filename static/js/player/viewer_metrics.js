@@ -117,8 +117,7 @@ document.getElementById("web_trends").style.display="block";
 
 	}
 
-
-	document.getElementById(selectedButtonId).className="selected_metrics"
+document.getElementById(selectedButtonId).className="selected_metrics"
 }
 
 function showAnalytics(isAutoRefresh=false)
@@ -184,6 +183,7 @@ function generateAgeBarCharts(dev_id,from_date,to_date,isAutoRefresh)
 {
 	//get reports 
 	try {
+		 displayGraphsProgressbar();
         //ajaxindicatorstart("<img src='/static/images/ajax-loader.gif'><br/> Please wait...!");
        
 		$.ajax(
@@ -204,6 +204,7 @@ function generateAgeBarCharts(dev_id,from_date,to_date,isAutoRefresh)
 		  
 		  success: function(data)
 		   {
+		   		dismissGraphsProgressbar();
 		   	//ajaxindicatorstop();
 			
             if(data['statusCode']==0)
@@ -228,6 +229,7 @@ function generateAgeBarCharts(dev_id,from_date,to_date,isAutoRefresh)
 		
 		 error: function (jqXHR, exception) {
 		 	//ajaxindicatorstop();
+		 		dismissGraphsProgressbar();
 		 	alert(exception+jqXHR.responseText);
 		 }
 
@@ -244,7 +246,7 @@ function generateGenderPieCharts(dev_id,from_date,to_date,isAutoRefresh)
    //get reports 
 	try {
         //ajaxindicatorstart("<img src='/static/images/ajax-loader.gif'><br/> Please wait...!");
-       
+       displayGraphsProgressbar();
 		$.ajax(
 		{
 
@@ -263,6 +265,7 @@ function generateGenderPieCharts(dev_id,from_date,to_date,isAutoRefresh)
 		  
 		  success: function(data)
 		   {
+		   	dismissGraphsProgressbar();
 		   	//ajaxindicatorstop();
 			console.log(JSON.stringify(data));
             if(data['statusCode']==0)
@@ -283,6 +286,7 @@ function generateGenderPieCharts(dev_id,from_date,to_date,isAutoRefresh)
 		   },
 		
 		 error: function (jqXHR, exception) {
+		 		dismissGraphsProgressbar();
 		 	//ajaxindicatorstop();
 		 	//alert(exception+jqXHR.responseText);
 		 }
@@ -326,6 +330,7 @@ function generateGenderAgeBarCharts(dev_id,from_date,to_date,isAutoRefresh)
 {
    //get reports 
 	try {
+		displayGraphsProgressbar();
         //ajaxindicatorstart("<img src='/static/images/ajax-loader.gif'><br/> Please wait...!");
        
 		$.ajax(
@@ -346,7 +351,7 @@ function generateGenderAgeBarCharts(dev_id,from_date,to_date,isAutoRefresh)
 		  
 		  success: function(data)
 		   {
-		   	
+		   	dismissGraphsProgressbar();
             if(data['statusCode']==0)
 		    {
              displayGenderAgeCharts(data['labels'],data['f_data'],
@@ -365,6 +370,7 @@ function generateGenderAgeBarCharts(dev_id,from_date,to_date,isAutoRefresh)
 		   },
 		
 		 error: function (jqXHR, exception) {
+		 		dismissGraphsProgressbar();
 		 	//ajaxindicatorstop();
 		 	//alert(exception+jqXHR.responseText);
 		 }
@@ -413,6 +419,8 @@ function generateGenderLineCharts(dev_id,from_date,to_date,isAutoRefresh)
 {
    //get reports 
 	try {
+
+		displayTrendsProgressbar();
         //ajaxindicatorstart("<img src='/static/images/ajax-loader.gif'><br/> Please wait...!");
        
 		$.ajax(
@@ -433,19 +441,19 @@ function generateGenderLineCharts(dev_id,from_date,to_date,isAutoRefresh)
 		  
 		  success: function(data)
 		   {
+		     dismissTrendsProgressbar();
 		   	//ajaxindicatorstop();
 			console.log(JSON.stringify(data));
             if(data['statusCode']==0)
 		    {
              displayGenderLineCharts(data['labels'],data['f_graph'],
              	data['m_graph']);
-            
-			}
+            }
 			else
 			{
              if(!isAutoRefresh)
              {
-             //swal(data['status']);	
+             swal(data['status']);	
              }
              
                                     
@@ -455,6 +463,11 @@ function generateGenderLineCharts(dev_id,from_date,to_date,isAutoRefresh)
 		
 		 error: function (jqXHR, exception) {
 		 	//ajaxindicatorstop();
+		 		dismissTrendsProgressbar();
+		 	if(!isAutoRefresh)
+             {
+             alert(exception+jqXHR.responseText);
+             }
 		 	//alert(exception+jqXHR.responseText);
 		 }
 
@@ -462,6 +475,11 @@ function generateGenderLineCharts(dev_id,from_date,to_date,isAutoRefresh)
 	}
 	catch(Exception)
     {
+     //dismissProgressbar();
+    	if(!isAutoRefresh)
+             {
+           alert(Exception.message);	
+             }
 		//alert(Exception.message);
 	}	
 }
@@ -498,4 +516,25 @@ function displayGenderLineCharts(labels,femaleData,maleData)
 	    }
 	  }
 	});
+}
+
+function displayTrendsProgressbar()
+{
+document.getElementById("trends_prog_bar").style.display="block";
+}
+
+function dismissTrendsProgressbar()
+{
+document.getElementById("trends_prog_bar").style.display="none";
+}
+
+
+function displayGraphsProgressbar()
+{
+document.getElementById("graphs_prog_bar").style.display="block";
+}
+
+function dismissGraphsProgressbar()
+{
+document.getElementById("graphs_prog_bar").style.display="none";
 }

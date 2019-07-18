@@ -113,7 +113,43 @@ input:checked + .slider .off
     
 }
 
-    
+.circular{
+    animation: rotate 2s linear infinite;
+    height: 100px;
+    position: relative;
+    width: 100px;
+}
+
+
+.path {
+  stroke-dasharray: 1,200;
+  stroke-dashoffset: 0;
+  animation:dash 1.5s ease-in-out infinite;
+  stroke-linecap: round;
+  stroke: #33a9ff;
+}
+
+@keyframes rotate{
+ 100%{
+  transform: rotate(360deg);
+ }
+}
+@keyframes dash{
+ 0%{
+  stroke-dasharray: 1,200;
+  stroke-dashoffset: 0;
+ }
+ 50%{
+  stroke-dasharray: 89,200;
+  stroke-dashoffset: -35;
+ }
+ 100%{
+  stroke-dasharray: 89,200;
+  stroke-dashoffset: -124;
+ }
+}
+
+  
   </style>
 
 </head>
@@ -247,15 +283,28 @@ input:checked + .slider .off
 
 
 <!--Trends Graphs div  -->
+<div class ="container" id="trends_prog_bar" style="text-align: center;display: none;">
+  <svg class="circular">
+    <circle class="path" cx="50" cy="50" r="20" fill="none" stroke-width="3" stroke-miterlimit="10" />
+  </svg>
+</div>
 <div class ="container" id="web_trends" style="display:none">
     <canvas id="gender_line" ></canvas>
 
 </div>
+
 <div class ="container" id="mobile_trends" style="display:none">
 <canvas id="gender_line_mobile" ></canvas>
 </div>
 <!--End of Trends graph div -->
 
+
+
+<div class ="container" id="graphs_prog_bar" style="text-align: center;display: none;">
+  <svg class="circular">
+    <circle class="path" cx="50" cy="50" r="20" fill="none" stroke-width="3" stroke-miterlimit="10" />
+  </svg>
+</div>
 
 <div class ="container" id="web_graphs" style="display:none">
   <canvas id="gender_age_chart_grouped" width="200" height="50"></canvas>
@@ -268,9 +317,9 @@ input:checked + .slider .off
 <div class ="container" id="mobile_graphs" style="display:none">
   <canvas id="gender_age_chart_grouped_mobile" ></canvas>
 
-<canvas id="bar_reports_cnv_mobile" > </canvas>
+ <canvas id="bar_reports_cnv_mobile" > </canvas>
 
-<canvas id="gender_pie_reports_cnv_mobile" ></canvas>
+ <canvas id="gender_pie_reports_cnv_mobile" ></canvas>
 </div>
 
 
