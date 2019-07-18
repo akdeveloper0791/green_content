@@ -445,7 +445,7 @@ function generateGenderLineCharts(dev_id,from_date,to_date,isAutoRefresh)
 			{
              if(!isAutoRefresh)
              {
-             //swal(data['status']);	
+               swal(data['status']);	
              }
              
                                     
@@ -455,14 +455,20 @@ function generateGenderLineCharts(dev_id,from_date,to_date,isAutoRefresh)
 		
 		 error: function (jqXHR, exception) {
 		 	//ajaxindicatorstop();
-		 	//alert(exception+jqXHR.responseText);
+		 	if(!isAutoRefresh)
+             {
+		 	  alert(exception+jqXHR.responseText);
+		 	 }
 		 }
 
 		});
 	}
 	catch(Exception)
     {
-		//alert(Exception.message);
+    	if(!isAutoRefresh)
+        {
+		 alert(Exception.message);
+		}
 	}	
 }
 

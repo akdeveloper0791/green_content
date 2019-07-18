@@ -5,7 +5,7 @@ from .models import IOT_Device, Contextual_Ads_Rule, CAR_Campaign, CAR_Device
 from django.contrib.auth.models import User
 from django.contrib.auth import  authenticate
 from django.http import JsonResponse
-
+import json;
 # Create your views here.
 @login_required
 def contextualAdsRules(request):
@@ -49,6 +49,62 @@ def register(request):
             return JsonResponse({'statusCode':2,'status':
                 'Invalid user info, no user found with the email, please register','userEmail':request.POST.get('user_email')})
 
+@api_view(["POST"])
+def registerAsThirdParty(request):
+    if(request.method!='POST'):
+        return JsonResponse({'statusCode':1,
+            'status':'Invalid request'});
+    else:
+        postParams = request.POST;
+        if('user_email' not in postParams or postParams.get('user_email' ) is None):
+            return JsonResponse({'statusCode':2,'status':'user email field is missing, please provide a valid email id'})
+        if('data' not in postParams):
+            return JsonResponse({'statusCode':2,'status':'Invalid request parameters, "data" is missing'});
+
+        if('pwd' not in postParams):
+            return JsonResponse({'statusCode':2,'status':'Please provide password field'});  
+        try:
+            data=json.loads(postParams.get('data'));
+        except ValueError as error:
+            return JsonResponse({'statusCode':2,'status':'Invalid request parameters'})
+        if('name' not in data or data["name"] is None):
+            return JsonResponse({'statusCode':2,'status':'Please provide valid name for the device'});
+
+        if('mac' not in data or data['mac'] is None):
+            return JsonResponse({'statusCode':2,'status':'Please provide mac for the device'});
+
+        userEmail = postParams.get('user_email');
+        user = User.objects.filter(username= userEmail)
+        pwd = postParams.get('pwd');
+        
+        if user:
+            isLogin=False;
+            isAuthenticated = authenticate(request,username=userEmail,password=pwd)
+            if(isAuthenticated is not None):
+                isLogin=True;
+
+            if(isLogin):
+                userInfo={};userId=None;
+                for info in user:
+                    userId = info.id;
+                    break;
+
+                
+                data['device_type'] = 'third_party';
+
+                result = IOT_Device.registerPlayer(json.dumps(data,ensure_ascii=False),userId);
+                if(result['statusCode']==0):
+                    return JsonResponse({'statusCode':0,'status':'Success',
+                        'mac':result['mac'],'key':result['key']});
+                else:
+                    return JsonResponse(result);
+            else:
+                return JsonResponse({'statusCode':3,'status':'Invalid password, please enter valid password'});
+
+        else:
+            return JsonResponse({'statusCode':2,'status':
+                'Invalid user info, no user found with the email, please register','userEmail':request.POST.get('user_email')})
+                 
 @api_view(["POST"])
 def createRule(request):
     if(request.method == 'POST'):
@@ -562,4 +618,11 @@ def broadCastCAR(request):
     response = Contextual_Ads_Rule.broadCastCAR(
         request.POST.get("player_key"),
         request.POST.get("cars"));
+    return JsonResponse(response);
+
+@api_view(["POST"])
+def broadRulesByNames(request):
+    response = Contextual_Ads_Rule.broadRulesByNames(
+        request.POST.get("player_key"),
+        request.POST.get("classifiers"));
     return JsonResponse(response);
