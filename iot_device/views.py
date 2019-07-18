@@ -622,7 +622,7 @@ def broadCastCAR(request):
 
 @api_view(["POST"])
 def broadRulesByNames(request):
-    response = Contextual_Ads_Rule.broadRulesByNames(
+    response = Contextual_Ads_Rule.broadcastRulesByClassiferNames(
         request.POST.get("player_key"),
         request.POST.get("classifiers"));
     return JsonResponse(response);

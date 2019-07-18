@@ -97,6 +97,13 @@ class IOT_Device(models.Model):
       except IOT_Device.DoesNotExist:
         return False;
 
+    def getPlayer(playerKey):
+      try:
+        player = IOT_Device.objects.get(key=playerKey);
+        return player;
+      except IOT_Device.DoesNotExist:
+        return False;
+
     def getContextualAdRules(secretKey,isUserId,playerKey):
       userId = secretKey;
       if(isUserId==False):
@@ -296,8 +303,19 @@ class Contextual_Ads_Rule(models.Model):
         name_count=Count('classifier')).filter(iot_device__user_id=userId,iot_device__device_type="Microphone").values('classifier');
       return {"statusCode":0,"classifiers":list(classifiers)};
     
-    def broadRulesByNames(playerKey,classifiers):
-      return {'status':'true'};
+    def broadcastRulesByClassiferNames(playerKey,classifiers):
+      try:
+        classifiers = json.loads(classifiers);
+        lowerClassifiers = lambda classifier: classifier.lower();
+        classifiers = list(map(lowerClassifiers,classifiers));
+        player = IOT_Device.getPlayer(playerKey);
+        if(player==False):
+          return {'statusCode':2,'status':'Invalid device'};
+        #publish rules
+        return CAR_Device.publishMicPhoneRule(playerKey,json.dumps(classifiers,ensure_ascii=False))
+
+      except ValueError:
+        return {'statusCode':2,'status':'Invalid classifier list'}
 
 #contextual ads rules associated campaigns
 class CAR_Campaign(models.Model):
