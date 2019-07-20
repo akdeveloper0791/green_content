@@ -55,7 +55,7 @@ class CampaignInfo(models.Model):
         try:
             infoObj = json.loads(info);
         except Exception as ex:
-            return {'statusCode':6,'status':'Error in processing info json '+info};
+            return {'statusCode':6,'status':'Error in processing info json'};
 
         if('type' in infoObj):
             if(infoObj['type']=="multi_region"):
