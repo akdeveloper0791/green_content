@@ -92,10 +92,10 @@ def registerAsThirdParty(request):
                 
                 data['device_type'] = 'third_party';
 
-                result = IOT_Device.registerPlayer(json.dumps(data,ensure_ascii=False),userId);
+                result = IOT_Device.registerPlayer(json.dumps(data,ensure_ascii=False),userId,True);
                 if(result['statusCode']==0):
                     return JsonResponse({'statusCode':0,'status':'Success',
-                        'mac':result['mac'],'key':result['key']});
+                        'mac':result['mac'],'device_key':result['key']});
                 else:
                     return JsonResponse(result);
             else:
@@ -623,6 +623,7 @@ def broadCastCAR(request):
 @api_view(["POST"])
 def broadRulesByNames(request):
     response = Contextual_Ads_Rule.broadcastRulesByClassiferNames(
-        request.POST.get("player_key"),
-        request.POST.get("classifiers"));
+        request.POST.get("device_key"),
+        request.POST.get("classifiers"),
+        (request.POST.get("players") if 'players' in request.POST else False));
     return JsonResponse(response);

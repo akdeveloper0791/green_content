@@ -26,6 +26,7 @@ def upload_camp_web(request):
  '''
 @api_view(['GET','POST'])
 def initCampaignUpload(request):
+    #return JsonResponse({'info':request.POST.get('info')})
     if(request.method == "POST" and
      'campaign' in request.POST and 'size' in request.POST):
         #check the request whether from web or app
