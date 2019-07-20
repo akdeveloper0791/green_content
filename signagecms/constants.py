@@ -12,12 +12,12 @@ r3_1h_2v_20_50_50_json = ''' {"regions":[{"width":100,"height":10,"top_margin":0
 r4_2h_2v_50_50_json = ''' {"regions":[{"width":50,"height":50,"top_margin":0,"left_margin":0,"right_margin":0,"bottom_margin":0},{"width":50,"height":50,"top_margin":0,"left_margin":50,"right_margin":0,"bottom_margin":0},{"width":50,"height":50,"top_margin":50,"left_margin":0,"right_margin":0,"bottom_margin":0},{"width":50,"height":50,"top_margin":50,"left_margin":50,"right_margin":0,"bottom_margin":0}]} '''
 
 
-file_storage_path="C:/Users/Jitendra/python_projects/green_content/media";
+file_storage_path="C:/Users/adskite/python_projects/green_content/media";
 
 STORE_LOCATION = 2; #2-> dropbox , 1-> local
 setup = 2; #2 server, 1->local
 
-project_local_path = "C:/Users/Jitendra/python_projects/green_content"
+project_local_path = "C:/Users/adskite/python_projects/green_content"
 project_server_path = "/home/adskite/myproject/signagecms"
 
 #schedule types

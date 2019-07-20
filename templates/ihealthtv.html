@@ -1,4 +1,4 @@
- {% load static %}
+{% load static %}
 <!DOCTYPE html>
 <html lang="en" class="no-js">
 <head>
@@ -14,11 +14,11 @@ directly play content from YouTube, Whatsapp, Facebook, Twitter, Mobile etc. Sig
 our customers for dierent purposes like Entertainment, Informational, Dashboards, Promotional,
 Visitor engagement, Production Line Management and Other."/>  
 
-<title>Digital Signage Platform | SignageServ</title>
+<title>Hospital Health TV | iHealthTV</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
 
-<link rel="icon" type="image/png" href="{% static 'images/favicon-32.png' %}"/>
+<link rel="icon" type="image/png" href="{% static 'images/favicon.png' %}"/>
 
 
   <link rel="stylesheet"
@@ -134,6 +134,16 @@ padding-right: 0px;
 
 }
 
+.column {
+  float: left;
+  width: 23.33%;
+    text-align: center;
+  font-size: 25px;
+  cursor: pointer;
+  color: white;
+}
+
+
  </style>
 
 </head>
@@ -143,7 +153,7 @@ padding-right: 0px;
     <div class="pre-loader">
         <div class="load-con">
            <a class="brand-logo" href="/signageserv">
-            <img id="main-img" src="{% static 'images/signage_serv.png' %}" 
+            <img id="main-img" src="{% static 'images/ihealth_tv.png' %}" 
             alt="" class="logo animated fadeInDown"></a>
             <div class="spinner"
                         >
@@ -167,7 +177,7 @@ padding-right: 0px;
                             <span class="fa fa-bars fa-lg"></span>
                         </button>
                         <a class="brand-logo" href="/signageserv">
-                       <img class="signage_logo"  src="{% static 'images/signage_serv.png' %}" alt="" class="logo animated fadeInDown" style="cursor:pointer;padding-left:10px;"></a>
+                       <img class="signage_logo"  src="{% static 'images/ihealth_tv.png' %}" alt="" class="logo animated fadeInDown" style="cursor:pointer;padding-left:10px;"></a>
                     </div>
 
                     <!-- Collect thi nav links, forms, and other content for toggling -->
@@ -176,7 +186,7 @@ padding-right: 0px;
                     style="padding-top: 5px; height: 340px;">
 
                     <ul style="text-align: center;" class="nav navbar-nav navbar-right">
-                            <li><a href="#about_us">Why SignageServ?</a>
+                            <li><a href="#about_us">Why iHealthTV?</a>
                             </li>
 			                      <li><a href="#about">Solutions</a>
                             </li>
@@ -477,13 +487,13 @@ ScaleSlider();$Jssor$.$AddEvent(window,"load",ScaleSlider);$Jssor$.$AddEvent(win
 	<div  class="container">
 
  <div class="section-heading scrollpoint sp-effect3" >
-                    <h2 class="block_title">Why SignageServ</h2>
+                    <h2 class="block_title">Why iHealthTV</h2>
                     <div class="divider"></div>
                  
                 </div>
 
          <div class="block_content">
-             SignageServ enables engagement and growth teams to manage and turn enhanced on-premises experience into a strategic differentiator for organisation growth. Leverage Demographics, realtime IOT data, automation, AI/ML and personalisation techniques into one enterprise platform.
+             iHealthTV enables engagement and growth teams to manage and turn enhanced on-premises experience into a strategic differentiator for organisation growth. Leverage Demographics, realtime IOT data, automation, AI/ML and personalisation techniques into one enterprise platform.
 		 </div>
 	</div>
 	</section>
@@ -523,39 +533,13 @@ ScaleSlider();$Jssor$.$AddEvent(window,"load",ScaleSlider);$Jssor$.$AddEvent(win
 	</div>
 	</div>
 
-	<div class="row" style="padding:10px;">
-	<div class="col-md-12 col-xs-12">
-	<div class="row">
-		<div class="col-md-6 card-cont">
-			<img src="{% static 'images/signagees.png' %}">
-		</div>
 
-		<div class="col-md-6">
-			<h4 style="text-align:center;margin-top: 0px;color:#43CFE5;font-weight: 500;">Corporates who want to communicate in their private Networks with Additional Security</h4>
-			<p class="info_sec" style="text-align:justify;padding:5px 15px;font-size:16px;">
-			You are an enterpise with a need to maintain your content
-			within the organizational network.You want to manage your
-			content efficiently and in a targeted manner.<br/>
-			With the ES series of SignageServ you can maintain your
-			content and the signage players with your enterpise LAN.
-			Location specific content can be played using the layout
-			creation and scheduling capabilities.<br/>
-			The solution easily integrates into your corporate security
-			policies.<br/>
-			URL play supports display of Operations dashboards,
-			Production metrics, Sales reports, Defect reports etc.
-			</p>
-           <div style="text-align:justify;padding: :0px 15px;background-color:#43CFE5;width: 100%;height:0.8px;"></div>
-		</div>
-	</div>
-	</div>
-	</div>
 
 	<div class="row" style="padding:10px;">
 	<div class="col-md-12 col-xs-12">
 	<div class="row" >
 		<div class="col-md-6 card-cont">
-			<img src="{% static 'images/signagens.png' %}">
+			<img src="{% static 'images/waiting_room.jpg' %}">
 		</div>
 		<div class="col-md-6">
 			<h4 style="text-align:center;margin-top: 0px;color:#43CFE5;font-weight: 500;">Small Business want to get advantage of On-Premises Engagement/Branding  without any IT infrastructure</h4>
@@ -581,7 +565,7 @@ ScaleSlider();$Jssor$.$AddEvent(window,"load",ScaleSlider);$Jssor$.$AddEvent(win
     <div class="col-md-12 col-xs-12">
     <div class="row" >
         <div class="col-md-6 card-cont">
-            <img src="{% static 'images/signage_pdc.png' %}">
+            <img src="{% static 'images/hospital_tv.jpeg' %}">
         </div>
         <div class="col-md-6">
             <h4 style="text-align:center;margin-top: 0px;color:#43CFE5;font-weight: 500;">Improved ROI with  Personalized  Dynamic Campaigns</h4>
@@ -597,7 +581,7 @@ ScaleSlider();$Jssor$.$AddEvent(window,"load",ScaleSlider);$Jssor$.$AddEvent(win
     <div class="col-md-12 col-xs-12">
     <div class="row" >
         <div class="col-md-6 card-cont">
-            <img src="{% static 'images/signage_cse.png' %}">
+            <img src="{% static 'images/hospital_disc.png' %}">
         </div>
         <div class="col-md-6">
             <h4 style="text-align:center;margin-top: 0px;color:#43CFE5;font-weight: 500;">More Purchases with AI/ML Recommendation System based Up-sell, Cross-sell Campaigns</h4>
@@ -624,21 +608,7 @@ ScaleSlider();$Jssor$.$AddEvent(window,"load",ScaleSlider);$Jssor$.$AddEvent(win
     </div>
     </div>
 
-    <div class="row" style="padding:10px;">
-    <div class="col-md-12 col-xs-12">
-    <div class="row" >
-        <div class="col-md-6 card-cont">
-            <img src="{% static 'images/signage_hlc.jpg' %}">
-        </div>
-        <div  class="col-md-6">
-            <h4 style="text-align:center;margin-top: 0px;color:#43CFE5;font-weight: 500;">Augment the journey with Hyperlocal content for memorable Experience</h4>
-            <p class="info_sec" style="text-align:justify;padding:5px 15px;font-size:16px;">Location based Dynamic campaign feature supported by SignageServ Platform helps in-vehicle passengers to get relevant information about Local Events, Shopping, most happening Places, Offers to give a memorable Experience.</p>
-            <div style="text-align:justify;padding: :0px 15px;background-color:#43CFE5;width: 100%;height:0.8px;"></div>
-        </div>
-    </div>
-    </div>
-    </div>
-
+    
     <div class="row" style="padding:10px;">
     <div class="col-md-12 col-xs-12">
     <div class="row" >
@@ -869,7 +839,8 @@ This is unique feature to announcement will be played. This will take the attent
                         </div>
                 </div>
 
-               </div>
+ 
+                    </div>
                 </div>
 
     
@@ -1152,7 +1123,7 @@ This is unique feature to announcement will be played. This will take the attent
                     <a href="https://www.facebook.com/Adskite-1659890184252995/" class="scrollpoint sp-effect3"><i class="fa fa-facebook fa-lg"></i></a>
                 </div>
                 <div class="rights">
-		 Copyright (c) 2019 <a style="color: white;" href="https://www.signageserv.ai"><b>SignageServ.ai</b></a>, All Rights Reserved. Powered by 
+		 Copyright (c) 2019 <a style="color: white;" href="https://www.ihealthtv.com"><b>ihealthtv.com</b></a>, All Rights Reserved. Powered by 
      <a style="color: white;" href="https://www.adskite.com"><b>AdsKite India Pvt Ltd</b></a>.
                 </div>
             </div>
