@@ -321,7 +321,7 @@ class Contextual_Ads_Rule(models.Model):
 
         #publish rules
         return CAR_Device.publishMicPhoneRule(playerKey,json.dumps(classifiers,ensure_ascii=False),
-          players);
+          players,True);
 
       except ValueError:
         return {'statusCode':2,'status':'Invalid classifier list'}
@@ -583,7 +583,8 @@ class CAR_Device(models.Model):
     
     
     
-    def publishMicPhoneRule(player,rule,players=False):
+    def publishMicPhoneRule(player,rule,players=False,
+      pushClassifierIds=False):
 
       try:
 
@@ -618,10 +619,18 @@ class CAR_Device(models.Model):
             
             data_message = {
             "action":constants.fcm_handle_mic_rule,
-            "rule":json.dumps(rule),
             "delay_time":delayTime,
             "push_time":str(datetime.datetime.now())
             }
+
+            if(pushClassifierIds==False):
+              data_message['rule'] = json.dumps(rule)
+            else:
+              data_message['rule'] = json.dumps(classifiersList)
+              data_message['is_rule_id'] = True;
+
+            response['data_message_'+str(delayTime)] = data_message;
+            #response['pushClassifierIds'] = pushClassifierIds
 
             deviceFcmRegIds = deviceWithInfo['deviceFcmRegIds'];
             if(len(deviceFcmRegIds)>=1):
