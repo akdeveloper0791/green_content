@@ -41,11 +41,31 @@ body {
         <div style="padding:5px;text-align:center;font-size:12px;">
           <span style="color: aliceblue;"><i class="fa fa-envelope"></i>
        <a href="mailto:contact@adskite.com" style="text-decoration:none;font-size:12px;">contact@adskite.com</a> | <i class="fa fa-phone-square"></i> <a  href="tel:+91 9900819475" style="font-size:12px;">+91 9900819475</a></span>
-                  <br/>  <span style="color: aliceblue;">Copyright (c) 2019 <a style="color: white;font-size:12px;" href="https://www.signageserv.ai"><b>SignageServ.ai</b></a>, All Rights Reserved. Powered by <a style="color: white;font-size:12px;" href="https://www.adskite.com"><b>AdsKite India Pvt Ltd</b></a>.</span>
+                  <br/>
+                    <span  style="color: aliceblue;">Copyright (c) 2019 <a id="domine_name" style="color: white;font-size:12px;" href="https://www.signageserv.ai"><b>SignageServ.ai</b></a>, All Rights Reserved. Powered by <a style="color: white;font-size:12px;" href="https://www.adskite.com"><b>AdsKite India Pvt Ltd</b></a>.</span>
 
                     </div>
     </div>
   </div>
+  <script type="text/javascript">
+
+    var serverName = location.hostname;
+    var domine= document.getElementById("domine_name");
+      //local:192.168.0.106 server: www.ihealthtv.com  
+     if (serverName == 'www.ihealthtv.com')
+    {
+    domine.innerHTML="ihealthtv.com";
+    domine.href="https://www.ihealthtv.com";
+
+    }
+    else
+    {
+     domine.innerHTML="SignageServ.ai";
+     domine.href="https://www.signageserv.ai";
+   
+    } 
+
+  </script>
 
 
 

@@ -19,7 +19,9 @@ function dismissGraphs()
 	//displayAgeBarReports([],[]);	
 	}
 	
-	document.getElementById("web_graphs").style.display="none"; 	
+	document.getElementById("web_graphs").style.display="none"; 
+    document.getElementById("web_trends").style.display="none"; 
+		
 }
 
 function displayGraphs()
