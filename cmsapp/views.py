@@ -46,7 +46,11 @@ def web_search(request):
     return render(request,'webcontent.html')
 
 def signageserv(request):
-    return render(request,'signageserv.html')
+    server = request.META['SERVER_NAME'];
+    if server == 'ADSKITE':
+        return render(request,'ihealthtv.html')
+    else:
+       return render(request,'signageserv.html')
 
 def all_content(request):
     if request.user.is_authenticated():
