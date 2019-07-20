@@ -2,57 +2,65 @@ var campaignId;
 
 function initLocalUpload()
 {
-	if(info!=null && campaignInfoFile!=null)
+  if(info!=null && campaignInfoFile!=null)
   {
-    
-    displayInitUploadBusyDialog();
-  
+    try {
+      displayInitUploadBusyDialog();
+      $.ajax(
+      {
 
-    var xhr = new XMLHttpRequest();
-    var params = 'accessToken=web&info='+info+'&campaign='+campaignName+'&size='+size+
-    '&store_location='+storeLocation;
-    
-    xhr.onload = function() {
-        if (xhr.status === 200) {
-        	console.log(xhr.response);
-            var responseObj = JSON.parse(xhr.response);
-            // Upload succeeded. Do something here with the file info.
-            dismissInitBusyDialog();
+        type:'POST',
+        url: '/campaigns/init/',
+        headers: {            
+              'X-CSRFToken': csrf_token
+          },
+        data:{
+                  accessToken: 'web',
+                  info:info,
+                  campaign:campaignName,
+                  size:size,
+                  store_location:storeLocation,
+        },
+        
+        success: function(responseObj)
+         {
+          //console.log("responsein ajax"+JSON.stringify(responseObj));
+          
+           dismissInitBusyDialog();
 
             if(responseObj.statusCode == 0)
             {
                uploadPath = responseObj.save_path;
                campaignId= responseObj.cId;
-               console.log("uploadPath"+uploadPath);
+               //console.log("uploadPath"+uploadPath);
                uploadFileLocal(uploadFiles[0]);
             }else
             {
               dismissBusyDialog();
               swal(responseObj.status);
             }
-            
-        }
-        else {
-            var errorMessage = xhr.response || 'Unable to upload file';
-            // Upload failed. Do something here with the error.
-            console.log(errorMessage);
-            swal("unable to upload - "+errorMessage);
-        }
-    };
+         },
+      
+       error: function (jqXHR, exception) {
+        dismissInitBusyDialog();
+        swal(exception+jqXHR.responseText);
+       }
 
-    xhr.open('POST', '/campaigns/init/');
-     
-    xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
-
-    xhr.setRequestHeader("X-CSRFToken", csrf_token);
-    xhr.send(params);
-  
+      });
+      }
+        catch(Exception)
+        {
+          dismissInitBusyDialog();
+          swal(Exception.message);
+        }
   }else
   {
     swal("Please select campaign");
   }
   return false;
 }
+
+
 
 function uploadFileLocal(file) {
     

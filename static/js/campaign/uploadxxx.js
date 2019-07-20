@@ -140,8 +140,9 @@ function formatBytes(bytes,decimals) {
     
 
     xhr.onload = function() {
-      
+      console.log("uploadDXXX"+uploadDXXX);
         if (xhr.status === 200) {
+            console.log("uploadDXXX"+xhr.response);
             uploadDXXX = JSON.parse(xhr.response);
             
             initUpload();
@@ -362,22 +363,34 @@ function updateFileProgressBusyDialog(progress, updatedBytes = null)
 
 function initUpload()
 {
+  
   if(info!=null && campaignInfoFile!=null)
   {
-    
-    displayInitUploadBusyDialog();
-   
-   if(uploadDXXX!=null && Object.keys(uploadDXXX).length>=1)
+    if(uploadDXXX!=null && Object.keys(uploadDXXX).length>=1)
     {
+    try {
+      displayInitUploadBusyDialog();
+      $.ajax(
+      {
 
-    var xhr = new XMLHttpRequest();
-    var params = 'accessToken=web&info='+info+'&campaign='+campaignName+'&size='+size;
-    
-    xhr.onload = function() {
-        if (xhr.status === 200) {
-            var responseObj = JSON.parse(xhr.response);
-            // Upload succeeded. Do something here with the file info.
-            dismissInitBusyDialog();
+        type:'POST',
+        url: '/campaigns/init/',
+        headers: {            
+              'X-CSRFToken': csrf_token
+          },
+        data:{
+                  accessToken: 'web',
+                  info:info,
+                  campaign:campaignName,
+                  size:size,
+                  
+        },
+        
+        success: function(responseObj)
+         {
+          //console.log("responsein ajax"+JSON.stringify(responseObj));
+          
+           dismissInitBusyDialog();
 
             if(responseObj.statusCode == 0)
             {
@@ -389,32 +402,33 @@ function initUpload()
               dismissBusyDialog();
               swal(responseObj.status);
             }
-            
-        }
-        else {
-            var errorMessage = xhr.response || 'Unable to upload file';
-            // Upload failed. Do something here with the error.
-            
-            swal("unable to upload - "+errorMessage);
-        }
-    };
+         },
+      
+       error: function (jqXHR, exception) {
+        dismissInitBusyDialog();
+        swal(exception+jqXHR.responseText);
+       }
 
-    xhr.open('POST', '/campaigns/init/');
-     
-    xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
-
-    xhr.setRequestHeader("X-CSRFToken", csrf_token);
-    xhr.send(params);
-  }else
-   {
-         initUploadDxxx();
+      });
+      }
+        catch(Exception)
+        {
+          dismissInitBusyDialog();
+          swal(Exception.message);
+        }
     }
+     else
+     {
+      console.log("Inside init uploadDXXX");
+           initUploadDxxx();
+      }
   }else
   {
     swal("Please select campaign");
   }
   return false;
 }
+
 
 function checkAndUploadNextFile()
 {

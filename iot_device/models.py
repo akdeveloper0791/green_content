@@ -20,6 +20,7 @@ def dictfetchall(cursor):
         for row in cursor.fetchall()
     ]
 
+import secrets
 class IOT_Device(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL,on_delete=models.CASCADE)
     mac = models.CharField(max_length=125,blank=False,null=False,unique=False,db_index=True)
@@ -34,17 +35,21 @@ class IOT_Device(models.Model):
         ['mac','device_type']
         ]
 
-    def registerPlayer(data,userId):
+    def registerPlayer(data,userId,isThirdPlayer=False):
         try:
            data =  json.loads(data);
-           uniqueKey = str(uuid.uuid4().hex[:6].upper())+str(round(time.time() * 1000))+uuid.uuid4().hex[:6];
+           uniqueKey = secrets.token_urlsafe(32);
            try:
             player = IOT_Device.objects.get(mac=data['mac'],device_type=data["device_type"])
-            
+            if(isThirdPlayer and player.user_id!=userId):
+              return {'statusCode':6,'status':'Device has been assigned to different user,cannot assign to you'}
+            else:#if not third app then update the user id
+              player.user_id = userId;#if th
            except IOT_Device.DoesNotExist:
             player = IOT_Device(mac=data['mac'],key=uniqueKey);
-                   
-           player.user_id = userId;
+            player.user_id = userId      
+           
+           
            player.name = data["name"];
            player.device_type = data["device_type"];
            player.updated_at = timezone.now(); 
@@ -93,6 +98,13 @@ class IOT_Device(models.Model):
       try:
         player = IOT_Device.objects.get(id=playerId,
           key=playerKey);
+        return player;
+      except IOT_Device.DoesNotExist:
+        return False;
+
+    def getPlayer(playerKey):
+      try:
+        player = IOT_Device.objects.get(key=playerKey);
         return player;
       except IOT_Device.DoesNotExist:
         return False;
@@ -296,8 +308,23 @@ class Contextual_Ads_Rule(models.Model):
         name_count=Count('classifier')).filter(iot_device__user_id=userId,iot_device__device_type="Microphone").values('classifier');
       return {"statusCode":0,"classifiers":list(classifiers)};
     
-    def broadRulesByNames(playerKey,classifiers):
-      return {'status':'true'};
+    def broadcastRulesByClassiferNames(playerKey,classifiers,players=False):
+      ''' player key is the iot device key 
+          and players are DSP's which you want to push the classifers(optional)'''
+      try:
+        classifiers = json.loads(classifiers);
+        lowerClassifiers = lambda classifier: classifier.lower();
+        classifiers = list(map(lowerClassifiers,classifiers));
+        player = IOT_Device.getPlayer(playerKey);
+        if(player==False):
+          return {'statusCode':2,'status':'Invalid device'};
+
+        #publish rules
+        return CAR_Device.publishMicPhoneRule(playerKey,json.dumps(classifiers,ensure_ascii=False),
+          players,True);
+
+      except ValueError:
+        return {'statusCode':2,'status':'Invalid classifier list'}
 
 #contextual ads rules associated campaigns
 class CAR_Campaign(models.Model):
@@ -531,26 +558,42 @@ class CAR_Device(models.Model):
       else:
         return False;
 
-    def getDevicesToPublishMicPhoneRule(rule,player):
-        devices = CAR_Device.objects.exclude(
+    def getDevicesToPublishMicPhoneRule(rule,iotDeviceKey,players=False):
+        
+        try:
+          players=json.loads(players);
+          if(len(players)<=0):
+            players=False;
+        except Exception as ex:
+            players=False;
+
+        if(players==False):
+          devices = CAR_Device.objects.exclude(
+            player__fcm_id='null').exclude(
+            player__fcm_id__isnull=True).filter(
+            car__classifier__in=rule,car__iot_device__key=iotDeviceKey).values(
+            'player_id','player__name','player__fcm_id','player__mac','car__delay_time','car');
+        else:
+          devices=CAR_Device.objects.exclude(
           player__fcm_id='null').exclude(
           player__fcm_id__isnull=True).filter(
-          car__classifier__in=rule,car__iot_device__key=player).values(
+          player__mac__in=players,car__classifier__in=rule,car__iot_device__key=iotDeviceKey).values(
           'player_id','player__name','player__fcm_id','player__mac','car__delay_time','car');
         return list(devices);
     
     
     
-    def publishMicPhoneRule(player,rule):
+    def publishMicPhoneRule(player,rule,players=False,
+      pushClassifierIds=False):
 
       try:
 
         rule = json.loads(rule);
-        devicesToPublish = CAR_Device.getDevicesToPublishMicPhoneRule(rule,player);
+        devicesToPublish = CAR_Device.getDevicesToPublishMicPhoneRule(rule,player,players);
         if(len(devicesToPublish)>=1):
           #prepare device to publish
           response = {'statusCode':0,'includeThis':False};
-          response['devicesToPublish'] = devicesToPublish;
+          #response['devicesToPublish'] = devicesToPublish;
           #return response;
           deviceFcmRegIds = [];
           deviceFcmRegIdsWithInfo={};
@@ -576,23 +619,31 @@ class CAR_Device(models.Model):
             
             data_message = {
             "action":constants.fcm_handle_mic_rule,
-            "rule":json.dumps(rule),
             "delay_time":delayTime,
             "push_time":str(datetime.datetime.now())
             }
+
+            if(pushClassifierIds==False):
+              data_message['rule'] = json.dumps(rule)
+            else:
+              data_message['rule'] = json.dumps(classifiersList)
+              data_message['is_rule_id'] = True;
+
+            response['data_message_'+str(delayTime)] = data_message;
+            #response['pushClassifierIds'] = pushClassifierIds
 
             deviceFcmRegIds = deviceWithInfo['deviceFcmRegIds'];
             if(len(deviceFcmRegIds)>=1):
               if(len(deviceFcmRegIds)==1):
                 fcm_result = push_service.notify_single_device(registration_id=deviceFcmRegIds[0],data_message=data_message)
-                response['fcm_result'+str(delayTime)] = fcm_result;
+                #response['fcm_result'+str(delayTime)] = fcm_result;
               else:
                 fcm_result = push_service.notify_multiple_devices(registration_ids=deviceFcmRegIds,data_message=data_message)
-                response['fcm_result'+str(delayTime)] = fcm_result;
+                #response['fcm_result'+str(delayTime)] = fcm_result;
           
           #fcm_result = push_service.notify_single_device(registration_id='fPauOP7j_Mw:APA91bFsez98VG5EVXgiqXkrpZKwb3mYmhfGyqfj2YuMQ3esOZvIW_LoGr0eHhkjKoJKdok6ARXXfg9uryX53ryn6o2BkVZQozgjSTv5dLcrR5D8lZ23byUrn3qQTxME54pzhHPo5Itc',data_message=data_message)
           #response['fcm_Result']=fcm_result;
-          response['classifiersList'] = classifiersList;
+          #response['classifiersList'] = classifiersList;
           #update classifiers last notified time
           Contextual_Ads_Rule.updateAccessAt(classifiersList);
           return response;
