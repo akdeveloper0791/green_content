@@ -148,9 +148,51 @@ input:checked + .slider .off
   stroke-dashoffset: -124;
  }
 }
+</style>
 
-  
-  </style>
+<style>
+#snackbar {
+  visibility: hidden;
+  min-width: 250px;
+  margin-left: -125px;
+  background-color: #333;
+  color: #fff;
+  text-align: center;
+  border-radius: 2px;
+  padding: 16px;
+  position: fixed;
+  z-index: 1;
+  left: 50%;
+  bottom: 30px;
+  font-size: 15px;
+}
+
+#snackbar.show {
+  visibility: visible;
+  -webkit-animation: fadein 0.5s, fadeout 0.5s 2.5s;
+  animation: fadein 0.5s, fadeout 0.5s 2.5s;
+}
+
+@-webkit-keyframes fadein {
+  from {bottom: 0; opacity: 0;} 
+  to {bottom: 30px; opacity: 1;}
+}
+
+@keyframes fadein {
+  from {bottom: 0; opacity: 0;}
+  to {bottom: 30px; opacity: 1;}
+}
+
+@-webkit-keyframes fadeout {
+  from {bottom: 30px; opacity: 1;} 
+  to {bottom: 0; opacity: 0;}
+}
+
+@keyframes fadeout {
+  from {bottom: 30px; opacity: 1;}
+  to {bottom: 0; opacity: 0;}
+}
+</style>
 
 </head>
 <body >
@@ -322,6 +364,7 @@ input:checked + .slider .off
  <canvas id="gender_pie_reports_cnv_mobile" ></canvas>
 </div>
 
+<div id="snackbar">Please check your internet connection...</div>
 
 <div class="container">
   <div class="modal fade centered-modal" tabindex="-1" role="dialog" id="busy_dialog">
@@ -573,7 +616,16 @@ function display_reports(responseObj){
     	};
      	 xhr.onerror = function()
 		  {
-		    swal('No internet');
+        dismissBusyDialog();
+         if(isAuto)
+                  {
+                showSnackbar(); 
+                  }else
+                  {
+                      swal('No internet access, Please check internet connection');
+            
+                  }
+		  
 		  };
 
     xhr.open('POST', '/iot_device/get_v_metrics');
@@ -586,6 +638,7 @@ function display_reports(responseObj){
 		}
 		
 	}
+
 
 
   function export_viewer_matrics(){
@@ -638,7 +691,8 @@ function display_reports(responseObj){
        xhr.onerror = function()
       {
         dismissBusyDialog();
-        swal('No internet');
+
+        swal('No internet access, Please check internet connection');
       };
 
     xhr.open('POST', '/iot_device/exportViewerMetrics/');
