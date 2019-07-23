@@ -779,8 +779,8 @@ class Age_Geder_Metrics(models.Model):
          total=0;
          for key,value in metrics.items():
           total += value;
-         labels = ["Male","Female"];
-         data = [metrics['g_male__sum'],metrics['g_female__sum']];
+         labels = ["Female","Male"];
+         data = [metrics['g_female__sum'],metrics['g_male__sum']];
          return {'statusCode':0,'metrics':metrics,'total':total,'data':data,'labels':labels}
 
 class Geder_Age_Metrics(models.Model):
