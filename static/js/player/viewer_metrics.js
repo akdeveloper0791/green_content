@@ -314,7 +314,7 @@ function displayGenderPieCharts(labels,data)
 	      labels: labels,
 	      datasets: [{
 	        label: "in number",
-	        backgroundColor: ["#3e95cd", "#8e5ea2"],
+	        backgroundColor: ["#8e5ea2","#3e95cd"],
 	        data: data
 	      }]
 
