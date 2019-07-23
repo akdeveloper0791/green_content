@@ -58,6 +58,43 @@ text-align: center;
     max-width: 840px;
     margin: 20px auto 0 auto;
   	}
+  	section code
+  	{
+  	font: 500 90%/1 Roboto Mono,monospace;
+    word-break: break-word;
+  	color: #37474f;
+    padding: 1px 4px;
+  	}
+  	body, html {
+    color: #212121;
+    font: 400 16px/24px Roboto,sans-serif;
+    -moz-osx-font-smoothing: grayscale;
+    -webkit-font-smoothing: antialiased;
+    margin: 0;
+    -webkit-text-size-adjust: 100%;
+    -moz-text-size-adjust: 100%;
+    -ms-text-size-adjust: 100%;
+    text-size-adjust: 100%;
+}
+p {
+    display: block;
+    margin-block-start: 1em;
+    margin-block-end: 1em;
+    margin-inline-start: 0px;
+    margin-inline-end: 0px;
+    color: #212121;
+}
+strong {
+    font-weight: bold;
+}
+
+
+.kd-tabbed-horz, .kd-tabbed-vert, .ui-datasection-main {
+    background: #fff;
+    border: 1px solid #ebebeb;
+    font: 14px/20px Roboto,sans-serif;
+    margin: 16px 0;
+}
   </style>
 
 </head>
@@ -65,7 +102,7 @@ text-align: center;
 {% block body %}
 <body>
 
-<section style="padding-bottom:10px;" class="section-padding">
+<section style="padding-bottom:10px;padding-top: 70px;" class="section-padding">
 <div class='container'>
 <div class='rows'>
 <h4 class="text_in_blue">IOT Device API Documention version-<b>1.0</b></h4>
@@ -80,23 +117,70 @@ text-align: center;
 
 </section>
 
-<section id="registration" class="section-padding">
+<section id="registration" style="padding-bottom:10px;padding-top: 20px;" class="section-padding">
 	<div class="container">
-<h4>Iot device registration API:</h4>
+<h4>IOT device registration API:</h4>
 
-<p>Iot Device Registration request takes input of user login info and device info, and returns device regisration key. The user info is like user name password and device info as device mac address, device name..</p>
-<p>A Find Place request is an HTTP URL of the following form:</p>
+<p>Iot Device Registration request takes input of user login info and device info, and returns device regisration key. The user info is like user name password and device info as device mac address, device name.</p>
 
-	<pre style="font: 14px/20px Roboto Mono,monospace;
-    margin: 16px 0;
+<p>IOT device registration request is an HTTP URL of the following form:</p>
+
+	<pre style="font: Roboto Mono,monospace;
+	background-color: #f7f7f7;
+    margin: 8px 0;
     overflow-x: auto;
     padding: 8px;
     position: relative;">
 	<span class="pln">https</span><span class="pun">:</span><span class="com">https://www.signageserv.ai/iot_device/register_as_third_party/</span>
     </pre>
-	</div>
+<br/>
+    <p>where <code>output</code> may be the following values:</p>
+
+    <ul  style="list-style-type:circle;">
+  <li><code>json</code> (recommended) indicates output in JavaScript
+  Object Notation (JSON)</li>
+  </ul>
+
+  <p>Certain parameters are required to initiate a Device Registration request. As is standard in URLs.</p>
+
+  <p><strong>Required parameters</strong></p>
+
+  <ul style="list-style: disc outside;
+    list-style-type: disc;
+    list-style-position: outside;
+    list-style-image: initial;">
+  <li><code>user_email</code> —The text input specifying which user account and that is your account
+    <a href="https://www.signageserv.ai/accounts/signin/">Login Email id</a>.
+    This value identifies your account. See
+    <a href="https://www.signageserv.ai/">Register page</a>
+    for more information.</li>
+  <li><code>pwd</code> — The text input specifying which is user account password.</li>
+  <li><code>data </code> — The type of input is <code>JSON Object</code> as a string field. This contains following parameters.<br/>
+  	 <ul  style="list-style-type:circle;">
+   <li><code>name</code> — The text input specifying which is IOT device name.</li>
+     <li><code>mac</code> — The text input specifying which is IOT device mac address.</li>
+
+  </ul>
+
+  </li>
+</ul>
+
+<br/>
+<h4 id="find-place-examples">IOT device registration examples</h4>
+
+<p>The following example shows a iot device registration for "digital signage display".</p>
+
+</div>
 
 </section>
+
+<section class="kd-tabbed-horz ui-datasection-main" id="horzTab">
+	<article class="selected">
+	</article>
+
+</section>
+
+
 
 
 {% endblock %}

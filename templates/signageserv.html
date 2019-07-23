@@ -358,6 +358,16 @@ section
     width: 80px;
     height: 60px;
 }
+
+.parent {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.child {
+  flex: 1 0 21%; /* explanation below */
+  margin: 5px;
+ }
 </style>
 
   <div class="bg_section">
@@ -821,78 +831,75 @@ This is unique feature to announcement will be played. This will take the attent
            
                 </div>
                
-                
-   <div class="row">
-   <div class="col-md-14 col-sm-14 col-xs-14">
-              
-		<div class="col-md-4 col-sm-12 col-xs-12 ">
-			                                                
-			<div class="platforms" style="margin: 5px auto;">
-				 <img style="height:300px;width:200px;" src="{% static 'images/app/sm.png' %}"alt="Signage Manager" >
-			</div>
-			 <div class="platforms"  style="margin: 5px auto;">
+
+  <div class="row">
+      <div class="col-md-16 col-sm-16 col-xs-16">
+  <div class="parent">
+  <div class="child">
+  
+                                                      
+      <div class="platforms" style="margin: 5px auto;">
+         <img style="height:300px;width:180px;" src="{% static 'images/app/sm.png' %}"alt="Signage Manager" >
+      </div>
+       <div class="platforms"  style="margin: 5px auto;">
                             <a  class="btn btn-primary inverse scrollpoint sp-effect1" data-toggle=modal data-target="#myModal1">
                                 <i class="content fa fa-android fa-3x pull-left"></i>
                                 <span>Download Signage Controller for</span><br>
                                 <b>Android Mobile</b>
                             </a>
-			</div>
-		</div>
-		
-		 <div class="col-md-4  col-sm-12 col-xs-12 ">
-
-
-                        <div class="platforms"  style="margin: 5px auto;">
-                                 <img style="height:300px;width:200px;" src="{% static 'images/app/ss.png' %}"alt="SignageServ">
-                        </div>
-                         <div class="platforms"  style="margin: 5px auto;">
-                         <a  class="btn btn-primary inverse scrollpoint sp-effect2" data-toggle=modal data-target="#myModal2">
-                                <i class="content fa fa-tv fa-3x pull-left"></i>
+      </div>
+ 
+  </div>
+  <div class="child">
+                                                      
+      <div class="platforms" style="margin: 5px auto;">
+         <img style="height:300px;width:180px;" src="{% static 'images/app/ss.png' %}"alt="Signage Manager" >
+      </div>
+       <div class="platforms"  style="margin: 5px auto;">
+                            <a  class="btn btn-primary inverse scrollpoint sp-effect1" data-toggle=modal data-target="#myModal1">
+                                <i class="content fa fa-android fa-3x pull-left"></i>
                                 <span>Download SignageServ for</span><br>
                                 <b>Signage Player</b>
                             </a>
-                        </div>
-                </div>
-
-		<div class="col-md-4  col-sm-12 col-xs-12 ">
-
-
-                        <div class="platforms"  style="margin: 5px auto;">
-                                 <img style="height:300px;width:200px;" src="{% static 'images/app/soft_iot.jpg' %}" alt="soft IOT">
-                        </div>
-                         <div class="platforms"  style="margin: 5px auto;">
-                         <a class="btn btn-primary inverse scrollpoint sp-effect2" href="/download_softiot">
+      </div>
+ 
+  </div>
+  <div class="child">
+                                                      
+      <div class="platforms" style="margin: 5px auto;">
+         <img style="height:300px;width:180px;" src="{% static 'images/app/soft_iot.jpg' %}"alt="Signage Manager" >
+      </div>
+       <div class="platforms"  style="margin: 5px auto;">
+                            <a class="btn btn-primary inverse scrollpoint sp-effect2" href="/download_softiot">
                                 <i class="content fa fa-tablet fa-3x pull-left"></i>
                                 <span>Download Soft IOT for</span>
                                 <br><b>Android Devices</b>
                             </a>
-                        </div>
-                </div>
-
-                <div style="display: none;" class="col-md-4  col-sm-12 col-xs-12 ">
-
-
-                        <div class="platforms"  style="margin: 5px auto;">
-                                 <img style="height:300px;width:200px;" src="{% static 'images/app/soft_iot.jpg' %}" alt="soft IOT">
-                        </div>
-                         <div class="platforms"  style="margin: 5px auto;">
-                         <a class="btn btn-primary inverse scrollpoint sp-effect2" href="/api_documentation">
+      </div>
+  </div>
+  <div class="child">
+                                                      
+      <div class="platforms" style="margin: 5px auto;">
+         <img style="height:300px;width:180px;" src="{% static 'images/app/soft_api.jpg' %}"alt="Signage Manager" >
+      </div>
+       <div class="platforms"  style="margin: 5px auto;">
+                       <a class="btn btn-primary inverse scrollpoint sp-effect2" href="/api_documentation">
                                 <i class="content fa fa-tablet fa-3x pull-left"></i>
-                                <span>Download Soft IOT for</span>
-                                <br><b>Android Devices</b>
+                                 <span>Download SoftAPI's for</span><br>
+                                <b>IOT Devices</b>
                             </a>
-                        </div>
-                </div>
+      </div>
 
-               </div>
-                </div>
+  </div>
+</div>
+</div>
+</div>
 
-    
-        </section>
+ </section>
 
-        <style type="text/css">
+<style type="text/css">
           
-            /* carousel */
+    /* carousel */
       .media-carousel 
       {
         margin-bottom: 0;

@@ -215,7 +215,6 @@ function generateAgeBarCharts(dev_id,from_date,to_date,isAutoRefresh)
 		     displayGraphs();
              displayAgeBarReports(data['labels'],data['data']);
              
-            
 			}
 			else
 			{
@@ -223,8 +222,7 @@ function generateAgeBarCharts(dev_id,from_date,to_date,isAutoRefresh)
              {
              	swal(data['status']);
              }
-             
-                                    
+                                      
 			}
 
 		   },
@@ -232,7 +230,17 @@ function generateAgeBarCharts(dev_id,from_date,to_date,isAutoRefresh)
 		 error: function (jqXHR, exception) {
 		 	//ajaxindicatorstop();
 		 		dismissGraphsProgressbar();
-		 	alert(exception+jqXHR.responseText);
+
+		 		getErrorMessage(isAutoRefresh,jqXHR,exception);
+
+		 		  /*if(isAutoRefresh)
+                  {
+             	  showSnackbar(); 
+                  }else
+                  {
+                  	 alert(exception+jqXHR.responseText);
+                  }*/
+		 				
 		 }
 
 		});
@@ -242,6 +250,8 @@ function generateAgeBarCharts(dev_id,from_date,to_date,isAutoRefresh)
 		alert(Exception.message);
 	}
 }
+
+
 
 function generateGenderPieCharts(dev_id,from_date,to_date,isAutoRefresh)
 {
@@ -288,6 +298,7 @@ function generateGenderPieCharts(dev_id,from_date,to_date,isAutoRefresh)
 		
 		 error: function (jqXHR, exception) {
 		 		dismissGraphsProgressbar();
+		 	
 		 	//ajaxindicatorstop();
 		 	//alert(exception+jqXHR.responseText);
 		 }
@@ -314,7 +325,7 @@ function displayGenderPieCharts(labels,data)
 	      labels: labels,
 	      datasets: [{
 	        label: "in number",
-	        backgroundColor: ["#3e95cd", "#8e5ea2"],
+	        backgroundColor: ["#8e5ea2","#3e95cd"],
 	        data: data
 	      }]
 
@@ -373,6 +384,7 @@ function generateGenderAgeBarCharts(dev_id,from_date,to_date,isAutoRefresh)
 		
 		 error: function (jqXHR, exception) {
 		 		dismissGraphsProgressbar();
+		 
 		 	//ajaxindicatorstop();
 		 	//alert(exception+jqXHR.responseText);
 		 }
@@ -468,11 +480,8 @@ function generateGenderLineCharts(dev_id,from_date,to_date,isAutoRefresh)
 		 error: function (jqXHR, exception) {
 		 	//ajaxindicatorstop();
 		 		dismissTrendsProgressbar();
-		 	if(!isAutoRefresh)
-             {
-             alert(exception+jqXHR.responseText);
-             }
-		 	//alert(exception+jqXHR.responseText);
+
+		 		getErrorMessage(isAutoRefresh,jqXHR,exception);
 	
 		 }
 
@@ -543,4 +552,41 @@ document.getElementById("graphs_prog_bar").style.display="block";
 function dismissGraphsProgressbar()
 {
 document.getElementById("graphs_prog_bar").style.display="none";
+}
+
+
+// This function is used to get error message for all ajax calls
+function getErrorMessage(isAutoRefresh,jqXHR, exception) {
+    var msg = '';
+    if (jqXHR.status === 0) {
+        msg = 'Not connect.\nPlease check your internet connection.';
+    } else if (jqXHR.status == 404) {
+        msg = 'Requested page not found. [404]';
+    } else if (jqXHR.status == 500) {
+        msg = 'Internal Server Error [500].';
+    } else if (exception === 'parsererror') {
+        msg = 'Requested JSON parse failed.';
+    } else if (exception === 'timeout') {
+        msg = 'Time out error.';
+    } else if (exception === 'abort') {
+        msg = 'Ajax request aborted.';
+    } else {
+        msg = 'Uncaught Error.\n' + jqXHR.responseText;
+    }
+    if(isAutoRefresh)
+    {
+    	document.getElementById("snackbar").innerHTML=msg;
+    	showSnackbar();
+
+    }else
+    {
+     alert(msg);	
+    }
+   
+}
+
+function showSnackbar() {
+  var x = document.getElementById("snackbar");
+  x.className = "show";
+  setTimeout(function(){ x.className = x.className.replace("show", ""); }, 3000);
 }
