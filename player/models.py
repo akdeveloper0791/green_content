@@ -295,18 +295,32 @@ class Campaign_Reports(models.Model):
       # check for player
       player = postParams.get('player');
       metrics={};
+      params=[];
       if(player=="All"):
         #list all metrics
-        metrics = Campaign_Reports.objects.filter(player__user_id=userId,
-         created_at__range=[postParams.get('from_date'), postParams.get('to_date')]).values('player','campaign_name').annotate(t_duration = Sum('duration'),t_played=Sum('times_played'),campaign_id= Max('campaign_id'),last_played_at= Max('last_played_at'));
+        query = '''SELECT sum(cr.duration) as t_duration, sum(cr.times_played) as t_played, cr.campaign_id as campaign_id, max(last_played_at) as last_played_at, cr.campaign_name as campaign_name, player.name as player__name, (user.first_name || " "||user.last_name) as campaign_owner FROM player_campaign_reports as cr 
+        INNER JOIN player_player as player ON cr.player_id = player.id 
+        LEFT JOIN cmsapp_multiple_campaign_upload as campaigns ON cr.campaign_id=campaigns.id
+        LEFT JOIN auth_user as user ON campaigns.campaign_uploaded_by = user.id
+        WHERE player.user_id = %s AND cr.created_at BETWEEN %s AND %s GROUP BY cr.player_id,cr.campaign_name'''
+        
+        params = [userId,postParams.get('from_date'),postParams.get('to_date')];
         
       elif(Player.isMyPlayer(player,userId)):
-        metrics = Campaign_Reports.objects.filter(player_id=player,
-          created_at__range=[postParams.get('from_date'), postParams.get('to_date')]).values('campaign_name').annotate(t_duration = Sum('duration'),t_played=Sum('times_played'),campaign_id= Max('campaign_id'),last_played_at= Max('last_played_at'));
+        query = '''SELECT sum(cr.duration) as t_duration, sum(cr.times_played) as t_played, cr.campaign_id as campaign_id, max(last_played_at) as last_played_at, cr.campaign_name as campaign_name, player.name as player__name FROM player_campaign_reports as cr 
+        INNER JOIN player_player as player ON cr.player_id = player.id 
+        WHERE player.user_id = %s AND cr.player_id = %s AND (cr.created_at BETWEEN %s AND %s) GROUP BY cr.player_id,cr.campaign_name'''
+        params = [userId,player,postParams.get('from_date'),postParams.get('to_date')];
 
+        
+      with connection.cursor() as cursor:
+        cursor.execute(query,params);
+        metrics = dictfetchall(cursor);
+      
       if(len(metrics)>=1):
         if(exportReports==False):
-          return {'statusCode':0,'metrics':list(metrics.values('campaign_name','t_played','t_duration','player__name','campaign_id','last_played_at')),'queryset.query':str(metrics.query)};
+          return {'statusCode':0,'metrics':metrics}
+          #return {'statusCode':0,'metrics':list(metrics.values('campaign_name','t_played','t_duration','player__name','campaign_id','last_played_at')),'queryset.query':str(metrics.query),'params':params};
         else:
           return {'statusCode':0,'metrics':(metrics.values_list('player__name','campaign_name','t_played','t_duration','last_played_at')),'queryset.query':str(metrics.query)};
       else:

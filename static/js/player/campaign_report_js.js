@@ -123,6 +123,7 @@ function display_reports(responseObj){
     
     xhr.onload = function() {
         if (xhr.status === 200) {
+            console.log("inside view response "+xhr.response);
             
             var responseObj = JSON.parse(xhr.response);
             // Upload succeeded. Do something here with the file info.

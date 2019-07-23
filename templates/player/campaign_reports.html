@@ -6,6 +6,8 @@
 </script>
 </head>
 <body >
+
+
 {% block header %} {% include 'header.html' %} {% endblock %}
 
 {% block body %}
@@ -61,6 +63,21 @@ td,th {
 
  <!--      </div> -->
     </div>
+
+     <div class='col-sm-4'>
+      <!-- <div class="form-group"> -->
+         <label>Partners</label>
+         <select name="Item_1" class="form-control" id="dev_id">
+          <option value='All'>All</option>
+          {% for partner in partners %}
+            <option value='{{ dev.id }}'>{{ partner }}</option>
+        {% endfor %}      
+       </select>
+
+ <!--      </div> -->
+    </div>
+
+    
 </div>
   </div>
 			<div class="rows">
@@ -72,7 +89,7 @@ td,th {
 			  	</div>
 			</div>
 </div>
-<!-- {{ devices }} -->
+
 
 <!-- table -->
 <div class="container" style="overflow-x: auto;">
@@ -94,7 +111,7 @@ td,th {
 </div>
 <!-- end table -->
 
-
+ 
 
 <!-- busy loader -->
 

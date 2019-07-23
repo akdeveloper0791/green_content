@@ -102,7 +102,7 @@ def registerAsThirdParty(request):
                 return JsonResponse({'statusCode':3,'status':'Invalid password, please enter valid password'});
 
         else:
-            return JsonResponse({'statusCode':2,'status':
+            return JsonResponse({'statusCode':3,'status':
                 'Invalid user info, no user found with the email, please register','userEmail':request.POST.get('user_email')})
                  
 @api_view(["POST"])
@@ -295,7 +295,7 @@ import datetime
 @api_view(['POST'])
 def metrics(request):    
     if('file' in request.FILES):
-     player = IOT_Device.getPlayer(request.POST.get('player'),request.POST.get('p_key'))
+     player = IOT_Device.getPlayer(request.POST.get('p_key'))
      if(player!=False):
         playerMac = player.mac;
 

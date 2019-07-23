@@ -281,7 +281,7 @@ class GcGroupMembers(models.Model):
                 "Invalid session, please login"};
         try:
             with connection.cursor() as cursor:
-                query = '''SELECT gc_group.id as g_id,gc_group.name as g_name,user.email as user_name,member.status as status FROM 
+                query = '''SELECT gc_group.id as g_id,gc_group.name as g_name,user.email as user_email,(user.first_name || " " || user.last_name) as user_name ,member.status as status FROM 
                 group_gcgroupmembers as member INNER JOIN group_gcgroups as gc_group ON member.gc_group_id = gc_group.id 
                 INNER JOIN auth_user as user on gc_group.user_id = user.id WHERE (member.member_id = %s)'''
                 cursor.execute(query,[userId]);
@@ -314,6 +314,14 @@ class GcGroupMembers(models.Model):
             return {'statusCode':2,'status':'Group not found'};
         except Exception as e:
             return {'statusCode':3,'status':'Error -'+str(e)};
+    
+    def getMyActivePartners(userId):
+        partners = GcGroupMembers.objects.filter(
+            member_id=userId,status=1);
+        if(partners.exists()):
+            return {'statusCode':0,'partners':list(partners.values('gc_group__user__id','gc_group__user__first_name' , 'gc_group__user__last_name'))}
+        else:
+            return {'statusCode':2,'status':'No partners found'};
 
 class GroupCampaigns(models.Model):
     gc_group = models.ForeignKey('group.GcGroups',on_delete=models.CASCADE)
