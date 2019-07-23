@@ -204,7 +204,7 @@ function display_reports(responseObj){
        //dismissInitBusyDialog();
        dismissBusyDialog();
         if (xhr.status === 200) {
-            
+           console.log("Inside export campaign response "+xhr.response); 
           var blob = new Blob([xhr.response], { type: 'octet/stream' });
 
           var link = document.createElement('a');
@@ -238,7 +238,7 @@ function display_reports(responseObj){
     xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
 
     xhr.setRequestHeader("X-CSRFToken", csrf_token );
-    xhr.responseType = "arraybuffer";
+    //xhr.responseType = "arraybuffer";
     xhr.send(params);
     }
  }

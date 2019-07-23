@@ -522,20 +522,21 @@ def exportCampaignReportsToExcel(metrics):
                 coloumn +=1;
             row +=1;
 
-
+    
     workbook.close() 
     output.seek(0);
-
-    
-
     filename = 'Campaign_Reports_{}.xlsx'.format(str(round(time.time() * 1000))+uuid.uuid4().hex[:6]);
 
+    '''emailData = output.read();
+    return emailCampaignReports(filename,emailData);
+    '''
     response = HttpResponse(
              (output),
             content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
         )
     response['Content-Disposition'] = 'attachment; filename=%s' % filename
-
+    
+    
     return response;
 
 import csv
@@ -731,5 +732,19 @@ def getPlayers(request):
         return JsonResponse(result); 
     
 
-
+from django.core import mail
+from django.core.mail import EmailMessage
+def emailCampaignReports(fileName,excelFile):
+    try:
+        with mail.get_connection() as connection:
+            from_email = "contact@adskite.com"
+            msg = EmailMessage("Campaign reports", "Message", to=['vineethkumar0791@gmail.com'], from_email=from_email,
+                        connection=connection);
+            msg.content_subtype = 'html'
+            msg.attach(fileName, excelFile, 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
+            response = msg.send();
+            
+            return JsonResponse({'response':response})
+    except Exception as e:
+            return JsonResponse({'error':"Error in sending notifications to assigned"+str(e)});
     
