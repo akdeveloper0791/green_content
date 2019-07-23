@@ -496,7 +496,7 @@ def exportCampaignReportsToExcel(metrics):
         worksheet.set_column('A:A', 50)
         worksheet.write('A1', "No reports found")
     else:   
-        coloumn_names = ['Device Name', 'Campaign', 'Number Of times played', 'Total duration(Sec)','Last played at'] 
+        coloumn_names = ['Partner','Device Name', 'Campaign', 'Number Of times played', 'Total duration(Sec)','Last played at'] 
         row=0;coloumn=0;
         for coloumnName in coloumn_names:
             worksheet.write(row,coloumn,coloumnName,cell_format);
@@ -506,16 +506,19 @@ def exportCampaignReportsToExcel(metrics):
         row=1;coloumn=0;
         for report in metrics:
             coloumn=0;
-            for value in (report):
-                if(coloumn==4):#date value
-                    value = value.replace(tzinfo=None)
-                    value = value + timedelta(minutes=330)#add indian time zone
+            for value in report.values():
+                '''if(coloumn==5):#date value
+                    #value = value.replace(tzinfo=None)
+                    #value = value + timedelta(minutes=330)#add indian time zone
                     date_format = workbook.add_format({'num_format': 'dd/mm/yy HH:mm:ss'})
                     date_format.set_align("center");
                     date_format.set_align('vcenter');
                     worksheet.write(row, coloumn,value,date_format);
                 else:
-                    worksheet.write(row, coloumn,value,cell_format);
+                    worksheet.write(row, coloumn,value,cell_format);'''
+                if(coloumn>=6):
+                    continue;
+                worksheet.write(row, coloumn,value,cell_format);
                 coloumn +=1;
             row +=1;
 

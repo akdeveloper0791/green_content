@@ -1,3 +1,4 @@
+var selectedFilterPartners = [];
 function displayInitUploadBusyDialog()
 {
   $("#busy_dialog").modal();
@@ -41,8 +42,11 @@ function display_reports(responseObj){
          
          var date = new Date(metrics.created_at);
          date = date.getDate()+"-"+date.getMonth()+"-"+date.getFullYear() + " "+date.getHours()+":"+date.getMinutes()+":"+date.getSeconds();
-
+         
          row = table.insertRow(-1);
+         var cell = row.insertCell(-1);
+         cell.innerHTML = metrics.campaign_owner;
+
          var cell = row.insertCell(-1);
          cell.innerHTML = metrics.player__name;
          cell.style.color = "#5FCF80";
@@ -99,7 +103,7 @@ function display_reports(responseObj){
  
  function listCampaignReports()
  {
-  console.log("listCampaignReports");
+  
     $("#reports_table").find("tr:not(:first)").remove();
 
     var dev_id = document.getElementById('dev_id').value;
@@ -120,10 +124,14 @@ function display_reports(responseObj){
        displayInitUploadBusyDialog();
        var xhr = new XMLHttpRequest();
     var params = 'accessToken=web&player='+dev_id+'&from_date='+from_date+'&to_date='+to_date;
+    if(selectedFilterPartners.length>=1)
+    {
+      params += '&partners='+JSON.stringify(selectedFilterPartners);
+    }
     
+
     xhr.onload = function() {
         if (xhr.status === 200) {
-            console.log("inside view response "+xhr.response);
             
             var responseObj = JSON.parse(xhr.response);
             // Upload succeeded. Do something here with the file info.
@@ -188,7 +196,10 @@ function display_reports(responseObj){
        displayInitUploadBusyDialog();
        var xhr = new XMLHttpRequest();
        var params = 'accessToken=web&player='+dev_id+'&from_date='+from_date+'&to_date='+to_date;
-    
+       if(selectedFilterPartners.length>=1)
+        {
+          params += '&partners='+JSON.stringify(selectedFilterPartners);
+        }
     xhr.onload = function() {
        //dismissInitBusyDialog();
        dismissBusyDialog();
@@ -230,4 +241,19 @@ function display_reports(responseObj){
     xhr.responseType = "arraybuffer";
     xhr.send(params);
     }
+ }
+
+ function onPartnerSelect(selectButton)
+ {
+   var selected = selectButton.value;
+   selectedFilterPartners = [];
+   if(selected=="All")
+   {
+    
+   }else
+   {
+    selectedFilterPartners.push(selected);
+   }
+   console.log("On partner selected "+selected);
+   console.log("Selected partners list"+JSON.stringify(selectedFilterPartners));
  }
