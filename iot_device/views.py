@@ -295,7 +295,7 @@ import datetime
 @api_view(['POST'])
 def metrics(request):    
     if('file' in request.FILES):
-     player = IOT_Device.getPlayer(request.POST.get('player'),request.POST.get('p_key'))
+     player = IOT_Device.getPlayer(request.POST.get('p_key'))
      if(player!=False):
         playerMac = player.mac;
 
