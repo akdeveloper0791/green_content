@@ -102,7 +102,7 @@ def registerAsThirdParty(request):
                 return JsonResponse({'statusCode':3,'status':'Invalid password, please enter valid password'});
 
         else:
-            return JsonResponse({'statusCode':2,'status':
+            return JsonResponse({'statusCode':3,'status':
                 'Invalid user info, no user found with the email, please register','userEmail':request.POST.get('user_email')})
                  
 @api_view(["POST"])

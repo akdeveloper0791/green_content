@@ -100,7 +100,8 @@
        {
          ajaxindicatorstop();
         
-      
+        console.log("Assigned groups"+JSON.stringify(data));
+
         var statusCode = data['statusCode'];
         if(statusCode==0 || statusCode==1)
         {
@@ -178,20 +179,8 @@
             row = table.insertRow(-1);
             
             var cell = row.insertCell(-1);
-            // var groupInfoDiv = "<div><h6> ("+info.user_name+")</h6> <h4 style='color:blue'>"+info.g_name+" </h4> <hr /> </div>";    
-            // cell.innerHTML = groupInfoDiv;
-            // cell.style.width='100%';
-
-            // var approveCell = row.insertCell(-1);
-            // approveCell.innerHTML = "<input type='image' src='{% static "images/ic_group_member_active.png" %}' onclick='mgUpdateGroupStatus("+i+","+info['g_id']+",1)' title='Approve' alt='Approve'/>";
-            // approveCell.align='left';
-            
-
            
-            // var blockCell = row.insertCell(-1);
-            // blockCell.innerHTML = "<input type='image' src='{% static "images/ic_group_member_blocked.png" %}' onclick='mgUpdateGroupStatus("+i+","+info['g_id']+",-1)' title='block',alt='block'/>";
-
-               var groupInfoDiv = '<div class="col-md-12 col-xs-12" style="padding:0px;border-bottom: 1px solid darkgrey;"><div class="rows"><div class="col-md-5 col-xs-3" style="padding:0px;position: relative;overflow: auto;"><p style="color:blue;cursor:pointer">'+info.g_name+'</p></div><div class="col-md-5 col-xs-7" style="padding:0px;position: relative;overflow: auto;"><p>'+info.user_name+'</p></div><div class="col-md-1 col-xs-1" style="padding:0px;"><input type="image" src="{% static 'images/ic_group_member_active.png' %}"  onclick="mgUpdateGroupStatus('+i+','+info["g_id"]+',1)" title="Approve" alt="Approve"/></div><div class="col-md-1 col-xs-1" style="padding:0px;"><input type="image" src="{% static 'images/ic_group_member_blocked.png' %}"  onclick="mgUpdateGroupStatus('+i+','+info["g_id"]+',-1)" title="block" alt="block"/></div></div></div>';
+               var groupInfoDiv = '<div class="col-md-12 col-xs-12" style="padding:0px;border-bottom: 1px solid darkgrey;"><div class="rows"><div class="col-md-5 col-xs-3" style="padding:0px;position: relative;overflow: auto;"><p style="color:blue;cursor:pointer">'+info.user_name+'</p></div><div class="col-md-5 col-xs-7" style="padding:0px;position: relative;overflow: auto;"><p>'+info.user_email+'</p></div><div class="col-md-1 col-xs-1" style="padding:0px;"><input type="image" src="{% static 'images/ic_group_member_active.png' %}"  onclick="mgUpdateGroupStatus('+i+','+info["g_id"]+',1)" title="Approve" alt="Approve"/></div><div class="col-md-1 col-xs-1" style="padding:0px;"><input type="image" src="{% static 'images/ic_group_member_blocked.png' %}"  onclick="mgUpdateGroupStatus('+i+','+info["g_id"]+',-1)" title="block" alt="block"/></div></div></div>';
 
                 cell.innerHTML = groupInfoDiv;
             
@@ -250,14 +239,9 @@
             cell.style.width='100%';
             cell.style.cursor="pointer";
             
-            // var groupInfoDiv = "<div><h6> ("+info.user_name+")</h6> <h4 onclick='mgGetMemberGroupInfo("+info['g_id']+")' style='color:blue'>"+info.g_name+" </h4> <hr /> </div>";
             
-            // cell.innerHTML = groupInfoDiv;
 
-            // var blockCell = row.insertCell(-1);
-            // blockCell.innerHTML = "<input type='image' src='{% static "images/ic_group_member_blocked.png" %}' onclick='mgDisplayBlockGroupAlert("+i+","+info['g_id']+",-1)' title='block',alt='block'/>";
-
-             var groupInfoDiv = '<div class="col-md-12 col-xs-12" style="padding:0px;border-bottom: 1px solid darkgrey;"><div class="rows"><div class="col-md-5 col-xs-3" style="padding:0px;position: relative;    overflow: auto;"><a onclick="mgGetMemberGroupInfo('+info["g_id"]+')" >'+info.g_name+'</a></div><div class="col-md-5 col-xs-7" style="padding:0px;position:relative;overflow:auto;"><p>'+info.user_name+'</p></div><div class="col-md-2 col-xs-1" style="padding:0px;"><input type="image" src="{% static 'images/ic_group_member_blocked.png' %}"  onclick="mgDisplayBlockGroupAlert('+i+','+info["g_id"]+',-1)" title="block" alt="block"/></div></div></div>';
+             var groupInfoDiv = '<div class="col-md-12 col-xs-12" style="padding:0px;border-bottom: 1px solid darkgrey;"><div class="rows"><div class="col-md-5 col-xs-3" style="padding:0px;position: relative;    overflow: auto;"><a onclick="mgGetMemberGroupInfo('+info["g_id"]+')" >'+info.user_name+'</a></div><div class="col-md-5 col-xs-7" style="padding:0px;position:relative;overflow:auto;"><p>'+info.user_email+'</p></div><div class="col-md-2 col-xs-1" style="padding:0px;"><input type="image" src="{% static 'images/ic_group_member_blocked.png' %}"  onclick="mgDisplayBlockGroupAlert('+i+','+info["g_id"]+',-1)" title="block" alt="block"/></div></div></div>';
 
            
 
@@ -315,25 +299,14 @@
             row = table.insertRow(-1);
     
             var cell = row.insertCell(-1);
-            // var groupInfoDiv = "<div><h6> ("+info.user_name+")</h6> <h4 style='color:blue'>"+info.g_name+" </h4> <hr /> </div>";
-            // cell.innerHTML = groupInfoDiv;
-            // cell.style.width='100%';
+            
 
-            // var approveCell = row.insertCell(-1);
-            // approveCell.innerHTML = "<input type='image' src='{% static "images/ic_group_member_active.png" %}' onclick='mgUpdateGroupStatus("+i+","+info['g_id']+",1)'/>";
-            // approveCell.align='left';
-
-            var groupInfoDiv = '<div class="col-md-12 col-xs-12" style="padding:0px;border-bottom: 1px solid darkgrey;"><div class="rows"><div class="col-md-5 col-xs-3" style="padding:0px;position: relative;overflow: auto;"><p style="color:blue;cursor:pointer">'+info.g_name+'</p></div><div class="col-md-5 col-xs-7" style="padding:0px;position: relative;overflow: auto;"><p>'+info.user_name+'</p></div><div class="col-md-2 col-xs-1" style="padding:0px;"><input type="image" src="{% static 'images/ic_group_member_active.png' %}"  onclick="mgUpdateGroupStatus('+i+','+info["g_id"]+',1)" title="Approve" alt="Approve"/></div></div></div>';
+            var groupInfoDiv = '<div class="col-md-12 col-xs-12" style="padding:0px;border-bottom: 1px solid darkgrey;"><div class="rows"><div class="col-md-5 col-xs-3" style="padding:0px;position: relative;overflow: auto;"><p style="color:blue;cursor:pointer">'+info.user_name+'</p></div><div class="col-md-5 col-xs-7" style="padding:0px;position: relative;overflow: auto;"><p>'+info.user_email+'</p></div><div class="col-md-2 col-xs-1" style="padding:0px;"><input type="image" src="{% static 'images/ic_group_member_active.png' %}"  onclick="mgUpdateGroupStatus('+i+','+info["g_id"]+',1)" title="Approve" alt="Approve"/></div></div></div>';
 
            
 
              cell.innerHTML = groupInfoDiv;
 
-
-
-            
-
-            
             
           }  
         }
