@@ -47,7 +47,7 @@ def web_search(request):
 
 def signageserv(request):
     server = request.META['SERVER_NAME'];
-    #SERVER:wwww.ihealthtv.com  LOCAL:ADSKITE
+    #SERVER:www.ihealthtv.com  LOCAL:ADSKITE
     if server == 'www.ihealthtv.com':
         return render(request,'ihealthtv.html')
     else:
@@ -1871,3 +1871,6 @@ def downloadSoftIOT(request):
             return response
     raise Http404
     #return JsonResponse({'status':'inside download soft iot'});
+
+def apiDocumentation(request):
+    return render(request,'api_documentation.html')

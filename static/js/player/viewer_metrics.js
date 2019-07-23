@@ -273,8 +273,7 @@ function generateGenderPieCharts(dev_id,from_date,to_date,isAutoRefresh)
             if(data['statusCode']==0)
 		    {
              displayGenderPieCharts(data['labels'],data['data']);
-            
-			}
+            }
 			else
 			{
              if(!isAutoRefresh)
@@ -318,6 +317,7 @@ function displayGenderPieCharts(labels,data)
 	        backgroundColor: ["#3e95cd", "#8e5ea2"],
 	        data: data
 	      }]
+
 	    },
 	    options: {
 	      title: {
