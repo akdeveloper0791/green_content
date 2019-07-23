@@ -94,8 +94,10 @@ urlpatterns = [
         url(r'^campaign_upload_api/$', views.campaign_upload_api, name='campaign_upload_api'),
 
         url(r'^campaign_upload_files_api/$', views.campaign_upload_files_api, name='campaign_upload_files_api'),
+
         path('download_softiot',views.downloadSoftIOT,name="downloadSoftIOT"),
 
+        url(r'^api_documentation/', views.apiDocumentation, name='apiDocumentation'),
 
 
 
