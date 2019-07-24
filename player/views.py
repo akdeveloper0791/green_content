@@ -447,11 +447,12 @@ def campaignReports(request):
         if(activePartnersResponse['statusCode']==0):
             activePartners = activePartnersResponse['partners'];
 
-        return render(request,'player/campaign_reports.html',{'devices':devices,'partners':activePartners,'user_id':request.user.id})
+        return render(request,'player/campaign_reports.html',{'devices':devices,'partners':activePartners,'user_id':request.user.id,
+            'user_email':request.user.email})
     else:
         return render(request,'signin.html');
 
-
+import json
 @api_view(['POST'])
 def exportCampaignReports(request):   
     if(request.method == 'POST'):
@@ -468,10 +469,22 @@ def exportCampaignReports(request):
                     return JsonResponse(
                         {'statusCode':2,'status':"Invalid accessToken please login"});
             result = Campaign_Reports.getCampaignReports(secretKey,isUserId,postParams,True);
+            isSendEmail = True if 'emailPartners' in postParams else False
+
             if(result['statusCode']==0):
-                return exportCampaignReportsToExcel(result['metrics']);
+                if(isSendEmail):
+                    emails = json.loads(postParams.get('emailPartners'));
+                    fileName = str(postParams.get('from_date'))+"-"+str(postParams.get('to_date'))+'.xlsx';
+                    return exportCampaignReportsToExcel(result['metrics'],emails,fileName);
+                else:
+                    return exportCampaignReportsToExcel(result['metrics']);
             else:
-                return exportCampaignReportsToExcel(False);
+                if(isSendEmail):
+                  return JsonResponse(result);
+                else:
+                  return exportCampaignReportsToExcel(False);
+                
+                
         else:
           return JsonResponse({'statusCode':6,
             'status':'No data available'})
@@ -482,7 +495,7 @@ from datetime import timedelta
 import uuid 
 import time
 
-def exportCampaignReportsToExcel(metrics):
+def exportCampaignReportsToExcel(metrics,emails=False,filename = None):
     output = io.BytesIO()
     workbook = xlsxwriter.Workbook(output);
     worksheet = workbook.add_worksheet();
@@ -525,19 +538,19 @@ def exportCampaignReportsToExcel(metrics):
     
     workbook.close() 
     output.seek(0);
-    filename = 'Campaign_Reports_{}.xlsx'.format(str(round(time.time() * 1000))+uuid.uuid4().hex[:6]);
-
-    '''emailData = output.read();
-    return emailCampaignReports(filename,emailData);
-    '''
-    response = HttpResponse(
+    if(filename is None):
+        filename = 'Campaign_Reports_{}.xlsx'.format(str(round(time.time() * 1000))+uuid.uuid4().hex[:6]);
+    if(emails==False):
+        response = HttpResponse(
              (output),
             content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
         )
-    response['Content-Disposition'] = 'attachment; filename=%s' % filename
-    
-    
-    return response;
+        response['Content-Disposition'] = 'attachment; filename=%s' % filename
+        return response;
+    else:
+        emailData = output.read();
+        return emailCampaignReports(filename,emailData,emails);
+
 
 import csv
 def exportCampaignReportsToCsv(metrics):
@@ -734,17 +747,23 @@ def getPlayers(request):
 
 from django.core import mail
 from django.core.mail import EmailMessage
-def emailCampaignReports(fileName,excelFile):
+from signagecms import constants
+
+def emailCampaignReports(fileName,excelFile,emails):
     try:
         with mail.get_connection() as connection:
-            from_email = "contact@adskite.com"
-            msg = EmailMessage("Campaign reports", "Message", to=['vineethkumar0791@gmail.com'], from_email=from_email,
+            from_email = constants.EMAIL_HOST_USER
+            
+            msg = EmailMessage("Campaign reports", "Message", to=emails, from_email=from_email,
                         connection=connection);
             msg.content_subtype = 'html'
             msg.attach(fileName, excelFile, 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
             response = msg.send();
             
-            return JsonResponse({'response':response})
+            return JsonResponse({'statusCode':0,'status':'Reports have been emailed successfully'})
     except Exception as e:
-            return JsonResponse({'error':"Error in sending notifications to assigned"+str(e)});
+            error = str(e);
+            if('10060' in error):
+                return JsonResponse({'statusCode':3,'status':'Unable to connect to server, please check yout internet connection'})
+            return JsonResponse({'statusCode':3,'status':"Error in sending reports"+str(e)});
     

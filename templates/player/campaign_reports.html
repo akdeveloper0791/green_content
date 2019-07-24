@@ -88,6 +88,8 @@ td,th {
 
           <input type="button" value="Export" class="gradient-button gradient-btn" style="padding: 8px 20px;" onclick="exportCampaignReports()">
 
+          <input type="button" value="Email" class="gradient-button gradient-btn" style="padding: 8px 20px;" onclick="selectEmail()">
+
 			  	</div>
 			</div>
 </div>
@@ -113,7 +115,50 @@ td,th {
 </div>
 <!-- end table -->
 
- 
+ <!-- div to display partners to send email   -->
+    <!-- The Modal -->
+  <div class="modal" id="partners" >
+    <div class="modal-dialog">
+      <div class="modal-content">
+      
+        <!-- Modal Header -->
+        <div class="modal-header">
+         <p style="color:#4CAF50;text-align: center;font-weight: 700;font-size:26px;">Select Partners</p>      
+        </div>
+         <!--  </div> 
+        </div> -->
+        
+        <!-- Modal body -->
+        <div class="modal-body">
+          <input type="hidden" id="player_campaign_info_id" />
+          <div id="campaigns_info">
+            <br/>
+                      
+           <div id="player_info_campaigns" class="table-responsive" style="margin-top:2px;">
+            <table class="info table-hover">
+              <tr class="campaign_row"><input onchange= "onparnterSelectedEmail(this)" id= "{{user_email}}" type="checkbox" >Self</input></tr></br>
+              {% for partner in partners %}
+               <tr class="campaign_row">
+                <td><input type="checkbox" id="{{partner.gc_group__user__email}}" value="Partner" onchange= "onparnterSelectedEmail(this)">{{ partner.gc_group__user__first_name }} {{ partner.gc_group__user__last_name }}</input>
+              
+                <td>
+               </tr>
+              {% endfor%}
+            </table>
+           </div>
+          </div>
+        </div>
+  <!-- Modal footer -->
+        <div class="modal-footer"><center>
+          <button type="button" class="btn btn-danger" data-dismiss="modal" id
+          ="player_campaign_info_close" onclick="closeEmail()">Close</button> 
+          <button type="button" class="btn btn-success" data-dismiss="modal" onclick="sendReportsInEmail()">Email</button></center>
+        </div>
+        
+      </div>
+    </div>
+  </div>
+
 
 <!-- busy loader -->
 

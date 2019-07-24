@@ -1,4 +1,5 @@
 var selectedFilterPartners = [];
+var selectedParetnersToEmail = [];
 function displayInitUploadBusyDialog()
 {
   $("#busy_dialog").modal();
@@ -238,7 +239,7 @@ function display_reports(responseObj){
     xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
 
     xhr.setRequestHeader("X-CSRFToken", csrf_token );
-    //xhr.responseType = "arraybuffer";
+    xhr.responseType = "arraybuffer";
     xhr.send(params);
     }
  }
@@ -256,4 +257,111 @@ function display_reports(responseObj){
    }
    console.log("On partner selected "+selected);
    console.log("Selected partners list"+JSON.stringify(selectedFilterPartners));
+ }
+
+ function selectEmail()
+ {
+   document.getElementById('partners').style.display = "block";
+ }
+
+ function closeEmail()
+ {
+   document.getElementById('partners').style.display = "none";
+ }
+
+ function onparnterSelectedEmail(checkBox)
+ {
+   var selectedEmail = checkBox.id;
+   if(checkBox.checked)
+   {
+    console.log("Check box is selected");
+     var index = selectedParetnersToEmail.indexOf(selectedEmail);
+     if(index<0)
+     {
+       selectedParetnersToEmail.push(selectedEmail);
+     }
+   }else
+   {
+     //remove from list
+     var index = selectedParetnersToEmail.indexOf(selectedEmail);
+     if(index>=0)
+     {
+       selectedParetnersToEmail.splice(index,1);
+     }
+   }
+
+   console.log("selectedParetnersToEmail"+JSON.stringify(selectedParetnersToEmail));
+ }
+
+ //send email 
+ function sendReportsInEmail()
+ {
+   if(selectedParetnersToEmail.length>=1)
+   {
+    closeEmail();
+    var dev_id = document.getElementById('dev_id').value;
+    var from_date = document.getElementById('from_date').value;
+    var to_date = document.getElementById('to_date').value;
+    if(from_date == null || from_date == "")
+    {
+      swal("please select From_Date");
+    }else if(to_date==null || to_date == ""){
+      swal("please select To_Date");
+    }
+    
+    if (Date.parse(from_date) > Date.parse(to_date)) {
+      swal("Invalid Date Range!\nStart Date cannot be after End Date!")
+      return false;
+    }else{
+
+       displayInitUploadBusyDialog();
+       var xhr = new XMLHttpRequest();
+       var params = 'accessToken=web&player='+dev_id+'&from_date='+from_date+'&to_date='+to_date+
+       '&emailPartners='+JSON.stringify(selectedParetnersToEmail);
+       if(selectedFilterPartners.length>=1)
+        {
+          params += '&partners='+JSON.stringify(selectedFilterPartners);
+        }
+    xhr.onload = function() {
+       //dismissInitBusyDialog();
+       dismissBusyDialog();
+        if (xhr.status === 200) {
+          
+          var responseObj = JSON.parse(xhr.response);
+          if(responseObj['statusCode']==0)
+          {
+            alert(responseObj['status']);
+          }else
+          {
+            alert(responseObj['status']);
+          }
+            
+        }
+        else {
+            var errorMessage = xhr.response || 'Unable to upload file';
+            // Upload failed. Do something here with the error.
+            console.log(errorMessage);
+            swal("unable to send email - "+errorMessage);
+        }
+
+
+      };
+       xhr.onerror = function()
+      {
+        dismissBusyDialog();
+        swal('No internet');
+      };
+
+    xhr.open('POST', '/player/exportCampaignReports/');
+     
+    xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+
+    xhr.setRequestHeader("X-CSRFToken", csrf_token );
+    //xhr.responseType = "arraybuffer";
+    xhr.send(params);
+    }
+   }else
+   {
+    alert("No Partner is selected");
+   }
  }

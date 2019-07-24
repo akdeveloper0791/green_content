@@ -573,6 +573,9 @@ def prepareViewerMetricsExcel(metrics):
 @api_view(["POST"])
 def broadCastMicPhoneRule(request):
     fcm_result = CAR_Device.publishMicPhoneRule(request.POST.get("device"),request.POST.get("classifiers"));
+    if(fcm_result['statusCode']==0):
+        if(fcm_result['includeThis']):
+            fcm_result['push_time'] = str(datetime.datetime.now());
     return JsonResponse(fcm_result);
 
 @api_view(["POST","GET"])

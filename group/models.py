@@ -319,7 +319,7 @@ class GcGroupMembers(models.Model):
         partners = GcGroupMembers.objects.filter(
             member_id=userId,status=1);
         if(partners.exists()):
-            return {'statusCode':0,'partners':list(partners.values('gc_group__user__id','gc_group__user__first_name' , 'gc_group__user__last_name'))}
+            return {'statusCode':0,'partners':list(partners.values('gc_group__user__id','gc_group__user__first_name' , 'gc_group__user__last_name','gc_group__user__email'))}
         else:
             return {'statusCode':2,'status':'No partners found'};
 

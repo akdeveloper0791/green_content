@@ -27,3 +27,5 @@ schedule_custom = 100
 fcm_api_key = "AAAAABJU_OM:APA91bG3swWJ9xiiKjZNc_rkqLwNqzBud5MvPmD6uYIg8Axi6fKwmcwtZ1A8sVUBPKZCeRmFAXlLoUgzq_kvpcch04kRngp3vdPem8ozw_RWxAjG1LwTnY9m8ozTg04HyHJtKq38l282"
 fcm_handle_metrics_rule="1";
 fcm_handle_mic_rule = "2";
+
+EMAIL_HOST_USER = "contact@adskite.com"

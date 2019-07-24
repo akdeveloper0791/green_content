@@ -315,10 +315,7 @@ class Contextual_Ads_Rule(models.Model):
         classifiers = json.loads(classifiers);
         lowerClassifiers = lambda classifier: classifier.lower();
         classifiers = list(map(lowerClassifiers,classifiers));
-        player = IOT_Device.getPlayer(playerKey);
-        if(player==False):
-          return {'statusCode':2,'status':'Invalid device'};
-
+        
         #publish rules
         return CAR_Device.publishMicPhoneRule(playerKey,json.dumps(classifiers,ensure_ascii=False),
           players);
@@ -586,7 +583,10 @@ class CAR_Device(models.Model):
     def publishMicPhoneRule(player,rule,players=False):
 
       try:
-
+        playerInfo = IOT_Device.getPlayer(player);
+        if(playerInfo==False):
+          return {'statusCode':2,'status':'Invalid device'};
+        playerMac  = playerInfo.mac
         rule = json.loads(rule);
         devicesToPublish = CAR_Device.getDevicesToPublishMicPhoneRule(rule,player,players);
         if(len(devicesToPublish)>=1):
@@ -601,15 +601,20 @@ class CAR_Device(models.Model):
           for device in devicesToPublish:
             deviceFCM = device['player__fcm_id'];
             classifiersList.append(device['car']);
-            if deviceFCM not in duplicateDevice:
-              duplicateDevice.append(deviceFCM);
-              deviceDelay = device['car__delay_time'];
-              if(deviceDelay in deviceFcmRegIdsWithInfo):
-                deviceInfo = deviceFcmRegIdsWithInfo[deviceDelay];
-                deviceFcmRegIds = deviceInfo['deviceFcmRegIds'];
-                deviceFcmRegIds.append(deviceFCM);      
-              else:
-                deviceFcmRegIdsWithInfo[deviceDelay]={'deviceFcmRegIds':[deviceFCM]}
+            if(device['player__mac']==playerMac):
+              response['includeThis']=True;
+              response['delay_time'] = device['car__delay_time'];
+              response['rule'] = json.dumps(rule);
+            else:
+              if deviceFCM not in duplicateDevice:
+                duplicateDevice.append(deviceFCM);
+                deviceDelay = device['car__delay_time'];
+                if(deviceDelay in deviceFcmRegIdsWithInfo):
+                  deviceInfo = deviceFcmRegIdsWithInfo[deviceDelay];
+                  deviceFcmRegIds = deviceInfo['deviceFcmRegIds'];
+                  deviceFcmRegIds.append(deviceFCM);      
+                else:
+                  deviceFcmRegIdsWithInfo[deviceDelay]={'deviceFcmRegIds':[deviceFCM]}
               #deviceFcmRegIds.append(device['player__fcm_id']);
           #response['deviceFcmRegIdsWithInfo']=deviceFcmRegIdsWithInfo;
           
