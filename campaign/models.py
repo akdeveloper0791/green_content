@@ -60,6 +60,8 @@ class CampaignInfo(models.Model):
         if('type' in infoObj):
             if(infoObj['type']=="multi_region"):
                 campType = 1#multi region
+            elif(infoObj['type']=="rss"):
+                campType = 2 #rss feed
             else:
                 campType = 0#single region
         #savePath = '/campaigns/{}/{}/'.format(secretKey,campaignName);
