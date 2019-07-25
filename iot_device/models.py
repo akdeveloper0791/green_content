@@ -482,7 +482,7 @@ class CAR_Device(models.Model):
             INNER JOIN iot_device_contextual_ads_rule as rules ON iot_devices.car_id = rules.id INNER JOIN 
             iot_device_car_campaign as rule_campaigns ON rules.id = rule_campaigns.car_id INNER JOIN 
             cmsapp_multiple_campaign_upload as campaigns ON rule_campaigns.campaign_id = campaigns.id WHERE (iot_devices.player_id=%s) 
-            group by campaigns.id ORDER BY campaigns.updated_date DESC'''
+            '''
             
         cursor.execute(conditionQuery,[playerInfo.id])
         rules = dictfetchall(cursor);
