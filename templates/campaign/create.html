@@ -40,6 +40,8 @@ th, td {
 
 
 /*td:nth-child(even){background-color: #f2f2f2}*/
+
+
 </style>
 
 <style>
@@ -198,6 +200,15 @@ textarea {
 }
 
 
+@media (min-width: 992px)
+{
+ .col-md-16.rows.col-md-2 {
+    width: 13.66666667%;
+}
+ 
+}
+
+
 </style>
 </head>
 {% block body %}
@@ -233,36 +244,42 @@ textarea {
         <!-- Modal body -->
         <div class="modal-body">
 
-     <div class="col-md-12 col-xs-12" style="text-align: center;">
+     <div class="col-md-16 col-xs-16" style="text-align: center;">
       <div class="rows">
-         <div class="col-md-1 " style="margin: 10px 0px;">
-        </div>
-        <div class="col-md-2 col-xs-4" style="margin: 10px 0px;">
+        
+        <div class="col-md-2 col-xs-2" style="margin: 5px 0px;">
            <input type="file" accept="image/*" name="input-file-preview" id="select_img_file_type" style="display:none" onchange="onSelectImgReg(this)"/>
                 <img src='{% static "images/campaign/mobile/ic_image_yellow.png" %}' style='cursor:pointer' onclick="selectImgRegion();">
                 <p align="center">Image</p>
         </div>
-        <div class="col-md-2 col-xs-4" style="margin: 10px 0px;">
+        <div class="col-md-2 col-xs-2" style="margin: 5px 0px;">
             <input type="file" accept="video/*" name="input-file-preview" id="select_video_file_type" style="display:none" onchange="onSelectVideoReg(this)"/>
                 <img src='{% static "images/campaign/mobile/ic_video_yellow.png" %}' onclick="selectVideoRegion();" style='cursor:pointer'>
                 <p align="center">Video</p>
         </div>
-        <div class="col-md-2 col-xs-4" style="margin: 10px 0px;">
-          <img src='{% static "images/campaign/mobile/ic_url.png" %}' onclick="displayCreateURLDialog();" style='cursor:pointer'>
-               <p align="center">URL</p>
-        </div>
-        <div class="col-md-2 col-xs-6" style="margin: 10px 0px;">
-          <i class="td" onclick="displayCreateTextRegion()"> <img src='{% static "images/campaign/mobile/ic_text_yellow.png" %}' onclick="displayCreateTextRegion();" style='cursor:pointer'></i>
-                <p align="center">Text</p>
-        </div>
-          <div class="col-md-2 col-xs-6" style="margin: 10px 0px;" id = "display_create_table_region_div">
+
+          <div class="col-md-2 col-xs-2" style="margin: 5px 0px;" id = "display_create_table_region_div">
          <b class="td" id="display_create_table_region" onclick="displayCreateTableRegion()" style="display:inline;padding: 0px;"> <img src='{% static "images/campaign/mobile/ic_table.png" %}' onclick="displayCreateTableRegion();" style='cursor:pointer;'></b>
                 <p align="center">Table</p>
         </div>
-         <div class="col-md-1 " style="margin: 10px 0px;">
+
+     
+        <div class="col-md-2 col-xs-2" style="margin: 5px 0px;">
+          <i class="td" onclick="displayCreateTextRegion()"> <img src='{% static "images/campaign/mobile/ic_text_yellow.png" %}' onclick="displayCreateTextRegion();" style='cursor:pointer'></i>
+                <p align="center">Text</p>
         </div>
 
+       <div class="col-md-2 col-xs-2" style="margin: 5px 0px;">
+          <img src='{% static "images/campaign/mobile/ic_url.png" %}' onclick="displayCreateURLDialog();" style='cursor:pointer'>
+               <p align="center">URL</p>
+        </div>
 
+        <div style="display:none;" class="col-md-2 col-xs-2" style="margin: 5px 0px;">
+            <input type="file" accept="application/pdf" name="input-file-preview" id="select_pdf_file_type" style="display:none" onchange="onSelectPDFReg(this)"/>
+                <img src='{% static "images/campaign/mobile/ic_pdf_file.png" %}' onclick="onSelectPDFReg();" style='cursor:pointer'>
+                <p align="center">File</p>
+        </div>
+    
       </div>
      </div>
 
@@ -314,18 +331,30 @@ textarea {
                 <img src='{% static "images/campaign/mobile/ic_video_yellow.png" %}' onclick="selectVideoRegion();" style='cursor:pointer'>
                 <p align="center">Video</p>
               </td>
+
+               <td class="td" id="display_create_table_region" onclick="displayCreateTableRegion()"> <img src='{% static "images/campaign/mobile/ic_table.png" %}' onclick="displayCreateTableRegion();" style='cursor:pointer'>
+                <p align="center">Table</p></td>
+             
+           </tr>
+           <tr>
+               <td class="td"><img src='{% static "images/campaign/mobile/ic_text_yellow.png" %}' onclick="displayCreateTextRegion();" style='cursor:pointer'>
+               <p align="center">Text</p></td>
+           
+
               <td class="td"><img src='{% static "images/campaign/mobile/ic_url.png" %}' onclick="displayCreateURLDialog();" style='cursor:pointer'>
                <p align="center">URL</p>
              </td>
-           </tr>
-           <tr>
-               <td class="td" onclick="displayCreateTextRegion()"> <img src='{% static "images/campaign/mobile/ic_text_yellow.png" %}' onclick="displayCreateTextRegion();" style='cursor:pointer'>
-                <p align="center">Text</p></td>
 
-              <td class="td" id="display_create_table_region" onclick="displayCreateTableRegion()"> <img src='{% static "images/campaign/mobile/ic_table.png" %}' onclick="displayCreateTableRegion();" style='cursor:pointer'>
-                <p align="center">Table</p></td>
              
+             
+
+                <td style="display:none;" class="td">
+                <input type="file" accept="application/pdf" name="input-file-preview" id="select_pdf_file_type" style="display:none" onchange="onSelectPDFReg(this)"/>
+                <img src='{% static "images/campaign/mobile/ic_pdf_file.png" %}' onclick="onSelectPDFReg();" style='cursor:pointer'>
+                <p align="center">File</p>
+              </td>
             </tr>
+           
         </table>
       </div>
           
@@ -505,6 +534,52 @@ textarea {
     </div>
   </div>
 <!-- URL -->
+
+
+<!-- RSS-->
+  <div class="modal" id="create_rss_reg_dialog" >
+    <div class="modal-dialog ">
+      <div class="modal-content">
+      
+        <!-- Modal Header -->
+        <div class="modal-header">
+          <h4 class="modal-title" style="text-align:center;">RSS Feeds
+          <span type="button" class="close" data-dismiss="modal" onclick="dimissCreateRSSDialog()">&times;</span></h4>
+        </div>
+         <input type="hidden" id="rss_media_reg_id">
+        
+        <!-- Modal body -->
+        <div class="modal-body" style="overflow-y:auto;">
+     
+              <div >
+                <label for="exampleInputEmail1" style="font-weight:bold" >Feed URL : *</label>
+
+              <!--   <input type="text" size="100" value="https://www." name="url" id="create_url_reg_url" focus style="width: 100%;"> <br> -->
+                <form id="search-form">
+                  <span class="text-input-wrapper" style="width: 100%;"><input type="text" name="url" autocomplete="off" size="140" id="create_rss_reg_url" style="width:95%;"/><span title="Clear">&times;</span></span>
+                  <!-- <input type="submit" value="Submit"/> -->
+              </form>
+                <span>Enter url address like https://www.xyz.com</span><br>
+                 <br><p style="margin-bottom:5px;"><b>Choose RRS Feed Type:</b></p> 
+         <input type="radio" name="rss" value="weather">Weather<br>
+         <input type="radio" name="rss" value="sports">Sports<br>
+         <input type="radio" name="rss" value="news">News
+     
+        </div>
+        </div>
+
+        <div class="modal-footer">
+        <center>     
+                   <button class="btn btn-danger" data-dismiss="modal" onclick="dimissCreateRSSDialog()">Close</button>   
+                  <button class="btn btn-success" id="submit" onclick="onSelectRssReg()">Ok</button>
+        </center>
+         
+        </div>
+        
+      </div>
+    </div>
+  </div>
+<!-- RSS -->
 
 <!-- Table -->
   <div class="modal" id="create_table_reg_dialog" style="z-index:1600;">
