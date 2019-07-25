@@ -10,6 +10,7 @@ var w = window,
 var uploadFilesTempNames = new Object();
 var screenInfo = {'width':x,'height':(y-50)};//50 pixels for submit button
 var duration = 10;//seconds  
+var isRssFeed=false;
 function updateScreenSize()
 {
   var w = window,
@@ -70,6 +71,11 @@ function prepareView(selectedTemplate)
     {
       setInfoTitle("Write your own Ticker text");
       prepareTickerText();
+    }else if(selectedTemplate=="rss")
+    {
+      setInfoTitle("Start draw your RSS Feeds campaigns with mouse");
+      isRssFeed=true;
+      constructCustomDiv();
     }
     else{
       setInfoTitle("Add Content to Campaign");
@@ -119,7 +125,7 @@ function constructDivs()
   	info.type="Image";
     info.properties = {"scaleType":"fillScreen"};
     childTag.src= '/static/images/campaign/campaign_default2.png';
-    info.is_self_path = true;
+    info.is_self_path = true; 
 
     if(file==null)
   	{
@@ -147,7 +153,15 @@ function constructDivs()
     childTag.style.position="absolute";
 
     childTag.onclick=function(){
-        	displayRegSelectOption(idPosition);
+       if(isRssFeed)
+            {
+              //display rss url dialog
+              displayCreateRSSDialog(idPosition);
+            }else
+            {
+              displayRegSelectOption(idPosition);
+            }
+
         };
     document.getElementById('reg_div_'+idPosition).appendChild(childTag);
 
@@ -506,6 +520,10 @@ function constructDivs()
    document.getElementById('create_url_reg_dialog').style.display="none";
  }
 
+
+
+
+
  function onSelectUrlReg()
   {
     //validate fields
@@ -560,6 +578,101 @@ function constructDivs()
        dimissCreateURLDialog();
     }
   }
+
+ function displayCreateRSSDialog(idPosition)
+ {
+      document.getElementById('create_rss_reg_dialog').style.display="block";
+      document.getElementById('rss_media_reg_id').value=idPosition;
+ }
+
+ function dimissCreateRSSDialog()
+ {
+   document.getElementById('create_rss_reg_dialog').style.display="none";
+ }
+
+
+ function onSelectRssReg()
+  {
+    //validate fields
+    var mediaName = document.getElementById('create_rss_reg_url').value;
+
+   var rssCategory = $("input:radio[name='rss']:checked").val();
+ 
+   console.log("rssCategory:"+rssCategory);
+    
+    if(mediaName=='' || mediaName==null)
+    {
+
+       swal('Please enter Feed URL');
+    }else if(rssCategory=='' || rssCategory==null)
+    {
+      swal('Please select RSS feed type');
+    }
+    else{
+     
+       var idPosition = document.getElementById('rss_media_reg_id').value;
+      regionsResourceFiles[idPosition] = null;//no resource file 
+       
+       //get the region info
+       info = regionsInfo[idPosition];
+       info.media_name = mediaName;
+
+        var interval=0;
+       if(rssCategory=="weather")
+       {
+           interval=360;
+       }else if(rssCategory=="sports")
+       {
+            interval=60;
+       }else if(rssCategory=="news")
+       {
+         interval=1800;
+       }
+
+      if(interval>0)
+      {
+        info.rss_category=rssCategory;
+        info.refresh_interval=interval;
+      }
+      
+       //set properties
+       info.properties = {};
+       
+       var childTag=null;  
+       if(info.type.toLowerCase == 'rss')
+       {
+         
+         childTag = document.getElementById('reg_div_child_'+idPosition);
+         childTag.src = mediaName;
+       }else{
+        info.type = 'rss';
+        info.is_self_path = true;
+
+        removeChildElement(idPosition);
+        //create new text child tag
+         childTag = document.createElement('iframe');
+         childTag.id='reg_div_child_'+idPosition;
+         childTag.style.width = '100%';
+         childTag.style.height = '100%';
+         childTag.style.position="absolute";
+         childTag.src = mediaName;
+         childTag.onclick=function()
+         {
+          displayCreateRSSDialog(idPosition);
+         };
+         document.getElementById('reg_div_'+idPosition).appendChild(childTag);
+       }
+
+       
+       //x.setAttribute("src", "https://www.w3schools.com/jsref/prop_video_autoplay.asp");
+       //update info
+       console.log("regionsInfo:"+JSON.stringify(info));
+       regionsInfo[idPosition] = info;
+       
+       dimissCreateRSSDialog();
+    }
+  }
+
 
 function displayCreateTableRegion()
 {
@@ -746,7 +859,12 @@ function prepareInfoFile(mediaName)
   var infoJSON = { "type": "multi_region", "regions": activeRegions,
   "duration": playDuration,'hide_ticker_txt': document.getElementById("create_txt_media_hide_ticker").checked}; 
   
+  if(isRssFeed)
+  {
+    infoJSON.type="rss";
+  }
   info = JSON.stringify(infoJSON);
+
   //var blob = new Blob([info], {type: "text/plain;charset=utf-8"});
   campaignName = mediaName;
   campaignInfoFile = new File([info], mediaName+".txt");
@@ -925,6 +1043,7 @@ function getUploadMediaName(selectedFileName)
 
 function constructCustomDiv()
 {
+
      var parentDiv = document.createElement('div');
         //parentDiv.class='generic';
         parentDiv.id = 'custom';
@@ -997,11 +1116,12 @@ function initDraw(canvas)
             canvas.style.cursor = "default";            
             
             
-             prepareInfoForCustomDiv(element.style.width,element.style.height,
+              prepareInfoForCustomDiv(element.style.width,element.style.height,
              element.style.left,element.style.top);
-             //element.style.border = "0";
+ 
+
+              //element.style.border = "0";
              addHoverOptions(element);
-             
              
 
              element = null;
@@ -1400,4 +1520,14 @@ function onSelectTickerTxtReg()
     }
   }
 
+  function selectPdfRegion()
+  {
+   document.getElementById('select_pdf_file_type').click();
+  }
+
+function onSelectPDFReg()
+{
+  selectPdfRegion();
+  console.log("onSelectPDFReg::")
+}
 
