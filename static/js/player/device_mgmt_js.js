@@ -118,10 +118,20 @@ function displayPlayerCampaigns(campaigns,pId)
 					'<span class="switch-handle"></span> </label> </div>'
 				}
 
-              
-              var scheduleCell = row.insertCell(-1);
-              scheduleCell.innerHTML = "<a class='fa fa-calendar' href='/player/schedule_campaign/"+pId+"/"+campaign.id+"' alt='Schedule' title='Schedule' style='cursor:pointer;margin:10px;'></a>";
+				var campaign_type=campaign.camp_type
+				if(campaign_type==2)
+				{
+                var scheduleCell = row.insertCell(-1);
+                scheduleCell.innerHTML = "<a class='fa fa-calendar' href='/player/schedule_campaign/"+pId+"/"+campaign.id+"' alt='Schedule' title='Schedule' style='cursor:pointer;margin:10px;visibility: hidden;'></a>";
+		
+				}else
+				{
+					var scheduleCell = row.insertCell(-1);
+                scheduleCell.innerHTML = "<a class='fa fa-calendar' href='/player/schedule_campaign/"+pId+"/"+campaign.id+"' alt='Schedule' title='Schedule' style='cursor:pointer;margin:10px;'></a>";
+		
+				}
 
+              
               var deleteCell = row.insertCell(-1);
               deleteCell.innerHTML = "<span class='fa fa-trash' alt='Remove' style='margin:10px;' title='Remove' onclick='campDeleteAlertDialog("+campaign.id+")'></span>";             
              }

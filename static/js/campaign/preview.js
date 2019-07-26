@@ -1,4 +1,5 @@
 var uploadDXXX = [];
+var isFileType=[];
 
 function initUploadDxxx()
   {
@@ -170,17 +171,14 @@ function checkForCampaignInDB()
 
         		childTag.src = '/static/images/ajax-loader.gif';
         	}
-
-         
-
-          
+ 
         }else if(info.type.toLowerCase()=="url")
         {
         	childTag = document.createElement('iframe');
         	childTag.src=info.media_name;
         }else if(info.type.toLowerCase()=="text")
         {
-        	childTag = document.createElement('p');
+        	childTag = document.createElement('div');
         	mediaName=info.media_name;
         	var properties = info.properties;
         	parentDiv.style.backgroundColor =properties.textBgColor;
@@ -204,6 +202,35 @@ function checkForCampaignInDB()
         	childTag.innerHTML= mediaName;
 
         	
+        }else if(info.type.toLowerCase()=='file')
+        {
+         var tagId='reg_div_child_'+i;
+            isFileType.push(tagId);
+           
+           childTag = document.createElement('object');
+          //childTag = document.createElement('FILE');
+          
+          if(info.media_name!=null && 
+            info.media_name.toLowerCase != 'default')
+          {
+
+
+             //childTag.style.href = info.media_name;
+             //childTag.style.target = '_blank';
+
+             resource = {};
+            resource[i]=info.media_name;
+
+            downloadResources.push(resource);
+
+            childBusyTag = document.createElement('FILE');
+                childBusyTag.id="reg_div_busy_child_"+i;
+            childBusyTag.src = '/static/images/ajax-loader.gif';
+
+            parentDiv.appendChild(childBusyTag);
+            
+          }
+          
         }
 
         if(childTag!=null)
@@ -214,8 +241,9 @@ function checkForCampaignInDB()
           
            childTag.style.width = "100%";
            childTag.style.height = "100%";
-           parentDiv.appendChild(childTag);
-           
+
+            parentDiv.appendChild(childTag);
+          
         }
 
         
@@ -397,7 +425,27 @@ function checkForCampaignInDB()
  
  	
  	var childDiv = document.getElementById('reg_div_child_'+resourceId);
- 	childDiv.src=url;
+  var tagId='reg_div_child_'+resourceId;
+
+  if(isFileType.includes(tagId))
+  {
+    if(storeLocation==2)
+    {
+     childDiv.data = url;
+    }else
+    {
+       //isFileType=false;
+      var originName=location.origin;
+      //console.log("updateChildPreview originName:"+originName);
+      childDiv.data =originName+url;
+     //childDiv.style.target = '_blank';
+    }
+    
+  }else
+  {
+    childDiv.src=url;
+  }
+
  	downloadNextResource();
  }
 

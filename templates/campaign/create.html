@@ -274,9 +274,9 @@ textarea {
                <p align="center">URL</p>
         </div>
 
-        <div style="display:none;" class="col-md-2 col-xs-2" style="margin: 5px 0px;">
+        <div  class="col-md-2 col-xs-2" style="margin: 5px 0px;">
             <input type="file" accept="application/pdf" name="input-file-preview" id="select_pdf_file_type" style="display:none" onchange="onSelectPDFReg(this)"/>
-                <img src='{% static "images/campaign/mobile/ic_pdf_file.png" %}' onclick="onSelectPDFReg();" style='cursor:pointer'>
+                <img src='{% static "images/campaign/mobile/ic_pdf_file.png" %}' onclick="selectPdfRegion();" style='cursor:pointer'>
                 <p align="center">File</p>
         </div>
     
@@ -345,12 +345,10 @@ textarea {
                <p align="center">URL</p>
              </td>
 
-             
-             
 
-                <td style="display:none;" class="td">
+                 <td style="visibility:hidden;" class="td">
                 <input type="file" accept="application/pdf" name="input-file-preview" id="select_pdf_file_type" style="display:none" onchange="onSelectPDFReg(this)"/>
-                <img src='{% static "images/campaign/mobile/ic_pdf_file.png" %}' onclick="onSelectPDFReg();" style='cursor:pointer'>
+                <img src='{% static "images/campaign/mobile/ic_pdf_file.png" %}' onclick="selectPdfRegion();" style='cursor:pointer'>
                 <p align="center">File</p>
               </td>
             </tr>
@@ -564,6 +562,11 @@ textarea {
          <input type="radio" name="rss" value="weather">Weather<br>
          <input type="radio" name="rss" value="sports">Sports<br>
          <input type="radio" name="rss" value="news">News
+
+       <br>
+       <br>
+         <label style="font-weight:bold;" for="exampleInputEmail1">Feed's Text Color :</label>
+            <input class="jscolor {zIndex:9999} form-control" value="000000" id="rss_feed_text_color">
      
         </div>
         </div>
@@ -686,6 +689,52 @@ textarea {
     </div>
   </div>
 <!-- SEND-->
+
+<!-- pdf/file info dialog -->
+ <div class="modal" id="file_properties_diag" >
+    <div class="modal-dialog">
+      <div class="modal-content">
+      
+        <!-- Modal Header -->
+        <div class="modal-header">
+          <h4 class="modal-title" style="text-align:center;">File Properties Dialog
+         <!--  <span type="button" class="close" data-dismiss="modal" onclick="dismissCreateCampaignDialog();">&times;</span> --></h4>
+           <center><img id="loading" src="../images/ajax-loader.gif" alt="Updating ..." style="display: none;" /></center>
+        </div>
+        
+        <!-- Modal body -->
+        <div class="modal-body" style="overflow-y:auto;text-align: center;">
+     
+                <div class="col-md-12">
+
+          <!-- <form class="feedback" name="feedback"> -->
+    
+               <div class="form-group">
+                  <label for="exampleInputPassword1" style="font-weight:bold">Scrolling Speed(Sec) :</label>
+                  <input style="text-align: center;" type="text" class="form-control" placeholder="Enter scrolling speed" value="10" name="scrolling_speed" id="scrolling_speed" size="100" style="width: 50%;">  
+                  <label for="exampleInputPassword1" style="font-weight:bold">Zoom Level :</label>
+                  <input style="text-align: center;"  type="text" class="form-control" placeholder="Enter zoom level" value="1.0" name="zoom_level" id="zoom_level" size="4" style="width: 50%;"> 
+                  <input type="checkbox" id="fit_to_screen" checked>Fit to Screen  
+
+                </div>
+                <br>
+
+          </div>
+        </div>
+
+        <div class="modal-footer">
+        <center>     
+                 <button class="btn btn-danger"  data-dismiss="modal" onclick="dismissPdfPropertiesDialog()">Cancel</button>       
+                  <button class="btn btn-success" id="submit" onclick="setFileProperties();">Proceed</button>
+        </center>
+         
+        </div>
+        
+      </div>
+    </div>
+  </div>
+
+<!-- end of pdf info dialog -->
 
 
 

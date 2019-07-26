@@ -315,6 +315,7 @@ function constructDivs()
     }else{
       
     }
+      console.log("addImgReg:info:"+JSON.stringify(info));
   }
 
   function selectVideoRegion()
@@ -628,11 +629,13 @@ function constructDivs()
        {
          interval=1800;
        }
+       info.rss_text_color="#000000";
 
       if(interval>0)
       {
         info.rss_category=rssCategory;
         info.refresh_interval=interval;
+        info.rss_text_color="#"+document.getElementById('rss_feed_text_color').value
       }
       
        //set properties
@@ -1525,9 +1528,127 @@ function onSelectTickerTxtReg()
    document.getElementById('select_pdf_file_type').click();
   }
 
-function onSelectPDFReg()
+function onSelectPDFReg(input)
 {
-  selectPdfRegion();
-  console.log("onSelectPDFReg::")
+   if (input.files && input.files[0]) 
+    {
+       var selectedFile = input.files[0];
+       var idPosition = document.getElementById('select_media_reg_id').value;
+       regionsResourceFiles[idPosition] = selectedFile;
+       //get the region info
+       info = regionsInfo[idPosition];
+       if(info.type.toLowerCase()=='file')
+       {
+        info.media_name = getUploadMediaName(selectedFile.name);
+        info.is_self_path = true;
+        
+        regionsInfo[idPosition] = info;
+
+        var reader = new FileReader();    
+        reader.onload = function (e) {
+          childTag = document.getElementById('reg_div_child_'+
+            idPosition);
+          childTag.src = e.target.result;
+          dismissSelectRegOption();
+          
+        };     
+        reader.readAsDataURL(selectedFile);
+       }else{
+        addPdfRegion(idPosition,selectedFile);
+       }
+
+        dismissSelectRegOption();
+        
+        input.value=null;
+    }else{
+      
+    }
+ console.log("onSelectPDFReg:info:"+JSON.stringify(info));
 }
+
+function addPdfRegion(idPosition,file)
+  {
+   //get region info 
+    info = regionsInfo[idPosition];
+    removeChildElement(idPosition);
+    //create child tag
+    var childTag = document.createElement('FILE');
+    info.type="File";
+    //info.properties = {"scaleType":"fillScreen"};
+
+      //set properties
+       info.properties = {
+       'isFitToScreen':true,
+       'zoomLevel':1.0,
+       'scrollingSpeed':10
+       };
+
+    childTag.src= '/static/images/campaign/campaign_default2.png';
+    info.is_self_path = true; 
+
+    if(file==null)
+    { 
+      info.media_name = "default";  
+    }else{
+      info.media_name = getUploadMediaName(file.name);
+      var reader = new FileReader();    
+        reader.onload = function (e) {
+          
+          childTag.src = e.target.result;
+          childTag.style.textAlign="center";
+          childTag.innerHTML = file.name;
+          
+          
+        };     
+        reader.readAsDataURL(file);
+
+    }
+    
+    childTag.id='reg_div_child_'+idPosition;
+    /*childTag.style.width = getPixels(screenInfo['width'],info.width);
+    childTag.style.height = getPixels(screenInfo['height'],info.height);
+    childTag.style.position="absolute";*/
+
+    childTag.style.width = '100%';
+    childTag.style.height = '100%';
+    childTag.style.position="absolute";
+
+    childTag.onclick=function(){
+              displayRegSelectOption(idPosition);
+
+        };
+
+     document.getElementById('reg_div_'+idPosition).appendChild(childTag);
+     filePropertiesDialog();
+
+     console.log("addPdfRegion:info:"+JSON.stringify(info));
+
+    regionsInfo[idPosition] = info;
+  }
+
+  function dismissPdfPropertiesDialog()
+  {
+  document.getElementById('file_properties_diag').style.display="none";
+  }
+
+  function filePropertiesDialog()
+  {
+    document.getElementById('file_properties_diag').style.display="block";
+  }
+
+  function setFileProperties()
+  {
+    var idPosition = document.getElementById('select_media_reg_id').value;
+       //get the region info
+       info = regionsInfo[idPosition];
+
+       //set properties
+       info.properties = {
+       'isFitToScreen':document.getElementById('fit_to_screen').checked,
+       'zoomLevel':parseFloat(document.getElementById('zoom_level').value),
+       'scrollingSpeed':parseInt(document.getElementById('scrolling_speed').value)
+       };
+       dismissPdfPropertiesDialog();
+      console.log("setFileProperties:info:"+JSON.stringify(info));
+  }
 
