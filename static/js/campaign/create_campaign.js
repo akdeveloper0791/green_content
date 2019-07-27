@@ -598,8 +598,11 @@ function constructDivs()
     var mediaName = document.getElementById('create_rss_reg_url').value;
 
    var rssCategory = $("input:radio[name='rss']:checked").val();
+
+
+   
  
-   console.log("rssCategory:"+rssCategory);
+   //console.log("rssCategory:"+rssCategory);
     
     if(mediaName=='' || mediaName==null)
     {
@@ -630,13 +633,15 @@ function constructDivs()
          interval=1800;
        }
        info.rss_text_color="#000000";
+       info.rss_text_size=25;
 
       if(interval>0)
       {
         info.rss_category=rssCategory;
         info.refresh_interval=interval;
-        info.rss_text_color="#"+document.getElementById('rss_feed_text_color').value
-      }
+       }
+      info.rss_text_color="#"+document.getElementById('rss_feed_text_color').value
+      info.rss_text_size=document.getElementById('rss_feed_text_size').value
       
        //set properties
        info.properties = {};
@@ -669,7 +674,7 @@ function constructDivs()
        
        //x.setAttribute("src", "https://www.w3schools.com/jsref/prop_video_autoplay.asp");
        //update info
-       console.log("regionsInfo:"+JSON.stringify(info));
+      // console.log("regionsInfo:"+JSON.stringify(info));
        regionsInfo[idPosition] = info;
        
        dimissCreateRSSDialog();
@@ -1563,7 +1568,7 @@ function onSelectPDFReg(input)
     }else{
       
     }
- console.log("onSelectPDFReg:info:"+JSON.stringify(info));
+// console.log("onSelectPDFReg:info:"+JSON.stringify(info));
 }
 
 function addPdfRegion(idPosition,file)
@@ -1649,6 +1654,6 @@ function addPdfRegion(idPosition,file)
        'scrollingSpeed':parseInt(document.getElementById('scrolling_speed').value)
        };
        dismissPdfPropertiesDialog();
-      console.log("setFileProperties:info:"+JSON.stringify(info));
+      //console.log("setFileProperties:info:"+JSON.stringify(info));
   }
 
