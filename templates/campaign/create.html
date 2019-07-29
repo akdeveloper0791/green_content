@@ -534,7 +534,7 @@ textarea {
 
 
 <!-- RSS-->
-  <div class="modal " id="create_rss_reg_dialog" style="padding-top:0px;" >
+  <div class="modal " id="create_rss_reg_dialog" style="padding-top:0px;overflow: auto;" >
     <div class="modal-dialog ">
       <div class="modal-content">
       
@@ -553,20 +553,22 @@ textarea {
 
               <!--   <input type="text" size="100" value="https://www." name="url" id="create_url_reg_url" focus style="width: 100%;"> <br> -->
                 <form id="search-form">
-                  <span class="text-input-wrapper" style="width: 100%;"><input type="text" name="url" autocomplete="off" size="140" id="create_rss_reg_url" style="width:95%;"/><span title="Clear">&times;</span></span>
+                  <span class="text-input-wrapper" style="width: 100%;"><input type="text" name="url" autocomplete="off" placeholder="Enter feed url" size="140" id="create_rss_reg_url" style="width:95%;"/><span title="Clear">&times;</span></span>
                   <!-- <input type="submit" value="Submit"/> -->
               </form>
-                <span>Enter feeds url address like https://www.xyz.com</span><br>
-                 <br><p style="margin-bottom:5px;"><b>Choose RRS Feed Type:</b></p> 
-         <input type="radio" name="rss" value="weather">Weather<br>
-         <input type="radio" name="rss" value="sports">Sports<br>
-         <input type="radio" name="rss" value="news">News
+                <span>Enter feeds url address like https://www.xyz.com</span>
+                <br/>
+                 <br/>
+                 <label style="font-weight:bold">Feed's Refresh Interval(minutes):</label>
+                              <input type="number" class="form-control" value="1" placeholder="Enter interval(minutes)" name="duration" id="refresh_interval" size="100"> <br />
 
-       <br>
-       <br>
          <label style="font-weight:bold;" for="exampleInputEmail1">Feed's Text Color :</label>
             <input class="jscolor {zIndex:9999} form-control" value="000000" id="rss_feed_text_color">
-         <br>
+
+
+          <label style="font-weight:bold" for="exampleInputEmail1">Text Background Color :</label>
+            <input class="jscolor {zIndex:9999} form-control" value="transparent" id="rss_feed_text_bg_color">
+        
                 <label style="font-weight:bold" for="exampleInputPassword2">Feed's Text Size :</label>
               <div class="quantity buttons_added">
           <input type="button" value="-" class="minus"><input  type="number" step="2" min="15" max="" name="quantity font_size" value="15" title="Qty" class="input-text qty text" size="4" pattern="" inputmode="" id="rss_feed_text_size" style="width:75%;"><input type="button" value="+" class="plus">
@@ -631,7 +633,7 @@ textarea {
 <!-- Table -->
 
 <!-- campaign info dialog -->
-  <div class="modal" id="campaign_info_diag" >
+  <div class="modal" id="campaign_info_diag" style="overflow:auto;padding-top:10px;" >
     <div class="modal-dialog">
       <div class="modal-content">
       
@@ -659,8 +661,8 @@ textarea {
 
              
               <br>
-              <div class="col-md-6" style="padding-left:0px;padding-right:0px;">
-                 <div class="form-group">
+              <div id="camp_duration" class="col-md-6" style="padding-left:0px;padding-right:0px;">
+                 <div  class="form-group">
                     <label style="font-weight:bold">Campaign Duration (sec):</label>
                     <input type="number" class="form-control" value="10" placeholder="Enter Duration(Sec)" name="duration" id="file_duration" size="100"> <br />
 

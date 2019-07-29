@@ -596,11 +596,8 @@ function constructDivs()
   {
     //validate fields
     var mediaName = document.getElementById('create_rss_reg_url').value;
+    var interval = document.getElementById('refresh_interval').value;
 
-   var rssCategory = $("input:radio[name='rss']:checked").val();
-
-
-   
  
    //console.log("rssCategory:"+rssCategory);
     
@@ -608,9 +605,9 @@ function constructDivs()
     {
 
        swal('Please enter Feed URL');
-    }else if(rssCategory=='' || rssCategory==null)
+    }else if(interval=='' || interval==null)
     {
-      swal('Please select RSS feed type');
+      swal('Please enter valid duration');
     }
     else{
      
@@ -621,27 +618,20 @@ function constructDivs()
        info = regionsInfo[idPosition];
        info.media_name = mediaName;
 
-        var interval=0;
-       if(rssCategory=="weather")
-       {
-           interval=360;
-       }else if(rssCategory=="sports")
-       {
-            interval=60;
-       }else if(rssCategory=="news")
-       {
-         interval=1800;
-       }
+     
        info.rss_text_color="#000000";
        info.rss_text_size=25;
 
       if(interval>0)
-      {
-        info.rss_category=rssCategory;
-        info.refresh_interval=interval;
+       {
+        info.refresh_interval=interval*60;
+       }else
+       {
+         info.refresh_interval=1*60;
        }
-      info.rss_text_color="#"+document.getElementById('rss_feed_text_color').value
-      info.rss_text_size=document.getElementById('rss_feed_text_size').value
+      info.rss_text_color="#"+document.getElementById('rss_feed_text_color').value;
+      info.bg_color="#"+document.getElementById('rss_feed_text_bg_color').value;
+      info.rss_text_size=document.getElementById('rss_feed_text_size').value;
       
        //set properties
        info.properties = {};
@@ -664,6 +654,8 @@ function constructDivs()
          childTag.style.height = '100%';
          childTag.style.position="absolute";
          childTag.src = mediaName;
+    
+        // childTag.backgroundColor="green";//transparent
          childTag.onclick=function()
          {
           displayCreateRSSDialog(idPosition);
@@ -674,8 +666,9 @@ function constructDivs()
        
        //x.setAttribute("src", "https://www.w3schools.com/jsref/prop_video_autoplay.asp");
        //update info
-      // console.log("regionsInfo:"+JSON.stringify(info));
+       console.log("regionsInfo:"+JSON.stringify(info));
        regionsInfo[idPosition] = info;
+
        
        dimissCreateRSSDialog();
     }
@@ -783,6 +776,11 @@ function displayCreateCampaignDialog()
   {
     document.getElementById("file_duration").value = duration;
    document.getElementById('campaign_info_diag').style.display="block";
+if(isRssFeed)
+  {
+   document.getElementById("camp_duration").style.display="none";
+   
+  }
   } else{
     swal("Before proceeding further, please add content to campaign");
   }
@@ -795,16 +793,20 @@ function dismissCreateCampaignDialog()
 
 function createCampaign()
 {
+
   //check for resource files
   var mediaName = (document.getElementById("file_media_name").value).trim();
-  var playDuration = document.getElementById("file_duration").value;
+ 
+  
+   var playDuration = document.getElementById("file_duration").value;
   if((mediaName==null || mediaName.trim()=='') || playDuration<=0 )
   {
     swal("Please enter valid details");
   }else{
     dismissCreateCampaignDialog();
     
-    for (key in regionsResourceFiles) {
+    for (key in regionsResourceFiles) 
+    {
         if (regionsResourceFiles.hasOwnProperty(key))
         {
           var file = regionsResourceFiles[key];
@@ -812,7 +814,6 @@ function createCampaign()
           {
             size += file.size;
             uploadFiles.push(file);
-            
           }
           
         }
@@ -822,7 +823,6 @@ function createCampaign()
      prepareInfoFile(mediaName);
   }
     
-  
 } 
 
 function setDefaultCampaignName(element)
