@@ -597,9 +597,6 @@ function constructDivs()
     //validate fields
     var mediaName = document.getElementById('create_rss_reg_url').value;
     var interval = document.getElementById('refresh_interval').value;
-
- 
-   //console.log("rssCategory:"+rssCategory);
     
     if(mediaName=='' || mediaName==null)
     {
@@ -629,8 +626,16 @@ function constructDivs()
        {
          info.refresh_interval=1*60;
        }
+       var bg_color=document.getElementById('rss_feed_text_bg_color').value;
+       console.log("bg_color:"+bg_color);
+       if(bg_color == "FFFFFF")
+       {
+        info.bg_color="transperant";
+       }else
+       {
+        info.bg_color="#"+document.getElementById('rss_feed_text_bg_color').value;
+       }
       info.rss_text_color="#"+document.getElementById('rss_feed_text_color').value;
-      info.bg_color="#"+document.getElementById('rss_feed_text_bg_color').value;
       info.rss_text_size=document.getElementById('rss_feed_text_size').value;
       
        //set properties
