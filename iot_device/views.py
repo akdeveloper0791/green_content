@@ -572,7 +572,10 @@ def prepareViewerMetricsExcel(metrics):
 
 @api_view(["POST"])
 def broadCastMicPhoneRule(request):
-    fcm_result = CAR_Device.publishMicPhoneRule(request.POST.get("device"),request.POST.get("classifiers"));
+    fcm_result = CAR_Device.publishMicPhoneRule(request.POST.get("device"),request.POST.get("classifiers"),
+        playerMac=(request.POST.get("device_mac") if 'device_mac' in request.POST else False));
+    return JsonResponse(fcm_result);
+
     if(fcm_result['statusCode']==0):
         if(fcm_result['includeThis']):
             fcm_result['push_time'] = str(datetime.datetime.now());
@@ -628,5 +631,20 @@ def broadRulesByNames(request):
     response = Contextual_Ads_Rule.broadcastRulesByClassiferNames(
         request.POST.get("device_key"),
         request.POST.get("classifiers"),
-        (request.POST.get("players") if 'players' in request.POST else False));
+        (request.POST.get("players") if 'players' in request.POST else False),
+        (request.POST.get("device_mac") if 'device_mac' in request.POST else False));
     return JsonResponse(response);
+
+def generateQR(request):
+    response = {'statusCode':1}
+    if(request.method=="POST"):
+        classifiers = request.POST.get('classifiers');
+        playerMac = request.POST.get('mac');
+        
+        if((classifiers!='' and len(classifiers)>=4)):
+            response['statusCode'] = 0;
+            qrResponse = {'classifiers':classifiers};
+            if(playerMac!='' and len(playerMac)>=4):
+                qrResponse['players'] = playerMac;
+            response['qr_text'] = json.dumps(qrResponse);
+    return render(request,'iot_device/generate_qr.html',{'jResponse':response});

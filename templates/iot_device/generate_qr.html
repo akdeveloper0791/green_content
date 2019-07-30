@@ -1,0 +1,82 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+{% block header %} {% include 'header.html' %} {% endblock %}
+
+{% block body %}
+<body>
+<style>
+	img {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+</style>
+	<br/> <br/><br/><br/><br/>
+ 
+ {% if jResponse.statusCode == 1 %}
+<div class='container' style="display:block;border: solid 2px lightblue;
+    border-radius: 10px;" >
+    <form method="POST" class="post-form" onsubmit="return validateFields()">{% csrf_token %}
+
+		<div class='rows'>
+			<h3 style="text-align:center;">Generate QR</h3>
+			<div class='form-group'>
+				<div class='col-md-12'>
+					
+					<h5>Enter Classifiers:</h5>
+					<input type="text" placeholder="Seperate multiple classifiers with semicolon(;)" id='group_name' name="classifiers"  class='form-control'  autofocus>
+				</div>
+
+			</div>
+
+			<div class='form-group'>
+				<div class='col-md-12'>
+					<h5 >Enter DSP MAC(optional) </h5>
+					<input type="text" placeholder="seperate multiple MAC's with semicolon(;)" id='player_macs' class='form-control' value='' name="mac">
+				</div>
+					
+			</div>
+			<div class='form-group'>
+			    <div class='col-md-12' style="text-align: center;margin: 10px;">
+			    <button class="gradient-button gradient-btn">Submit</button>
+
+			  
+			    </div>
+			</div>
+
+		</div>
+	</form>
+	</div>
+
+{%elif jResponse.statusCode == 0 %}	
+
+<img src="https://chart.apis.google.com/chart?cht=qr&chs=480x480&chl= {{ jResponse.qr_text }}" />
+
+{% endif %}
+	<script type="text/javascript">
+
+     function validateFields()
+     {
+     	return true;
+        var macs = document.getElementById('player_macs').value;
+        if(macs!="" && macs.length>=4)
+        {
+        	return true;
+        }else
+        {
+        	alert("Please enter player mac");
+        	
+        	return false;
+        }
+     }
+	</script>
+</body>
+{% endblock %}
+{% block footer %} {% include 'footer.html' %} {% endblock %}
+

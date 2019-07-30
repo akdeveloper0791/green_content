@@ -30,7 +30,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = '01g=xb%so^yf@0l#v0z#duheh33=6cx@-^)#rl!$$dw)40i@g&'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = ['*']
 
@@ -58,6 +58,7 @@ INSTALLED_APPS = [
     'license',
     'device_group',
     'iot_device',
+    
     
 ]
 

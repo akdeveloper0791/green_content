@@ -308,7 +308,7 @@ class Contextual_Ads_Rule(models.Model):
         name_count=Count('classifier')).filter(iot_device__user_id=userId,iot_device__device_type="Microphone").values('classifier');
       return {"statusCode":0,"classifiers":list(classifiers)};
     
-    def broadcastRulesByClassiferNames(playerKey,classifiers,players=False):
+    def broadcastRulesByClassiferNames(playerKey,classifiers,players=False,deviceMac=False):
       ''' player key is the iot device key 
           and players are DSP's which you want to push the classifers(optional)'''
       try:
@@ -318,7 +318,7 @@ class Contextual_Ads_Rule(models.Model):
         
         #publish rules
         return CAR_Device.publishMicPhoneRule(playerKey,json.dumps(classifiers,ensure_ascii=False),
-          players);
+          players,deviceMac);
 
       except ValueError:
         return {'statusCode':2,'status':'Invalid classifier list'}
@@ -580,13 +580,14 @@ class CAR_Device(models.Model):
     
     
     
-    def publishMicPhoneRule(player,rule,players=False):
+    def publishMicPhoneRule(player,rule,players=False,playerMac=False):
 
       try:
-        playerInfo = IOT_Device.getPlayer(player);
-        if(playerInfo==False):
-          return {'statusCode':2,'status':'Invalid device'};
-        playerMac  = playerInfo.mac
+        if(playerMac==False):
+          playerInfo = IOT_Device.getPlayer(player);
+          if(playerInfo==False):
+            return {'statusCode':2,'status':'Invalid device'};
+          playerMac  = playerInfo.mac     
         rule = json.loads(rule);
         devicesToPublish = CAR_Device.getDevicesToPublishMicPhoneRule(rule,player,players);
         if(len(devicesToPublish)>=1):
