@@ -574,8 +574,7 @@ def prepareViewerMetricsExcel(metrics):
 def broadCastMicPhoneRule(request):
     fcm_result = CAR_Device.publishMicPhoneRule(request.POST.get("device"),request.POST.get("classifiers"),
         playerMac=(request.POST.get("device_mac") if 'device_mac' in request.POST else False));
-    return JsonResponse(fcm_result);
-
+    
     if(fcm_result['statusCode']==0):
         if(fcm_result['includeThis']):
             fcm_result['push_time'] = str(datetime.datetime.now());
