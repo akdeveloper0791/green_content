@@ -632,6 +632,9 @@ def broadRulesByNames(request):
         request.POST.get("classifiers"),
         (request.POST.get("players") if 'players' in request.POST else False),
         (request.POST.get("device_mac") if 'device_mac' in request.POST else False));
+    if(response['statusCode']==0):
+        response['statusCode']=100;
+        response['status'] = "Dear Valuable Customer  ,  you will get additional  '5%' discount  for this Item"
     return JsonResponse(response);
 
 def generateQR(request):
