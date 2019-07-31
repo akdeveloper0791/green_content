@@ -790,6 +790,7 @@ class Age_Geder_Metrics(models.Model):
          return {'statusCode':0,'metrics':metrics,'total':total,'data':data,'labels':labels}
 
 import pytz
+from dateutil import tz
 class Geder_Age_Metrics(models.Model):
   iot_device = models.ForeignKey('iot_device.IOT_Device',on_delete=models.CASCADE,db_index=True)
   created_at = models.DateTimeField(default=timezone.now,blank=False,null=False)
@@ -878,6 +879,8 @@ class Geder_Age_Metrics(models.Model):
       scheduleFrom = datetime.datetime.strptime(scheduleFrom,"%Y-%m-%d %H:%M:%S")
       scheduleFrom = scheduleFrom.astimezone(pytz.UTC);
       
+      scheduleTo = datetime.datetime.strptime(scheduleTo,"%Y-%m-%d %H:%M:%S")
+      scheduleTo = scheduleTo.astimezone(pytz.UTC);
       
       if(player=="All"):
         #list all metrics
@@ -900,7 +903,11 @@ class Geder_Age_Metrics(models.Model):
       if(len(metrics)>=1):
         labels = [];mGraph=[];fGraph=[];
         for info in metrics:
-          labels.append(info['time_graph']+str(":00:00"));
+          createdDateTime = info['time_graph']+str(":00:00");
+          to_zone = tz.gettz('Asia/Kolkata')
+          utc = datetime.datetime.strptime(createdDateTime, '%d-%m-%Y %H:%M:%S')
+         
+          labels.append(utc.astimezone(to_zone));
           mGraph.append(info['m_graph']);
           fGraph.append(info['f_graph']);
 
