@@ -789,6 +789,7 @@ class Age_Geder_Metrics(models.Model):
          data = [metrics['g_female__sum'],metrics['g_male__sum']];
          return {'statusCode':0,'metrics':metrics,'total':total,'data':data,'labels':labels}
 
+import pytz
 class Geder_Age_Metrics(models.Model):
   iot_device = models.ForeignKey('iot_device.IOT_Device',on_delete=models.CASCADE,db_index=True)
   created_at = models.DateTimeField(default=timezone.now,blank=False,null=False)
@@ -868,17 +869,26 @@ class Geder_Age_Metrics(models.Model):
          return {'statusCode':0,'metrics':metrics,'f_data':f_data,'labels':labels,'m_data':m_data} 
 
   def vmGenderLineReports(userId,postParams):
-      # check for player
-      
+      # check for player    
       player = postParams.get('player');
       metrics={};
+      scheduleFrom = postParams.get('from_date');
+      scheduleTo = postParams.get('to_date');
+
+      scheduleFrom = datetime.datetime.strptime(scheduleFrom,"%Y-%m-%d %H:%M:%S")
+      scheduleFrom = scheduleFrom.astimezone(pytz.UTC);
+      scheduleTo = datetime.datetime.strptime(scheduleTo,"%Y-%m-%d %H:%M:%S")
+      scheduleTo = scheduleTo.astimezone(pytz.UTC);
+      if(scheduleFrom >= scheduleTo):
+        return {'statusCode':7,'status':'Invalid times','scheduleFrom':scheduleFrom.now(),'scheduleTo':scheduleTo.now()};
+      
       if(player=="All"):
         #list all metrics
         with connection.cursor() as cursor:
           query = '''SELECT sum(f_age_0_2+f_age_4_6+f_age_8_12+f_age_15_20+f_age_25_32+f_age_38_43+f_age_48_53+f_age_60_100) as f_graph,
           sum(m_age_0_2+m_age_4_6+m_age_8_12+m_age_15_20+m_age_25_32+m_age_38_43+m_age_48_53+m_age_60_100) as m_graph,strftime(%s, created_at) as time_graph FROM iot_device_geder_age_metrics 
           WHERE iot_device_id IN (SELECT id FROM iot_device_iot_device WHERE user_id=%s)  AND (created_at between %s AND %s ) group by time_graph'''
-          cursor.execute(query,['%d-%m-%Y %H',userId,postParams.get('from_date'),postParams.get('to_date')])
+          cursor.execute(query,['%d-%m-%Y %H',userId,scheduleFrom,scheduleTo])
           metrics = dictfetchall(cursor);
           
   
@@ -887,7 +897,7 @@ class Geder_Age_Metrics(models.Model):
           query='''SELECT sum(f_age_0_2+f_age_4_6+f_age_8_12+f_age_15_20+f_age_25_32+f_age_38_43+f_age_48_53+f_age_60_100) as f_graph,
           sum(m_age_0_2+m_age_4_6+m_age_8_12+m_age_15_20+m_age_25_32+m_age_38_43+m_age_48_53+m_age_60_100) as m_graph,strftime(%s, created_at) as time_graph FROM iot_device_geder_age_metrics 
           WHERE iot_device_id = %s  AND (created_at between %s AND %s ) group by time_graph'''
-          cursor.execute(query,['%d-%m-%Y %H',player,postParams.get('from_date'),postParams.get('to_date')])
+          cursor.execute(query,['%d-%m-%Y %H',player,scheduleFrom,scheduleTo])
           metrics = dictfetchall(cursor);
           
       if(len(metrics)>=1):
