@@ -875,12 +875,9 @@ class Geder_Age_Metrics(models.Model):
       scheduleFrom = postParams.get('from_date');
       scheduleTo = postParams.get('to_date');
 
-      '''scheduleFrom = datetime.datetime.strptime(scheduleFrom,"%Y-%m-%d %H:%M:%S")
+      scheduleFrom = datetime.datetime.strptime(scheduleFrom,"%Y-%m-%d %H:%M:%S")
       scheduleFrom = scheduleFrom.astimezone(pytz.UTC);
-      scheduleTo = datetime.datetime.strptime(scheduleTo,"%Y-%m-%d %H:%M:%S")
-      scheduleTo = scheduleTo.astimezone(pytz.UTC);'''
-      if(scheduleFrom >= scheduleTo):
-        return {'statusCode':7,'status':'Invalid times','scheduleFrom':scheduleFrom.now(),'scheduleTo':scheduleTo.now()};
+      
       
       if(player=="All"):
         #list all metrics
