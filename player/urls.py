@@ -15,6 +15,7 @@ urlpatterns = [
     path('skipCampaigns/',views.skipCampaigns, name='skipCampaigns'),
     path('getPlayerCampaigns/',views.getPlayerCampaigns, name='getPlayerCampaigns'),
     path('getSchedulePlayerCampaigns/',views.getSchedulePlayerCampaigns, name='getSchedulePlayerCampaigns'),
+    path('getDSPCampaigns/',views.getDSPCampaigns, name='getDSPCampaigns'),
     path('saveCampaignReports/',views.saveCampaignReports, name="saveCampaignReports"),
     path('getCampaignReports/',views.getCampaignReports, name="getCampaignReports"),
     path('campaign_reports',views.campaignReports,name="campaignReports"),

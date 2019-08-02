@@ -400,6 +400,19 @@ def getSchedulePlayerCampaigns(request):
         return JsonResponse({'statusCode':1,
             'status':"Invalid request"});
 
+@api_view(["POST"])
+def getDSPCampaigns(request):
+    if(request.method == 'POST'):
+        player = request.POST.get('player');
+        result = Player_Campaign.getPlayerScheduleCampaignsWithInfo(player,request.POST.get("secretKey"));
+        
+        #save auto sync metrics
+        Last_Seen_Metrics.saveMetrics(player);
+        return JsonResponse(result);
+        
+    else:
+        return JsonResponse({'statusCode':1,
+            'status':"Invalid request"});
 from .models import Campaign_Reports
 @api_view(['POST'])
 def saveCampaignReports(request):

@@ -906,8 +906,9 @@ class Geder_Age_Metrics(models.Model):
           createdDateTime = info['time_graph']+str(":00:00");
           to_zone = tz.gettz('Asia/Kolkata')
           utc = datetime.datetime.strptime(createdDateTime, '%d-%m-%Y %H:%M:%S')
-         
-          labels.append(utc.astimezone(to_zone));
+          
+          labels.append(utc.astimezone(to_zone))
+          
           mGraph.append(info['m_graph']);
           fGraph.append(info['f_graph']);
 

@@ -586,13 +586,16 @@ class Player_Campaign(models.Model):
 
 
 class Schedule_Campaign(models.Model):
-    player_campaign = models.ForeignKey('campaign.Player_Campaign',on_delete=models.CASCADE)
+    
+    player_campaign = models.ForeignKey('campaign.Player_Campaign',on_delete=models.CASCADE,null=True)
+    device_group = models.ForeignKey('device_group.Device_Group',on_delete=models.CASCADE,null=True)
     schedule_from = models.DateTimeField(null=False,blank=False)
     schedule_to = models.DateTimeField(null=False,blank=False)
     schedule_type = models.SmallIntegerField(default=10)#10->schedule always
     sc_priority = models.IntegerField(default=0)
     additional_info = models.TextField(null=True)
     
+
     class Meta:
        indexes = [
            models.Index(fields=['schedule_from', 'schedule_to',]),
