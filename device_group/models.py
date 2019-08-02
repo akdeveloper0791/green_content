@@ -19,6 +19,10 @@ class Device_Group(models.Model):
         unique_together = [
         ['user', 'name']
         ]
+    
+    def getMyGroups(userId):
+      groups = Device_Group.objects.filter(user_id=userId);
+      return list(groups.values());
 
     def createGroup(accessToken,name,isWeb):
         if(isWeb != True):

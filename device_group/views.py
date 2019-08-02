@@ -114,6 +114,6 @@ def removeCampaignsDG(request):
             'status':'Invalid method'});
 
 def deviceGroups(request):
-     #devices = IOT_Device.getMyPlayers(request.user.id);
-    return render(request,'device_group/device_groups.html');
+    groups = Device_Group.getMyGroups(request.user.id);
+    return render(request,'device_group/device_groups.html',{'groups':groups});
   
