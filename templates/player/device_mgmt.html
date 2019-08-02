@@ -264,16 +264,16 @@ a.btn:active{
 </style>
 
 <!-- [--] skip toggle ui -->
-<br /><br /><br /><br /> 
-<div style="display: none;" class="container">
-  <button class="tablink" onclick="openTabPages('devices', this)" id="defaultOpen">All Devices</button>
+<br /><br /><br /> 
+<div  class="container">
+  <button class="tablink" onclick="openTabPages('players', this)" id="defaultOpen">Players</button>
 <a style="text-align: center;" class="tablink" href="{% url 'deviceGroups' %}" id="groups_id">Device Groups</a>
 </div>
  {% if res.statusCode == 0 %}
 
-<div id="devices" class="container" style="overflow-x: auto;">
+<div id="players" class="container" style="overflow-x: auto;">
   <table class="testTable table table-hover" id="reports_table">
-  	<tr style="background: blue;color: white;">
+  	<tr style="background: transparent;color: black;">
       <th class="info1" style="text-align:center">Device Name</th>
       <th class="info1" style="text-align:center">License</th> 
       <th class="info1" style="text-align:center">Last Active</th>
@@ -379,15 +379,15 @@ a.btn:active{
  <script>
 function openTabPages(pageName,elmnt)
  {
-  elmnt.style.backgroundColor = "green";
-  if (pageName=="devices") 
+  elmnt.style.backgroundColor = "blue";
+  if (pageName=="players") 
     {
        document.getElementById(pageName).style.display = "block";
     }   
  }
 
 // Get the element with id="defaultOpen" and click on it
-//document.getElementById("defaultOpen").click();
+document.getElementById("defaultOpen").click();
 </script>
 
  <script>

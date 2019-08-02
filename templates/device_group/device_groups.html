@@ -37,8 +37,9 @@
 
 <br /><br /><br />
 <div class="container">
+ <a style="text-align: center;" class="tablink" href="{% url 'deviceMgmt' %}" id="groups_id">Players</a>
  <button class="tablink" onclick="openTabPages('groups_id', this)" id="defaultOpen" >Device Groups</button>
- <a style="text-align: center;" class="tablink" href="{% url 'deviceMgmt' %}" id="groups_id">All Devices</a>
+
  
 </div>
 
@@ -60,7 +61,13 @@
 </div>
 
 <!-- Display device groups  -->
-<div id="groups_id" class="container">
+<div id="groups_data" class="container">
+	<table id="groups_info" class=" table table-hover" >
+		<tr>
+			<td>Group Name</td>
+			<td>Group Info</td>
+		</tr>
+	</table>
 
 </div>
 
@@ -68,10 +75,11 @@
  <script>
 function openTabPages(pageName,elmnt)
  {
-  elmnt.style.backgroundColor = "green";
+  elmnt.style.backgroundColor = "blue";
   if (pageName=="groups_id") 
     {
        dismissGroupCreationForm();
+       displayDeviceGroups();
     }   
  }
 // Get the element with id="defaultOpen" and click on it

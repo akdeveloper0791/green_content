@@ -16,7 +16,7 @@ function createGroup()
   var groupName = document.getElementById("group_name").value;
   if(groupName=="" || groupName==null)
   {
-    swal("Please enter vaid group name");
+    swal("Please enter valid group name");
     return false;
   }
    console.log("createGroup:"+groupName);
