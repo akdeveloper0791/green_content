@@ -1,0 +1,90 @@
+{% load static %}
+<!DOCTYPE html>
+<!DOCTYPE html>
+<html>
+<head>
+	 <meta name="description" content="green content to have your digital advertising devices on the go">
+  <meta name="keywords" content="green content, rules,digital ads,device management,campaigns,assign campaings,iot contextual ad tools, contextual ad rules, ad rules, male ads,female ads,family ads, text, url">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <script src="{% static 'js/device_group/device_groups.js' %}"></script>
+  <script src="{% static 'jquery/1.12.4/jquery.min.js' %}"></script>
+</head>
+
+{% block header %} {% include 'header.html' %} {% endblock %}
+
+{% block body %}
+<body>
+<style type="text/css">
+	/* Style tab links */
+.tablink {
+  background-color: #555;
+  color: white;
+  float: left;
+  border: none;
+  outline: none;
+  cursor: pointer;
+  padding: 12px 13px;
+  font-size: 17px;
+  width: 50%;
+}
+
+.tablink:hover {
+  background-color: #777;
+  color: black;
+}
+</style>
+
+<br /><br /><br />
+<div class="container">
+ <button class="tablink" onclick="openTabPages('groups_id', this)" id="defaultOpen" >Device Groups</button>
+ <a style="text-align: center;" class="tablink" href="{% url 'deviceMgmt' %}" id="groups_id">All Devices</a>
+ 
+</div>
+
+<!--  device group creation  -->
+<div class="container">
+
+  <button id="create_btn" style="float: right;" class="gradient-button gradient-btn" onclick="displayGroupCreationForm();"><i class="fa fa-plus">Create Group</i></button>
+<button id="submit_btn" style="float: right;display: none;" class="gradient-button gradient-btn" onclick="createGroup()">Submit</button>
+  <!--device group creation form  -->
+<div id="dg_creation_form"  style="margin:5px; display:none;border: 1px solid darkgreen;border-radius: 8px;"> 
+	
+<form  style="margin: 10px;" onSubmit="return createGroup()">
+ <label>Group Name</label>
+ <input style="width:50%;" type="input" name="classifier" class="form-control" id="group_name" placeholder="Please enter group name"required> 
+
+</form>	
+</div>
+
+</div>
+
+<!-- Display device groups  -->
+<div id="groups_id" class="container">
+
+</div>
+
+
+ <script>
+function openTabPages(pageName,elmnt)
+ {
+  elmnt.style.backgroundColor = "green";
+  if (pageName=="groups_id") 
+    {
+       dismissGroupCreationForm();
+    }   
+ }
+// Get the element with id="defaultOpen" and click on it
+document.getElementById("defaultOpen").click();
+</script>
+
+ <script>
+  csrf_token = "{{ csrf_token }}"
+ </script>
+
+{% endblock %}
+
+{% block footer %} {% include 'footer.html' %} {% endblock %}
+
+</body>
+</html>

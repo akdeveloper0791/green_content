@@ -240,17 +240,40 @@ a.btn:active{
 .switch-yes-no .switch-input:checked ~ .switch-label:after {
   transform: rotateY(0)
 }
+
+
+
+/* Style tab links */
+.tablink {
+  background-color: #555;
+  color: white;
+  float: left;
+  border: none;
+  outline: none;
+  cursor: pointer;
+  padding: 12px 13px;
+  font-size: 17px;
+  width: 50%;
+}
+
+.tablink:hover {
+  background-color: #777;
+  color: black;
+}
+
 </style>
 
 <!-- [--] skip toggle ui -->
-
-<br /><br /><br /> <br />
- 
+<br /><br /><br /> 
+<div class="container">
+  <button class="tablink" onclick="openTabPages('devices', this)" id="defaultOpen">All Devices</button>
+<a style="text-align: center;" class="tablink" href="{% url 'deviceGroups' %}" id="groups_id">Device Groups</a>
+</div>
  {% if res.statusCode == 0 %}
 
-<div class="container" style="overflow-x: auto;">
+<div id="devices" class="container" style="overflow-x: auto;">
   <table class="testTable table table-hover" id="reports_table">
-  	<tr style="background: cornflowerblue;color: white;">
+  	<tr style="background: transparent;color: black;border: 1.5px solid green;">
       <th class="info1" style="text-align:center">Device Name</th>
       <th class="info1" style="text-align:center">License</th> 
       <th class="info1" style="text-align:center">Last Active</th>
@@ -352,9 +375,25 @@ a.btn:active{
       </div>
     </div>
 
+
+ <script>
+function openTabPages(pageName,elmnt)
+ {
+  elmnt.style.backgroundColor = "green";
+  if (pageName=="devices") 
+    {
+       document.getElementById(pageName).style.display = "block";
+    }   
+ }
+
+// Get the element with id="defaultOpen" and click on it
+document.getElementById("defaultOpen").click();
+</script>
+
  <script>
   csrf_token = "{{ csrf_token }}"
  </script>
+
 {% endblock %}
 
 {% block footer %} {% include 'footer.html' %} {% endblock %}

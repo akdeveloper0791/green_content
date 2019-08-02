@@ -112,3 +112,8 @@ def removeCampaignsDG(request):
     else:
         return JsonResponse({'statusCode':1,
             'status':'Invalid method'});
+
+def deviceGroups(request):
+     #devices = IOT_Device.getMyPlayers(request.user.id);
+    return render(request,'device_group/device_groups.html');
+  
