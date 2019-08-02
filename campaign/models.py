@@ -584,15 +584,44 @@ class Player_Campaign(models.Model):
         else:
             return {'statusCode':0,'campaigns':campaigns};
 
+    def getDSPCampaigns(player,secretKey):
+        userId = User_unique_id.getUserId(secretKey);
+        if(userId == False):
+            return {'statusCode':1,'status':
+                "Invalid session, please login"};
+        
+        with connection.cursor() as cursor:
+            conditionQuery = '''SELECT campaigns.*, cinfo.info,sc.id as sc_id, sc.schedule_from, sc.schedule_to, pc.schedule_type,sc.schedule_type as sc_schedule_type, pc.pc_priority, sc.sc_priority,sc.additional_info,pc.is_skip as is_skip,pc.id as pc_id,dgc.id as dgc_id,dgc.dgc_schedule_type,dgc.dgc_priority,dgc.dgc_is_skip from cmsapp_multiple_campaign_upload as campaigns 
+            INNER JOIN campaign_campaigninfo as cinfo on cinfo.campaign_id_id = campaigns.id
+            LEFT JOIN campaign_player_campaign as pc on pc.campaign_id = campaigns.id AND pc.player_id = %s
+            LEFT JOIN device_group_device_group_campaign as dgc on dgc.campaign_id = campaigns.id 
+            LEFT JOIN campaign_schedule_campaign sc on pc.id = sc.player_campaign_id or dgc.id = sc.device_group_id
+            WHERE ( pc.user_id = %s or dgc.device_group_id IN (SELECT device_group_id FROM device_group_device_group_player WHERE player_id=%s ))
+            ORDER BY campaigns.updated_date DESC'''
+            
+            cursor.execute(conditionQuery,[player,userId,player])
+            campaigns = dictfetchall(cursor);
+            cursor.close();
+            connection.close();
+        
+        #campaigns = Multiple_campaign_upload.objects.filter(campaign_uploaded_by=userId);
+        if(len(campaigns)<=0):
+            return {'statusCode':2,'status':
+            'No campaigns Found'};
+        else:
+            return {'statusCode':0,'campaigns':campaigns};
 
 class Schedule_Campaign(models.Model):
-    player_campaign = models.ForeignKey('campaign.Player_Campaign',on_delete=models.CASCADE)
+    
+    player_campaign = models.ForeignKey('campaign.Player_Campaign',on_delete=models.CASCADE,null=True)
+    device_group = models.ForeignKey('device_group.Device_Group',on_delete=models.CASCADE,null=True)
     schedule_from = models.DateTimeField(null=False,blank=False)
     schedule_to = models.DateTimeField(null=False,blank=False)
     schedule_type = models.SmallIntegerField(default=10)#10->schedule always
     sc_priority = models.IntegerField(default=0)
     additional_info = models.TextField(null=True)
     
+
     class Meta:
        indexes = [
            models.Index(fields=['schedule_from', 'schedule_to',]),

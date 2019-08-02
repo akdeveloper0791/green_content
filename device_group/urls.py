@@ -8,5 +8,5 @@ urlpatterns = [
     path('removePlayers/',views.removePlayersDG,name="removePlayersDG"),
     path('assignCampaigns/',views.assignCampaignsDG,name="assignCampaignsDG"),
     path('removeCampaigns/',views.removeCampaignsDG,name="removeCampaignsDG"),
-    path('device_groups/',views.deviceGroups,name='deviceGroups'),
+    path('',views.deviceGroups,name='deviceGroups'),
     ]
