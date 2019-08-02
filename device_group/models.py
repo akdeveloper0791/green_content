@@ -162,6 +162,9 @@ class Device_Group_Campaign(models.Model):
     device_group = models.ForeignKey('device_group.Device_Group',on_delete=models.CASCADE)
     campaign = models.ForeignKey('cmsapp.Multiple_campaign_upload',on_delete=models.CASCADE)
     created_at = models.DateTimeField(default=datetime.datetime.now())
+    dgc_schedule_type = models.SmallIntegerField(default=10)#10->schedule always
+    dgc_priority = models.IntegerField(default=0)
+    dgc_is_skip = models.SmallIntegerField(default=0)#0->false, 1->skip true
 
     class Meta(object):
         unique_together=[

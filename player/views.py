@@ -404,7 +404,7 @@ def getSchedulePlayerCampaigns(request):
 def getDSPCampaigns(request):
     if(request.method == 'POST'):
         player = request.POST.get('player');
-        result = Player_Campaign.getPlayerScheduleCampaignsWithInfo(player,request.POST.get("secretKey"));
+        result = Player_Campaign.getDSPCampaigns(player,request.POST.get("secretKey"));
         
         #save auto sync metrics
         Last_Seen_Metrics.saveMetrics(player);
