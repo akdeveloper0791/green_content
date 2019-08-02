@@ -366,3 +366,6 @@ function skipCampaign(checkbox,cId,pId)
 	}	
 }
 
+
+
+
