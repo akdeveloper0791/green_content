@@ -116,4 +116,21 @@ def removeCampaignsDG(request):
 def deviceGroups(request):
     groups = Device_Group.getMyGroups(request.user.id);
     return render(request,'device_group/device_groups.html',{'groups':groups});
-  
+
+@api_view(["POST"])
+def getDGInfo(request):
+    if(request.method == 'POST'):
+        postParams = request.POST;
+        isUserId = False;
+        secretKey = request.POST.get("accessToken")
+        if(secretKey=='web'):
+            isUserId = True;
+            if(request.user.is_authenticated):
+                secretKey = request.user.id;
+            else:
+                return JsonResponse(
+                    {'statusCode':2,'status':"Invalid accessToken please login"});
+            
+        result = Device_Group.getDGInfo(secretKey,isUserId,postParams.get('dg_id'),
+            ('is_campaigns' in postParams),('is_devices' in postParams));
+        return JsonResponse(result);
