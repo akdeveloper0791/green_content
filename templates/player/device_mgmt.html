@@ -266,7 +266,7 @@ a.btn:active{
 <!-- [--] skip toggle ui -->
 <br /><br /><br /> 
 <div  class="container">
-  <button class="tablink" onclick="openTabPages('players', this)" id="defaultOpen">Players</button>
+  <a style="text-align: center;background-color: blue;" class="tablink" href="{% url 'deviceMgmt' %}" id="defaultOpen">Players</a>
 <a style="text-align: center;" class="tablink" href="{% url 'deviceGroups' %}" id="groups_id">Device Groups</a>
 </div>
  {% if res.statusCode == 0 %}
@@ -374,21 +374,6 @@ a.btn:active{
        
       </div>
     </div>
-
-
- <script>
-function openTabPages(pageName,elmnt)
- {
-  elmnt.style.backgroundColor = "blue";
-  if (pageName=="players") 
-    {
-       document.getElementById(pageName).style.display = "block";
-    }   
- }
-
-// Get the element with id="defaultOpen" and click on it
-document.getElementById("defaultOpen").click();
-</script>
 
  <script>
   csrf_token = "{{ csrf_token }}"

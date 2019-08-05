@@ -197,7 +197,12 @@ var loadedURL = window.location.href;
 if(loadedURL.includes("/player/device_mgmt"))
 {
   highliteSelectedLink("deviceMgmt_nav");
-}else if(loadedURL.includes("/web_search"))
+}else if(loadedURL.includes("/device_group"))
+{
+  highliteSelectedLink("deviceMgmt_nav");
+}
+
+else if(loadedURL.includes("/web_search"))
 {
   highliteSelectedLink("web_search_nav");
 }

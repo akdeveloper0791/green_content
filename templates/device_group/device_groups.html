@@ -9,13 +9,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <script src="{% static 'js/device_group/device_groups.js' %}"></script>
   <script src="{% static 'jquery/1.12.4/jquery.min.js' %}"></script>
-</head>
 
-{% block header %} {% include 'header.html' %} {% endblock %}
-
-{% block body %}
-<body>
-<style type="text/css">
+  <style type="text/css">
 	/* Style tab links */
 .tablink {
   background-color: #555;
@@ -35,10 +30,17 @@
 }
 </style>
 
+</head>
+
+{% block header %} {% include 'header.html' %} {% endblock %}
+
+{% block body %}
+<body>
+
 <br /><br /><br />
 <div class="container">
  <a style="text-align: center;" class="tablink" href="{% url 'deviceMgmt' %}" id="groups_id">Players</a>
- <button class="tablink" onclick="openTabPages('groups_id', this)" id="defaultOpen" >Device Groups</button>
+ <a style="text-align: center;background-color: blue;" class="tablink" href="{% url 'deviceGroups' %}"  id="defaultOpen" >Device Groups</a>
 
  
 </div>
@@ -46,45 +48,46 @@
 <!--  device group creation  -->
 <div class="container">
 
-  <button id="create_btn" style="float: right;" class="gradient-button gradient-btn" onclick="displayGroupCreationForm();"><i class="fa fa-plus">Create Group</i></button>
-<button id="submit_btn" style="float: right;display: none;" class="gradient-button gradient-btn" onclick="createGroup()">Submit</button>
-  <!--device group creation form  -->
-<div id="dg_creation_form"  style="margin:5px; display:none;border: 1px solid darkgreen;border-radius: 8px;"> 
-	
+<div id="dg_creation_form"  style="margin:5px; display:none;border: 1px solid darkgreen;border-radius: 8px;"> 	
 <form  style="margin: 10px;" onSubmit="return createGroup()">
+<i id="close_btn" onclick="dismissGroupCreationForm()" class="fa fa-close" style="float: right;text-align: right;"></i>
+<button id="submit_btn" style="float: right;" class="gradient-button gradient-btn" onclick="createGroup()">Submit</button>
  <label>Group Name</label>
  <input style="width:50%;" type="input" name="classifier" class="form-control" id="group_name" placeholder="Please enter group name"required> 
 
 </form>	
 </div>
+  <button id="create_btn" style="float: right;" class="gradient-button gradient-btn" onclick="displayGroupCreationForm();"><i class="fa fa-plus">Create Group</i></button>
+
+
+  <!--device group creation form  -->
+
 
 </div>
 
 <!-- Display device groups  -->
 <div id="groups_data" class="container">
-	<table id="groups_info" class=" table table-hover" >
-		<tr>
-			<td>Group Name</td>
-			<td>Group Info</td>
-		</tr>
+	<table id="groups_info" class=" table table-hover">
+		{% for group in groups %}
+    <tr>
+      <td class="info1" style="color:black;font-weight: bold" id="{{ group.id }}_group_name">{{ group.name }} </td>
+      <td ><p style="cursor: pointer;color:blue;"'+
+      'onclick="getRuleCampaignInfo('{{ group.id }}');"><b>Campaign</b></p>
+      </td> 
+      
+      <td><p style="cursor: pointer;color:green;"'+
+      'onclick="getRulePlayersInfo('{{ group.id }}');"><b>Players</b></p></td>
+      
+      <td><span class="fa fa-trash"  style="cursor:pointer;
+      color:orangered; display:inline-block;width:4%;float: left;
+      margin;5px;" onclick="deleteRule('{{ group.id }}')"></span></td>
+    
+    </tr>
+    
+   {% endfor %}
 	</table>
 
 </div>
-
-
- <script>
-function openTabPages(pageName,elmnt)
- {
-  elmnt.style.backgroundColor = "blue";
-  if (pageName=="groups_id") 
-    {
-       dismissGroupCreationForm();
-       displayDeviceGroups();
-    }   
- }
-// Get the element with id="defaultOpen" and click on it
-document.getElementById("defaultOpen").click();
-</script>
 
  <script>
   csrf_token = "{{ csrf_token }}"
