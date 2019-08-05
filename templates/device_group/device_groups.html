@@ -12,7 +12,7 @@
 
 <link rel="stylesheet"
  href="{% static 'bootstrap/3.4.0/bootstrap.min.css' %}">
- 
+
   <script src="{% static 'jquery/3.4.0/jquery.min.js' %}">
   </script>
 
@@ -37,6 +37,8 @@
   background-color: #777;
   color: black;
 }
+
+
 </style>
 
 </head>
@@ -45,6 +47,39 @@
 
 {% block body %}
 <body>
+
+	<style>
+.h4,h4{
+    margin:0px;
+}
+
+.actives{
+    background:green;
+
+}
+a.btn:active{
+    background:green;
+}
+.fa-trash{
+  color: red;
+}
+
+/* The Modal (background) */
+.modal {
+  display: none; /* Hidden by default */
+  position: fixed; /* Stay in place */
+  z-index: 1; /* Sit on top */
+  padding-top: 95px; /* Location of the box */
+  left: 0;
+  top: 0;
+  width: 100%; /* Full width */
+  height: 100%; /* Full height */
+  overflow: auto; /* Enable scroll if needed */
+  background-color: rgb(0,0,0); 
+  background-color: rgba(0,0,0,0.4); 
+}
+
+</style>
 
 <br /><br /><br />
 <div class="container">
@@ -80,12 +115,13 @@
 		{% for group in groups %}
     <tr>
       <td class="info1" style="color:black;font-weight: bold" id="{{ group.id }}_group_name">{{ group.name }} </td>
-      <td ><p style="cursor: pointer;color:blue;"'+
-      'onclick="getDGCampaignInfo('{{ group.id }}');"><b>Campaign</b></p>
+
+      <td ><p style="cursor: pointer;color:blue;"
+      onclick="getDGCampaignsInfo('{{ group.id }}')"><b>Campaign</b></p>
       </td> 
       
-      <td><p style="cursor: pointer;color:green;"'+
-      'onclick="getGroupPlayersInfo('{{ group.id }}');"><b>Players</b></p></td>
+      <td><p style="cursor: pointer;color:green;"
+      onclick="getGroupPlayersInfo('{{ group.id }}')"><b>Players</b></p></td>
       
       <td><span class="fa fa-trash"  style="cursor:pointer;
       color:orangered; display:inline-block;width:4%;float: left;
@@ -98,6 +134,43 @@
 
 </div>
 
+
+{% include 'campaign/list_mycampaigns_cb.html' %}
+<!--Div to display campaigns assign dialog for the Device Group  -->
+<div class="modal" id="dg_campaigns_dialog" >
+    <div class="modal-dialog">
+      <div class="modal-content">
+    
+        <!-- Modal Header -->
+        <div class="modal-header">
+         <p id="dg_name" style="color:#4CAF50;text-align: center;font-weight:500;font-size:22px;">Group</p>      
+        </div>
+         <!--  </div> 
+        </div> -->
+        
+        <!-- Modal body -->
+        <div class="modal-body">
+       <input type="hidden" id="group_campaign_info_id" />
+          <div id="campaign_info">
+            <span style="float: right;" class="gradient-button gradient-btn" onclick="displayCampaignsToAdd()"><sapn class="fa fa-plus"> Assign New </sapn></span> <br/>
+            <h5 style="color:cornflowerblue;display:inline-block"> Assigned Campaigns</h5>           
+         <div id="group_assigned_campaigns" class="table-responsive"
+            style="margin-top:2px;">
+            </div>
+          </div>
+        </div>
+        
+        <!-- Modal footer -->
+        <div class="modal-footer"><center>
+        <button type="button" class="btn btn-danger" data-dismiss="modal" onclick="closeDGCampaignsDialog()">Close</button></center>
+        </div>
+        
+      </div>
+    </div>
+  </div>
+
+
+
   <!--Display Device Group asigned player dialog -->
   <div class="modal" id="dg_players">
     <div class="modal-dialog">
@@ -106,7 +179,7 @@
         <!-- Modal Header -->
         <div class="modal-header">
           <p id="dg_name" style="color:#4CAF50;text-align: center;font-weight:500;font-size:22px;">Rule</p>
-          <input type="hidden" id="group_id" />
+          <input type="hidden" id="device_group_id" />
           
         </div>
         
@@ -125,7 +198,7 @@
           <center>
           <button type="button" class="btn btn-success" data-dismiss="modal"  onclick="assignDGselectedPlayers()">Submit</button>
 
-          <button type="button" class="btn btn-danger" data-dismiss="modal"  onclick="closeDGplayers()">Close</button>
+          <button type="button" class="btn btn-danger" data-dismiss="modal"  onclick="closeDeviceGroupPlayers()">Close</button>
           </center>
         </div>
         
