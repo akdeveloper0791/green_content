@@ -1,3 +1,4 @@
+var playersList=[];
 
 function displayGroupCreationForm() 
 {
@@ -75,16 +76,68 @@ function dismissGroupCreationForm()
   document.getElementById('dg_creation_form').style.display="none";
 }
 
-function displayDGPlayersInfo(data ,group_id)
-{
-  var isPlayersAssigned=false;
-  carSelectedPlayers=[];
-  
-  document.getElementById('ctad_rule_id').value =rule_id;
-  document.getElementById('rule_name').innerHTML=data['rule'].classifier;
 
-  document.getElementById('dg_players').style.display="block";
-   var dvTable = document.getElementById("ctadr_player_list");
+function getGroupPlayersInfo(group_id)
+{
+  try {
+        ajaxindicatorstart("<img src='/static/images/ajax-loader.gif'><br/> Please wait...!");
+       
+    $.ajax(
+    {
+
+      type:'POST',
+      url: '/device_group/getInfo',
+      headers: {            
+            'X-CSRFToken': csrf_token
+        },
+      data:{
+                accessToken: 'web',
+                dg_id: group_id,
+                is_devices:true,
+                
+      },
+      
+      success: function(data)
+       {
+         ajaxindicatorstop();
+           
+        if(data['statusCode']==0)
+        {
+        console.log("data:"+JSON.stringify(data));
+        displayDGPlayersInfo(data,group_id);       
+        }
+      else
+      {
+             swal(data['status']);                               
+      }
+
+       },
+    
+     error: function (jqXHR, exception) {
+      ajaxindicatorstop();
+      alert(exception+jqXHR.responseText);
+     }
+
+    });
+  }
+  catch(Exception)
+    {
+    alert(Exception.message);
+  }
+}
+
+function displayDGPlayersInfo(data,group_id)
+{
+	var data ,group_id;
+  //var isPlayersAssigned=false;
+    carSelectedPlayers=[];
+  
+  document.getElementById('group_id').value =group_id;
+  document.getElementById('dg_name').innerHTML=groupName;
+  data['rule'].classifier;
+
+   document.getElementById('dg_players').style.display="block";
+   var dvTable = document.getElementById("dg_player_list");
 
    var players=data['devices']
     
@@ -94,11 +147,7 @@ function displayDGPlayersInfo(data ,group_id)
          var table = document.createElement("TABLE");
          table.classList.add("data","table-hover"); 
        
-       
-        //Add the header row.
-       // var row = table.insertRow(-1);
-
-        for (var i = 0; i < players.length; i++) 
+      for (var i = 0; i < players.length; i++) 
         {
 
           var player = players[i];
@@ -107,7 +156,6 @@ function displayDGPlayersInfo(data ,group_id)
              {
               var cell = row.insertCell(-1);
 
-        
              var ruleId = players[i]['car_device_Id'];
               
               if(ruleId>0)

@@ -8,7 +8,16 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <script src="{% static 'js/device_group/device_groups.js' %}"></script>
-  <script src="{% static 'jquery/1.12.4/jquery.min.js' %}"></script>
+  
+
+<link rel="stylesheet"
+ href="{% static 'bootstrap/3.4.0/bootstrap.min.css' %}">
+ 
+  <script src="{% static 'jquery/3.4.0/jquery.min.js' %}">
+  </script>
+
+  <script src="{% static 'bootstrap/3.4.0/bootstrap.min.js' %}">
+  </script>
 
   <style type="text/css">
 	/* Style tab links */
@@ -72,15 +81,15 @@
     <tr>
       <td class="info1" style="color:black;font-weight: bold" id="{{ group.id }}_group_name">{{ group.name }} </td>
       <td ><p style="cursor: pointer;color:blue;"'+
-      'onclick="getRuleCampaignInfo('{{ group.id }}');"><b>Campaign</b></p>
+      'onclick="getDGCampaignInfo('{{ group.id }}');"><b>Campaign</b></p>
       </td> 
       
       <td><p style="cursor: pointer;color:green;"'+
-      'onclick="getRulePlayersInfo('{{ group.id }}');"><b>Players</b></p></td>
+      'onclick="getGroupPlayersInfo('{{ group.id }}');"><b>Players</b></p></td>
       
       <td><span class="fa fa-trash"  style="cursor:pointer;
       color:orangered; display:inline-block;width:4%;float: left;
-      margin;5px;" onclick="deleteRule('{{ group.id }}')"></span></td>
+      margin;5px;" onclick="deleteDeviceGroup('{{ group.id }}')"></span></td>
     
     </tr>
     
@@ -88,6 +97,41 @@
 	</table>
 
 </div>
+
+  <!--Display Device Group asigned player dialog -->
+  <div class="modal" id="dg_players">
+    <div class="modal-dialog">
+      <div class="modal-content">
+      
+        <!-- Modal Header -->
+        <div class="modal-header">
+          <p id="dg_name" style="color:#4CAF50;text-align: center;font-weight:500;font-size:22px;">Rule</p>
+          <input type="hidden" id="group_id" />
+          
+        </div>
+        
+        <!-- Modal body -->
+        <div class="modal-body">
+          <p style="color:black;"><b>Players List</b></p>
+          <div  id="dg_player_list"class="table-responsive"
+            style="margin-top:3px;overflow-x: auto;">
+          </div>
+         
+
+        </div>
+        
+        <!-- Modal footer -->
+        <div class="modal-footer">
+          <center>
+          <button type="button" class="btn btn-success" data-dismiss="modal"  onclick="assignDGselectedPlayers()">Submit</button>
+
+          <button type="button" class="btn btn-danger" data-dismiss="modal"  onclick="closeDGplayers()">Close</button>
+          </center>
+        </div>
+        
+      </div>
+    </div>
+  </div>
 
  <script>
   csrf_token = "{{ csrf_token }}"
