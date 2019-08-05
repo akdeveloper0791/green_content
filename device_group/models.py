@@ -7,7 +7,17 @@ from django.db import IntegrityError
 import json
 from player.models import Player
 from campaign.models import Player_Campaign
+from django.db import connection
 
+# Create your models here.
+def dictfetchall(cursor):
+    
+    columns = [col[0] for col in cursor.description]
+    return [
+        dict(zip(columns, row))
+        for row in cursor.fetchall()
+    ]
+    
 # Create your models here.
 class Device_Group(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL,on_delete=models.CASCADE)
@@ -54,6 +64,39 @@ class Device_Group(models.Model):
 
         return {'statusCode':1,'status':
                 "Invalid session, please login"}; 
+    
+    def getDGInfo(secretKey,isUserId,dgId,isCampaigns=True,isDevices=True):
+      userId = secretKey;
+      if(isUserId==False):
+            userId = User_unique_id.getUserId(secretKey);
+            if(userId == False):
+                return {'statusCode':1,'status':
+                "Invalid session, please login11"};
+
+      try:
+        #check for device
+        dgInfo = Device_Group.objects.get(id=dgId,user_id=userId);
+        info={'id':dgInfo.id,'name':dgInfo.name,
+        'created_at':dgInfo.created_date};
+        returnJSON = {'statusCode':0,'info':info};
+        
+        if(isCampaigns==True):
+          associatedCampaigns = Device_Group_Campaign.objects.filter(device_group_id=dgId).values('campaign__campaign_name','campaign__id');
+          returnJSON['campaigns'] =list(associatedCampaigns);
+        
+        if(isDevices==True):
+          with connection.cursor() as cursor:
+            query = '''SELECT player.id,player.name,device_group.id as dg_device_Id FROM player_player as player 
+              LEFT JOIN device_group_device_group_player as device_group ON player.id = device_group.player_id AND device_group.device_group_id=%s 
+              WHERE (player.user_id=%s)'''
+            cursor.execute(query,[dgId,userId]);
+            associatedDevices = dictfetchall(cursor);
+            returnJSON['devices'] =list(associatedDevices);
+        
+        return returnJSON;
+
+      except Device_Group.DoesNotExist:
+        return {'statusCode':2,'status':'Invalid rule, info not found'}
 
 class Device_Group_Player(models.Model):
     device_group = models.ForeignKey('device_group.Device_Group',on_delete=models.CASCADE)

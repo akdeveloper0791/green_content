@@ -9,4 +9,5 @@ urlpatterns = [
     path('assignCampaigns/',views.assignCampaignsDG,name="assignCampaignsDG"),
     path('removeCampaigns/',views.removeCampaignsDG,name="removeCampaignsDG"),
     path('',views.deviceGroups,name='deviceGroups'),
+    path('getInfo',views.getDGInfo,name='getDGInfo'),
     ]
