@@ -227,9 +227,17 @@ def saveScheduleCampaign(request):
         else:
             return JsonResponse({'statusCode':2,
                 'status':'Invalid access token, please login and try'});
-    saveResponse = Schedule_Campaign.saveCampaign(isWeb,accessToken,
-        postParams.get('schedule_from'),postParams.get('schedule_to'),postParams.get('pc_id'),
-        postParams.get('schedule_type'),postParams.get('sc_priority'),postParams.get('additional_info'));
+    saveResponse=None;
+    if('pc_id' in postParams):
+        saveResponse = Schedule_Campaign.saveCampaign(isWeb,accessToken,
+            postParams.get('schedule_from'),postParams.get('schedule_to'),postParams.get('pc_id'),
+            postParams.get('schedule_type'),postParams.get('sc_priority'),postParams.get('additional_info'),
+            );
+    else:
+       saveResponse = Schedule_Campaign.saveCampaign(isWeb,accessToken,
+            postParams.get('schedule_from'),postParams.get('schedule_to'),
+            postParams.get('schedule_type'),postParams.get('sc_priority'),postParams.get('additional_info'),
+            postParams.get('dgc_id')); 
     if(saveResponse['statusCode']==0):
         #schedules = Schedule_Campaign.getPCSchedule(postParams.get('pc_id'),);
         saveResponse['schedules'] = {'id':saveResponse['id'],'schedule_from':postParams.get('schedule_from'),

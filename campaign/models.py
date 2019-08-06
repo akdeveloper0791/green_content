@@ -611,10 +611,11 @@ class Player_Campaign(models.Model):
         else:
             return {'statusCode':0,'campaigns':campaigns};
 
+from device_group.models import Device_Group_Campaign
 class Schedule_Campaign(models.Model):
     
     player_campaign = models.ForeignKey('campaign.Player_Campaign',on_delete=models.CASCADE,null=True)
-    device_group = models.ForeignKey('device_group.Device_Group',on_delete=models.CASCADE,null=True)
+    device_group_campaign = models.ForeignKey('device_group.Device_Group_Campaign',on_delete=models.CASCADE,null=True)
     schedule_from = models.DateTimeField(null=False,blank=False)
     schedule_to = models.DateTimeField(null=False,blank=False)
     schedule_type = models.SmallIntegerField(default=10)#10->schedule always
@@ -697,8 +698,82 @@ class Schedule_Campaign(models.Model):
         except Exception as e:    
             return {'statusCode':6,'status':e.args}
 
+    def saveDGCSchedule(isWeb,accessToken,scheduleFrom,scheduleTo,scheduleType,
+        scPriority,additionalInfo,dgcId):
+        if(isWeb==False):
+            accessToken = User_unique_id.getUserId(accessToken);
+            if(accessToken == False):
+                return {'statusCode':2,'status':
+                "Invalid session, please login"};
+        try:
+            dgcInfo = Device_Group_Campaign.objects.get(id=dgcId,display_group__user_id=accessToken);
+            scheduleFrom = datetime.datetime.strptime(scheduleFrom,"%Y-%m-%d %H:%M:%S")
+            scheduleFrom = scheduleFrom.astimezone(pytz.UTC);
+            scheduleTo = datetime.datetime.strptime(scheduleTo,"%Y-%m-%d %H:%M:%S")
+            scheduleTo = scheduleTo.astimezone(pytz.UTC);
+            if(scheduleFrom >= scheduleTo):
+                return {'statusCode':7,'status':'Invalid times','scheduleFrom':scheduleFrom.now(),'scheduleTo':scheduleTo.now()};
+            
+            isTimeSlotAvailable = True;
+            
+            with connection.cursor() as cursor:
+                mhnSchedule = ['100','110','120'];
+                checkSlotQuery=None;cursorParams=[];
+                if scheduleType in mhnSchedule:
+                    checkSlotQuery = ''' SELECT count(*) FROM campaign_schedule_campaign WHERE
+                    device_group_campaign_id = %s AND ((schedule_from <= %s AND schedule_to >= %s) OR (schedule_from <= %s AND schedule_to >= %s) OR (schedule_from >= %s AND schedule_to <= %s)) AND 
+                    schedule_type IN ({})'''.format(','.join(['%s' for _ in range(len(mhnSchedule))]))
+                    cursorParams = [dgcId,scheduleTo,scheduleTo,scheduleFrom,scheduleFrom,scheduleFrom,scheduleTo];
+                    for i in mhnSchedule:
+                        cursorParams.append(i);
+                
+                elif(scheduleType=='200' or scheduleType == '250' or scheduleType == '300'):
+                    checkSlotQuery = ''' SELECT count(*) FROM campaign_schedule_campaign WHERE 
+                    device_group_campaign_id = %s  AND schedule_type = %s AND schedule_from = datetime(%s)'''
+                    cursorParams = [dgcId,scheduleType,scheduleFrom];
+                
+                if(checkSlotQuery is not None):
+                    cursor.execute(checkSlotQuery,cursorParams);  
+                    info = cursor.fetchone();
+                
+                    if (info[0] >=1):
+                        isTimeSlotAvailable = False;
+
+            if(isTimeSlotAvailable==False):
+                return {'statusCode':5,'status':'Campaign has been scheduled for the selected times, please select different time'};
+            else:
+                #return {'status':True,'info':info}
+                with transaction.atomic():
+                    #update schedule type
+                    pcInfo.schedule_type=100;#schedule
+                    pcInfo.save();
+                    #save the values
+                    newScheduleCampaign = Schedule_Campaign();
+                    newScheduleCampaign.display_group_campaign_id = pcId;
+                    newScheduleCampaign.schedule_from = scheduleFrom
+                    newScheduleCampaign.schedule_to = scheduleTo
+                    newScheduleCampaign.schedule_type= scheduleType
+                    newScheduleCampaign.sc_priority = scPriority
+                    newScheduleCampaign.additional_info = additionalInfo
+                    newScheduleCampaign.save();
+                    
+                    if(newScheduleCampaign.id>=1):
+                        return {'statusCode':0,'status':'Schedule has been saved successfull','id':newScheduleCampaign.id,
+                        'sc_priority':newScheduleCampaign.sc_priority,'additional_info':newScheduleCampaign.additional_info};
+                    else:
+                        return {'statusCode':6,'status':'Some thing went wrong, please try again later'};
+        except Device_Group_Campaign.DoesNotExist:
+            return {'statusCode':4,'status':'Invalid info, campaign not found'}
+        except Exception as e:    
+            return {'statusCode':6,'status':e.args}
+
+
     def getPCSchedules(pcId):
         schedules = Schedule_Campaign.objects.filter(player_campaign_id=pcId).order_by('-id');
+        return list(schedules.values());
+
+    def getDGCSchedules(dgcId):
+        schedules = Schedule_Campaign.objects.filter(device_group_campaign_id=dgcId).order_by('-id');
         return list(schedules.values());
 
     def deleteCampaignSchedule(isWeb,accessToken,scId):

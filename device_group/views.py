@@ -2,6 +2,7 @@ from django.shortcuts import render
 from rest_framework.decorators import api_view
 from .models import Device_Group, Device_Group_Player, Device_Group_Campaign
 from django.http import JsonResponse
+from django.contrib.auth.decorators import login_required
 
 # Create your views here.
 @api_view(['POST'])
@@ -20,6 +21,24 @@ def createDG(request):
         response = Device_Group.createGroup(accessToken,
             request.POST.get('name'),isWeb);
         
+        return JsonResponse(response);
+    else:
+        return JsonResponse({'statusCode':1,
+            'status':'Invalid method'});
+
+@api_view(["POST"])
+def deleteDG(request):
+    if(request.method == 'POST'):
+        isWeb = False;
+        accessToken = request.POST.get('accessToken');
+        if(accessToken == "web"):
+            if(request.user.is_authenticated):
+                accessToken = request.user.id;
+                isWeb = True;
+            else:
+                return JsonResponse({'statusCode':2,
+                    'status':'Invalid accessToken please login and try'});
+        response = Device_Group.deleteDG(request.POST.get('dg_id'),accessToken,isWeb);
         return JsonResponse(response);
     else:
         return JsonResponse({'statusCode':1,
@@ -134,3 +153,23 @@ def getDGInfo(request):
         result = Device_Group.getDGInfo(secretKey,isUserId,postParams.get('dg_id'),
             ('is_campaigns' in postParams),('is_devices' in postParams));
         return JsonResponse(result);
+
+from campaign.models import CampaignInfo,Schedule_Campaign
+
+@login_required
+def dgScheduleCampaign(request,dg,campaign): 
+    deviceGroupCampaign = Device_Group_Campaign.getDGCampaign(dg,campaign,request.user.id);
+    if(deviceGroupCampaign==False):
+        return render(request,'player/schedule_campaign.html',{'status':False,'error':'Invalid campaign, info not found'});
+   
+    dgInfo = Device_Group.isMyDeviceGroup(dg,request.user.id);
+    if(dgInfo==False):
+        return render(request,'player/schedule_campaign.html',{'status':False,'error':'Invalid device group, device group details not found'});
+    
+    campaignInfo = CampaignInfo.getPreviewCampaignInfo(request.user.id,campaign);
+    if(campaignInfo['statusCode']!=0):
+        return render(request,'player/schedule_campaign.html',{'status':False,'error':campaignInfo['status']});
+    
+    schedules = Schedule_Campaign.getDGCSchedules(deviceGroupCampaign.id);
+    return render(request,'player/schedule_campaign.html',{'status':True,'pc_id':deviceGroupCampaign.id,'schedules':schedules,'player_name':dgInfo.name,
+        'camapaign_name':campaignInfo['c_name'],'type':'dg'});

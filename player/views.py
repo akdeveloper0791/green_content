@@ -719,7 +719,7 @@ def scheduleCampaign(request,player,campaign):
     
     schedules = Schedule_Campaign.getPCSchedules(playerCampaign.id);
     return render(request,'player/schedule_campaign.html',{'status':True,'pc_id':playerCampaign.id,'schedules':schedules,'player_name':playerInfo.name,
-        'camapaign_name':campaignInfo['c_name']});
+        'camapaign_name':campaignInfo['c_name'],'type':'pc'});
 
 from iot_device.models import CAR_Device
 

@@ -29,6 +29,15 @@ class Device_Group(models.Model):
         unique_together = [
         ['user', 'name']
         ]
+
+    def isMyDeviceGroup(dgId,userId):
+      try:
+        
+        deviceGroup = Device_Group.objects.get(id=dgId,
+            user_id=userId);
+        return deviceGroup;
+      except Device_Group.DoesNotExist:
+        return False;
     
     def getMyGroups(userId):
       groups = Device_Group.objects.filter(user_id=userId);
@@ -65,6 +74,20 @@ class Device_Group(models.Model):
         return {'statusCode':1,'status':
                 "Invalid session, please login"}; 
     
+    def deleteDG(dgId,accessToken,isWeb):
+        if(isWeb != True):
+            accessToken = User_unique_id.getUserId(accessToken);  
+            if(accessToken == False):
+                return {'statusCode':1,'status':
+                "Invalid session, please login"};
+        try:
+            Device_Group.objects.get(id=dgId,user_id=accessToken).delete();
+            return {'statusCode':0,'status':'Device Group has been deleted'};
+            
+        except Device_Group.DoesNotExist:
+            return {'statusCode':2,'status':'Device Group not found'};
+
+
     def getDGInfo(secretKey,isUserId,dgId,isCampaigns=True,isDevices=True):
       userId = secretKey;
       if(isUserId==False):
@@ -213,6 +236,14 @@ class Device_Group_Campaign(models.Model):
         unique_together=[
         ['device_group','campaign']
         ]
+
+    def getDGCampaign(dgId,campaignId,userId):
+        try:
+            info = Device_Group_Campaign.objects.get(
+                device_group_id=dgId,campaign_id=campaignId,device_group__user_id=userId);
+            return info;
+        except Device_Group_Campaign.DoesNotExist:
+            return False;
 
     def assignNewCampaigns(userId,gId,campaigns,isWeb):
         if(isWeb == False):
