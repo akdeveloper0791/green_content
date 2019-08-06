@@ -400,9 +400,7 @@ function createRule()
     obj.classifier_lat = document.getElementById('loc_lat').value;
    obj.classifier_lng  =document.getElementById('loc_lng').value;
    gps_car_data= JSON.stringify(obj);
-   console.log("gps_car_data:"+ JSON.stringify(gps_car_data));
   }
-   console.log("gps_car_data:"+gps_car_data);
 
  try {
    ajaxindicatorstart("<img src='/static/images/ajax-loader.gif'><br/> Please wait...!");    
