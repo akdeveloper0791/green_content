@@ -21,7 +21,7 @@ function createGroup()
     swal("Please enter valid group name");
     return false;
   }
-   console.log("createGroup:"+groupName);
+
 
  try {
    ajaxindicatorstart("<img src='/static/images/ajax-loader.gif'><br/> Please wait...!");    
@@ -43,7 +43,7 @@ function createGroup()
         ajaxindicatorstop();
         if(data['statusCode']==0)
         {
-         console.log("createGroup response:"+JSON.stringify(data));
+     
          swal(data['status']); 
          dismissGroupCreationForm(); 
          location.reload(true);
@@ -78,6 +78,62 @@ function dismissGroupCreationForm()
 }
 
 
+
+function deleteDeviceGroup(groupId)
+{
+  try {
+   ajaxindicatorstart("<img src='/static/images/ajax-loader.gif'><br/> Please wait...!");    
+    $.ajax(
+    {
+
+      type:'POST',
+      url: '/device_group/delete/',
+      headers: {            
+            'X-CSRFToken':csrf_token
+        },
+      data:{
+           accessToken: 'web',
+           dg_id: groupId,
+              
+      },
+     
+      success: function(data)
+       {
+        ajaxindicatorstop();
+        if(data['statusCode']==0)
+        {
+        	swal(data['status']); 
+            deleteGroupInfo(groupId);
+           
+        }
+        else
+       {
+             swal(data['status']);                         
+       }
+
+    
+       },
+    
+     error: function (jqXHR, exception) {
+      ajaxindicatorstop();
+      swal(exception+jqXHR.responseText);
+     }
+
+    });
+    }
+      catch(Exception)
+      {
+        ajaxindicatorstop();
+        swal(Exception.message);
+      }
+}
+
+function deleteGroupInfo(groupId)
+{
+    
+    document.getElementById("groups_info").deleteRow(document.getElementById(groupId+"_group_name").rowIndex);
+}
+
 function getGroupPlayersInfo(group_id)
 {
   try {
@@ -104,8 +160,8 @@ function getGroupPlayersInfo(group_id)
            
         if(data['statusCode']==0)
         {
-        console.log("data:"+JSON.stringify(data));
-        displayDGPlayersInfo(data,group_id);       
+           console.log("displayDGPlayersInfo:"+JSON.stringify(data));
+           displayDGPlayersInfo(data,group_id);       
         }
       else
       {
@@ -366,8 +422,10 @@ function getDGCampaignsInfo(group_id)
            
         if(data['statusCode']==0)
         {
+<<<<
         	console.log("data:"+JSON.stringify(data));
           displayDGCampaignInfo(data,group_id);       
+====
         }
       else
       {

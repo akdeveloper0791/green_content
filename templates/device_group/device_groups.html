@@ -28,7 +28,7 @@
   border: none;
   outline: none;
   cursor: pointer;
-  padding: 12px 13px;
+  padding: 10px 11px;
   font-size: 17px;
   width: 50%;
 }
@@ -81,8 +81,10 @@ a.btn:active{
 
 </style>
 
-<br /><br /><br /> <br />
-<div class="container">
+
+<br /><br /><br /><br /> 
+<div  class="container">
+
  <a style="text-align: center;" class="tablink" href="{% url 'deviceMgmt' %}" id="groups_id">Players</a>
  <a style="text-align: center;background-color: blue;" class="tablink" href="{% url 'deviceGroups' %}"  id="defaultOpen" >Device Groups</a>
 
@@ -113,8 +115,8 @@ a.btn:active{
 <div id="groups_data" class="container">
 	<table id="groups_info" class=" table table-hover">
 		{% for group in groups %}
-    <tr>
-      <td class="info1" style="color:black;font-weight: bold" id="{{ group.id }}_group_name">{{ group.name }} </td>
+    <tr id="{{ group.id }}_group_name">
+      <td class="info1" style="color:black;font-weight: bold" >{{ group.name }} </td>
 
       <td ><p style="cursor: pointer;color:blue;"
       onclick="getDGCampaignsInfo('{{ group.id }}')"><b>Campaign</b></p>
