@@ -132,9 +132,14 @@ def removeCampaignsDG(request):
         return JsonResponse({'statusCode':1,
             'status':'Invalid method'});
 
+
+@login_required
 def deviceGroups(request):
     groups = Device_Group.getMyGroups(request.user.id);
-    return render(request,'device_group/device_groups.html',{'groups':groups});
+    response = render(request,'device_group/device_groups.html',{'groups':groups})
+   
+    response.set_cookie('device_mgmt_last_accessed', 'dg');
+    return response;
 
 @api_view(["POST"])
 def getDGInfo(request):

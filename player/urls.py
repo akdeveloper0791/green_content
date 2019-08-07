@@ -9,6 +9,7 @@ urlpatterns = [
     path('viewer_metrics',views.viewerMetrics,name="viewerMetrics"),
     path('get_v_metrics',views.getViewerMetrics,name="getViewerMetrics"),
     path('device_mgmt',views.deviceMgmt,name="deviceMgmt"),
+    path('device_mgmt_players',views.deviceMgmtPlayers,name="deviceMgmtPlayers"),
     path('campaigns/', views.groupCampaingsInfo, name='groupCampaingsInfo'),
     path('assignCampaigns/', views.assignCampaigns, name='assignCampaigns'),
     path('removeCampaigns/',views.removeCampaigns, name='removeCampaigns'),

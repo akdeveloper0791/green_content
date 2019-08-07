@@ -745,7 +745,7 @@ class Schedule_Campaign(models.Model):
                 #return {'status':True,'info':info}
                 with transaction.atomic():
                     #update schedule type
-                    dgcInfo.schedule_type=100;#schedule
+                    dgcInfo.dgc_schedule_type=100;#schedule
                     dgcInfo.save();
                     #save the values
                     newScheduleCampaign = Schedule_Campaign();
@@ -789,7 +789,26 @@ class Schedule_Campaign(models.Model):
             else:
                 scheduleCampaign = Schedule_Campaign.objects.get(id=scId,player_campaign__user_id=accessToken);  
             if((scheduleCampaign.schedule_to)>timezone.now()):
+                dgcId = scheduleCampaign.device_group_campaign_id;
+                pcId = scheduleCampaign.player_campaign_id;
                 scheduleCampaign.delete();
+                #check and update schedule type
+                if(scType=="dg"):
+                    #get all schedules 
+                    count = Schedule_Campaign.objects.filter(device_group_campaign_id=dgcId).values('device_group_campaign_id');
+                    if(len(count)<=0):
+                        #update campaign type in device_group_campaign
+                        dgcInfo = Device_Group_Campaign.objects.get(id=dgcId);
+                        dgcInfo.dgc_schedule_type = 10;
+                        dgcInfo.save();
+                else:
+                    count = Schedule_Campaign.objects.filter(player_campaign_id=pcId).values('player_campaign_id');
+                    if(len(count)<=0):
+                        #update campaign type in device_group_campaign
+                        pcInfo = Player_Campaign.objects.get(id=pcId);
+                        pcInfo.schedule_type = 10;
+                        pcInfo.save();
+ 
                 return {'statusCode':0,'status':'Schedule has been removed successfully'};
             else:
                 return {'statusCode':7,'status':'Cannot delete an expired schedule'};

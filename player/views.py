@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render,redirect
 from django.contrib.auth import  authenticate
 from rest_framework.decorators import api_view
 from django.contrib.auth.models import User
@@ -259,11 +259,20 @@ def deviceMgmt(request):
         return render('/signin/');
     else:
         #get auto sync metrics
-        metrics = Last_Seen_Metrics.getMetrics(request.user.id);
-        return render(request,'player/device_mgmt.html',{'res':metrics})
-        return JsonResponse(metrics);
+        if('device_mgmt_last_accessed' in request.COOKIES and 
+            request.COOKIES['device_mgmt_last_accessed']=='dg'):
+            return redirect('/device_group/')      
+        else:
+            return redirect('/player/device_mgmt_players')
+        
 
-
+@login_required
+def deviceMgmtPlayers(request):
+    metrics = Last_Seen_Metrics.getMetrics(request.user.id);
+    response=render(request,'player/device_mgmt.html',{'res':metrics})
+    response.set_cookie('device_mgmt_last_accessed', 'pc');
+    return response;
+    
 @api_view(['POST'])
 def groupCampaingsInfo(request):
     if(request.method == 'POST'):

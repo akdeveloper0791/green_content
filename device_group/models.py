@@ -109,8 +109,9 @@ class Device_Group(models.Model):
         
         if(isDevices==True):
           with connection.cursor() as cursor:
-            query = '''SELECT player.id,player.name,device_group.id as dg_device_Id FROM player_player as player 
+            query = '''SELECT player.id,player.name,device_group.id as dg_device_Id,lastSeenMetrics.accessed_at as last_active FROM player_player as player 
               LEFT JOIN device_group_device_group_player as device_group ON player.id = device_group.player_id AND device_group.device_group_id=%s 
+              LEFT JOIN player_last_seen_metrics as lastSeenMetrics on device_group.player_id = lastSeenMetrics.player_id
               WHERE (player.user_id=%s)'''
             cursor.execute(query,[dgId,userId]);
             associatedDevices = dictfetchall(cursor);
