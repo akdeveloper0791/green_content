@@ -302,7 +302,11 @@ function getLastPlayerAccessedTime(serverTime)
 {
   if(serverTime!=null)
   {
+    
+  
     var date = new Date(serverTime);
+    serverTime = date.toLocaleString();
+    date = new Date(serverTime+" GMT");
     return date.toLocaleString();
   }else
   {

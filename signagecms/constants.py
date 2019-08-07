@@ -14,8 +14,8 @@ r4_2h_2v_50_50_json = ''' {"regions":[{"width":50,"height":50,"top_margin":0,"le
 
 file_storage_path="C:/Users/adskite/python_projects/green_content/media";
 
-STORE_LOCATION = 1; #2-> dropbox , 1-> local
-setup = 1; #2 server, 1->local
+STORE_LOCATION = 2; #2-> dropbox , 1-> local
+setup = 2; #2 server, 1->local
 
 project_local_path = "C:/Users/adskite/python_projects/green_content"
 project_server_path = "/home/adskite/myproject/signagecms"
