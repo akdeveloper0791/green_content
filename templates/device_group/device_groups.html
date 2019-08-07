@@ -38,6 +38,41 @@
   color: black;
 }
 
+body
+		{
+			font-family: Arial,Helvetica,sans-serif;
+		}
+		tr,td{
+			font-weight: 500
+		}
+    td.info1, th.info1 {
+  border: 1px solid #dddddd;
+  text-align: center;
+
+}
+    tr{
+  border-bottom: 1px solid #dddddd;
+      }
+
+   table.info {
+  font-family: arial, sans-serif;
+  border-collapse: collapse;
+  border: 1px solid #dddddd;
+  width: 100%;
+}
+
+table.data {
+  display: table;
+   font-family: arial, sans-serif;
+  border-collapse: collapse;
+  border-spacing: 15px 10px;
+  border-color: gray;
+  border: .3px solid #dddddd;
+  width: 100%;
+}
+	
+
+
 
 </style>
 
@@ -116,7 +151,7 @@ a.btn:active{
 	<table id="groups_info" class=" table table-hover">
 		{% for group in groups %}
     <tr id="{{ group.id }}_group_name">
-      <td id="group_{{ group.id }}" class="info1" style="color:black;font-weight: bold" >{{ group.name }} </td>
+      <td id="group_{{ group.id }}" class="info1" style="color:black;font-weight: bold;" >{{ group.name }} </td>
 
       <td ><p style="cursor: pointer;color:blue;"
       onclick="getDGCampaignsInfo('{{ group.id }}')"><b>Campaign</b></p>

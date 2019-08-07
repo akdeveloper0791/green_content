@@ -181,7 +181,7 @@ function getGroupPlayersInfo(group_id)
            
         if(data['statusCode']==0)
         {
-           
+           console.log("displayDGPlayersInfo:"+JSON.stringify(data));
            displayDGPlayersInfo(data,group_id);       
         }
       else
@@ -224,7 +224,19 @@ function displayDGPlayersInfo(data,group_id)
             //Create a HTML Table element.
          var table = document.createElement("TABLE");
          table.classList.add("data","table-hover"); 
+
+           row = table.insertRow(-1);
+           var checkCell = row.insertCell(-1);
+           checkCell.innerHTML=" ";
+           var nameCell = row.insertCell(-1);
+           nameCell.style.color=" skyblue";
+     
+           nameCell.innerHTML="Player";
+            var datecell = row.insertCell(-1);
+            datecell.style.color=" skyblue";
        
+            datecell.innerHTML="Last accessed time";
+
       for (var i = 0; i < players.length; i++) 
         {
 
@@ -246,8 +258,17 @@ function displayDGPlayersInfo(data,group_id)
                 cell.innerHTML = "<input type='checkbox' style='margin:5px;cursor:pointer;'  name='name1' onchange='dgpOnchange(this,"+players[i]['id']+")'/>";
               }
               
-              var cell = row.insertCell(-1);
-               cell.innerHTML =player.name;
+              var playerNameCell = row.insertCell(-1);
+               playerNameCell.innerHTML =player.name;
+
+                var lastAccessedTime=getLastPlayerAccessedTime(player.last_active);
+                  var latCell = row.insertCell(-1);
+                latCell.innerHTML =lastAccessedTime;
+                if(lastAccessedTime!=null)
+                {
+              	
+                }
+              
 
               if(dgDeviceId>0)
               {
@@ -276,6 +297,19 @@ function displayDGPlayersInfo(data,group_id)
 
 }
 
+
+function getLastPlayerAccessedTime(serverTime)
+{
+  if(serverTime!=null)
+  {
+    var date = new Date(serverTime);
+    return date.toLocaleString();
+  }else
+  {
+    return null;
+  }
+  
+}
 
 //on change lister for players lits checkbox's inside rule
 function dgpOnchange(element,playerId)
