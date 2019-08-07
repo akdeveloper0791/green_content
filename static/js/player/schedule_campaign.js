@@ -27,7 +27,7 @@
 
  function saveSchedule(pc_id)
  {
-    alert(scType);
+    
 
     var dev_id = document.getElementById('selectBox').value;
     var from_date = document.getElementById('datepicker_from').value;
@@ -93,7 +93,7 @@
     //alert(fromDate+ " "+toDate+" "+pc_id+" "+dev_id);
 		if(dev_id=="350")
     {
-      console.log("selectedWeekDays size"+selectedWeekDays.length);
+      
       if(selectedWeekDays.length<=0)
       {
         swal("Please select any one of the week days");
@@ -126,7 +126,7 @@
     xhr.onload = function() {
      if (xhr.status === 200) {
       ajaxindicatorstop();
-            console.log(xhr.response);
+            
             var responseObj = JSON.parse(xhr.response);
            
             // Upload succeeded. Do something here with the file info.
@@ -136,9 +136,7 @@
             {
               // dismissBusyDialog();
                display_reports(responseObj);
-               //console.log(responseObj.schedules);
-               //swal(responseObj.status);
-
+               
               
             }else
             {
@@ -225,7 +223,7 @@ function deleteSC(scId)
 
 function deleteSCRow(scId)
 {
-    console.log("delete sc row "+scId);
+   
     document.getElementById("sc_rec_table").deleteRow(document.getElementById("sc_rec_row_"+scId).rowIndex);
 }
 
@@ -243,8 +241,7 @@ function toggleWeekDaySelection(daybutton)
     daybutton.className = "select_week_days_selected";
   }
 
-  console.log("selectedWeekDays"+JSON.stringify(selectedWeekDays));
-   
+  
 }
 
 function onRepeatChange()

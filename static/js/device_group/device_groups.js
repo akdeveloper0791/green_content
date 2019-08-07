@@ -56,7 +56,7 @@ function createGroup()
        },
     
      error: function (jqXHR, exception) {
-      console.log(jqXHR.responseText);
+      
       ajaxindicatorstop();
       swal(exception+jqXHR.responseText);
      }
@@ -160,7 +160,7 @@ function getGroupPlayersInfo(group_id)
            
         if(data['statusCode']==0)
         {
-           console.log("displayDGPlayersInfo:"+JSON.stringify(data));
+           
            displayDGPlayersInfo(data,group_id);       
         }
       else
@@ -422,10 +422,10 @@ function getDGCampaignsInfo(group_id)
            
         if(data['statusCode']==0)
         {
-<<<<
-        	console.log("data:"+JSON.stringify(data));
+
+        	
           displayDGCampaignInfo(data,group_id);       
-====
+
         }
       else
       {
