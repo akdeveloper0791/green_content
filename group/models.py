@@ -504,7 +504,7 @@ class GroupMemberAssignNotification(models.Model):
             ctx = {
             'creator_name': user.username,
             'group_name': gName,
-            'url':'https://www.greencontent.in/groups/approve/{}'.format(gId)
+            'url':'https://www.signageserv.ai/groups/approve/{}'.format(gId)
             } 
             message = get_template('groups/assign_new_member_email_notification.html').render({'info':ctx})
             notification = GroupMemberAssignNotification(gc_group_id=gId,
@@ -530,7 +530,7 @@ class GroupCampaignAssignNotification(models.Model):
             ctx = {
             'creator_name': user.username,
             'group_name': gName,
-            'url':'https://www.greencontent.in/groups/approve/{}'.format(gId),
+            'url':'https://www.signageserv.ai/groups/approve/{}'.format(gId),
             'campaigns':campaigns,
             'gId':gId
             } 

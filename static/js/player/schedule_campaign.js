@@ -27,7 +27,8 @@
 
  function saveSchedule(pc_id)
  {
-    
+    alert(scType);
+
     var dev_id = document.getElementById('selectBox').value;
     var from_date = document.getElementById('datepicker_from').value;
     var to_date = document.getElementById('datepicker_to').value;
@@ -108,9 +109,18 @@
 
        // displayInitUploadBusyDialog();
        var xhr = new XMLHttpRequest();
-       var params = 'access_token=web&schedule_from='+fromDate+'&schedule_to='+toDate+'&pc_id='+pc_id+'&schedule_type='+dev_id+'&sc_priority='+priority+
-       '&additional_info='+additionalInfo;
+       var params;
+       if(scType=='pc')
+       {
+         params = 'access_token=web&schedule_from='+fromDate+'&schedule_to='+toDate+'&pc_id='+pc_id+'&schedule_type='+dev_id+'&sc_priority='+priority+
+        '&additional_info='+additionalInfo;
     
+       }else if(scType=='dg')
+       {
+         params = 'access_token=web&schedule_from='+fromDate+'&schedule_to='+toDate+'&dgc_id='+pc_id+'&schedule_type='+dev_id+'&sc_priority='+priority+
+        '&additional_info='+additionalInfo;
+       }
+       
     
     //swal("Sdfsdf"+xhr.status);
     xhr.onload = function() {
@@ -172,7 +182,7 @@ function deleteSC(scId)
   ajaxindicatorstart("<img src='/static/images/ajax-loader.gif'><br/> Please wait...!");
   
   var xhr = new XMLHttpRequest();
-  var params = 'access_token=web&sc_id='+scId;
+  var params = 'access_token=web&sc_id='+scId+'&type='+scType;
     
   xhr.onload = function() {
    if (xhr.status === 200) {

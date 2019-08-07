@@ -86,15 +86,22 @@ color:blue;
 
 <br/><br/><br/><br/>
 
+
+
 <!-- {{pc_id}}
 {{schedules}} -->
 <script type="text/javascript">
 	var pc_id = {{pc_id}};
+
 </script>
 
 <script type="text/javascript">
-  function afterLoad()
-{  
+ var scType = 'pc';
+
+function afterLoad()
+{ 
+  scType = '{{type}}';
+  alert('{{type}}');
   checkAndUpdateScheduleRepeats();
 }
 

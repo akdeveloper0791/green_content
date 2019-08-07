@@ -104,7 +104,7 @@ class Device_Group(models.Model):
         returnJSON = {'statusCode':0,'info':info};
         
         if(isCampaigns==True):
-          associatedCampaigns = Device_Group_Campaign.objects.filter(device_group_id=dgId).values('campaign__campaign_name','campaign__id');
+          associatedCampaigns = Device_Group_Campaign.objects.filter(device_group_id=dgId).values('campaign__campaign_name','campaign__id','campaign__camp_type');
           returnJSON['campaigns'] =list(associatedCampaigns);
         
         if(isDevices==True):

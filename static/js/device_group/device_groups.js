@@ -367,7 +367,7 @@ function getDGCampaignsInfo(group_id)
         if(data['statusCode']==0)
         {
         	console.log("data:"+JSON.stringify(data));
-        displayDGCampaignInfo(data,group_id);       
+          displayDGCampaignInfo(data,group_id);       
         }
       else
       {
@@ -404,6 +404,7 @@ function displayDGCampaignInfo(data,groupId)
 
 function displayGroupsCampaigns(campaigns,groupId)
 {
+  
   var dvTable = document.getElementById("group_assigned_campaigns");
     
     //init existing campaigns inside Rule
@@ -432,7 +433,18 @@ function displayGroupsCampaigns(campaigns,groupId)
               var cell = row.insertCell(-1);
               cell.innerHTML =campaign.campaign__campaign_name;
 
-             
+             var campaign_type=campaign.campaign__camp_type
+             if(campaign_type==2)
+             {
+                var scheduleCell = row.insertCell(-1);
+                scheduleCell.innerHTML = "<a class='fa fa-calendar' href='/device_group/schedule_campaign/"+groupId+"/"+campaign.campaign__id+"' alt='Schedule' title='Schedule' style='cursor:pointer;margin:10px;visibility: hidden;'></a>";
+    
+              }else
+              {
+                var scheduleCell = row.insertCell(-1);
+                      scheduleCell.innerHTML = "<a class='fa fa-calendar' href='/device_group/schedule_campaign/"+groupId+"/"+campaign.campaign__id+"' alt='Schedule' title='Schedule' style='cursor:pointer;margin:10px;'></a>";
+          
+              }
               var deleteCell = row.insertCell(-1);
               deleteCell.innerHTML = "<span class='fa fa-trash' alt='Remove' title='Remove' style='cursor:pointer;color:orangered; display:inline-block; margin: 10px;' onclick='removeCampaign("+campaign.campaign__id+")'>"            
            

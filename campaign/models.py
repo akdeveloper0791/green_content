@@ -595,7 +595,7 @@ class Player_Campaign(models.Model):
             INNER JOIN campaign_campaigninfo as cinfo on cinfo.campaign_id_id = campaigns.id
             LEFT JOIN campaign_player_campaign as pc on pc.campaign_id = campaigns.id AND pc.player_id = %s
             LEFT JOIN device_group_device_group_campaign as dgc on dgc.campaign_id = campaigns.id 
-            LEFT JOIN campaign_schedule_campaign sc on pc.id = sc.player_campaign_id or dgc.id = sc.device_group_id
+            LEFT JOIN campaign_schedule_campaign sc on pc.id = sc.player_campaign_id or dgc.id = sc.device_group_campaign_id
             WHERE ( pc.user_id = %s or dgc.device_group_id IN (SELECT device_group_id FROM device_group_device_group_player WHERE player_id=%s ))
             ORDER BY campaigns.updated_date DESC'''
             
@@ -706,7 +706,7 @@ class Schedule_Campaign(models.Model):
                 return {'statusCode':2,'status':
                 "Invalid session, please login"};
         try:
-            dgcInfo = Device_Group_Campaign.objects.get(id=dgcId,display_group__user_id=accessToken);
+            dgcInfo = Device_Group_Campaign.objects.get(id=dgcId,device_group__user_id=accessToken);
             scheduleFrom = datetime.datetime.strptime(scheduleFrom,"%Y-%m-%d %H:%M:%S")
             scheduleFrom = scheduleFrom.astimezone(pytz.UTC);
             scheduleTo = datetime.datetime.strptime(scheduleTo,"%Y-%m-%d %H:%M:%S")
@@ -745,11 +745,11 @@ class Schedule_Campaign(models.Model):
                 #return {'status':True,'info':info}
                 with transaction.atomic():
                     #update schedule type
-                    pcInfo.schedule_type=100;#schedule
-                    pcInfo.save();
+                    dgcInfo.schedule_type=100;#schedule
+                    dgcInfo.save();
                     #save the values
                     newScheduleCampaign = Schedule_Campaign();
-                    newScheduleCampaign.display_group_campaign_id = pcId;
+                    newScheduleCampaign.device_group_campaign_id = dgcId;
                     newScheduleCampaign.schedule_from = scheduleFrom
                     newScheduleCampaign.schedule_to = scheduleTo
                     newScheduleCampaign.schedule_type= scheduleType
@@ -776,7 +776,7 @@ class Schedule_Campaign(models.Model):
         schedules = Schedule_Campaign.objects.filter(device_group_campaign_id=dgcId).order_by('-id');
         return list(schedules.values());
 
-    def deleteCampaignSchedule(isWeb,accessToken,scId):
+    def deleteCampaignSchedule(isWeb,accessToken,scId,scType="pc"):
         if(isWeb==False):
             accessToken = User_unique_id.getUserId(accessToken);
             if(accessToken == False):
@@ -784,11 +784,14 @@ class Schedule_Campaign(models.Model):
                 "Invalid session, please login"};
         #return {'datetime':timezone.now()}
         try:
-            scheduleCampaign = Schedule_Campaign.objects.get(id=scId,player_campaign__user_id=accessToken);
+            if(scType=="dg"):
+                scheduleCampaign = Schedule_Campaign.objects.get(id=scId,device_group_campaign__device_group__user_id=accessToken);
+            else:
+                scheduleCampaign = Schedule_Campaign.objects.get(id=scId,player_campaign__user_id=accessToken);  
             if((scheduleCampaign.schedule_to)>timezone.now()):
                 scheduleCampaign.delete();
                 return {'statusCode':0,'status':'Schedule has been removed successfully'};
             else:
                 return {'statusCode':7,'status':'Cannot delete an expired schedule'};
         except Schedule_Campaign.DoesNotExist:
-            return {'statusCode':6,'status':'Unable to delete schedule, please try again later'};
+            return {'statusCode':6,'status':'Unable to delete schedule, please try again later type'+scType+",scId"+scId};

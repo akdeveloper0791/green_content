@@ -234,7 +234,7 @@ def saveScheduleCampaign(request):
             postParams.get('schedule_type'),postParams.get('sc_priority'),postParams.get('additional_info'),
             );
     else:
-       saveResponse = Schedule_Campaign.saveCampaign(isWeb,accessToken,
+       saveResponse = Schedule_Campaign.saveDGCSchedule(isWeb,accessToken,
             postParams.get('schedule_from'),postParams.get('schedule_to'),
             postParams.get('schedule_type'),postParams.get('sc_priority'),postParams.get('additional_info'),
             postParams.get('dgc_id')); 
@@ -260,5 +260,5 @@ def deleteScheduleCampaign(request):
             return JsonResponse({'statusCode':2,
                 'status':'Invalid access token, please login and try'});
     deleteResponse = Schedule_Campaign.deleteCampaignSchedule(isWeb,accessToken,
-        postParams.get('sc_id'));
+        postParams.get('sc_id'),postParams.get('type'));
     return JsonResponse(deleteResponse);
