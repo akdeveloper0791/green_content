@@ -116,7 +116,7 @@ a.btn:active{
 	<table id="groups_info" class=" table table-hover">
 		{% for group in groups %}
     <tr id="{{ group.id }}_group_name">
-      <td class="info1" style="color:black;font-weight: bold" >{{ group.name }} </td>
+      <td id="group_{{ group.id }}" class="info1" style="color:black;font-weight: bold" >{{ group.name }} </td>
 
       <td ><p style="cursor: pointer;color:blue;"
       onclick="getDGCampaignsInfo('{{ group.id }}')"><b>Campaign</b></p>
@@ -127,7 +127,7 @@ a.btn:active{
       
       <td><span class="fa fa-trash"  style="cursor:pointer;
       color:orangered; display:inline-block;width:4%;float: left;
-      margin;5px;" onclick="deleteDeviceGroup('{{ group.id }}')"></span></td>
+      margin;5px;" onclick="groupDeleteAlertDialog('{{ group.id }}')"></span></td>
     
     </tr>
     
@@ -135,6 +135,49 @@ a.btn:active{
 	</table>
 
 </div>
+
+
+<!--Device Group Delete alert dialog -->
+
+ <!-- dialog to delete campaign from the rule  -->
+  <!--campaign delete alert dialog -->
+  <div class="modal" id="group_delete_dialog">
+    <div class="modal-dialog">
+
+      <div class="modal-content">  
+        <!-- Modal Header -->
+        <div class="modal-header"><center>
+          <p style="color:#4CAF50;text-align: center;
+              font-weight:500;font-size:22px;">
+            <i style="margin:10px;color:red;font-size:24px;
+            "class="fa fa-warning"></i>Are you sure?</p>
+        </center>
+        </div>
+        
+        <!-- Modal body -->
+        <div id="alert_dialog_msg" class="modal-body"
+        style="margin-top:3px; overflow-x: auto;">
+        <p>You want to delete group</p>
+        <div id="dg_name"
+        style="margin-top:3px; overflow-x: auto;">
+        </div>
+        </div>
+
+         <!-- Modal footer -->
+        <div class="modal-footer">
+          <center>
+          <button  type="button" class="btn btn-success" data-dismiss="modal" onclick="closeGroupDeleteDialog()">Cancel</button>
+
+          <button type="button"  class='btn btn-danger' id="delete_group_btn"></button>
+         </center>
+        </div> 
+
+        </div>
+       
+      </div>
+    </div>
+
+<!-- End of Device Group delete alert dialog -->
 
 
 {% include 'campaign/list_mycampaigns_cb.html' %}
@@ -145,7 +188,7 @@ a.btn:active{
     
         <!-- Modal Header -->
         <div class="modal-header">
-         <p id="dg_name" style="color:#4CAF50;text-align: center;font-weight:500;font-size:22px;">Group</p>      
+         <p id="dg_campaign_name" style="color:#4CAF50;text-align: center;font-weight:500;font-size:22px;">Group</p>      
         </div>
          <!--  </div> 
         </div> -->
@@ -180,7 +223,7 @@ a.btn:active{
       
         <!-- Modal Header -->
         <div class="modal-header">
-          <p id="dg_name" style="color:#4CAF50;text-align: center;font-weight:500;font-size:22px;">Rule</p>
+          <p id="dg_player_name" style="color:#4CAF50;text-align: center;font-weight:500;font-size:22px;">Group</p>
           <input type="hidden" id="device_group_id" />
           
         </div>

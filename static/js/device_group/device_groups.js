@@ -79,8 +79,27 @@ function dismissGroupCreationForm()
 
 
 
+function groupDeleteAlertDialog(groupId)
+{
+    var cell = document.getElementById("group_"+groupId);
+	 document.getElementById('group_delete_dialog').style.display = "block";
+     document.getElementById('dg_name').innerHTML='<h5><b>Group name:</b><span style="color:blue;">'+cell.innerText+'</span></h5>';
+     var submitBtn = document.getElementById('delete_group_btn');
+
+     //submitBtn.onclick=removeCampaign(campId);
+     submitBtn.innerHTML = "<button style='background-color:transparent;border:transparent;' id='delete_group_btn' onclick='deleteDeviceGroup("+groupId+")'>Yes,delete it!</button>"
+
+}
+
+function closeGroupDeleteDialog()
+{
+	document.getElementById('group_delete_dialog').style.display = "none";
+}
+
+
 function deleteDeviceGroup(groupId)
 {
+	closeGroupDeleteDialog();
   try {
    ajaxindicatorstart("<img src='/static/images/ajax-loader.gif'><br/> Please wait...!");    
     $.ajax(
@@ -102,6 +121,7 @@ function deleteDeviceGroup(groupId)
         ajaxindicatorstop();
         if(data['statusCode']==0)
         {
+
         	swal(data['status']); 
             deleteGroupInfo(groupId);
            
@@ -127,6 +147,7 @@ function deleteDeviceGroup(groupId)
         swal(Exception.message);
       }
 }
+
 
 function deleteGroupInfo(groupId)
 {
@@ -190,7 +211,8 @@ function displayDGPlayersInfo(data,group_id)
     dgSelectedPlayers=[];
   
   document.getElementById('device_group_id').value =group_id;
-  document.getElementById('dg_name').innerHTML=data['info'].name;
+  document.getElementById('dg_player_name').innerHTML=data['info'].name;
+   
 
    document.getElementById('dg_players').style.display="block";
    var dvTable = document.getElementById("dg_player_list");
@@ -211,8 +233,9 @@ function displayDGPlayersInfo(data,group_id)
               row = table.insertRow(-1);
              {
               var cell = row.insertCell(-1);
-
-             var dgDeviceId = players[i]['dg_device_Id'];
+              
+    
+           var dgDeviceId = players[i]['dg_device_Id'];
               
               if(dgDeviceId>0)
               {
@@ -224,7 +247,7 @@ function displayDGPlayersInfo(data,group_id)
               }
               
               var cell = row.insertCell(-1);
-              cell.innerHTML = players[i]['name'];
+               cell.innerHTML =player.name;
 
               if(dgDeviceId>0)
               {
@@ -454,7 +477,7 @@ function displayDGCampaignInfo(data,groupId)
 {
 	var modal = document.getElementById('dg_campaigns_dialog');
      modal.style.display = "block";
-     document.getElementById('dg_name').innerHTML=data['info'].name;
+     document.getElementById('dg_campaign_name').innerHTML=data['info'].name;
      document.getElementById('group_campaign_info_id').value=groupId;
      displayGroupsCampaigns(data['campaigns'],groupId);
    
