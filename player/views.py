@@ -460,17 +460,20 @@ def getCampaignReports(request):
             'status':'No data available'})
 
 from group.models import GcGroupMembers
+from device_group.models import Device_Group
+
 @login_required
 def campaignReports(request):
     if request.user.is_authenticated:
         devices = Player.getMyPlayers(request.user.id);
+        deviceGroups = Device_Group.getMyGroups(request.user.id);
         activePartnersResponse = GcGroupMembers.getMyActivePartners(request.user.id)
         activePartners=[];
         if(activePartnersResponse['statusCode']==0):
             activePartners = activePartnersResponse['partners'];
 
         return render(request,'player/campaign_reports.html',{'devices':devices,'partners':activePartners,'user_id':request.user.id,
-            'user_email':request.user.email})
+            'user_email':request.user.email,'deviceGroups':deviceGroups})
     else:
         return render(request,'signin.html');
 

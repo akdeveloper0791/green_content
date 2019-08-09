@@ -14,6 +14,7 @@ function displayGroupCreationForm()
 
 function createGroup()
 {
+
 	//validations 
   var groupName = document.getElementById("group_name").value;
   if(groupName=="" || groupName==null)
@@ -68,6 +69,8 @@ function createGroup()
         ajaxindicatorstop();
         swal(Exception.message);
       }
+
+  return false;
 }
 
 function dismissGroupCreationForm()
@@ -76,8 +79,6 @@ function dismissGroupCreationForm()
   document.getElementById('group_name').value="";
   document.getElementById('dg_creation_form').style.display="none";
 }
-
-
 
 function groupDeleteAlertDialog(groupId)
 {
