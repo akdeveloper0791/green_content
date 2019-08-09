@@ -224,6 +224,60 @@ class Device_Group_Player(models.Model):
         else:
             return {'statusCode':3,'status':
                 "Invalid request parameters"};
+    
+    def getCampaignReports(secretKey,isUserId,postParams,exportReports=False):
+      userId = secretKey;
+      if(isUserId==False):
+            userId = User_unique_id.getUserId(secretKey);
+            if(userId == False):
+                return {'statusCode':1,'status':
+                "Invalid session, please login"};
+      # check for player
+      group = postParams.get('groups');
+      partners = [];
+      #check for partner filters
+      if 'partners' in postParams:
+        try:
+          partners = json.loads(postParams.get('partners'));
+        except ValueError:
+          partners = [];
+
+      metrics={};
+      params=[];
+      
+      params = [group,userId,postParams.get('from_date'),postParams.get('to_date')];
+      if(len(partners)>=1):
+          query = '''SELECT (user.first_name || " "||user.last_name) as campaign_owner,player.name as player__name, cr.campaign_name as campaign_name,sum(cr.times_played) as t_played, sum(cr.duration) as t_duration, max(last_played_at) as last_played_at, cr.campaign_id as campaign_id FROM device_group_device_group as dg
+          INNER JOIN device_group_device_group_player as dgp on dg.id = dgp.device_group_id
+          INNER JOIN player_campaign_reports as cr on dgp.device_group_player_id = cr.player_id 
+          LEFT JOIN cmsapp_multiple_campaign_upload as campaigns ON cr.campaign_id=campaigns.id
+          LEFT JOIN auth_user as user ON campaigns.campaign_uploaded_by = user.id
+          WHERE dg.id = %s AND dg.user_id = %s AND (cr.created_at BETWEEN %s AND %s) AND campaigns.campaign_uploaded_by IN ({}) GROUP BY cr.player_id,cr.campaign_name'''.format(
+            (','.join(['%s' for _ in range(len(partners))])))
+          
+          for partner in partners:
+            params.append(partner);
+      else:
+          query = '''SELECT (user.first_name || " "||user.last_name) as campaign_owner,player.name as player__name, cr.campaign_name as campaign_name,sum(cr.times_played) as t_played, sum(cr.duration) as t_duration, max(last_played_at) as last_played_at, cr.campaign_id as campaign_id FROM device_group_device_group as dg
+          INNER JOIN device_group_device_group_player as dgp on dg.id = dgp.device_group_id
+          INNER JOIN player_campaign_reports as cr on dgp.device_group_player_id = cr.player_id 
+          LEFT JOIN cmsapp_multiple_campaign_upload as campaigns ON cr.campaign_id=campaigns.id
+          LEFT JOIN auth_user as user ON campaigns.campaign_uploaded_by = user.id
+          WHERE dg.id = %s AND dg.user_id = %s AND (cr.created_at BETWEEN %s AND %s) GROUP BY cr.player_id,cr.campaign_name'''
+          
+      with connection.cursor() as cursor:
+          cursor.execute(query,params);
+          metrics = dictfetchall(cursor);
+      
+          if(len(metrics)>=1):
+            if(exportReports==False):
+              return {'statusCode':0,'metrics':metrics}
+              #return {'statusCode':0,'metrics':list(metrics.values('campaign_name','t_played','t_duration','player__name','campaign_id','last_played_at')),'queryset.query':str(metrics.query),'params':params};
+            else:
+              return {'statusCode':0,'metrics':metrics}
+              #return {'statusCode':0,'metrics':(metrics.values_list('player__name','campaign_name','t_played','t_duration','last_played_at')),'queryset.query':str(metrics.query)};
+          else:
+              return {'statusCode':4,'status':"No metrics found for the selected dates"};
 
 class Device_Group_Campaign(models.Model):
     device_group = models.ForeignKey('device_group.Device_Group',on_delete=models.CASCADE)
@@ -338,3 +392,4 @@ class Device_Group_Campaign(models.Model):
         else:
             return {'statusCode':3,'status':
                 "Invalid request parameters"};
+    

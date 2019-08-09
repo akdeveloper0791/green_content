@@ -178,3 +178,24 @@ def dgScheduleCampaign(request,dg,campaign):
     schedules = Schedule_Campaign.getDGCSchedules(deviceGroupCampaign.id);
     return render(request,'player/schedule_campaign.html',{'status':True,'pc_id':deviceGroupCampaign.id,'schedules':schedules,'player_name':dgInfo.name,
         'camapaign_name':campaignInfo['c_name'],'type':'dg'});
+
+@api_view(['POST'])
+def dgCampaignReports(request):   
+    if(request.method == 'POST'):
+        postParams = request.POST;
+        if(postParams.get('player') and postParams.get('from_date') and postParams.get('to_date')
+            and postParams.get('accessToken')):     
+            isUserId = False;
+            secretKey = request.POST.get("accessToken")
+            if(secretKey=='web'):
+                isUserId = True;
+                if(request.user.is_authenticated):
+                    secretKey = request.user.id;
+                else:
+                    return JsonResponse(
+                        {'statusCode':2,'status':"Invalid accessToken please login"});
+            result = Campaign_Reports.getCampaignReports(secretKey,isUserId,postParams);
+            return JsonResponse(result); 
+        else:
+          return JsonResponse({'statusCode':6,
+            'status':'No data available'})
