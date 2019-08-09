@@ -107,6 +107,8 @@ function display_reports(responseObj){
   
     $("#reports_table").find("tr:not(:first)").remove();
 
+    var categoryId=document.getElementById('category_id');
+
     var dev_id = document.getElementById('dev_id').value;
     var from_date = document.getElementById('from_date').value;
     var to_date = document.getElementById('to_date').value;
@@ -124,7 +126,16 @@ function display_reports(responseObj){
 
        displayInitUploadBusyDialog();
        var xhr = new XMLHttpRequest();
+
+    if(categoryId.value=="1")
+    {
+      var group_id=document.getElementById('group_id').value;
+      var params = 'accessToken=web&groups='+group_id+'&from_date='+from_date+'&to_date='+to_date;
+    }else
+    {
     var params = 'accessToken=web&player='+dev_id+'&from_date='+from_date+'&to_date='+to_date;
+    }
+    
     if(selectedFilterPartners.length>=1)
     {
       params += '&partners='+JSON.stringify(selectedFilterPartners);
@@ -164,8 +175,14 @@ function display_reports(responseObj){
       {
         swal('No internet');
       };
+      if(categoryId.value=="1")
+    {
+         xhr.open('POST', '/device_group/campaign_reports/');
+    }else {
+       xhr.open('POST', '/player/getCampaignReports/');
+     }
 
-    xhr.open('POST', '/player/getCampaignReports/');
+   
      
     xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
 
@@ -364,4 +381,22 @@ function display_reports(responseObj){
    {
     alert("No Partner is selected");
    }
+ }
+
+ function selectedCategory()
+ {
+    var players=document.getElementById('players_spinner');
+    var groups=document.getElementById('groups_spinner');
+
+    var categoryId=document.getElementById("category_id");
+    if(categoryId.value=="0")
+    {
+     players.style.display = "block";  
+     groups.style.display = "none";  
+    }
+    else{
+    players.style.display = "none";  
+     groups.style.display = "block";  
+         
+    }
  }
