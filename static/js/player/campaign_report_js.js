@@ -144,7 +144,7 @@ function display_reports(responseObj){
 
     xhr.onload = function() {
         if (xhr.status === 200) {
-            console.log(xhr.response); 
+         
             var responseObj = JSON.parse(xhr.response);
             // Upload succeeded. Do something here with the file info.
             dismissInitBusyDialog();
@@ -196,6 +196,8 @@ function display_reports(responseObj){
   
     $("#reports_table").find("tr:not(:first)").remove();
 
+    var categoryId=document.getElementById('category_id');
+
     var dev_id = document.getElementById('dev_id').value;
     var from_date = document.getElementById('from_date').value;
     var to_date = document.getElementById('to_date').value;
@@ -213,7 +215,16 @@ function display_reports(responseObj){
 
        displayInitUploadBusyDialog();
        var xhr = new XMLHttpRequest();
-       var params = 'accessToken=web&player='+dev_id+'&from_date='+from_date+'&to_date='+to_date;
+
+      if(categoryId.value=="1")
+    {
+      var group_id=document.getElementById('group_id').value;
+      var params = 'accessToken=web&groups='+group_id+'&from_date='+from_date+'&to_date='+to_date;
+    }else
+    {
+       var params = 'accessToken=web&player='+dev_id+'&from_date='+from_date+'&to_date='+to_date;   
+    }
+       
        if(selectedFilterPartners.length>=1)
         {
           params += '&partners='+JSON.stringify(selectedFilterPartners);
@@ -222,7 +233,7 @@ function display_reports(responseObj){
        //dismissInitBusyDialog();
        dismissBusyDialog();
         if (xhr.status === 200) {
-           console.log("Inside export campaign response "+xhr.response); 
+         
           var blob = new Blob([xhr.response], { type: 'octet/stream' });
 
           var link = document.createElement('a');
@@ -251,7 +262,14 @@ function display_reports(responseObj){
         swal('No internet');
       };
 
+  if(categoryId.value=="1")
+  {
+    xhr.open('POST', '/device_group/exportCampaignReports/');
+  }else
+  {
     xhr.open('POST', '/player/exportCampaignReports/');
+  }
+  
      
     xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
 
@@ -272,9 +290,7 @@ function display_reports(responseObj){
    {
     selectedFilterPartners.push(selected);
    }
-   console.log("On partner selected "+selected);
-   console.log("Selected partners list"+JSON.stringify(selectedFilterPartners));
- }
+   }
 
  function selectEmail()
  {
@@ -291,7 +307,7 @@ function display_reports(responseObj){
    var selectedEmail = checkBox.id;
    if(checkBox.checked)
    {
-    console.log("Check box is selected");
+  
      var index = selectedParetnersToEmail.indexOf(selectedEmail);
      if(index<0)
      {
@@ -307,8 +323,7 @@ function display_reports(responseObj){
      }
    }
 
-   console.log("selectedParetnersToEmail"+JSON.stringify(selectedParetnersToEmail));
- }
+   }
 
  //send email 
  function sendReportsInEmail()
@@ -316,7 +331,10 @@ function display_reports(responseObj){
    if(selectedParetnersToEmail.length>=1)
    {
     closeEmail();
+    var categoryId=document.getElementById('category_id');
+
     var dev_id = document.getElementById('dev_id').value;
+
     var from_date = document.getElementById('from_date').value;
     var to_date = document.getElementById('to_date').value;
     if(from_date == null || from_date == "")
@@ -333,8 +351,18 @@ function display_reports(responseObj){
 
        displayInitUploadBusyDialog();
        var xhr = new XMLHttpRequest();
-       var params = 'accessToken=web&player='+dev_id+'&from_date='+from_date+'&to_date='+to_date+
+
+       if(categoryId.value=="1")
+    {
+      var group_id=document.getElementById('group_id').value;
+       var params = 'accessToken=web&groups='+group_id+'&from_date='+from_date+'&to_date='+to_date+
        '&emailPartners='+JSON.stringify(selectedParetnersToEmail);
+    }else
+    {
+    var params = 'accessToken=web&player='+dev_id+'&from_date='+from_date+'&to_date='+to_date+
+       '&emailPartners='+JSON.stringify(selectedParetnersToEmail);
+     }
+       
        if(selectedFilterPartners.length>=1)
         {
           params += '&partners='+JSON.stringify(selectedFilterPartners);
@@ -369,7 +397,15 @@ function display_reports(responseObj){
         swal('No internet');
       };
 
+       if(categoryId.value=="1")
+    {
+    xhr.open('POST', '/device_group/exportCampaignReports/');
+    }else
+   {
     xhr.open('POST', '/player/exportCampaignReports/');
+   }
+
+    
      
     xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
 
