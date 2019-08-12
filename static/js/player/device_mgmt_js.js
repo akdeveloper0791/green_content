@@ -54,7 +54,6 @@ function getCampaignInfo(playerId)
 
 function displayCampaignInfo(info,pId)
 {
-	 
      document.getElementById('campaigns_info_player').innerHTML=document.getElementById(pId+"_player_name").innerHTML;
      document.getElementById('player_campaign_info_id').value=pId;
      displayPlayerCampaigns(info['campaigns'],pId);
@@ -248,7 +247,6 @@ function removeCampaign(campaignId)
 
 		$.ajax(
 		{
-
 		  type:'POST',
 		  url: '/player/removeCampaigns/',
 		  headers: {		        
@@ -334,9 +332,8 @@ function skipCampaign(checkbox,cId,pId)
 		  
 		  success: function(data)
 		   {
-		   	 ajaxindicatorstop();
-			console.log("data"+JSON.stringify(data));
-            
+		   	 ajaxindicatorstop(); 
+
             if(data['statusCode']==0)
 		    {
              

@@ -153,13 +153,12 @@ a.btn:active{
     <tr id="{{ group.id }}_group_name">
       <td id="group_{{ group.id }}" class="info1" style="color:black;font-weight: bold;" >{{ group.name }} </td>
 
+      <td><p style="cursor: pointer;color:green;"
+      onclick="getGroupPlayersInfo('{{ group.id }}')"><b>Players</b></p></td>
       <td ><p style="cursor: pointer;color:blue;"
       onclick="getDGCampaignsInfo('{{ group.id }}')"><b>Campaign</b></p>
       </td> 
-      
-      <td><p style="cursor: pointer;color:green;"
-      onclick="getGroupPlayersInfo('{{ group.id }}')"><b>Players</b></p></td>
-      
+ 
       <td><span class="fa fa-trash"  style="cursor:pointer;
       color:orangered; display:inline-block;width:4%;float: left;
       margin;5px;" onclick="groupDeleteAlertDialog('{{ group.id }}')"></span></td>
