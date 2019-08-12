@@ -596,10 +596,10 @@ class Player_Campaign(models.Model):
             LEFT JOIN campaign_player_campaign as pc on pc.campaign_id = campaigns.id AND pc.player_id = %s
             LEFT JOIN device_group_device_group_campaign as dgc on dgc.campaign_id = campaigns.id 
             LEFT JOIN campaign_schedule_campaign sc on pc.id = sc.player_campaign_id or dgc.id = sc.device_group_campaign_id
-            WHERE ( pc.user_id = %s or dgc.device_group_id IN (SELECT device_group_id FROM device_group_device_group_player WHERE player_id=%s ))
+            WHERE ( pc.user_id = %s or dgc.device_group_id IN (SELECT device_group_id FROM device_group_device_group_player WHERE player_id=%s and device_group_id IN (SELECT id FROM device_group_device_group WHERE user_id = %s)))
             ORDER BY campaigns.updated_date DESC'''
             
-            cursor.execute(conditionQuery,[player,userId,player])
+            cursor.execute(conditionQuery,[player,userId,player,userId])
             campaigns = dictfetchall(cursor);
             cursor.close();
             connection.close();
