@@ -200,6 +200,8 @@ def dgCampaignReports(request):
           return JsonResponse({'statusCode':6,
             'status':'No data available'})
 
+import json
+import io
 @api_view(["POST"])
 def dgExportCampaignReports(request):
     if(request.method == 'POST'):
@@ -215,7 +217,7 @@ def dgExportCampaignReports(request):
                 else:
                     return JsonResponse(
                         {'statusCode':2,'status':"Invalid accessToken please login"});
-            result = Device_Group.getCampaignReports(secretKey,isUserId,postParams,True);
+            result = Device_Group_Player.getCampaignReports(secretKey,isUserId,postParams,True);
             isSendEmail = True if 'emailPartners' in postParams else False
 
             if(result['statusCode']==0):
