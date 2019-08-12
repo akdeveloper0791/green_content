@@ -144,7 +144,7 @@ function display_reports(responseObj){
 
     xhr.onload = function() {
         if (xhr.status === 200) {
-            
+            console.log(xhr.response); 
             var responseObj = JSON.parse(xhr.response);
             // Upload succeeded. Do something here with the file info.
             dismissInitBusyDialog();
@@ -177,7 +177,7 @@ function display_reports(responseObj){
       };
       if(categoryId.value=="1")
     {
-         xhr.open('POST', '/device_group/campaign_reports/');
+         xhr.open('POST', '/device_group/campaign_reports');
     }else {
        xhr.open('POST', '/player/getCampaignReports/');
      }

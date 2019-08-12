@@ -13,4 +13,5 @@ urlpatterns = [
     path('getInfo',views.getDGInfo,name='getDGInfo'),
     path('schedule_campaign/<int:dg>/<int:campaign>',views.dgScheduleCampaign,name="dgScheduleCampaign"),
     path('campaign_reports',views.dgCampaignReports,name="dgCampaignReports"),
+    path('exportCampaignReports/',views.dgExportCampaignReports, name="dgExportCampaignReports"),
     ]

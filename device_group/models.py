@@ -250,43 +250,47 @@ class Device_Group_Player(models.Model):
         params = [userId,postParams.get('from_date'),postParams.get('to_date')];
         #list all metrics
         if(len(partners)>=1):
-          query = '''SELECT (user.first_name || " "||user.last_name) as campaign_owner,player.name as player__name, cr.campaign_name as campaign_name,sum(cr.times_played) as t_played, sum(cr.duration) as t_duration, max(last_played_at) as last_played_at, cr.campaign_id as campaign_id FROM device_group_device_group as dg
+          query = '''SELECT (user.first_name || " "||user.last_name) as campaign_owner,dg.name as player__name, cr.campaign_name as campaign_name,sum(cr.times_played) as t_played, sum(cr.duration) as t_duration, max(last_played_at) as last_played_at, cr.campaign_id as campaign_id FROM device_group_device_group as dg
               INNER JOIN device_group_device_group_player as dgp on dg.id = dgp.device_group_id
+              INNER JOIN player_player as player on dgp.player_id = player.id
               INNER JOIN player_campaign_reports as cr  ON dgp.player_id = cr.player_id
               LEFT JOIN cmsapp_multiple_campaign_upload as campaigns ON cr.campaign_id=campaigns.id
               LEFT JOIN auth_user as user ON campaigns.campaign_uploaded_by = user.id
-              WHERE dg.user_id = %s AND (cr.created_at BETWEEN %s AND %s) AND campaigns.campaign_uploaded_by IN ({}) GROUP BY cr.player_id,cr.campaign_name'''.format(','.join(['%s' for _ in range(len(partners))]))
+              WHERE dg.user_id = %s AND (cr.created_at BETWEEN %s AND %s) AND campaigns.campaign_uploaded_by IN ({}) GROUP BY dg.id,cr.campaign_name'''.format(','.join(['%s' for _ in range(len(partners))]))
           
           for partner in partners:
             params.append(partner);
 
         else:
-          query = '''SELECT (user.first_name || " "||user.last_name) as campaign_owner,player.name as player__name, cr.campaign_name as campaign_name,sum(cr.times_played) as t_played, sum(cr.duration) as t_duration, max(last_played_at) as last_played_at, cr.campaign_id as campaign_id FROM device_group_device_group as dg
+          query = '''SELECT (user.first_name || " "||user.last_name) as campaign_owner,dg.name as player__name, cr.campaign_name as campaign_name,sum(cr.times_played) as t_played, sum(cr.duration) as t_duration, max(last_played_at) as last_played_at, cr.campaign_id as campaign_id FROM device_group_device_group as dg
               INNER JOIN device_group_device_group_player as dgp on dg.id = dgp.device_group_id
+              INNER JOIN player_player as player on dgp.player_id = player.id
               INNER JOIN player_campaign_reports as cr  ON dgp.player_id = cr.player_id
               LEFT JOIN cmsapp_multiple_campaign_upload as campaigns ON cr.campaign_id=campaigns.id
               LEFT JOIN auth_user as user ON campaigns.campaign_uploaded_by = user.id
-              WHERE player.user_id = %s AND cr.created_at BETWEEN %s AND %s GROUP BY cr.player_id,cr.campaign_name'''
+              WHERE dg.user_id = %s AND cr.created_at BETWEEN %s AND %s GROUP BY dg.id,cr.campaign_name'''
       else:
           params = [group,userId,postParams.get('from_date'),postParams.get('to_date')];    
           if(len(partners)>=1):
-              query = '''SELECT (user.first_name || " "||user.last_name) as campaign_owner,player.name as player__name, cr.campaign_name as campaign_name,sum(cr.times_played) as t_played, sum(cr.duration) as t_duration, max(last_played_at) as last_played_at, cr.campaign_id as campaign_id FROM device_group_device_group as dg
+              query = '''SELECT (user.first_name || " "||user.last_name) as campaign_owner,dg.name as player__name, cr.campaign_name as campaign_name,sum(cr.times_played) as t_played, sum(cr.duration) as t_duration, max(last_played_at) as last_played_at, cr.campaign_id as campaign_id FROM device_group_device_group as dg
               INNER JOIN device_group_device_group_player as dgp on dg.id = dgp.device_group_id
+              INNER JOIN player_player as player on dgp.player_id = player.id
               INNER JOIN player_campaign_reports as cr on dgp.player_id = cr.player_id 
               LEFT JOIN cmsapp_multiple_campaign_upload as campaigns ON cr.campaign_id=campaigns.id
               LEFT JOIN auth_user as user ON campaigns.campaign_uploaded_by = user.id
-              WHERE dg.id = %s AND dg.user_id = %s AND (cr.created_at BETWEEN %s AND %s) AND campaigns.campaign_uploaded_by IN ({}) GROUP BY cr.player_id,cr.campaign_name'''.format(
+              WHERE dg.id = %s AND dg.user_id = %s AND (cr.created_at BETWEEN %s AND %s) AND campaigns.campaign_uploaded_by IN ({}) GROUP BY dg.id,cr.campaign_name'''.format(
                 (','.join(['%s' for _ in range(len(partners))])))
               
               for partner in partners:
                 params.append(partner);
           else:
-              query = '''SELECT (user.first_name || " "||user.last_name) as campaign_owner,player.name as player__name, cr.campaign_name as campaign_name,sum(cr.times_played) as t_played, sum(cr.duration) as t_duration, max(last_played_at) as last_played_at, cr.campaign_id as campaign_id FROM device_group_device_group as dg
+              query = '''SELECT (user.first_name || " "||user.last_name) as campaign_owner,dg.name as player__name, cr.campaign_name as campaign_name,sum(cr.times_played) as t_played, sum(cr.duration) as t_duration, max(last_played_at) as last_played_at, cr.campaign_id as campaign_id FROM device_group_device_group as dg
               INNER JOIN device_group_device_group_player as dgp on dg.id = dgp.device_group_id
+              INNER JOIN player_player as player on dgp.player_id = player.id
               INNER JOIN player_campaign_reports as cr on dgp.player_id = cr.player_id 
               LEFT JOIN cmsapp_multiple_campaign_upload as campaigns ON cr.campaign_id=campaigns.id
               LEFT JOIN auth_user as user ON campaigns.campaign_uploaded_by = user.id
-              WHERE dg.id = %s AND dg.user_id = %s AND (cr.created_at BETWEEN %s AND %s) GROUP BY cr.player_id,cr.campaign_name'''
+              WHERE dg.id = %s AND dg.user_id = %s AND (cr.created_at BETWEEN %s AND %s) GROUP BY dg.id,cr.campaign_name'''
           
       with connection.cursor() as cursor:
           cursor.execute(query,params);
@@ -300,7 +304,8 @@ class Device_Group_Player(models.Model):
               return {'statusCode':0,'metrics':metrics}
               #return {'statusCode':0,'metrics':(metrics.values_list('player__name','campaign_name','t_played','t_duration','last_played_at')),'queryset.query':str(metrics.query)};
           else:
-              return {'statusCode':4,'status':"No metrics found for the selected dates"};
+              return {'statusCode':4,'status':"No metrics found for the selected dates",
+              'query':query,'params':params};
 
 class Device_Group_Campaign(models.Model):
     device_group = models.ForeignKey('device_group.Device_Group',on_delete=models.CASCADE)
