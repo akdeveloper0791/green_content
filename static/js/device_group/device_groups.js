@@ -182,7 +182,7 @@ function getGroupPlayersInfo(group_id)
            
         if(data['statusCode']==0)
         {
-           console.log("displayDGPlayersInfo:"+JSON.stringify(data));
+           //console.log("displayDGPlayersInfo:"+JSON.stringify(data));
            displayDGPlayersInfo(data,group_id);       
         }
       else
