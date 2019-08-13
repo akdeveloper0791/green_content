@@ -14,7 +14,9 @@ urlpatterns = [
     path('approve/<int:one>/<int:two>', views.approveCampaignNotif, name='approveCampaignNotif'),
     path('uploadCampaignResource/',views.uploadCampaignResource,name='uploadCampaignResource'),
     path('saveScheduleCampaign/',views.saveScheduleCampaign,name='saveScheduleCampaign'),
-    path('deleteScheduleCampaign/',views.deleteScheduleCampaign,name='deleteScheduleCampaign')
+    path('deleteScheduleCampaign/',views.deleteScheduleCampaign,name='deleteScheduleCampaign'),
+    path('editCampaign/',views.editCampaign,name='editCampaign'),
+    path('getEditCampaignInfo/',views.getEditCampaignInfo,name='getEditCampaignInfo')
     
     
 ]

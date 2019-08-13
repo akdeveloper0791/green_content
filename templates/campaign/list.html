@@ -47,7 +47,6 @@ td.campaign_row:hover {
   <a class="nav-link" href="{% url 'create' %}" style="float:right;font-weight:bold ;margin-top: 20px;" >
     <button class="gradient-button gradient-btn"><i class='fa fa-plus'> Create Campaign</i></button></a><br /><br />
 
-	
 <!-- 	<ul class='list-group'> -->
   {% load tz %}
   {% timezone "Australia/Lord_Howe" %}<!-- temp solution convert to indian format-->
@@ -61,6 +60,7 @@ td.campaign_row:hover {
         <th style="border: 0px;"></th>
       </tr>
     </thead>
+
 	{% for campaign in res.campaigns %}
    
     <div class="rows" id="campaign_row_{{ campaign.id }}">
