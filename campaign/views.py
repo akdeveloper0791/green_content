@@ -25,8 +25,7 @@ def upload_camp_web(request):
  3->Unable to save the campaign
  '''
 @api_view(['GET','POST'])
-def initCampaignUpload(request):
-    
+def initCampaignUpload(request):  
     if(request.method == "POST" and
      'campaign' in request.POST and 'size' in request.POST):
         #check the request whether from web or app
@@ -52,10 +51,52 @@ def initCampaignUpload(request):
         return JsonResponse({'statusCode':1,
             'status':"Invalid request"});
 
+@api_view(["POST"])
+def editCampaign(request):
+    if(request.method == "POST"):
+        #check the request whether from web or app
+        accessToken = request.POST.get('accessToken');
+        isWeb = False;
+        if(accessToken == "web"):
+            isWeb=True;
+            if request.user.is_authenticated:
+                accessToken = request.user.id;    
+            else:
+               return JsonResponse({'statusCode':2,
+                    'status':'Invalid session, please login'});
+        
+        response = CampaignInfo.editCampaign(request.POST.get('c_id'),
+                    accessToken,request.POST,isWeb);
+        return JsonResponse(response);
+    else :
+        return JsonResponse({'statusCode':1,
+            'status':"Invalid request"});
+
+@api_view(["POST"])
+def getEditCampaignInfo(request):
+    if(request.method == "POST"):
+        #check the request whether from web or app
+        accessToken = request.POST.get('accessToken');
+        isWeb = False;
+        if(accessToken == "web"):
+            isWeb=True;
+            if request.user.is_authenticated:
+                accessToken = request.user.id;    
+            else:
+               return JsonResponse({'statusCode':2,
+                    'status':'Invalid session, please login'});
+        
+        response = CampaignInfo.getEditCampaignInfo(request.POST.get('c_id'),
+                    accessToken,isWeb);
+        return JsonResponse(response);
+    else :
+        return JsonResponse({'statusCode':1,
+            'status':"Invalid request"});
+
 @login_required
 def listCampaignsWeb(request):
     if request.user.is_authenticated:
-        response = CampaignInfo.getUserCampaignsWithInfo(request.user.id,True);
+        response = CampaignInfo.getCampaignsToDisplayInWeb(request.user.id);
         #get access token
         secretKey = User_unique_id.getUniqueKey(request.user.id);
         return render(request,'campaign/list.html',{'res':response,

@@ -130,6 +130,25 @@ class CampaignInfo(models.Model):
         else:
             return {'statusCode':0,'campaigns':list(campaigns.values())};
     
+    def getCampaignsToDisplayInWeb(userId):
+        with connection.cursor() as cursor:
+            conditionQuery = '''SELECT campaigns.* FROM cmsapp_multiple_campaign_upload as campaigns 
+                WHERE (campaigns.campaign_uploaded_by =  %s OR campaigns.id IN ( 
+                SELECT campaign_id FROM campaign_approved_group_campaigns WHERE user_id=%s )) 
+                group by campaigns.id ORDER BY campaigns.updated_date DESC'''
+            
+            cursor.execute(conditionQuery,[userId,userId])
+            campaigns = dictfetchall(cursor);
+            cursor.close();
+            connection.close();
+        
+        #campaigns = Multiple_campaign_upload.objects.filter(campaign_uploaded_by=userId);
+        if(len(campaigns)<=0):
+            return {'statusCode':2,'status':
+            'No campaigns Found'};
+        else:
+            return {'statusCode':0,'campaigns':campaigns};
+
     def getUserCampaignsWithInfo(userId,isUserId=False):
         if(isUserId==False):
             userId = User_unique_id.getUserId(userId);
@@ -157,8 +176,6 @@ class CampaignInfo(models.Model):
     
     import shutil
     import signagecms.constants;
-    
-
     def deleteMyCampaign(campaignId,accessToken,mac,isWeb):
         userId=accessToken;
         if(isWeb==False):
@@ -270,6 +287,64 @@ class CampaignInfo(models.Model):
                     return {"statusCode":2,"status":"Invalid details"};
             else:
                     return {"statusCode":0,"cInfo":json.loads(info[0]),"save_path":info[1],'c_name':info[2],'store_location':info[3],'cId':info[4]};
+    
+    def getEditCampaignInfo(campaignId,userId,postParams,isWeb=False):
+        if(isWeb == False):
+            userId = User_unique_id.getUserId(userId);
+            if(userId == False):
+                return {'statusCode':1,'status':
+                "Invalid session, please login"};
+        
+        #get campaign info
+        
+            try:
+                campaign = Multiple_campaign_upload.objects.get(id=campaignId,campaign_uploaded_by=userId)
+                campaignInfo = CampaignInfo.objects.get(campaign_id=campaign);
+                info = campaignInfo.info;
+                infoObject = json.loads(info,encoding='utf-8');
+
+                return {'statusCode':0,'duration':infoObject['duration'],
+                'hide_ticker_txt':infoObject['hide_ticker_txt'],'campaign_name':campaign.campaign_name};
+            except Multiple_campaign_upload.DoesNotExist:
+                #check whether campaign is assigned or not
+                try:
+                    campaign = Approved_Group_Campaigns.objects.get(user_id=userId,campaign_id=campaignId);
+                    return {'statusCode':2,'status':'Dear  User,  This is Campaign is Shared from Group. you can not edit this campaign'}
+                except:
+                    return {'statusCode':2,'status':'Invalid campaign'}
+
+    def editCampaign(campaignId,userId,postParams,isWeb=False):
+        if(isWeb == False):
+            userId = User_unique_id.getUserId(userId);
+            if(userId == False):
+                return {'statusCode':1,'status':
+                "Invalid session, please login"};
+        
+        #get campaign info
+        with transaction.atomic():
+            try:
+                campaign = Multiple_campaign_upload.objects.get(id=campaignId,campaign_uploaded_by=userId)
+                campaignInfo = CampaignInfo.objects.get(campaign_id=campaign);
+                info = campaignInfo.info;
+                infoObject = json.loads(info,encoding='utf-8');
+                if('duration' in postParams):
+                    infoObject['duration'] = postParams.get('duration');
+                if('hide_ticker_txt' in postParams):
+                    infoObject['hide_ticker_txt'] = postParams.get('hide_ticker_txt');
+                
+                campaignInfo.info = json.dumps(infoObject,ensure_ascii=False);
+                campaignInfo.save();
+
+                campaign.updated_date = timezone.now()
+                campaign.save();
+                return {'statusCode':0,'status':'Campaign has been edited successfully'};
+            except Multiple_campaign_upload.DoesNotExist:
+                #check whether campaign is assigned or not
+                try:
+                    campaign = Approved_Group_Campaigns.objects.get(user_id=userId,campaign_id=campaignId);
+                    return {'statusCode':2,'status':'Dear  User,  This is Campaign is Shared from Group. you can not edit this campaign'}
+                except:
+                    return {'statusCode':2,'status':'Invalid campaign'}
 
 class Deleted_Campaigns(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL,on_delete=models.CASCADE)
