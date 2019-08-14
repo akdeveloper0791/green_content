@@ -16,7 +16,7 @@ urlpatterns = [
     path('saveScheduleCampaign/',views.saveScheduleCampaign,name='saveScheduleCampaign'),
     path('deleteScheduleCampaign/',views.deleteScheduleCampaign,name='deleteScheduleCampaign'),
     path('editCampaign/',views.editCampaign,name='editCampaign'),
-    path('getEditCampaignInfo/',views.getEditCampaignInfo,name='getEditCampaignInfo')
+    path('getEditCampaignInfo/',views.getEditCampaignInfo,name='getEditCampaignInfo'),
     
     
 ]

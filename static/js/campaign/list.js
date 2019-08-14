@@ -477,6 +477,10 @@ function downloadThumbFile()
  }
 
 
+function getCampaignInfoToEdit1(campaignId)
+{
+
+}
  function getCampaignInfoToEdit(campaignId)
 {
    console.log("getCampaignInfoDialog:"+campaignId);

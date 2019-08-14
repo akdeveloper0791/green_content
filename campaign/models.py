@@ -296,23 +296,22 @@ class CampaignInfo(models.Model):
                 "Invalid session, please login"};
         
         #get campaign info
-        
-            try:
+        try:
                 
-                campaign = Multiple_campaign_upload.objects.get(id=campaignId,campaign_uploaded_by=userId)
-                campaignInfo = CampaignInfo.objects.get(campaign_id=campaign);
-                info = campaignInfo.info;
-                infoObject = json.loads(info,encoding='utf-8');
+            campaign = Multiple_campaign_upload.objects.get(id=campaignId,campaign_uploaded_by=userId)
+            campaignInfo = CampaignInfo.objects.get(campaign_id=campaign);
+            info = campaignInfo.info;
+            infoObject = json.loads(info,encoding='utf-8');
 
-                return {'statusCode':0,'duration':infoObject['duration'],
+            return {'statusCode':0,'duration':infoObject['duration'],
                 'hide_ticker_txt':infoObject['hide_ticker_txt'],'campaign_name':campaign.campaign_name};
-            except Multiple_campaign_upload.DoesNotExist:
+        except Multiple_campaign_upload.DoesNotExist:
                 #check whether campaign is assigned or not
-                return {'status':'inside error'};
-                try:
+            return {'status':'inside error'};
+            try:
                     campaign = Approved_Group_Campaigns.objects.get(user_id=userId,campaign_id=campaignId);
                     return {'statusCode':2,'status':'Dear  User,  This is Campaign is Shared from Group. you can not edit this campaign'}
-                except:
+            except:
                     return {'statusCode':2,'status':'Invalid campaign'}
 
     def editCampaign(campaignId,userId,postParams,isWeb=False):
