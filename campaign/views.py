@@ -86,9 +86,11 @@ def getEditCampaignInfo(request):
                return JsonResponse({'statusCode':2,
                     'status':'Invalid session, please login'});
         
-        response = CampaignInfo.getEditCampaignInfo(request.POST.get('c_id'),
+        jsResponse = CampaignInfo.getEditCampaignInfo(request.POST.get('c_id'),
                     accessToken,isWeb);
-        return JsonResponse(response);
+        return JsonResponse(jsResponse);
+        return JsonResponse({'statusCode':1,
+            'status':"Invalid request123",'id':request.POST.get('c_id')});
     else :
         return JsonResponse({'statusCode':1,
             'status':"Invalid request"});

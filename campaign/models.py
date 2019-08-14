@@ -288,7 +288,7 @@ class CampaignInfo(models.Model):
             else:
                     return {"statusCode":0,"cInfo":json.loads(info[0]),"save_path":info[1],'c_name':info[2],'store_location':info[3],'cId':info[4]};
     
-    def getEditCampaignInfo(campaignId,userId,postParams,isWeb=False):
+    def getEditCampaignInfo(campaignId,userId,isWeb=False):
         if(isWeb == False):
             userId = User_unique_id.getUserId(userId);
             if(userId == False):
@@ -298,6 +298,7 @@ class CampaignInfo(models.Model):
         #get campaign info
         
             try:
+                
                 campaign = Multiple_campaign_upload.objects.get(id=campaignId,campaign_uploaded_by=userId)
                 campaignInfo = CampaignInfo.objects.get(campaign_id=campaign);
                 info = campaignInfo.info;
@@ -307,6 +308,7 @@ class CampaignInfo(models.Model):
                 'hide_ticker_txt':infoObject['hide_ticker_txt'],'campaign_name':campaign.campaign_name};
             except Multiple_campaign_upload.DoesNotExist:
                 #check whether campaign is assigned or not
+                return {'status':'inside error'};
                 try:
                     campaign = Approved_Group_Campaigns.objects.get(user_id=userId,campaign_id=campaignId);
                     return {'statusCode':2,'status':'Dear  User,  This is Campaign is Shared from Group. you can not edit this campaign'}

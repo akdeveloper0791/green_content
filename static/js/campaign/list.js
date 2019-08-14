@@ -475,3 +475,69 @@ function downloadThumbFile()
    document.getElementById("campaign_list_table").deleteRow(document.getElementById('campaign_title_'+campaignId).rowIndex);
    document.getElementById("campaign_list_table").deleteRow(document.getElementById('campaign_title2_'+campaignId).rowIndex);
  }
+
+
+ function getCampaignInfoToEdit(campaignId)
+{
+   console.log("getCampaignInfoDialog:"+campaignId);
+  try {
+        ajaxindicatorstart("<img src='/static/images/ajax-loader.gif'><br/> Please wait...!");
+       
+    $.ajax(
+    {
+
+      type:'POST',
+      url: '/campaigns/getEditCampaignInfo/',
+      headers: {            
+            'X-CSRFToken': csrf_token
+        },
+      data:{
+                accessToken: 'web',
+                c_id: campaignId,
+                
+      },
+      
+      success: function(data)
+       {
+         ajaxindicatorstop();
+      console.log("getCampaignInfoDialog:"+JSON.stringify(data));
+            
+            if(data['statusCode']==0)
+        {
+             
+          displayCamapignEditDialog(data,campaignId);
+            
+        }
+      else
+      {
+
+             swal(data['status']);
+                                    
+      }
+
+       },
+    
+     error: function (jqXHR, exception) {
+      ajaxindicatorstop();
+      alert(exception+jqXHR.responseText);
+     }
+
+    });
+  }
+  catch(Exception)
+    {
+    alert(Exception.message);
+  } 
+}
+
+
+ function displayCamapignEditDialog(data,campaignId)
+ {
+  document.getElementById('campaign_edit_dialog').style.display="block";
+
+ }
+
+ function closeCampaignEditDialog()
+ {
+  document.getElementById('campaign_edit_dialog').style.display="none";
+ }
