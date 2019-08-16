@@ -231,7 +231,16 @@ function checkForCampaignInDB()
             
           }
           
+        }else if(info.type.toLowerCase()=="excel")
+        {
+          childTag = document.createElement('div');
+          mediaName=info.media_name;
+
+          childTag.style.textAlign="center"; 
+          childTag.innerHTML= mediaName;
+    
         }
+
 
         if(childTag!=null)
         {

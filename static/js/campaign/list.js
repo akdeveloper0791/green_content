@@ -478,7 +478,7 @@ function downloadThumbFile()
 
  function getCampaignInfoToEdit(campaignId)
 {
-   console.log("getCampaignInfoDialog:"+campaignId);
+
   try {
         ajaxindicatorstart("<img src='/static/images/ajax-loader.gif'><br/> Please wait...!");
        
@@ -538,9 +538,9 @@ function downloadThumbFile()
   document.getElementById('camp_name').innerHTML=data['campaign_name'];
   document.getElementById('duration_id').value=data['duration'];
   var flag=data['hide_ticker_txt'];
-  var isTrueSet =(flag === 'true');
-  console.log("hide_ticker_txt"+isTrueSet);
-  document.getElementById('hide_ticker').checked=isTrueSet; 
+  //var isTrueSet =(flag === 'true');
+  console.log("hide_ticker_txt"+flag);
+  document.getElementById('hide_ticker').checked=flag; 
  }
 
  function closeCampaignEditDialog()
@@ -573,7 +573,7 @@ function downloadThumbFile()
 
  function updateCampignInfo(campDuration,hideTickerFlag)
  {
-  console.log("hideTickerFlag:"+hideTickerFlag);
+
     try {
    ajaxindicatorstart("<img src='/static/images/ajax-loader.gif'><br/> Please wait...!");    
     $.ajax(

@@ -1568,12 +1568,12 @@ function onSelectPDFReg(input)
        }
 
         dismissSelectRegOption();
-        
         input.value=null;
     }else{
-      
+
+      // console.log("onSelectPDFReg:info:"+JSON.stringify(info));
     }
-// console.log("onSelectPDFReg:info:"+JSON.stringify(info));
+
 }
 
 function addPdfRegion(idPosition,file)
@@ -1631,8 +1631,7 @@ function addPdfRegion(idPosition,file)
      document.getElementById('reg_div_'+idPosition).appendChild(childTag);
      filePropertiesDialog();
 
-     console.log("addPdfRegion:info:"+JSON.stringify(info));
-
+    
     regionsInfo[idPosition] = info;
   }
 
@@ -1662,3 +1661,90 @@ function addPdfRegion(idPosition,file)
       //console.log("setFileProperties:info:"+JSON.stringify(info));
   }
 
+function selectExcleRegion()
+  {
+   document.getElementById('select_excel_file_type').click();
+  }
+
+  function onSelectExcelReg(input)
+  {
+    if (input.files && input.files[0]) 
+    {
+       var selectedFile = input.files[0];
+       var idPosition = document.getElementById('select_media_reg_id').value;
+       regionsResourceFiles[idPosition] = selectedFile;
+       //get the region info
+       info = regionsInfo[idPosition];
+       if(info.type.toLowerCase()=='excel')
+       {
+        info.media_name = getUploadMediaName(selectedFile.name);
+        info.is_self_path = true;
+        
+        regionsInfo[idPosition] = info;
+
+        var reader = new FileReader();    
+        reader.onload = function (e) {
+          childTag = document.getElementById('reg_div_child_'+
+            idPosition);
+          childTag.src = e.target.result;
+          dismissSelectRegOption();
+          
+        };     
+        reader.readAsDataURL(selectedFile);
+       }else{
+        addExcelRegion(idPosition,selectedFile);
+       }
+
+        dismissSelectRegOption();
+        input.value=null;
+    }else{
+      
+      // console.log("onSelectPDFReg:info:"+JSON.stringify(info));
+    }
+  }
+
+
+  function addExcelRegion(idPosition,file)
+  {
+   //get region info 
+    info = regionsInfo[idPosition];
+    removeChildElement(idPosition);
+    //create child tag
+    var childTag = document.createElement('EXCEL');
+    info.type="Excel";
+
+    childTag.src= '/static/images/campaign/campaign_default2.png';
+    info.is_self_path = true; 
+
+    if(file==null)
+    { 
+      info.media_name = "default";  
+    }else{
+      info.media_name = getUploadMediaName(file.name);
+      var reader = new FileReader();    
+        reader.onload = function (e) {
+          
+          childTag.src = e.target.result;
+          childTag.style.textAlign="center";
+          childTag.innerHTML = file.name;
+          
+          
+        };     
+        reader.readAsDataURL(file);
+
+    }
+    
+    childTag.id='reg_div_child_'+idPosition;
+    childTag.style.width = '100%';
+    childTag.style.height = '100%';
+    childTag.style.position="absolute";
+
+    childTag.onclick=function()
+    {
+              displayRegSelectOption(idPosition);
+        };
+
+     document.getElementById('reg_div_'+idPosition).appendChild(childTag);
+     console.log("onSelectExcelReg:info:"+JSON.stringify(info)); 
+     regionsInfo[idPosition] = info;
+  }
