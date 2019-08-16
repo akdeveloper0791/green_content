@@ -416,8 +416,7 @@ function downloadThumbFile()
               
               deleteCampaignRow(campaignId);
                 {
-                  
-                
+                 
                  swal({
                  title: "Deleted succesfully!",
                  text: "",
@@ -477,10 +476,6 @@ function downloadThumbFile()
  }
 
 
-function getCampaignInfoToEdit1(campaignId)
-{
-
-}
  function getCampaignInfoToEdit(campaignId)
 {
    console.log("getCampaignInfoDialog:"+campaignId);
@@ -539,9 +534,97 @@ function getCampaignInfoToEdit1(campaignId)
  {
   document.getElementById('campaign_edit_dialog').style.display="block";
 
+  document.getElementById('camp_id').value=campaignId;
+  document.getElementById('camp_name').innerHTML=data['campaign_name'];
+  document.getElementById('duration_id').value=data['duration'];
+  var flag=data['hide_ticker_txt'];
+  var isTrueSet =(flag === 'true');
+  console.log("hide_ticker_txt"+isTrueSet);
+  document.getElementById('hide_ticker').checked=isTrueSet; 
  }
 
  function closeCampaignEditDialog()
  {
   document.getElementById('campaign_edit_dialog').style.display="none";
  }
+
+ function editCamapignInfo()
+ {
+  var campDuration=document.getElementById('duration_id').value;
+  var hideTickerFlag=document.getElementById('hide_ticker').checked;
+
+   if(campDuration==null || campDuration.trim()=='' || campDuration<=0 )
+  {  
+      swal("Please enter valid duration"); 
+ 
+  }else
+    {
+      if(campDuration<10)
+    {
+   swal("Campaign duration is greater than 10 sec.");
+    }else
+    {
+
+      updateCampignInfo(campDuration,hideTickerFlag);
+    }
+   }
+
+ }
+
+ function updateCampignInfo(campDuration,hideTickerFlag)
+ {
+  console.log("hideTickerFlag:"+hideTickerFlag);
+    try {
+   ajaxindicatorstart("<img src='/static/images/ajax-loader.gif'><br/> Please wait...!");    
+    $.ajax(
+    {
+
+      type:'POST',
+      url: '/campaigns/editCampaign/',
+      headers: {            
+            'X-CSRFToken':csrf_token
+        },
+      data:{
+           accessToken: 'web',
+             c_id: document.getElementById('camp_id').value,
+             duration: campDuration,
+             hide_ticker_txt: hideTickerFlag,   
+      },
+     
+      success: function(data)
+       {
+        ajaxindicatorstop();
+        if(data['statusCode']==0)
+        {
+          closeCampaignEditDialog();
+          showSnackbar(data['status']);
+        }
+        
+       else
+       {
+        swal(data['status']);                           
+       }
+
+       },
+    
+     error: function (jqXHR, exception) {
+      console.log(jqXHR.responseText);
+      ajaxindicatorstop();
+      swal(exception+jqXHR.responseText);
+     }
+
+    });
+    }
+      catch(Exception)
+      {
+        ajaxindicatorstop();
+        swal(Exception.message);
+      }
+ }
+
+ function showSnackbar(message) {
+  var x = document.getElementById("snackbar");
+  x.innerHTML=message;
+  x.className = "show";
+  setTimeout(function(){ x.className = x.className.replace("show", ""); }, 3000);
+}

@@ -55,6 +55,49 @@ td.campaign_row:hover {
   background-color: rgba(0,0,0,0.4); 
 }
 
+
+#snackbar {
+  visibility: hidden;
+  min-width: 250px;
+  margin-left: -125px;
+  background-color: #333;
+  color: #fff;
+  text-align: center;
+  border-radius: 2px;
+  padding: 16px;
+  position: fixed;
+  z-index: 1;
+  left: 50%;
+  bottom: 30px;
+  font-size: 17px;
+}
+
+#snackbar.show {
+  visibility: visible;
+  -webkit-animation: fadein 0.5s, fadeout 0.5s 2.5s;
+  animation: fadein 0.5s, fadeout 0.5s 2.5s;
+}
+
+@-webkit-keyframes fadein {
+  from {bottom: 0; opacity: 0;} 
+  to {bottom: 30px; opacity: 1;}
+}
+
+@keyframes fadein {
+  from {bottom: 0; opacity: 0;}
+  to {bottom: 30px; opacity: 1;}
+}
+
+@-webkit-keyframes fadeout {
+  from {bottom: 30px; opacity: 1;} 
+  to {bottom: 0; opacity: 0;}
+}
+
+@keyframes fadeout {
+  from {bottom: 30px; opacity: 1;}
+  to {bottom: 0; opacity: 0;}
+}
+
 </style>
 
 
@@ -187,10 +230,12 @@ td.campaign_row:hover {
           <i style="color: blue;font-weight: bold;font-size: 14px;" id="camp_name"><b>info</b></i>
           </div>
 
-     <label ><b>Camapign Duration</b></label>
-    <input style="width: 60%;" class='form-control' id="duration" type="text" placeholder="Enter Campaign Duration" name="duration" required />
+     <label ><b>Camapign Duration(sec)</b></label>
+    <input style="width: 60%;" class='form-control' id="duration_id" type="text" placeholder="Enter Campaign Duration" name="duration" required />
+    <div id="camp_id" style="display: none;"></div>
     <label>
-      <input style="margin-top: 10px;" id="hide_ticker" type="checkbox" checked="checked" name="remember"><b>Hide Ticker Text</b>
+      <input style="margin-top: 10px;" id="hide_ticker" type="checkbox" name="remember"><b>Hide Ticker Text</b>
+
     </label>
 
         
@@ -201,7 +246,7 @@ td.campaign_row:hover {
           <center>
          
           <button type="button" class="btn btn-danger" data-dismiss="modal"  onclick="closeCampaignEditDialog()">Cancel</button>
-           <button type="button" class="btn btn-success" data-dismiss="modal"  onclick="campaignEdit()">Submit</button>
+           <button type="button" class="btn btn-success" data-dismiss="modal"  onclick="editCamapignInfo()">Submit</button>
 
           </center>
         </div>
@@ -209,6 +254,8 @@ td.campaign_row:hover {
       </div>
     </div>
   </div>
+
+  <div id="snackbar">Some text some message..</div>
 
 <!-- End of Campaign Edit Dialog -->
 
