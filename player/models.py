@@ -61,7 +61,7 @@ class Player(models.Model):
         except ValueError as ex:
             return {'statusCode':3,'status':
                 "Invalid request parameters,  - "+str(ex)}
-
+    
     def refreshFCM(playerId,playerMac,fcm):
       try:
         player = Player.objects.get(id=playerId,
@@ -128,6 +128,20 @@ class Player(models.Model):
     def checkForvalidPlayers(players,userId):
       playerInfo = Player.objects.filter(id__in=players,user_id=userId);
       return (len(playerInfo)!=len(players));
+    
+    def getMyAssignedPlayers(userId):
+      query = '''SELECT player.name as player__name, player.id as player__id, metrics.accessed_at FROM player_player as player 
+                 LEFT JOIN player_last_seen_metrics as metrics on player.id= metrics.player_id 
+                 WHERE player.user_id = %s or player.id IN (SELECT player_id FROM group_player where gc_group_id IN (SELECT gc_group_id FROM group_gcgroupmembers WHERE member_id =%s and status=1))'''
+
+      params = (userId,userId);
+      with connection.cursor() as cursor:
+        cursor.execute(query,params);
+        players = dictfetchall(cursor);
+        if(len(players)>=1):
+          return {'statusCode':0,'metrics':players}
+        else:
+          return {'statusCode':1,'status':'No players'}
 
 #metrics modal
 class Metrics(models.Model):

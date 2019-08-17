@@ -16,5 +16,6 @@ urlpatterns = [
     path('getMemberGroupCampaigns/',views.getMemberGroupCampaigns,name='getMemberGroupCampaigns'),
     path('approveGroupCampaign/',views.approveGroupCampaign,name='approveGroupCampaign'),
     path('approve/<int:gId>', views.approveFromMemer, name='approveFromMemer'),
+    path('assignPlayers/',views.assignPlayersGCGroup,name='assignPlayersGCGroup'),
 
    ]

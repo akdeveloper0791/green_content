@@ -331,7 +331,11 @@ class CampaignInfo(models.Model):
                 if('duration' in postParams):
                     infoObject['duration'] = postParams.get('duration');
                 if('hide_ticker_txt' in postParams):
-                    infoObject['hide_ticker_txt'] = postParams.get('hide_ticker_txt');
+                    if(postParams.get('hide_ticker_txt') == "true"):
+                        infoObject['hide_ticker_txt'] = True;
+                    else:
+                        infoObject['hide_ticker_txt'] = False
+                    
                 
                 campaignInfo.info = json.dumps(infoObject,ensure_ascii=False);
                 campaignInfo.save();
