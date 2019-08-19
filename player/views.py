@@ -269,6 +269,7 @@ def deviceMgmt(request):
 @login_required
 def deviceMgmtPlayers(request):
     metrics = Player.getMyAssignedPlayers(request.user.id);
+    #metrics = Last_Seen_Metrics.getMetrics(request.user.id);
     response=render(request,'player/device_mgmt.html',{'res':metrics})
     response.set_cookie('device_mgmt_last_accessed', 'pc');
     return response;
