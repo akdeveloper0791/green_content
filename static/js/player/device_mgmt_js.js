@@ -363,6 +363,24 @@ function skipCampaign(checkbox,cId,pId)
 	}	
 }
 
+function getLastPlayerAccessedTime(serverTime)
+{
+	console.log(serverTime);
+  if(serverTime!=null)
+  {
+    
+  
+    var date = new Date(serverTime);
+    serverTime = date.toLocaleString();
+    date = new Date(serverTime+" GMT");
+    return date.toLocaleString();
+  }else
+  {
+    return null;
+  }
+  
+}
+
 
 
 
