@@ -17,5 +17,6 @@ urlpatterns = [
     path('approveGroupCampaign/',views.approveGroupCampaign,name='approveGroupCampaign'),
     path('approve/<int:gId>', views.approveFromMemer, name='approveFromMemer'),
     path('assignPlayers/',views.assignPlayersGCGroup,name='assignPlayersGCGroup'),
+    path('removePlayers/',views.removePlayersGCGroup,name='removePlayersGCGroup'),
 
    ]

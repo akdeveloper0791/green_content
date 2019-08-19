@@ -591,7 +591,7 @@ class Player(models.Model):
         
         except ValueError as ex:
             return {'statusCode':3,'status':
-                "Invalid request parameters, campaigns should not be zero - "+str(ex)};
+                "Invalid request parameters, players should not be zero - "+str(ex)};
         
         except IntegrityError as e:
             return {'statusCode':5,'status':
@@ -600,3 +600,25 @@ class Player(models.Model):
         except Exception as e:
             return {'statusCode':3,'status':
                 "Invalid request parameters --"+str(e)};
+
+    def remove(userId,gId,players,isWeb):
+        if(isWeb == False):
+            userId = User_unique_id.getUserId(userId);
+            if(userId == False):
+                return {'statusCode':1,'status':
+                "Invalid session, please login"};
+        groupInfo = GcGroups.isMyGroup(gId,userId);
+        if(groupInfo == False):
+            return {'statusCode':3,'status':'Invalid group'}
+        #get players associated with group
+        try:
+            players =  json.loads(players);
+            groupPlayers = Player.objects.filter(
+                gc_group_id=gId,player_id__in=players).delete();
+            return {'statusCode':0,'status':'Players have been removed successfully'};
+        except ValueError as ex:
+            return {'statusCode':3,'status':
+                "Invalid request parameters, players should not be zero - "+str(ex)};
+        except Exception as e:
+            return {'statusCode':3,'status':
+                "Error --"+str(e)};
