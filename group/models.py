@@ -145,15 +145,22 @@ class GcGroups(models.Model):
                 cursor.close();
                 connection.close();
         
-        
+            players = Player.objects.filter(gc_group_id = groupId);
+            players = list(players.values('player__name','player_id'));
+
             return {'statusCode':0,'gInfo':serializers.serialize('json', [ grouInfo, ]),'members':members,
-            'campaigns':campaigns};
+            'campaigns':campaigns,'players':players};
 
         except GcGroups.DoesNotExist:
             return {'statusCode':2,'status':'Group not found'}
         
 
-                
+    def isMyGroup(groupId,userId):
+        try:
+            return GcGroups.objects.get(id=groupId,user_id=userId);
+        except GcGroups.DoesNotExist:
+            return False;
+
 
 class GcGroupMembers(models.Model):
     gc_group = models.ForeignKey('group.GcGroups',on_delete=models.CASCADE)
@@ -541,3 +548,77 @@ class GroupCampaignAssignNotification(models.Model):
             return notification.id;
         except User.DoesNotExist:
           return "Creator info not found";
+
+from django.utils import timezone
+from player.models import Player as player_player
+class Player(models.Model):
+    gc_group = models.ForeignKey('group.GcGroups',on_delete=models.CASCADE)
+    player = models.ForeignKey('player.Player',on_delete=models.CASCADE)
+    created_date = models.DateTimeField(default=timezone.now)
+
+    def assignNew(userId,gId,players,isWeb):
+        if(isWeb == False):
+            userId = User_unique_id.getUserId(userId);
+            if(userId == False):
+                return {'statusCode':1,'status':
+                "Invalid session, please login"};
+        groupInfo = GcGroups.isMyGroup(gId,userId);
+        if(groupInfo == False):
+            return {'statusCode':3,'status':'Invalid group'}
+
+        try:
+            players =  json.loads(players);
+            if(players and len(players)>=1 and gId):
+                playerIds = player_player.checkForvalidPlayers(players,userId);
+            
+                if(playerIds):
+                    return {'statusCode':4,'status':"Some of the selected players are not valid GC users, you can not add them to groups"};
+                else:
+                    
+                    groupPlayers = [];
+                    for pId in players:
+                      groupPlayer = Player(gc_group_id = gId,
+                      player_id = pId);
+                      groupPlayers.append(groupPlayer);
+                     
+                    Player.objects.bulk_create(groupPlayers);
+                    return {'statusCode':0,"status":
+                     "Players have been assigned successfully"};
+
+            else:
+                return {'statusCode':3,'status':
+                "Invalid request parameters"}; 
+        
+        except ValueError as ex:
+            return {'statusCode':3,'status':
+                "Invalid request parameters, players should not be zero - "+str(ex)};
+        
+        except IntegrityError as e:
+            return {'statusCode':5,'status':
+            "Group has already some of the players provided, please check and add again-"+str(e)};
+
+        except Exception as e:
+            return {'statusCode':3,'status':
+                "Invalid request parameters --"+str(e)};
+
+    def remove(userId,gId,players,isWeb):
+        if(isWeb == False):
+            userId = User_unique_id.getUserId(userId);
+            if(userId == False):
+                return {'statusCode':1,'status':
+                "Invalid session, please login"};
+        groupInfo = GcGroups.isMyGroup(gId,userId);
+        if(groupInfo == False):
+            return {'statusCode':3,'status':'Invalid group'}
+        #get players associated with group
+        try:
+            players =  json.loads(players);
+            groupPlayers = Player.objects.filter(
+                gc_group_id=gId,player_id__in=players).delete();
+            return {'statusCode':0,'status':'Players have been removed successfully'};
+        except ValueError as ex:
+            return {'statusCode':3,'status':
+                "Invalid request parameters, players should not be zero - "+str(ex)};
+        except Exception as e:
+            return {'statusCode':3,'status':
+                "Error --"+str(e)};
