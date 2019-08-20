@@ -25,7 +25,8 @@ class License_Device(models.Model):
             player.updated_date = currentDate;
            
             player.save();
-           return {'statusCode':0,'status':player.status,'mac':data['mac']};
+           return {'statusCode':0,'status':player.status,'mac':data['mac'],
+           'expiry_date':player.expiry_date};
         except Exception as ex:
            return {'statusCode':5,'status':'unable to register - '+str(ex)};
          

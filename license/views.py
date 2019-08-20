@@ -13,6 +13,6 @@ def licenseRegister(request):
         result = License_Device.registerPlayer(postParams.get('data'));
         if(result['statusCode']==0):    
             return JsonResponse({'statusCode':0,'status':'Success','d_status':result['status'],
-                        'mac':result['mac']});
+                        'mac':result['mac'],'expiry_date':result['expiry_date']});
         else:
             return JsonResponse(result);
