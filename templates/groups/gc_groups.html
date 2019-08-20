@@ -11,8 +11,11 @@
 	<link type="text/css" rel="stylesheet" href="{% static 'multiple_emails/multiple-emails.css' %}" />
     <script  src="{% static 'jquery/jquery-latest.min.js' %}"></script>
     <script src="{% static 'multiple_emails/multiple-emails.js' %}"></script>
-    <script >
 
+    <script  src="{% static 'js/groups/gc_groups.js' %}"></script>
+
+    <script >
+    var csrf_token = '{{ csrf_token }}';
 	var useremail_list;var tabSelectedColor = "cornflowerblue";
 
 		//Plug-in function for the bootstrap version of the multiple email
@@ -129,7 +132,7 @@
 		  success: function(data)
 		   {
 		   	 ajaxindicatorstop();
-			
+			console.log(JSON.stringify(data))
 
             if(data['statusCode']==0)
 		    {
@@ -174,6 +177,10 @@
       displayGroupMembers(info['members']);
       //group_info_campaigns
       displayGroupCampaigns(info['campaigns']);
+
+      //group_info_players
+      displayGroupPlayers(info['players']);
+
 
 	  var modal = document.getElementById('group_info');
 	  modal.style.display = "block";
@@ -748,6 +755,13 @@ table {
           	<div id="group_info_campaigns">
             </div>
           </div>
+          <hr>
+          <div id="players_info">
+          	<h4 style="color:cornflowerblue;display:inline-block"> Players</h4> <button type="button" style="float: right;" class="btn-green " onclick="displayPlayersToAdd()">Assign </button>
+          	
+          	<div id="group_info_players">
+            </div>
+          </div>
 
         </div>
         
@@ -766,7 +780,8 @@ table {
   {% include 'campaign/list_mycampaigns_cb.html' %}
 
   {% include 'groups/add_new_members.html' %}
-
+  
+  {% include 'player/list_myplayers_cb.html' %}
 
 
 	<br/> <br/>

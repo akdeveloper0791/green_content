@@ -132,7 +132,7 @@ class CampaignInfo(models.Model):
     
     def getCampaignsToDisplayInWeb(userId):
         with connection.cursor() as cursor:
-            conditionQuery = '''SELECT campaigns.* FROM cmsapp_multiple_campaign_upload as campaigns 
+            conditionQuery = '''SELECT campaigns.*,datetime(campaigns.updated_date,'localtime') as updated_date FROM cmsapp_multiple_campaign_upload as campaigns 
                 WHERE (campaigns.campaign_uploaded_by =  %s OR campaigns.id IN ( 
                 SELECT campaign_id FROM campaign_approved_group_campaigns WHERE user_id=%s )) 
                 group by campaigns.id ORDER BY campaigns.updated_date DESC'''
@@ -457,7 +457,8 @@ class Player_Campaign(models.Model):
         if(pId and int(pId)>=1 and campaigns and len(campaigns)>=1):
             #check group info
             try:
-                playerInfo = Player.objects.get(id=pId,user_id=userId);
+                playerInfo = Player.canAccessPlayer(pId,userId);
+                
                 #check for campaigns (provided campaigns must be user uploaded)
                 if(Player_Campaign.checkForvalidCampaigns(campaigns,userId)):
                     
@@ -676,10 +677,10 @@ class Player_Campaign(models.Model):
             LEFT JOIN campaign_player_campaign as pc on pc.campaign_id = campaigns.id AND pc.player_id = %s
             LEFT JOIN device_group_device_group_campaign as dgc on dgc.campaign_id = campaigns.id 
             LEFT JOIN campaign_schedule_campaign sc on pc.id = sc.player_campaign_id or dgc.id = sc.device_group_campaign_id
-            WHERE ( pc.user_id = %s or dgc.device_group_id IN (SELECT device_group_id FROM device_group_device_group_player WHERE player_id=%s and device_group_id IN (SELECT id FROM device_group_device_group WHERE user_id = %s)))
+            WHERE ( (pc.user_id = %s or pc.player_id IN (SELECT player_id FROM group_player where player_id=%s AND gc_group_id IN (SELECT gc_group_id FROM group_gcgroupmembers WHERE status=1))) or dgc.device_group_id IN (SELECT device_group_id FROM device_group_device_group_player WHERE player_id=%s and device_group_id IN (SELECT id FROM device_group_device_group WHERE user_id = %s)))
             ORDER BY campaigns.updated_date DESC'''
             
-            cursor.execute(conditionQuery,[player,userId,player,userId])
+            cursor.execute(conditionQuery,[player,userId,player,player,userId])
             campaigns = dictfetchall(cursor);
             cursor.close();
             connection.close();

@@ -110,8 +110,7 @@ td.campaign_row:hover {
     <button class="gradient-button gradient-btn"><i class='fa fa-plus'> Create Campaign</i></button></a><br /><br />
 
 <!-- 	<ul class='list-group'> -->
-  {% load tz %}
-  {% timezone "Australia/Lord_Howe" %}<!-- temp solution convert to indian format-->
+ 
 	<table id="campaign_list_table" class="table" style="border:0px;border-spacing: 2px;width: 100%;text-align: center;">
     <thead style="border: 0px;">
       <tr style="border: 0px;">
@@ -148,7 +147,7 @@ td.campaign_row:hover {
 
           <tr id="campaign_title2_{{ campaign.id }}" 
           class="campaign_row">
-              <td colspan = "5" style="text-align:right;border:0px">{{ campaign.updated_date|localtime }}</td>   
+              <td colspan = "5" style="text-align:right;border:0px">{{ campaign.updated_date}}</td>   
           </tr>
 
        
@@ -157,7 +156,7 @@ td.campaign_row:hover {
  
 	{% endfor %}
  </table>
-  {% endtimezone %}
+  
 
 
 </div> 

@@ -1,0 +1,196 @@
+{% load static %}
+<html>
+<body>
+<!--alert style-->
+ <link rel="stylesheet" href="{% static 'css/sweetalert.css' %}">
+ <script src="{% static 'js/sweetalert.js' %}"></script>
+ <!-- div to display group info -->
+    <!-- The Modal -->
+  <div class="modal" id="lmpcb_players">
+    <div class="modal-dialog">
+      <div class="modal-content">
+      
+        <!-- Modal Header -->
+        <div class="modal-header"><center>
+          <h4 class="modal-title" >Players</h4></center>
+          
+        </div>
+        
+        <!-- Modal body -->
+        <div class="modal-body">
+          <div id="lmpcb_players_list" class="table-responsive" style="overflow-x: auto;">
+          </div>
+         
+        </div>
+        
+        <!-- Modal footer -->
+        <div class="modal-footer">
+          <center>
+          <button type="button" class="btn btn-success" data-dismiss="modal" id
+          ="lmpcb_success" onclick="sendLMPCBselectedPlayers()">Submit</button>
+
+          <button type="button" class="btn btn-danger" data-dismiss="modal" id
+          ="lmpcb_close" onclick="closeLmpcbPlayers()">Close</button>
+          </center>
+        </div>
+        
+      </div>
+    </div>
+  </div>
+
+  <script>
+  var lmpcbselectedPlayers=[];
+  var existedPlayers=[];
+  
+  function closeLmpcbPlayers()
+  {
+    existedPlayers=[];
+    document.getElementById('lmpcb_players').style.display = "none";
+  }
+
+  function lmpcbGetPlayers()
+  {
+    try {
+        ajaxindicatorstart("<img src='{% static "images/ajax-loader.gif" %}'><br/> Please wait...!");
+
+    $.ajax(
+    {
+
+      type:'POST',
+      url: '/player/getPlayers/',
+      headers: {            
+            'X-CSRFToken':'{{ csrf_token }}'
+        },
+      data:{
+                accessToken: 'web',
+                
+      },
+      
+      success: function(data)
+       {
+         ajaxindicatorstop();
+        
+
+        if(data['statusCode']==0)
+        {
+             
+            lmpcbDisplayPlayers(data['players']);
+            
+        }
+       else
+       {
+
+             swal(data['status']);
+                                    
+       }
+
+        
+
+       },
+    
+     error: function (jqXHR, exception) {
+      ajaxindicatorstop();
+      console.log(jqXHR.responseText);
+
+      swal(exception+jqXHR.responseText);
+     }
+
+    });
+    }
+      catch(Exception)
+      {
+        swal(Exception.message);
+        }
+  }
+
+  function lmpcbListPlayers()
+  {
+    
+    lmpcbGetPlayers();
+
+  }
+
+  function lmpcbDisplayPlayers(players)
+  {
+    lmpcbselectedPlayers = [];
+
+    var dvTable = document.getElementById("lmpcb_players_list");
+
+    if(players.length>=0)
+    {
+       //Create a HTML Table element.
+       var table = document.createElement("TABLE");
+       table.width = "100%";
+       
+        //Get the count of columns.
+        var columnCount = 1;
+     
+        //Add the header row.
+       // var row = table.insertRow(-1);
+
+        for (var i = 0; i < players.length; i++) 
+        {
+             row = table.insertRow(-1);
+             row.style.height = "25px";
+             for (var j = 0; j < columnCount; j++) 
+             {
+
+              var cell = row.insertCell(-1);
+              
+              playerId = players[i]['id'];
+              var isDisable = existedPlayers.includes(playerId);
+
+              if(isDisable)
+              {
+                cell.innerHTML = "<input type='checkbox' checked= true disabled= true name='name1' onchange='lmpcbonchange(this,"+playerId+")'/>";
+              }else
+              {
+                cell.innerHTML = "<input type='checkbox'  name='name1' onchange='lmpcbonchange(this,"+playerId+")'/>";
+              }
+              
+
+
+              var cell = row.insertCell(-1);
+              
+              cell.innerHTML = players[i]['name']
+            
+            }
+        }
+ 
+         
+         dvTable.innerHTML = "";
+         dvTable.appendChild(table);
+    }else
+    {
+      //no members
+      dvTable.innerHTML = "No Players";
+    }
+
+    var modal = document.getElementById('lmpcb_players');
+    modal.style.display = "block";
+  }
+
+  function lmpcbonchange(cb,playerId)
+  {
+    
+    var index = lmpcbselectedPlayers.indexOf(playerId);
+    if(cb.checked == true)
+    {
+      if(index<0)
+      {
+          lmpcbselectedPlayers.push(playerId);
+      }
+    }else
+    {
+      if(index>=0)
+      {
+        lmpcbselectedPlayers.splice(index,1);
+      }
+    }
+    
+  }
+
+</script>
+   
+</body>
+</html>

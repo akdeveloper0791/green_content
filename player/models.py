@@ -129,6 +129,18 @@ class Player(models.Model):
       playerInfo = Player.objects.filter(id__in=players,user_id=userId);
       return (len(playerInfo)!=len(players));
     
+    def canAccessPlayer(playerId,userId):
+      query = '''SELECT player.name as player__name, player.id as player__id FROM player_player as player 
+                 WHERE player.id = %s AND (player.user_id = %s or player.id IN (SELECT player_id FROM group_player where gc_group_id IN (SELECT gc_group_id FROM group_gcgroupmembers WHERE member_id =%s and status=1))) LIMIT 1'''
+      params = (playerId,userId,userId);
+      with connection.cursor() as cursor:
+        cursor.execute(query,params);
+        players = dictfetchall(cursor);
+        if(len(players)>=1):
+          return {'statusCode':0,'metrics':players[0]}
+        else:
+          return False;
+
     def getMyAssignedPlayers(userId):
       query = '''SELECT player.name as player__name, player.id as player__id, datetime(metrics.accessed_at,'localtime') as accessed_at FROM player_player as player 
                  LEFT JOIN player_last_seen_metrics as metrics on player.id= metrics.player_id 

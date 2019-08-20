@@ -722,16 +722,17 @@ def scheduleCampaign(request,player,campaign):
     if(playerCampaign==False):
         return render(request,'player/schedule_campaign.html',{'status':False,'error':'Invalid campaign, info not found'});
     
-    playerInfo = Player.isMyPlayer(player,request.user.id);
+    playerInfo = Player.canAccessPlayer(player,request.user.id);
     if(playerInfo==False):
         return render(request,'player/schedule_campaign.html',{'status':False,'error':'Invalid player, player details not found'});
+    playerInfo = playerInfo['metrics'];
     
     campaignInfo = CampaignInfo.getPreviewCampaignInfo(request.user.id,campaign);
     if(campaignInfo['statusCode']!=0):
         return render(request,'player/schedule_campaign.html',{'status':False,'error':campaignInfo['status']});
     
     schedules = Schedule_Campaign.getPCSchedules(playerCampaign.id);
-    return render(request,'player/schedule_campaign.html',{'status':True,'pc_id':playerCampaign.id,'schedules':schedules,'player_name':playerInfo.name,
+    return render(request,'player/schedule_campaign.html',{'status':True,'pc_id':playerCampaign.id,'schedules':schedules,'player_name':playerInfo['player__name'],
         'camapaign_name':campaignInfo['c_name'],'type':'pc'});
 
 from iot_device.models import CAR_Device
