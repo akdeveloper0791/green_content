@@ -222,7 +222,55 @@ function constructDivs()
 
     parentTag.appendChild(childTag);
 
+    displayVideoPropertiesDialog();
+
   	regionsInfo[idPosition] = info;
+  }
+
+
+function displayVideoPropertiesDialog(properties)
+  {
+    document.getElementById('video_properties_diag').style.display="block";
+    var idPosition = document.getElementById('select_media_reg_id').value;
+       //get the region info
+       info = regionsInfo[idPosition];
+
+    var slider = document.getElementById("volume_range");
+    var stretch = document.getElementById("is_stretch");
+    var volume = document.getElementById("volume");
+ 
+     slider.value=100;
+    volume.innerHTML=info.properties.volume;
+    stretch.checked=info.properties.isStretch;
+
+slider.oninput = function() 
+  {
+  volume.innerHTML = this.value;
+  }
+
+  }
+
+
+  function setVideoProperties()
+  {
+    var slider = document.getElementById("volume_range");
+  
+    var idPosition = document.getElementById('select_media_reg_id').value;
+       //get the region info
+       info = regionsInfo[idPosition];
+
+       //set properties
+       info.properties = {
+       'isStretch':document.getElementById('is_stretch').checked,
+       'volume':parseFloat(slider.value),
+       };
+       dismissVideoPropertiesDialog();
+      console.log("setVideoProperties:info:"+JSON.stringify(info));
+  }
+
+  function dismissVideoPropertiesDialog()
+  {
+  document.getElementById('video_properties_diag').style.display="none";
   }
 
   function removeChildElement(idPosition)

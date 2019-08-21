@@ -208,6 +208,46 @@ textarea {
  
 }
 
+
+.slidecontainer {
+  width: 50%;
+  margin: auto;
+}
+
+.slider {
+  -webkit-appearance: none;
+  width: 60%;
+  height: 13px;
+  border-radius: 5px;
+  background: lightgray;
+  outline: none;
+  opacity: 0.7;
+  -webkit-transition: .2s;
+  transition: opacity .2s;
+}
+
+.slider:hover {
+  opacity: 1;
+}
+
+.slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: #4CAF50;
+  cursor: pointer;
+}
+
+.slider::-moz-range-thumb {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: #4CAF50;
+  cursor: pointer;
+}
+
 </style>
 </head>
 {% block body %}
@@ -379,6 +419,48 @@ textarea {
     </div>
   </div>
 <!-- select option mobile-->
+
+
+<!-- video properties dialog -->
+ <div class="modal" id="video_properties_diag" >
+    <div class="modal-dialog">
+      <div class="modal-content">
+      
+        <!-- Modal Header -->
+        <div class="modal-header">
+          <h4 class="modal-title" style="text-align:center;">Video Properties
+         <!--  <span type="button" class="close" data-dismiss="modal" onclick="dismissCreateCampaignDialog();">&times;</span> --></h4>
+           <center><img id="loading" src="../images/ajax-loader.gif" alt="Updating ..." style="display: none;" /></center>
+        </div>
+        
+        <!-- Modal body -->
+        <div class="modal-body" style="overflow-y:auto;text-align: center;">
+     
+               <div style="text-align: center;" class="form-group">
+                   <label  style="font-weight:bold">Volume :<span id="volume"></span></label>
+                  <div class="slidecontainer">
+               <input  type="range" min="1" max="100" value="100"
+                class="slider" id="volume_range">
+                </div> 
+                 Video Stretch to Full Screen<input style="margin-top: 10px;" type="checkbox" id="is_stretch" checked> 
+                </div>
+                <br/>
+
+        </div>
+
+        <div class="modal-footer">
+        <center>     
+                 <button class="btn btn-danger"  data-dismiss="modal" onclick="dismissVideoPropertiesDialog()">Cancel</button>       
+                  <button class="btn btn-success" id="submit" onclick="setVideoProperties();">Proceed</button>
+        </center>
+         
+        </div>
+        
+      </div>
+    </div>
+  </div>
+
+<!-- end of video properties dialog -->
 
 <!-- Text -->
   <div class="modal" id="create_text_modal" style="padding-top:0px" >
