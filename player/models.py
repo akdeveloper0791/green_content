@@ -144,7 +144,8 @@ class Player(models.Model):
     def getMyAssignedPlayers(userId):
       query = '''SELECT player.name as player__name, player.id as player__id, datetime(metrics.accessed_at,'localtime') as accessed_at FROM player_player as player 
                  LEFT JOIN player_last_seen_metrics as metrics on player.id= metrics.player_id 
-                 WHERE player.user_id = %s or player.id IN (SELECT player_id FROM group_player where gc_group_id IN (SELECT gc_group_id FROM group_gcgroupmembers WHERE member_id =%s and status=1))'''
+                 WHERE player.user_id = %s or player.id IN (SELECT player_id FROM group_player where gc_group_id IN (SELECT gc_group_id FROM group_gcgroupmembers WHERE member_id =%s and status=1))
+                 ORDER BY metrics.accessed_at DESC'''
 
       params = (userId,userId);
       with connection.cursor() as cursor:

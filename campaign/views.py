@@ -38,14 +38,16 @@ def initCampaignUpload(request):
             if request.user.is_authenticated:
                 response = CampaignInfo.processInfoAndSaveCampaign(request.POST.get('info'),
                     accessToken,request.user.id,
-                    request.POST.get('campaign'),request.POST.get('size'),storeLocation);
+                    request.POST.get('campaign'),request.POST.get('size'),storeLocation,
+                    request.user.email);
                 return JsonResponse(response);
             else:
                return JsonResponse({'statusCode':2,
                     'status':'Invalid session, please login'});
         else:
             response = CampaignInfo.processInfoAndSaveCampaign(request.POST.get('info'),
-                    "api",accessToken,request.POST.get('campaign'),request.POST.get('size'),storeLocation);
+                    "api",accessToken,request.POST.get('campaign'),request.POST.get('size'),storeLocation,
+                    False);
             return JsonResponse(response);
     else :
         return JsonResponse({'statusCode':1,

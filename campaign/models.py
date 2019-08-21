@@ -19,7 +19,7 @@ import os
 import shutil
 import pytz
 from django.utils.dateparse import parse_datetime
-
+from django.contrib.auth.models import User
 
 def dictfetchall(cursor):
     
@@ -35,7 +35,7 @@ class CampaignInfo(models.Model):
     info = models.TextField()
 
     def processInfoAndSaveCampaign(info,requestFrom,user_sessionId,
-        campaignName,campaignSize=0,storeLocation=2):
+        campaignName,campaignSize=0,storeLocation=2,userEmailId=False):
         self = CampaignInfo();
         secretKey = user_sessionId; #upload folder in dropbox
         if(requestFrom == "api"):
@@ -44,7 +44,7 @@ class CampaignInfo(models.Model):
             if(userId == False):
                 return {'statusCode':1,'status':
                 "Invalid session, please login"};
-
+            userEmailId = User.objects.get(id=userId).email;
         else:
             userId = user_sessionId;
             #get session id to save the 
@@ -66,7 +66,7 @@ class CampaignInfo(models.Model):
                 campType = 0#single region
         #savePath = '/campaigns/{}/{}/'.format(secretKey,campaignName);
         uniqueKey = str(uuid.uuid4().hex[:6].upper())+str(round(time.time() * 1000))+uuid.uuid4().hex[:6];
-        savePath = '/campaigns/{}/{}/'.format(uniqueKey,campaignName);
+        savePath = '/campaigns/{}/{}/{}/'.format(userEmailId,uniqueKey,campaignName);
         saveInfo = self.createCampaign(userId,campaignName,campType,
             info,campaignSize,savePath,storeLocation);
         
