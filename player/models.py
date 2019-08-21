@@ -249,6 +249,7 @@ class Age_Geder_Metrics(models.Model):
       else:
           return {'statusCode':4,'status':"No metrics found for the selected dates"};
 
+from django.utils import timezone
 class Last_Seen_Metrics(models.Model):
   player = models.OneToOneField('player.Player',on_delete=models.CASCADE,primary_key=True)
   accessed_at = models.DateTimeField(default=datetime.datetime.now(),blank=False,null=False)
@@ -262,7 +263,7 @@ class Last_Seen_Metrics(models.Model):
     except:
       metrics = Last_Seen_Metrics(player_id=playerId);
 
-    metrics.accessed_at= datetime.datetime.now();
+    metrics.accessed_at= timezone.now();
     metrics.save();
 
   def getMetrics(userId):
