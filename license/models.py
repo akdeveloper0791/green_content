@@ -20,10 +20,10 @@ class License_Device(models.Model):
            except License_Device.DoesNotExist:
             player = License_Device(mac=data['mac']);
             currentDate = dt.now();
-            player.expiry_date = currentDate + datetime.timedelta(days=15);
+            player.expiry_date = dt.now();;
             player.registered_date = currentDate;
             player.updated_date = currentDate;
-           
+            player.status = -1;
             player.save();
            return {'statusCode':0,'status':player.status,'mac':data['mac'],
            'expiry_date':player.expiry_date};
