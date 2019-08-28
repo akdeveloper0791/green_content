@@ -25,7 +25,9 @@ class Player(models.Model):
     registered_at = models.DateTimeField(default=datetime.datetime.now())
     activated_by = models.CharField(max_length=25,default=0)#0 is self
     location_desc = models.CharField(max_length=25,default="")
-    
+    player_lat = models.DecimalField(decimal_places=8,max_digits=10,blank=True,null=True)
+    player_lng = models.DecimalField(decimal_places=8,max_digits=11,blank=True,null=True)
+
     class Meta(object):
         unique_together=[
         ['mac']
@@ -51,6 +53,11 @@ class Player(models.Model):
            
            if('location_desc' in data):
             player.location_desc = data['location_desc'];
+
+           if('player_lat' in data and 'player_lng' in data):
+            player.player_lat = data['player_lat'];
+            player.player_lng = data['player_lng'];
+
             
            player.save();
            return {'statusCode':0,'status':player.status,'player':player.id,'mac':data['mac'],
