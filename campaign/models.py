@@ -62,6 +62,8 @@ class CampaignInfo(models.Model):
                 campType = 1#multi region
             elif(infoObj['type']=="rss"):
                 campType = 2 #rss feed
+            elif(infoObj['type']=="ticker_txt"):
+                campType = 3 #rss feed
             else:
                 campType = 0#single region
         #savePath = '/campaigns/{}/{}/'.format(secretKey,campaignName);
@@ -673,18 +675,20 @@ class Player_Campaign(models.Model):
         
         with connection.cursor() as cursor:
             conditionQuery = '''SELECT campaigns.*, cinfo.info,sc.id as sc_id, sc.schedule_from, sc.schedule_to, pc.schedule_type,sc.schedule_type as sc_schedule_type, pc.pc_priority, sc.sc_priority,sc.additional_info,pc.is_skip as is_skip,pc.id as pc_id,dgc.id as dgc_id,dgc.dgc_schedule_type,dgc.dgc_priority,dgc.dgc_is_skip from cmsapp_multiple_campaign_upload as campaigns 
-            INNER JOIN campaign_campaigninfo as cinfo on cinfo.campaign_id_id = campaigns.id
+            INNER JOIN campaign_campaigninfo as cinfo on cinfo.campaign_id_id = campaigns.id 
             LEFT JOIN campaign_player_campaign as pc on pc.campaign_id = campaigns.id AND pc.player_id = %s
             LEFT JOIN device_group_device_group_campaign as dgc on dgc.campaign_id = campaigns.id 
-            LEFT JOIN campaign_schedule_campaign sc on pc.id = sc.player_campaign_id or dgc.id = sc.device_group_campaign_id
-            WHERE ( (pc.user_id = %s or pc.player_id IN (SELECT player_id FROM group_player where player_id=%s AND gc_group_id IN (SELECT gc_group_id FROM group_gcgroupmembers WHERE status=1))) or dgc.device_group_id IN (SELECT device_group_id FROM device_group_device_group_player WHERE player_id=%s and device_group_id IN (SELECT id FROM device_group_device_group WHERE user_id = %s)))
-            ORDER BY campaigns.updated_date DESC'''
-            
-            cursor.execute(conditionQuery,[player,userId,player,player,userId])
+            LEFT JOIN campaign_schedule_campaign sc on pc.id = sc.player_campaign_id or dgc.id = sc.device_group_campaign_id 
+            WHERE ( (pc.user_id = %s or pc.user_id IN (SELECT gMember.member_id FROM group_gcgroups as groups INNER JOIN 
+            group_player as gp on gp.gc_group_id=groups.id AND gp.player_id=%s
+            INNER JOIN group_gcgroupmembers as gMember on gMember.gc_group_id = groups.id AND gMember.status=1 WHERE groups.user_id=%s group by gMember.member_id)) or dgc.device_group_id IN (SELECT device_group_id FROM device_group_device_group_player WHERE player_id=%s and device_group_id IN (SELECT id FROM device_group_device_group WHERE user_id = %s))) ORDER BY campaigns.updated_date DESC'''
+                        
+            cursor.execute(conditionQuery,[player,userId,player,userId,player,userId])
             campaigns = dictfetchall(cursor);
             cursor.close();
             connection.close();
         
+        #return {'query':conditionQuery}
         #campaigns = Multiple_campaign_upload.objects.filter(campaign_uploaded_by=userId);
         if(len(campaigns)<=0):
             return {'statusCode':2,'status':
