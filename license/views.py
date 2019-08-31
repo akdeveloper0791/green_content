@@ -53,7 +53,7 @@ def sendOTPToEmail(email,secureOTP):
             to = [email];
             msg = mail.EmailMessage("DSP OTP", message, to=to, from_email=constants.EMAIL_HOST_USER,
                     connection=connection)
-            msg.content_subtype = 'text'
+            msg.content_subtype = 'html'
             response = msg.send();
             if(response==1):
                 return True;
