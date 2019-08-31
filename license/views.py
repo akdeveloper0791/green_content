@@ -51,7 +51,7 @@ def sendOTPToEmail(email,secureOTP):
         with mail.get_connection() as connection:   
             message = "Your AdsKite one time password is {}".format(secureOTP); 
             to = [email];
-            msg = EmailMessage("DSP OTP", message, to=to, from_email=constants.EMAIL_HOST_USER,
+            msg = mail.EmailMessage("DSP OTP", message, to=to, from_email=constants.EMAIL_HOST_USER,
                     connection=connection)
             msg.content_subtype = 'text'
             response = msg.send();
