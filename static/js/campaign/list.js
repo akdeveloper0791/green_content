@@ -248,8 +248,7 @@ function downloadThumbFile()
 {
   var resourceFile = "DNDM-THUMB-"+downloadThumbInfo.resourceName+".jpg"
 
-  
-  if(downloadThumbInfo.resourceName==="DNDM_SS_TICKER_TXT")
+  if(downloadThumbInfo.camp_type==3)
   {
          document.getElementById('thumb_img_'+downloadThumbInfo.id).src = 
          '/static/images/campaign/ticker_text.png';

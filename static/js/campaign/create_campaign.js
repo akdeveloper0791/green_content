@@ -11,6 +11,7 @@ var uploadFilesTempNames = new Object();
 var screenInfo = {'width':x,'height':(y-50)};//50 pixels for submit button
 var duration = 10;//seconds  
 var isRssFeed=false;
+var isTickerTxt = false;
 function updateScreenSize()
 {
   var w = window,
@@ -69,6 +70,7 @@ function prepareView(selectedTemplate)
       constructCustomDiv();
     }else if(selectedTemplate=="ticker_text")
     {
+      isTickerTxt=true;
       setInfoTitle("Write your own Ticker text");
       prepareTickerText();
     }else if(selectedTemplate=="rss")
@@ -825,15 +827,16 @@ function reconstructDivs()
 function displayCreateCampaignDialog()
 {
   
-  if(Object.keys(regionsResourceFiles).length>=1)
+  if(Object.keys(regionsResourceFiles).length>=1 || 
+    isTickerTxt)
   {
     document.getElementById("file_duration").value = duration;
    document.getElementById('campaign_info_diag').style.display="block";
-if(isRssFeed)
-  {
-   document.getElementById("camp_duration").style.display="none";
+   if(isRssFeed||isTickerTxt)
+   {
+    document.getElementById("camp_duration").style.display="none";
    
-  }
+   }
   } else{
     swal("Before proceeding further, please add content to campaign");
   }
@@ -846,7 +849,11 @@ function dismissCreateCampaignDialog()
 
 function createCampaign()
 {
-
+  if(isTickerTxt)
+  {
+    onSelectTickerTxtReg();
+    return;
+  }
   //check for resource files
   var mediaName = (document.getElementById("file_media_name").value).trim();
  
@@ -923,6 +930,9 @@ function prepareInfoFile(mediaName)
   if(isRssFeed)
   {
     infoJSON.type="rss";
+  }else if(isTickerTxt)
+  {
+    infoJSON.type="ticker_txt";
   }
   info = JSON.stringify(infoJSON);
 
@@ -1530,7 +1540,7 @@ function onSelectTickerTxtReg()
 {
     //validate fields
     var mediaName = document.getElementById('create_ticker_text_media_name').value;
-    
+    //var mediaName = (document.getElementById("file_media_name").value).trim();
     if(mediaName=='' || mediaName==null)
     {
        swal('Please enter your text');
@@ -1577,7 +1587,8 @@ function onSelectTickerTxtReg()
 
        dismissCreateTickerTextRegion();
 
-       prepareInfoFile("DNDM_SS_TICKER_TXT");
+       //prepareInfoFile("DNDM_SS_TICKER_TXT");
+       prepareInfoFile((document.getElementById("file_media_name").value).trim());
     }
   }
 

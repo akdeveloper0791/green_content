@@ -268,7 +268,7 @@ var downloadThumbInfo = {
     save_path: null,
     resourceName: null,//resource name
     store_location: 2,//default to drop box
-  
+    camp_type:1,//campaign type
   };
 
  (function() {
@@ -296,12 +296,13 @@ function getDownloadThumbInfo()
   {% for campaign in res.campaigns %}
       if(downloadThumbPosition==iteratePos)
       {
+
         
         downloadThumbInfo.id = {{campaign.id}};
         downloadThumbInfo.save_path= "{{campaign.save_path}}";
         downloadThumbInfo.resourceName= "{{campaign.campaign_name}}";
         downloadThumbInfo.store_location = "{{campaign.stor_location}}";
-        
+        downloadThumbInfo.camp_type= "{{campaign.camp_type}}"
         //increate position to get next thumb
         ++downloadThumbPosition;
         return true;

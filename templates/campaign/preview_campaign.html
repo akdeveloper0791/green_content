@@ -86,7 +86,7 @@ if(info.statusCode != 0)
   savePath = info.save_path;
   storeLocation = info.store_location;
 
-  if(info.cInfo.type=='multi_region')
+  if(info.cInfo.type=='multi_region' || info.cInfo.type=='ticker_txt')
   {
   	regionsInfo = info.cInfo.regions;
   }else{
