@@ -341,6 +341,12 @@ class CampaignInfo(models.Model):
                     else:
                         infoObject['hide_ticker_txt'] = False
                     
+                if('media_name' in postParams):
+                    regionsArray = infoObject['regions'];
+                    region = regionsArray[0];
+                    region['media_name']=postParams['media_name'];
+                    regionsArray[0] = region
+                    infoObject['regions'] = regionsArray;
                 
                 campaignInfo.info = json.dumps(infoObject,ensure_ascii=False);
                 campaignInfo.save();
