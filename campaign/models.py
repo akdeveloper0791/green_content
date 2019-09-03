@@ -304,17 +304,20 @@ class CampaignInfo(models.Model):
             campaignInfo = CampaignInfo.objects.get(campaign_id=campaign);
             info = campaignInfo.info;
             infoObject = json.loads(info,encoding='utf-8');
-
-            return {'statusCode':0,'duration':infoObject['duration'],
+            returnJSON = {'statusCode':0,'duration':infoObject['duration'],
                 'hide_ticker_txt':infoObject['hide_ticker_txt'],'campaign_name':campaign.campaign_name};
+            if(campaign.camp_type==3):
+                regionsArray = infoObject['regions'];
+                region = regionsArray[0];
+                returnJSON['media_name']=region['media_name'];
+            return returnJSON;   
         except Multiple_campaign_upload.DoesNotExist:
-                #check whether campaign is assigned or not
-            return {'status':'inside error'};
+            #check whether campaign is assigned or not
             try:
-                    campaign = Approved_Group_Campaigns.objects.get(user_id=userId,campaign_id=campaignId);
-                    return {'statusCode':2,'status':'Dear  User,  This is Campaign is Shared from Group. you can not edit this campaign'}
+                campaign = Approved_Group_Campaigns.objects.get(user_id=userId,campaign_id=campaignId);
+                return {'statusCode':2,'status':'Dear  User,  This is Campaign is Shared from Group. you can not edit this campaign'}
             except:
-                    return {'statusCode':2,'status':'Invalid campaign'}
+                return {'statusCode':2,'status':'Invalid campaign'}
 
     def editCampaign(campaignId,userId,postParams,isWeb=False):
         if(isWeb == False):
