@@ -125,6 +125,7 @@ function constructDivs()
     //create child tag
     var childTag = document.createElement('IMG');
   	info.type="Image";
+
     info.properties = {"scaleType":"fillScreen"};
     childTag.src= '/static/images/campaign/campaign_default2.png';
     info.is_self_path = true; 
@@ -355,9 +356,12 @@ slider.oninput = function()
           
         };     
         reader.readAsDataURL(selectedFile);
+        displayImgScaleTypeDialog();
        }else{
-        addImgReg(idPosition,selectedFile);
-       }
+
+         addImgReg(idPosition,selectedFile);
+         displayImgScaleTypeDialog();
+            }
 
         dismissSelectRegOption();
         
@@ -1694,16 +1698,17 @@ function addPdfRegion(idPosition,file)
     regionsInfo[idPosition] = info;
   }
 
+ function filePropertiesDialog()
+  {
+    document.getElementById('file_properties_diag').style.display="block";
+  }
+
   function dismissPdfPropertiesDialog()
   {
   document.getElementById('file_properties_diag').style.display="none";
   }
 
-  function filePropertiesDialog()
-  {
-    document.getElementById('file_properties_diag').style.display="block";
-  }
-
+ 
   function setFileProperties()
   {
     var idPosition = document.getElementById('select_media_reg_id').value;
@@ -1807,3 +1812,31 @@ function selectExcleRegion()
      console.log("onSelectExcelReg:info:"+JSON.stringify(info)); 
      regionsInfo[idPosition] = info;
   }
+
+
+
+  function displayImgScaleTypeDialog()
+  {
+    document.getElementById('image_properties_diag').style.display="block";
+  }
+ 
+  function setImgScaleTypeProperty()
+  {
+    var idPosition = document.getElementById('select_media_reg_id').value;
+       //get the region info
+       info = regionsInfo[idPosition];
+
+       //set properties
+       info.properties = {
+       'scaleType':document.getElementById('scale_type').value,
+       };
+       dismissImgScaleTypeDialog();
+      console.log("setImgScaleTypeProperty:info:"+JSON.stringify(info));
+  }
+
+  function dismissImgScaleTypeDialog()
+  {
+  document.getElementById('image_properties_diag').style.display="none";
+  }
+
+
