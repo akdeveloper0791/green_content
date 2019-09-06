@@ -1,5 +1,4 @@
-var uploadFiles = [];var campaignInfoFile=null;
-var info = null; var campaignName = null;
+var uploadFiles = [];
 var uploadPath = null; var uploadingFilePos =0; var size = 0;
 var uploadState = {
     chunkSize: 1024 * 1024,
@@ -11,30 +10,134 @@ var uploadState = {
   };
 const maxBlob = 8 * 1000 * 1000; // 8Mb - Dropbox JavaScript API suggested max file / chunk size
 const UPLOAD_FILE_SIZE_LIMIT = 150 * 1024 * 1024;
-var uploadDXXX = [];  
-function clearGlobalVaribles()
- {
-    uploadFiles.length =0;
-    campaignInfoFile = null;
-    info=null;campaignName=null;uploadPath=null;uploadingFilePos=0;size=0;
-    
-    uploadState = {chunkSize: 1024 * 1024,
-    cursor: undefined,current_chunk: undefined,
-    total_chunks: 0,file: null,session_id:null,blob:null };
-  }
+var uploadDXXX = [];
 
-function formatBytes(bytes,decimals) {
-   if(bytes == 0) return '0 Bytes';
-   var k = 1024,
-       dm = decimals <= 0 ? 0 : decimals || 2,
-       sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB'],
-       i = Math.floor(Math.log(bytes) / Math.log(k));
-   return parseFloat((bytes / Math.pow(k, i)).toFixed(dm)) + '' + sizes[i];
+function contentUpload()
+{
+  if(storeLocation==2)
+  {
+    checkAndUploadViaDbx();
+  }else
+  {
+    initUpload();
+  }
+  
 }
 
- 
+function checkAndUploadViaDbx()
+{	
+  if(uploadDXXX!=null && Object.keys(uploadDXXX).length>=1)
+  {
+    initUpload();
+  }else
+  {
+  	initUploadDxxx();
+  }
+}
 
-  function uploadFile(file) {
+function initUploadDxxx()
+{
+    var xhr = new XMLHttpRequest();
+    xhr.onload = function() {
+      
+        if (xhr.status === 200) {
+            
+            uploadDXXX = JSON.parse(xhr.response);        
+            initUpload();
+        }
+        else {
+          var errorMessage = xhr.response || 'Unable to upload file';
+            
+            initUploadDBxxFail("Upload failed"+errorMessage);
+        }
+    };
+
+    xhr.onerror = function()
+    {
+      
+      //alert('Unable to upload, please check your connections');
+      initUploadDBxxFail('Unable to upload, please check your connections');
+    };
+   
+    xhr.open('POST', '/gdbx/init/');
+    xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+
+    xhr.setRequestHeader("X-CSRFToken", csrf_token);
+    var params = 'accessToken=web';
+    xhr.send(params);
+ }
+
+function initUploadDBxxFail(warningMsg)
+{
+  swal(warningMsg);
+  dismissBusyDialog();
+  location.reload();
+}
+
+function initUpload()
+{
+
+    try {
+      displayInitUploadBusyDialog();
+      $.ajax(
+      {
+
+        type:'POST',
+        url: '/content/initUpload',
+        headers: {            
+              'X-CSRFToken': csrf_token
+          },
+        data:{
+                  accessToken: 'web',
+                  description:description,
+                  access_level:accessType,
+                  keys:JSON.stringify(keyword),
+                  store_location:storeLocation,
+                  
+        },
+        
+        success: function(responseObj)
+         {
+          
+           dismissInitBusyDialog();
+
+            if(responseObj.statusCode == 0)
+            {
+               uploadPath = responseObj.save_path;
+               
+               if(storeLocation==2)
+               {
+                //drop box
+                uploadFile(uploadFiles[0]);
+               }else
+               {
+                contentId = responseObj.content_id;
+                uploadFileLocal(uploadFiles[0]);
+               }
+               
+            }else
+            {
+              dismissBusyDialog();
+              swal(responseObj.status);
+            }
+         },
+      
+       error: function (jqXHR, exception) {
+        dismissInitBusyDialog();
+        swal(exception+jqXHR.responseText);
+       }
+
+      });
+      }
+        catch(Exception)
+        {
+          dismissInitBusyDialog();
+          swal(Exception.message);
+        }
+   
+  }
+
+function uploadFile(file) {
     
     //init upload file dialog
     initUploadFileBusyDialg();
@@ -96,10 +199,10 @@ function formatBytes(bytes,decimals) {
 
             });
           } else {
-          	
+            
             // Last chunk of data, close session
             return acc.then(function(sessionId) {
-            	
+              
               //update current chunk
             uploadState.current_chunk = idx;
 
@@ -132,63 +235,19 @@ function formatBytes(bytes,decimals) {
      
      
       return false;
-    }
+}
 
-  function initUploadDxxx()
+function uploadViaHttp(file,accessToken)
   {
+    
     var xhr = new XMLHttpRequest();
-    
-
-    xhr.onload = function() {
-      
-        if (xhr.status === 200) {
-            
-            uploadDXXX = JSON.parse(xhr.response);
-            
-            initUpload();
-        }
-        else {
-          var errorMessage = xhr.response || 'Unable to upload file';
-            
-            initUploadDBxxFail("Upload failed"+errorMessage);
-        }
-    };
-    xhr.onerror = function()
-    {
-      
-      //alert('Unable to upload, please check your connections');
-      initUploadDBxxFail('Unable to upload, please check your connections');
-    };
-   
-    xhr.open('POST', '/gdbx/init/');
-    xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
-
-    xhr.setRequestHeader("X-CSRFToken", csrf_token);
-    var params = 'accessToken=web';
-    xhr.send(params);
-  }
-  
-  function updatePercentageForlargeFile()
-  {
-    var percentComplete = parseFloat((uploadState.current_chunk/
-      uploadState.total_chunks)*100.0);
-
-    
-
-    updateFileProgressBusyDialog(percentComplete,formatBytes(maxBlob*uploadState.current_chunk,3)+"/"+formatBytes(maxBlob*uploadState.total_chunks,3));
-
-  }
-
-  function uploadViaHttp(file,accessToken)
-  {
-  	var xhr = new XMLHttpRequest();
     var isInitial = true;
     var totalSizeInstr = formatBytes(file.size,3);
-		xhr.upload.onprogress = function(evt) {
+    xhr.upload.onprogress = function(evt) {
 
       
-		    var percentComplete = parseInt(100.0 * evt.loaded / evt.total);
-		    // Upload in progress. Do something here with the percent complete.
+        var percentComplete = parseInt(100.0 * evt.loaded / evt.total);
+        // Upload in progress. Do something here with the percent complete.
         updateFileProgressBusyDialog(percentComplete,formatBytes(evt.loaded,3)+"/"+totalSizeInstr);
 
         if(isInitial)
@@ -196,34 +255,35 @@ function formatBytes(bytes,decimals) {
           dismissInitFileUploadBusyDiag();
           isInitial = false;
         }
-		   
-		};
+       
+    };
 
-	xhr.onload = function() {
-	    if (xhr.status === 200) {
-	        var fileInfo = JSON.parse(xhr.response);
-	        // Upload succeeded. Do something here with the file info.
-	        
+  xhr.onload = function() {
+      if (xhr.status === 200) {
+
+          var fileInfo = JSON.parse(xhr.response);
+          // Upload succeeded. Do something here with the file info.
+          
           checkAndUploadNextFile();
-	    }
-	    else {
-	        var errorMessage = xhr.response || 'Unable to upload file';
-	        // Upload failed. Do something here with the error.
-	        
+      }
+      else {
+          var errorMessage = xhr.response || 'Unable to upload file';
+          // Upload failed. Do something here with the error.
+          
           uploadInterrupt("Upload failed"+errorMessage);
-	    }
-	};
+      }
+  };
   xhr.onerror = function()
   {
     
     //alert('Unable to upload, please check your connections');
     uploadInterrupt('Unable to upload, please check your connections');
   };
-	xhr.open('POST', 'https://content.dropboxapi.com/2/files/upload');
-	xhr.setRequestHeader('Authorization', 'Bearer ' + uploadDXXX['xxdd']);
+  xhr.open('POST', 'https://content.dropboxapi.com/2/files/upload');
+  xhr.setRequestHeader('Authorization', 'Bearer ' + uploadDXXX['xxdd']);
 
-	xhr.setRequestHeader('Content-Type', 'application/octet-stream');
-	var params = JSON.stringify({
+  xhr.setRequestHeader('Content-Type', 'application/octet-stream');
+  var params = JSON.stringify({
       path: uploadPath+  getUploadFileName(file.name),
       mode: 'overwrite',
       autorename: false,
@@ -232,113 +292,11 @@ function formatBytes(bytes,decimals) {
   
   xhr.setRequestHeader('Dropbox-API-Arg',(params));
 
-	xhr.send(file);
-  }
-
-  
-
-function displayInitUploadBusyDialog()
-{
-  
-  document.getElementById('busy_dialog').style.display="block";
-  document.getElementById("busy_dialog_header").style.display = "none";
-
-  document.getElementById("init_upload_busy_dialg_div").style.display = "block"; 
-  
-}
-
-function dismissInitBusyDialog()
-{
-  document.getElementById("init_upload_busy_dialg_div").style.display = "none"; 
-
-  //$('#busy_dialog').modal('toggle');
-}
-
-function dismissBusyDialog()
-{
-  document.getElementById('busy_dialog').style.display = "none";
-  
-}
-
-function displayInitFileUploadBusyDiag()
-{
-  var progressBusyDilagParent = document.getElementById("init_file_upload_busy_dialg_div");
-  
-   if (progressBusyDilagParent.style.display === "none") {
-    progressBusyDilagParent.style.display = "block";
-    }
-
-}
-
-function dismissInitFileUploadBusyDiag()
-{
-  var progressBusyDilagParent = document.getElementById("init_file_upload_busy_dialg_div");
-  
-   if (progressBusyDilagParent.style.display === "block") {
-    progressBusyDilagParent.style.display = "none";
-    }
-}
-
-function checkAndDisplayBusyModel()
-{
-  var busyDialog = document.getElementById('busy_dialog');
-  if(busyDialog.style.display=="block")
-  {
-    
-  }else
-  {
-    
-    busyDialog.style.display = "block";
-  }
-}
-
-function initUploadFileBusyDialg()
-{
-   checkAndDisplayBusyModel();
-   
-   displayInitFileUploadBusyDiag();
-   /**/
-  
-  //set uploading file info
-  setUploadingFileInfo();
-
-   var progressBusyDilagParent = document.getElementById("file_upload_progress_dialg_parent_div");
-  
-   if (progressBusyDilagParent.style.display === "block") {
-    progressBusyDilagParent.style.display = "none";
-    }
-
-    //update the progress,, reset to zero
- 
-   var progressBusyDilag = document.getElementById("file_upload_progress_dialg_div");
-    progressBusyDilag.style.width = 0 + '%'; 
-    progressBusyDilag.innerHTML = 0 * 1  + '%';
-
-}
-
-function setUploadingFileInfo()
-{
-  var uploadingFileInfoDiv = document.getElementById("uploading_file_info_div");
-  
-   if (uploadingFileInfoDiv.style.display === "none") {
-    uploadingFileInfoDiv.style.display = "block";
-    }
-    
-    
-    //document.getElementById("uploading_file_name_elm").innerHTML = uploadFiles[uploadingFilePos].name;
-    document.getElementById("uploading_file_name_elm").innerHTML = "Uploading Campaign ("+campaignName+")";
-    document.getElementById("uploading_file_count_elm").innerHTML=(uploadingFilePos+1)+"/"+uploadFiles.length;
-
+  xhr.send(file);
 }
 
 function updateFileProgressBusyDialog(progress, updatedBytes = null)
 {
-  //$("#busy_dialog").modal();
-
- /*var initBusyDilag = document.getElementById("init_file_upload_busy_dialg_div");
-  if (initBusyDilag.style.display === "block") {
-    initBusyDilag.style.display = "none";
-    } */
   
   var progressBusyDilagParent = document.getElementById("file_upload_progress_dialg_parent_div");
    if (progressBusyDilagParent.style.display === "none") {
@@ -355,115 +313,27 @@ function updateFileProgressBusyDialog(progress, updatedBytes = null)
     }else
     {
       progressBusyDilag.innerHTML = ""+updatedBytes;
-    } 
-    
-
-    
+    }    
 }
 
-function initUpload()
+function dismissInitFileUploadBusyDiag()
 {
+  var progressBusyDilagParent = document.getElementById("init_file_upload_busy_dialg_div");
   
-  if(info!=null && campaignInfoFile!=null)
-  {
-    if(uploadDXXX!=null && Object.keys(uploadDXXX).length>=1)
-    {
-    try {
-      displayInitUploadBusyDialog();
-      $.ajax(
-      {
-
-        type:'POST',
-        url: '/campaigns/init/',
-        headers: {            
-              'X-CSRFToken': csrf_token
-          },
-        data:{
-                  accessToken: 'web',
-                  info:info,
-                  campaign:campaignName,
-                  size:size,
-                  
-        },
-        
-        success: function(responseObj)
-         {
-          
-           dismissInitBusyDialog();
-
-            if(responseObj.statusCode == 0)
-            {
-               uploadPath = responseObj.save_path;
-               
-               uploadFile(uploadFiles[0]);
-            }else
-            {
-              dismissBusyDialog();
-              swal(responseObj.status);
-            }
-         },
-      
-       error: function (jqXHR, exception) {
-        dismissInitBusyDialog();
-        swal(exception+jqXHR.responseText);
-       }
-
-      });
-      }
-        catch(Exception)
-        {
-          dismissInitBusyDialog();
-          swal(Exception.message);
-        }
+   if (progressBusyDilagParent.style.display === "block") {
+    progressBusyDilagParent.style.display = "none";
     }
-     else
-     {
-      
-           initUploadDxxx();
-      }
-  }else
-  {
-    swal("Please select campaign");
-  }
-  return false;
 }
 
-
-function checkAndUploadNextFile()
+function getUploadFileName(fileName)
 {
-  ++uploadingFilePos;
-  
-  if(uploadFiles.length > uploadingFilePos)
-  {
-    uploadFile(uploadFiles[uploadingFilePos]);
-  }else
-  {
-    dismissBusyDialog();
-    swal({
-  title: "Campaign has been created successfully!",
-  text: "Redirecting in 2 seconds.",
-  type: "success",
-  timer: 2000,
-  showConfirmButton: false
-}, function(){
-      window.location.href = "/campaigns/list_camp_web";
-});
-    // swal("Campaign has been uploaded successfully");
-    // location.href="/campaigns/list_camp_web";
-  }
-}
-
-function initUploadDBxxFail(warningMsg)
-{
-  swal(warningMsg);
-  dismissBusyDialog();
-  location.reload();
+   return (fileName);
 }
 
 function uploadInterrupt(warningMsg)
 {
 
-   var isConfirm = confirm(warningMsg+"\n"+"\t Would you like to retry?");
+  var isConfirm = confirm(warningMsg+"\n"+"\t Would you like to retry?");
   if(isConfirm)
   {
      //retry uploading
@@ -519,7 +389,7 @@ function checkAndReUploadchunks(sessionId,file)
 {
   
   
-      var dbx = new Dropbox.Dropbox({ accessToken: uploadDXXX['xxdd'] });
+  var dbx = new Dropbox.Dropbox({ accessToken: uploadDXXX['xxdd'] });
 
   var workItems = [];     
       
@@ -620,14 +490,100 @@ function uploadLastChunkOfFile(cursor,blob)
         });
 }
 
-function getUploadFileName(fileName)
+function checkAndUploadNextFile()
 {
-   if(uploadFilesTempNames !== 'undefined' && 
-    uploadFilesTempNames.hasOwnProperty(fileName))
-   {
-     return (uploadFilesTempNames[fileName]);
-   }else
-   {
-    return (fileName);
-   }
+  ++uploadingFilePos;
+  
+  if(uploadFiles.length > uploadingFilePos)
+  {
+    uploadFile(uploadFiles[uploadingFilePos]);
+  }else
+  {
+    dismissBusyDialog();
+    swal({
+  title: "Content has been created successfully!",
+  text: "Redirecting in 2 seconds.",
+  type: "success",
+  timer: 2000,
+  showConfirmButton: false
+}, function(){
+      window.location.href = "/mycontent/upload/";
+});
+    // swal("Campaign has been uploaded successfully");
+    // location.href="/campaigns/list_camp_web";
+  }
 }
+
+function initUploadFileBusyDialg()
+{
+   checkAndDisplayBusyModel();
+   
+   displayInitFileUploadBusyDiag();
+   /**/
+  
+  //set uploading file info
+  setUploadingFileInfo();
+
+   var progressBusyDilagParent = document.getElementById("file_upload_progress_dialg_parent_div");
+  
+   if (progressBusyDilagParent.style.display === "block") {
+    progressBusyDilagParent.style.display = "none";
+    }
+
+    //update the progress,, reset to zero
+ 
+   var progressBusyDilag = document.getElementById("file_upload_progress_dialg_div");
+    progressBusyDilag.style.width = 0 + '%'; 
+    progressBusyDilag.innerHTML = 0 * 1  + '%';
+
+}
+
+function checkAndDisplayBusyModel()
+{
+  var busyDialog = document.getElementById('busy_dialog');
+  if(busyDialog.style.display=="block")
+  {
+    
+  }else
+  {
+    
+    busyDialog.style.display = "block";
+  }
+}
+
+function displayInitFileUploadBusyDiag()
+{
+  var progressBusyDilagParent = document.getElementById("init_file_upload_busy_dialg_div");
+  
+   if (progressBusyDilagParent.style.display === "none") {
+    progressBusyDilagParent.style.display = "block";
+    }
+
+}
+
+function setUploadingFileInfo()
+{
+  var uploadingFileInfoDiv = document.getElementById("uploading_file_info_div");
+  
+   if (uploadingFileInfoDiv.style.display === "none") {
+    uploadingFileInfoDiv.style.display = "block";
+    }
+    
+    
+    //document.getElementById("uploading_file_name_elm").innerHTML = uploadFiles[uploadingFilePos].name;
+    document.getElementById("uploading_file_name_elm").innerHTML = "Uploading Content";
+    document.getElementById("uploading_file_count_elm").innerHTML=(uploadingFilePos+1)+"/"+uploadFiles.length;
+
+}
+
+function formatBytes(bytes,decimals) {
+   if(bytes == 0) return '0 Bytes';
+   var k = 1024,
+       dm = decimals <= 0 ? 0 : decimals || 2,
+       sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB'],
+       i = Math.floor(Math.log(bytes) / Math.log(k));
+   return parseFloat((bytes / Math.pow(k, i)).toFixed(dm)) + '' + sizes[i];
+}
+
+ 
+

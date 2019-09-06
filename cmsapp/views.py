@@ -1874,3 +1874,4 @@ def downloadSoftIOT(request):
 
 def apiDocumentation(request):
     return render(request,'api_documentation.html')
+

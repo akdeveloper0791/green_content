@@ -71,6 +71,7 @@ class Testing(models.Model):
     ky = models.CharField(max_length=20,blank=True,null=True)
 
 
+
 class Upload(models.Model):
     user = models.ForeignKey(User,on_delete=models.CASCADE)
     upload = models.FileField()

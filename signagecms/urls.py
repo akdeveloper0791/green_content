@@ -38,7 +38,8 @@ urlpatterns = [
     path('iot_device/',include('iot_device.urls')),
     url(r'^accounts/',include('accounts.urls')),
     url(r'^',include('cmsapp.urls')),
-
+    path('content/',include('content.urls')),
+    
 ]
 
 if settings.DEBUG:

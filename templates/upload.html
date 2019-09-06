@@ -16,8 +16,22 @@
 
 
 
-<link rel="stylesheet" href="{% static 'multi-select/bootstrap-multiselect.css' %}" />
-<script type="text/javascript" src="{% static 'multi-select/bootstrap-multiselect.min.js' %}"></script>
+
+
+<script type="text/javascript" src="{%static 'js/content/upload.js'%}"></script>
+
+<script type="text/javascript" src="{%static 'js/content/uploadLocal.js'%}"></script>
+
+<link rel="stylesheet"
+ href="{% static 'bootstrap/3.4.0/bootstrap.min.css' %}">
+<script src="{% static 'jquery/3.4.0/jquery.min.js' %}">
+  </script>
+
+<script  src="{% static 'scripts/Dropbox-sdk.min.js' %}"></script>
+
+<script  src="{% static 'upload_file_anim/upload_file_anim.js' %}"></script>
+
+<link rel="stylesheet" href="{% static 'upload_file_anim/upload_file_anim.css' %}">
 
 <body>
 {% block body %}
@@ -41,24 +55,25 @@
 <div class="col-md-12 col-sm-12 create-new-account">
 	<center><h4 class="checkout-subtitle"> Upload Content Form</h4></center>
 	<p class="text title-tag-line">Select your media files and upload to your account library.</p>
-		<form id="upload-file" method="post" enctype="multipart/form-data">
+	<form id="upload-file" class="upload-file">
 	    {% csrf_token %}
 		<div class="form-group">
 	    	<label class="info-title" for="exampleInputEmail2">Select File <span>*</span></label>
 	    	<div class="fileupload fileupload-new image-preview-input" data-provides="fileupload">
-                            <span class="btn btn-info btn-file"><span class="fileupload-new image-preview-input" style="color:white;">Select file</span>
-                            <span class="fileupload-exists" style="color:white;">Change</span><input type="file" name="file" id="file" required/></span>
-                            <span class="fileupload-preview"></span>
-                            <a  class="close fileupload-exists" data-dismiss="fileupload" style="float:none;color:red;">×</a>
-            </div>
-	  	</div>
+      <span class="btn btn-info btn-file"><span class="fileupload-new image-preview-input" style="color:white;">Select file</span>
+      <span class="fileupload-exists" style="color:white;">Change</span>
+      <input type="file" name="file" id="file" required onselect="onchange(this)" /></span>
+      <span class="fileupload-preview"></span>
+      <a  class="close fileupload-exists" data-dismiss="fileupload" style="float:none;color:red;">×</a>
+    </div>
+	  </div>
         <div class="form-group">
 		    <label class="info-title" for="exampleInputEmail1">Content Description <span>*</span></label>
-		    <input type="text" class="form-control unicase-form-control text-input" name="desc" placeholder="your message here..." id="description" required>
+		    <input type="text" class="form-control unicase-form-control text-input" name="desc" placeholder="your message here..." id="description" minlength=4 required>
 		</div>
         <div class="form-group">
 		    <label class="info-title" for="exampleInputEmail1">Search Keywords (Comma Separated) <span>*</span></label>
-		    <input type="text" class="form-control unicase-form-control text-input" name="keys" id="Keyword" placeholder="Please enter multiple search keywords with comma Separated" required>
+		    <input type="text" class="form-control unicase-form-control text-input" name="keys" id="Keyword" placeholder="Please enter multiple search keywords with comma Separated" minlength=4 required>
 		</div>
         <div class="form-group">
 		    <label class="info-title" for="exampleInputEmail1">Select Content Type <span>*</span></label><br/>
@@ -80,7 +95,7 @@
 
 <br/>
 <br/>
-<center><button type="submit" class="btn-upper btn btn-primary checkout-page-button" id="upload-file-btn"><i class="fa fa-cloud-upload" aria-hidden="true"></i> Upload</button></center>
+<center><button type="submit" class="btn-upper btn btn-primary checkout-page-button" id="upload-file-btn" ><i class="fa fa-cloud-upload" aria-hidden="true"></i> Upload</button></center>
 </form>
 
 </div>
@@ -91,42 +106,21 @@
 </div><!-- /.container -->
 </div><!-- /.body-content -->
 
-<!--===============================================================================================-->
-	<!--<script src="{% static 'uploadform/vendor/animsition/js/animsition.min.js' %}"></script>-->
-<!--===============================================================================================-->
-	<!--<script src="{% static 'uploadform/vendor/bootstrap/js/popper.js' %}"></script>-->
-	<!--<script src="{% static 'uploadform/vendor/bootstrap/js/bootstrap.min.js' %}"></script>-->
-<!--===============================================================================================-->
 
-	<!--<script src="{% static 'multi_select_dropdown/bootstrap-select.min.js' %}"></script>-->
-<!--===============================================================================================-->
-
-	<!--<script src="{% static 'uploadform/vendor/countdowntime/countdowntime.js' %}"></script>-->
-<!--===============================================================================================-->
-	<!--<script src="{% static 'uploadform/js/main.js' %}"></script>-->
-
-	<!--<script src="{% static 'uploadform/js/Imagepage.js' %}"></script>-->
 		<script src="{% static 'uploadform/js/index.js' %}"></script>
 
 
-		<script type="text/javascript">
+<script type="text/javascript">
+  var csrf_token="{{csrf_token}}"
+  var storeLocation = '{{ store_location }}';
+  var selectedFile=null;
+  $('#upload-file').submit(function (evt) {
+   evt.preventDefault(); //prevents the default action
+   verifyDetails();
 
-		var val = [];
-
-// 		$('.selectpicker').selectpicker();
-
-		//Plug-in function for the bootstrap version of the multiple email
-		$(function() {
-			//To render the input device to multiple email input using BootStrap icon
-			$('#example_emailBS').multiple_emails({position: "bottom"});
-			//OR $('#example_emailBS').multiple_emails("Bootstrap");
-
-			//Shows the value of the input device, which is in JSON format
-			$('#current_emailsBS').text($('#example_emailBS').val());
-			$('#example_emailBS').change( function(){
-				$('#current_emailsBS').text($(this).val());
-			});
-		});
+  });
+  
+	
 
 	</script>
 
@@ -237,6 +231,7 @@ $('#my_input').multipleInput();
 
         $(".image-preview-input input:file").change(function (){
           var file = this.files[0];
+          selectedFile = file;
 
           //file_name = this.files[0];
 
@@ -316,194 +311,86 @@ function selectdropdown(result)
     .multiselect('updateButtonText');
 }
 
-
-
-
-
-	window.onload = function getDataResults()
-		{
-
-
-			var form_data = new FormData();
-				//form_data.append('accessToken',getAccessToken);
-
-				$.ajax(
-				  {
-					  type:'GET',
-					  url: "https://www.greencontent.in/My_GC_Groups_Api/",
-					  data:{
-
-					  },
-					  success: function(data)
-					  {
-						//console.log("data result==="+JSON.stringify(data));
-						 //disableButton(id);
-
-						try {
-							//var jsonResponse = JSON.parse(data);
-
-							  if(data['status']==true)
-							  {
-								var responsedata = data['result'];
-
-								//console.log("data result==="+JSON.stringify(responsedata));
-
-							selectdropdown(responsedata);
-
-							  }
-							  else if(data['status']==false)
-							  {
-							    var responsedata = data['result'];
-
-							    //$("#appendDetails").empty();
-
-							    //$('#notwishlistfound').show();
-
-							    //document.getElementById('notwishlistfound').innerHTML = responsedata;
-
-								 //console.log(responsedata);
-							  }
-
-						}
-						catch(Exception)
-						{
-							alert(Exception.message);
-						}
-
-					  }
-				   });
-
-		 }
-
-
-
-
-$(function() {
-    $('#upload-file-btn').click(function() {
-            var file = document.getElementById('file').value;
-            var description = document.getElementById('description').value;
-            var keyword = document.getElementById('Keyword').value;
-            var email_gc = document.getElementById('email_gc_name').value;
-
-
-
-
-            if(file=="" || file=="null" || file==" " || file=="undefined"){
-
-                         swal({
-            title: 'Please select media file type.!',
-            timer: 2000
-          });
-          return false;
-            }else if(description=="" || description=="null" || description==" " || description=="undefined"){
-                swal({
-            title: 'Please enter description.!',
-            timer: 2000
-          });
-          return false;
-            }else if(keyword=="" || keyword=="null" || keyword==" " || keyword=="undefined"){
-                          swal({
-            title: 'Please enter keywords.!',
-            timer: 2000
-          });
-            return false;
-
-            }
-        //     else if(email_gc=="" || email_gc=="null" || email_gc==" " || email_gc=="undefined"){
-        //                   swal({
-        //     title: 'Please select GC group.!',
-        //     timer: 2000
-        //   });
-        //     return false;
-
-        //     }
-
-
-         $(':checkbox:checked').each(function(i){
-          val[i] = $(this).val();
-        });
-        var str =JSON.stringify(val);
-        var arr = str.replace (/"/g,'');
-        arr1 = arr.replace('multiselect-all,','');
-        // var array = JSON.parse("[" + arr1 + "]");
-         var array = JSON.parse( arr1);
-        // console.log(typeof(array));
-        //  console.log(JSON.stringify(array));
-        for(var i=0;i<array.length;i++){
-            var record = array[i];
-            console.log("Asdas"+record);
-            }
-
-
-        if(document.getElementById('private').checked){
-            var select_type = "private";
-            if(arr1=="" || arr1=="null" || arr1==" " || arr1=="undefined" || arr1=="[]"){
-                          swal({
-            title: 'Please select GC group.!',
-            timer: 2000
-          });
-            return false;
-
-            }
-            document.getElementById("email_gc_name").value=arr1;
-        }else if (document.getElementById('public').checked) {
-                     var select_type = "public";
-                    document.getElementById("email_gc_name").value="[]";
-                }
-
-
-
-
-
-
-            ajaxindicatorstart("<img src='{% static "images/ajax-loader.gif" %}'><br/> Content Upload is in Progress...");
-
-
-
-
-
-        		var form_data = new FormData();
-			    form_data.append($('#upload-file')[0]);
-
-        $.ajax({
-            type: 'GET',
-            url: '/upload_api',
-            data: form_data,
-            success: function(data) {
-                alert("success");
-
-               // console.log('Success!');
-					//	console.log("data==="+JSON.stringify(data));
-                        	try {
-
-							  if(data['status']==true)
-							  {
-							      swal("Error, success.");
-
-                                     ajaxindicatorstop();
-							  }
-							  else if(data['status']==false)
-							  {
-
-                                    swal("Error, Please contact us.");
-                                     ajaxindicatorstop();
-
-							  }
-
-						}
-						catch(Exception)
-						{
-							alert(Exception.message);
-						}
-
+function verifyDetails()
+{
+  
+  
+  description = document.getElementById('description').value;
+  keyword = document.getElementById('Keyword').value;
+  accessType=0;//private
+  if(!document.getElementById('private').checked)
+  {
+    accessType=1;//public
+  }
+   
+  if(selectedFile==null || selectedFile.name<=1 ||
+    selectedFile.name == 'undefined')
+  {
+    
+   return;
+  }else if(description.length<=3){
+    alert("Please select description");
+    return; 
+  }else if(keyword.length<=3)
+  {
+    alert("Please select keyword");
+    return;
+  }
+  uploadFiles.push(selectedFile);
+  checkAndUploadViaDbx();
+  return false;
 }
-});
-
-});
-});
 
 
 </script>
+
+
+<div class="container">
+  <div class="modal centered-modal" tabindex="-1" role="dialog" id="busy_dialog">
+
+  <div class="modal-dialog" role="document">
+  
+      <!-- Modal content-->
+      <div class="modal-content">
+        <div class="modal-header" id="busy_dialog_header" style="display:none"> 
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <h4 class="modal-title" display = "none"></h4>
+        </div>
+        <div class="modal-body">
+          <!--initiate busy spinner -->
+           <div id="init_upload_busy_dialg_div" align="center" style="display:none">
+            <div class="loader" > </div>
+            <p id="busy_dialog_msg">Deleting...</p>
+            </div>
+          
+
+          <!-- file upload progress -->
+          <div style="clear: both;display:none" id="uploading_file_info_div">
+              <h4 style="float: left" id="uploading_file_name_elm"></h2>
+              <h6 style="float: right" id="uploading_file_count_elm"></h3>
+          </div>
+
+          <!-- init file upload progress bar -->
+          <div id="init_file_upload_busy_dialg_div"class="progress" style="display:none">
+          <div class="indeterminate"></div>
+          </div>
+          
+          <div class="progress" id="file_upload_progress_dialg_parent_div" style="display:none">
+
+          <div class="progress-bar progress-bar-striped active" role="progressbar" aria-valuemin="0" aria-valuemax="100" style="width:0%;" id="file_upload_progress_dialg_div">0 
+      
+          </div>
+
+          <p>.</p>
+        </div>
+        </div>
+        
+      </div>
+      
+    </div>
+  </div>
+  
+</div>
 
 
 {% endblock %}
