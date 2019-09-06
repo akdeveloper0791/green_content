@@ -9,14 +9,13 @@ function download(id,storeLocation,
     	{
     		//downloadFromDropBox(campaignName);
 
-        checkForFilesInDropBox(campaignName,savePath);
+      checkForFilesInDropBox(campaignName,savePath);
     	}else
     	{
     		//download FROM GC 
     	}
       
 }
-
 
 
 function checkForFilesInDropBox(campaignName,savePath)
@@ -531,7 +530,7 @@ function downloadThumbFile()
 
  function displayCamapignEditDialog(data,campaignId)
  {
-  document.getElementById('campaign_edit_dialog').style.display="block";
+   document.getElementById('campaign_edit_dialog').style.display="block";
 
   document.getElementById('camp_id').value=campaignId;
   document.getElementById('camp_name').innerHTML=data['campaign_name'];
@@ -539,7 +538,19 @@ function downloadThumbFile()
   var flag=data['hide_ticker_txt'];
   //var isTrueSet =(flag === 'true');
   console.log("hide_ticker_txt"+flag);
-  document.getElementById('hide_ticker').checked=flag; 
+  document.getElementById('hide_ticker').checked=flag;
+
+   if(data.hasOwnProperty('media_name'))
+   {
+    //In the array!
+    document.getElementById('text_block').style.display="block";
+    document.getElementById('ticker_text').value=data['media_name'];
+
+    }else
+    {
+    document.getElementById('text_block').style.display="none";
+     var mediaName=""; 
+    } 
  }
 
  function closeCampaignEditDialog()
@@ -552,6 +563,13 @@ function downloadThumbFile()
   var campDuration=document.getElementById('duration_id').value;
   var hideTickerFlag=document.getElementById('hide_ticker').checked;
 
+   mediaName=document.getElementById('ticker_text').value;
+ if(mediaName==null || mediaName.trim()=='' || mediaName<=0 )
+  {  
+      swal("Please enter valid text"); 
+ 
+  }
+
    if(campDuration==null || campDuration.trim()=='' || campDuration<=0 )
   {  
       swal("Please enter valid duration"); 
@@ -563,17 +581,16 @@ function downloadThumbFile()
    swal("Campaign duration is greater than 10 sec.");
     }else
     {
-
-      updateCampignInfo(campDuration,hideTickerFlag);
+      updateCampignInfo(campDuration,hideTickerFlag,mediaName);
     }
    }
 
  }
 
- function updateCampignInfo(campDuration,hideTickerFlag)
+ function updateCampignInfo(campDuration,hideTickerFlag,mediaName)
  {
-
-    try {
+  
+ try {
    ajaxindicatorstart("<img src='/static/images/ajax-loader.gif'><br/> Please wait...!");    
     $.ajax(
     {
@@ -587,7 +604,8 @@ function downloadThumbFile()
            accessToken: 'web',
              c_id: document.getElementById('camp_id').value,
              duration: campDuration,
-             hide_ticker_txt: hideTickerFlag,   
+             hide_ticker_txt: hideTickerFlag,
+             media_name: mediaName,   
       },
      
       success: function(data)
@@ -595,6 +613,7 @@ function downloadThumbFile()
         ajaxindicatorstop();
         if(data['statusCode']==0)
         {
+          mediaName="";
           closeCampaignEditDialog();
           showSnackbar(data['status']);
         }

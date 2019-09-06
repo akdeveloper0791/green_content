@@ -833,6 +833,58 @@ textarea {
 <!-- end of pdf info dialog -->
 
 
+<!-- image scale type info dialog -->
+ <div class="modal" id="image_properties_diag" >
+    <div class="modal-dialog">
+      <div class="modal-content">
+      
+        <!-- Modal Header -->
+        <div class="modal-header">
+          <h4 class="modal-title" style="text-align:center;">Choose Image Scale Type
+         <!--  <span type="button" class="close" data-dismiss="modal" onclick="dismissCreateCampaignDialog();">&times;</span> --></h4>
+           <center><img id="loading" src="../images/ajax-loader.gif" alt="Updating ..." style="display: none;" /></center>
+        </div>
+        
+        <!-- Modal body -->
+        <div class="modal-body" style="overflow-y:auto;text-align: center;">
+     
+                <div class="col-md-12">
+
+          <!-- <form class="feedback" name="feedback"> -->
+    
+               <div class="form-group">
+                  <label style="font-weight:bold">Scale Type :</label>
+                       
+              <select class="form-control" id="scale_type">
+                  <option deafult value="fillScreen">fillScreen</option>
+                  <option value="optionalCenterCrop">optionalCenterCrop</option>
+              <option value="optionalCenterInside">optionalCenterInside</option>
+                  <option value="optionalFitCenter">optionalFitCenter</option>
+                  <option value="optionalCircleCrop">optionalCircleCrop</option>
+                  <option value="centerCrop">centerCrop</option>
+                  <option value="centerInside">centerInside</option>
+                   <option value="fitCenter">fitCenter</option>
+                   <option value="circleCrop">circleCrop</option>
+              </select>
+                </div>
+                <br>
+
+          </div>
+        </div>
+
+        <div class="modal-footer">
+        <center>     
+                 <button class="btn btn-danger"  data-dismiss="modal" onclick="dismissImgScaleTypeDialog()">Cancel</button>       
+                  <button class="btn btn-success" id="submit" onclick="setImgScaleTypeProperty();">Proceed</button>
+        </center>
+         
+        </div>
+        
+      </div>
+    </div>
+  </div>
+
+
 
  <script id="hide2">
    var csrf_token = '{{ csrf_token }}';
