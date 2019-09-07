@@ -14,7 +14,8 @@ class Content(models.Model):
     access_level = models.SmallIntegerField(default=0)#0->private,1->public
     store_location = models.SmallIntegerField(default=2)#1->local,2->db
     file_path = models.TextField(default="")
-    
+    file_name = models.CharField(max_length=125,default="")
+
     def initUpload(postData,accessToken,storeLocation,
         isWeb,userEmailId):
         userId = accessToken;
@@ -24,8 +25,8 @@ class Content(models.Model):
                 return {'statusCode':1,'status':
                 "Invalid session, please login"};
             userEmailId = User.objects.get(id=userId).email;
-        uniqueKey = str(uuid.uuid4().hex[:6].upper())+str(round(time.time() * 1000))+uuid.uuid4().hex[:6];
-        savePath = '/content/{}/{}/'.format(userEmailId,uniqueKey);
+        #uniqueKey = str(uuid.uuid4().hex[:6].upper())+str(round(time.time() * 1000))+uuid.uuid4().hex[:6];
+        savePath = '/content/{}/'.format(userEmailId);
         return Content.saveContent(userId,postData,savePath);
 
     def saveContent(userId,postData,savePath):
@@ -36,7 +37,8 @@ class Content(models.Model):
                     user_id=userId,
                     description=postData.get('description'),
                     access_level=postData.get('access_level'),
-                    file_path=savePath);
+                    file_path=savePath,
+                    file_name=postData.get('file_name'));
                 if('store_location' in postData):
                     content.store_location = postData.get('store_location');
                 content.save();

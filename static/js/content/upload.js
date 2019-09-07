@@ -76,7 +76,7 @@ function initUploadDBxxFail(warningMsg)
 
 function initUpload()
 {
-
+  
     try {
       displayInitUploadBusyDialog();
       $.ajax(
@@ -93,6 +93,7 @@ function initUpload()
                   access_level:accessType,
                   keys:JSON.stringify(keyword),
                   store_location:storeLocation,
+                  file_name:getUploadFileName(uploadFiles[0].name),
                   
         },
         
