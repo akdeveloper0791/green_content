@@ -1677,8 +1677,8 @@ def forgot_password(request):
         email_check = User.objects.filter(username = email)
         if email_check:
             session = ForgotPwdSession.createSession(email_check[0].id);
-            subject = 'Green Content Reset Password'
-            message = 'https://www.greencontent.in/reset_password/{}/{}'.format(email,session)
+            subject = 'SignageServ.ai Reset Password'
+            message = 'https://www.signageserv.ai/reset_password/{}/{}'.format(email,session)
             from_email = settings.EMAIL_HOST_USER
             to_list= []
             to_list.append(request.POST['email'])

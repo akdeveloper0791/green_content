@@ -4,7 +4,7 @@ from django.shortcuts import render
 from .models import Content
 from rest_framework.decorators import api_view
 from django.http import JsonResponse
-
+from django.shortcuts import render,redirect
 @api_view(["POST"])
 def initContentUpload(request):
     if(request.method == "POST"):
@@ -75,3 +75,13 @@ def uploadContentResource(request):
                     
         else:
             return JsonResponse({'statusCode':3,'status':canUpload['status']});
+
+def mycontent(request):
+    return redirect('/content/mycontent/1')
+
+def listMyContent(request,pageNumber):
+    if(request.user.is_authenticated):
+        totalValues=Content.getTotalContent(request.user.id);
+        return JsonResponse({'pageNumber':pageNumber,'totalValues':totalValues});
+    else:
+        return redirect('/accounts/signin/?next=/content/mycontent/1');

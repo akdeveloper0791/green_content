@@ -7,6 +7,8 @@ from cmsapp.models import User_unique_id
 from django.contrib.auth.models import User
 
 # Create your models here.
+from django.db.models import Q
+from django.db.models import Count
 
 class Content(models.Model):
     user = models.ForeignKey(User,on_delete=models.CASCADE)
@@ -69,6 +71,13 @@ class Content(models.Model):
             return {'statusCode':0,'content':content};
         except Multiple_campaign_upload.DoesNotExist:
            return {'statusCode':1,'status':'No content found'}; 
+    
+    def getTotalContent(userId):
+       
+        contents = Content.objects.values('user_id').annotate(t_count=Count('user_id')).filter(user_id=userId)
+        if(len(contents)>=1):
+            return (contents[0]['t_count']);
+        return 0;
 
 class Content_Key(models.Model):
     content = models.ForeignKey(Content,on_delete=models.CASCADE)
