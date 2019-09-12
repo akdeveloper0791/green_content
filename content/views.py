@@ -79,9 +79,80 @@ def uploadContentResource(request):
 def mycontent(request):
     return redirect('/content/mycontent/1')
 
+from signagecms.constants import content_pagination_limit
 def listMyContent(request,pageNumber):
     if(request.user.is_authenticated):
         totalValues=Content.getTotalContent(request.user.id);
-        return JsonResponse({'pageNumber':pageNumber,'totalValues':totalValues});
+        totalPages= totalValues/content_pagination_limit;
+        totalPagesInt = int(totalPages);
+        paginationPages=[];
+        if(totalPagesInt<totalPages):
+            totalPagesInt+=1;
+        #Backward,ForwardLimits
+        BML,FML,BL,FL=5,5,(pageNumber-1),(totalPagesInt-pageNumber);
+        
+        if(BL>0 or FL>0):    
+            if BL>=5 and FL>=5:
+                pass
+            elif(BL<FL):
+                BDifference=(BML-BL)-1;#include current one
+                FML +=BDifference;
+                BML = BL+1; #include current page
+
+            elif(FL<BL and FL>=0):
+                FDifference=(FML-FL);
+                BML += FDifference;
+                FML = FL+1;
+                
+
+            BSP=(pageNumber+1)-BML;#Backward starting point
+            if(BSP<=0):
+                BSP=1;
+            count=1;
+            while(BSP<=pageNumber and BSP>0 and count<=BML):
+                paginationPages.append(BSP);
+                BSP +=1;
+                count +=1;
+            FEP=pageNumber+FL;
+            FSP = pageNumber+1;
+            
+            count=1;
+
+            while(FSP<=FEP and FSP<=totalPagesInt and count<=FML):
+                paginationPages.append(FSP);
+                FSP +=1;
+                count = count+1;
+        offSet = pageNumber*constants.content_pagination_limit-constants.content_pagination_limit;    
+        response = Content.getMyContent(request.user.id,constants.content_pagination_limit,
+            offSet);
+        response['paginationPages']=paginationPages;
+        return render(request,'content/list.html',{'response':response,'currentPage':pageNumber})
     else:
         return redirect('/accounts/signin/?next=/content/mycontent/1');
+
+def preview(request,contentId):
+    if request.user.is_authenticated:
+        response = Content.getContentInfo(contentId,request.user.id);
+        return render(request,'content/preview.html',{'response':response});
+    else:
+        return redirect(('/accounts/signin/?next=/content/preview/{}').format(id));
+
+@api_view(['POST'])
+def delete(request):
+    if(request.method == 'POST'):
+        isWeb = False;
+        accessToken = request.POST.get('accessToken');
+        if(accessToken=="web"):
+            if(request.user.is_authenticated):
+                accessToken=request.user.id;
+                isWeb=True;
+            else:
+                return JsonResponse({'statusCode':200,
+            'status':'Invalid session'});
+
+        result = Content.deleteMyContent(request.POST.get('c_id'),
+            accessToken,isWeb);
+        return JsonResponse(result);
+    else:
+        return JsonResponse({'statusCode':1,
+            'status':'Invalid request'});

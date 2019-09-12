@@ -125,7 +125,7 @@
   {% if request.user.is_authenticated %}
   <a id="campaigns_nav" href="{% url 'listCampaignsWeb' %}" >Campaign <br /> Management</a>
   <a id="deviceMgmt_nav" href="{% url 'deviceMgmt' %}" >Device <br />Management</a>
-  <a id="web_search_nav" href="{% url 'web_search' %}" >Content<br /> Management</a>
+  <a id="web_search_nav" href="{% url 'mycontent' %}" >Content<br /> Management</a>
   <a id="gcGroups_nav" href="{% url 'gcGroups' %}">Partners &<br/>Accounts</a>
   <a id="campaignReports_nav"  href="{% url 'campaignReports' %}" >Campaign <br />Reports</a>
   <a id="viewerMetrics_nav"  href="{% url 'iotViewerMetrics' %}" >ADview <br />Reports</a>
@@ -194,6 +194,7 @@ function highliteSelectedLink(loaded)
 
 var loadedURL = window.location.href;
 
+
 if(loadedURL.includes("/player/device_mgmt"))
 {
   highliteSelectedLink("deviceMgmt_nav");
@@ -221,6 +222,12 @@ else if(loadedURL.includes("iot_device/viewer_metrics"))
 else if(loadedURL.includes("iot_device/rules"))
 {
   highliteSelectedLink("contextualAdsRules_nav");
+
+}else if(loadedURL.includes("content/mycontent") || 
+  loadedURL.includes("mycontent/upload/"))
+{
+
+  highliteSelectedLink("web_search_nav");
 }
 
 function isMobileBrowser()

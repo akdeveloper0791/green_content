@@ -10,8 +10,8 @@ two_reg_vertical_50_50_json = ''' {"regions":[{"width":100,"height":50,"top_marg
 two_vertical_20_70_json = ''' {"regions":[{"width":100,"height":10,"top_margin":0,"left_margin":0,"right_margin":0,"bottom_margin":0},{"width":100,"height":90,"top_margin":10,"left_margin":0,"right_margin":0,"bottom_margin":0}]} '''
 r3_1h_2v_20_50_50_json = ''' {"regions":[{"width":100,"height":10,"top_margin":0,"left_margin":0,"right_margin":0,"bottom_margin":0},{"width":50,"height":90,"top_margin":10,"left_margin":0,"right_margin":0,"bottom_margin":0},{"width":50,"height":90,"top_margin":10,"left_margin":50,"right_margin":0,"bottom_margin":0}]} '''
 r4_2h_2v_50_50_json = ''' {"regions":[{"width":50,"height":50,"top_margin":0,"left_margin":0,"right_margin":0,"bottom_margin":0},{"width":50,"height":50,"top_margin":0,"left_margin":50,"right_margin":0,"bottom_margin":0},{"width":50,"height":50,"top_margin":50,"left_margin":0,"right_margin":0,"bottom_margin":0},{"width":50,"height":50,"top_margin":50,"left_margin":50,"right_margin":0,"bottom_margin":0}]} '''
-
-
+allowed_image_formats = '''jpeg,jpg,png'''
+allowed_video_formats = '''wmv,avi,mpg,mpeg,webm,mp4'''
 file_storage_path="C:/Users/jitendra/python_projects/green_content/media";
 
 STORE_LOCATION = 2; #2-> dropbox , 1-> local
@@ -29,3 +29,5 @@ fcm_handle_metrics_rule="1";
 fcm_handle_mic_rule = "2";
 
 EMAIL_HOST_USER = "contact@adskite.com"
+
+content_pagination_limit = 10;

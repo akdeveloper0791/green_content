@@ -27,7 +27,7 @@ urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'^signagecms/', include('cmsapp.urls')),
     
-    url(r'^mycontent/upload/', views.upload, name='upload'),
+    url(r'^mycontent/upload/', views.upload, name='uploadContent'),
     url(r'^upload_api/', views.upload_api, name='upload_api'),
     path('campaigns/',include('campaign.urls')),
     path('groups/',include('group.urls')),

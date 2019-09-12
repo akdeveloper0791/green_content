@@ -76,6 +76,13 @@ function initUploadDBxxFail(warningMsg)
 
 function initUpload()
 {
+  var fileName = getUploadFileName(uploadFiles[0].name);
+  var contentType = getContentType(fileName);
+  if(contentType==false)
+  {
+    alert("File format not supported");
+    return;
+  }
   
     try {
       displayInitUploadBusyDialog();
@@ -93,8 +100,8 @@ function initUpload()
                   access_level:accessType,
                   keys:JSON.stringify(keyword),
                   store_location:storeLocation,
-                  file_name:getUploadFileName(uploadFiles[0].name),
-                  
+                  file_name:fileName,
+                  content_type:contentType,
         },
         
         success: function(responseObj)
@@ -584,6 +591,33 @@ function formatBytes(bytes,decimals) {
        sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB'],
        i = Math.floor(Math.log(bytes) / Math.log(k));
    return parseFloat((bytes / Math.pow(k, i)).toFixed(dm)) + '' + sizes[i];
+}
+
+function getContentType(fileName)
+{
+  var ext = (fileName.split('.').pop()).toLowerCase();
+  var allowedImageFormatsArray = allowedImageFormats.split(',');
+  var allowedVideoFormatsArray = allowedVideoFormats.split(',');
+  console.log("fileName"+ext+","+fileName);
+  if(allowedImageFormatsArray.includes(ext))
+  {
+    return "image";
+  }else if(allowedVideoFormatsArray.includes(ext))
+  {
+    return "video";
+  }else if(ext=="xls")
+  {
+    return "excel";
+  }else if(ext=="pdf")
+  {
+    return "pdf";
+  }
+  else
+  {
+    return false;
+  }
+  
+  return ext;
 }
 
  

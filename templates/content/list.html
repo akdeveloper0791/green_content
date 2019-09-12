@@ -2,14 +2,175 @@
 <!DOCTYPE html>
 <html lang="en">
 <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 {% block header %} 
 {% include 'header.html' %} 
 {% endblock %}
-
+<script type="text/javascript" src="{%static 'js/content/list.js'%}"></script>
+<link rel="stylesheet"
+ href="{% static 'bootstrap/3.4.0/bootstrap.min.css' %}">
+<script src="{% static 'jquery/3.4.0/jquery.min.js' %}">
+  </script>
 {% block body %}
+ <br /><br /><br />
+ <body onload="afterLoad()">
+ <style>
+ ul {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  
+  background-color: #333333;
+}
+
+li {
+  float: right;
+}
+
+li a {
+  display: block;
+  color: black;
+  text-align: center;
+  padding: 5px;
+  text-decoration: none;
+}
+
+li a:hover {
+  
+}
+li a.current_page
+{
+   display: block;
+  color: green;
+  text-align: center;
+  padding: 5px;
+  text-decoration: none;
+}
+ </style>
+
+<section id="contact" class="section-padding">
+  
+  <div class='container' id="listemail">
+  <div class='rows'>
+    <a class="nav-link" href="{% url 'uploadContent' %}" style="float:right;font-weight:bold ;margin-top: 20px;" >
+      <button class="gradient-button gradient-btn"><i class='fa fa-plus'>Upload Content</i></button></a>
+    <a class="nav-link" href="{% url 'web_search' %}" style="float:right;font-weight:bold ;margin-top: 20px;" > <button class="gradient-button gradient-btn"><i class='fa fa-search'>Search Content</i></button></a>
+    <br /><br />
+ {% if response.statusCode == 0 %}
+  
+   
+
+	<!-- 	<ul class='list-group'> -->
+	 
+		<table id="content_list_table" class="table" style="border:0px;border-spacing: 2px;width: 100%;text-align: center;">
+	    <thead style="border: 0px;">
+	      <tr style="border: 0px;">
+	        <th style="border: 0px;"></th>
+	        <th style="border: 0px;"></th>
+	        <th style="border: 0px;"></th>
+	        
+	      </tr>
+	    </thead>
+
+	{% for content in response.content %}
+   
+    <div class="rows" id="content_row_{{ content.id }}">
+
+          <tr id="content_title_{{ content.id }}" class="content_row">
+              <td rowspan="2" style="width: 12%">
+              <a target="_blank" href="/content/preview/{{ content.id }}">
+                <img id="thumb_img_{{ content.id }}" src="{% static 'images/campaign/default_campaign.png' %}" style="width: 100%;
+              height: 100px;"></a></td>
+              <td rowspan="2" class="content_row" style="text-align:center;">{{ content.description }} </td>
+              
+              <td ><i class='fa fa-trash fa-lg' style='color:orangered;cursor: pointer;' alt="Delete" title="Delete"
+               onclick='deleteContent("{{content.id}}")'></i></td>
+
+               
+
+          </tr>
+
+          <tr id="content_title2_{{ content.id }}" 
+          class="content_row">
+              <td colspan = "3" style="text-align:right;border:0px">{{ content.created_at}}</td>   
+          </tr>
+
+       
+
+    </div>
+ 
+	{% endfor %}
+	</table>
+	  
 
 
+	
+ {% else %}
+ 
+    {{response.status}}
+ {% endif %}
+ </div> 
+  </div>
+  </section>
+ <ul>
+ {% for page in response.paginationPages %}
+  {% if page == currentPage %}
+    <li ><a class="current_page" href="/content/mycontent/{{page}}">{{page}}</a></li>
+  {%else%}
+    <li><a href="/content/mycontent/{{page}}">{{page}}</a></li>
+  {%endif%}
+  {%endfor%}
+  
+</ul>
+
+<br/><br/>
+<script>
+var csrf_token = '{{ csrf_token }}';
+var downloadThumbPosition=0;
+var downloadThumbInfo = {
+    id: 0,
+    save_path: null,
+    resourceName: null,//resource name
+    store_location: 2,//default to drop box
+    media_type:1,//campaign type
+  };
+
+ 
+function getDownloadThumbInfo()
+{
+  
+  var iteratePos = 0;
+  {% for content in response.content %}
+      if(downloadThumbPosition==iteratePos)
+      {
+
+        
+        downloadThumbInfo.id = {{content.id}};
+        downloadThumbInfo.save_path= "{{content.file_path}}";
+        downloadThumbInfo.resourceName= "{{content.file_name}}";
+        downloadThumbInfo.store_location = "{{content.store_location}}";
+        downloadThumbInfo.media_type= "{{content.content_type}}"
+        //increate position to get next thumb
+        ++downloadThumbPosition;
+        return true;
+      }else
+      {
+        ++iteratePos;
+      }
+  {% endfor %}
+   
+   return false;
+}
+
+function afterLoad()
+{
+     
+   checkAndDownloadThumbFile(); 
+}
+</script>
+
+</body>
+ 
 {% endblock %}
 
 

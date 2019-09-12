@@ -15,5 +15,8 @@ def global_settings(request):
         'r3_1h_2v_20_50_50_json':constants.r3_1h_2v_20_50_50_json,
         'r4_2h_2v_50_50_json':constants.r4_2h_2v_50_50_json,
         'store_location':constants.STORE_LOCATION,
+        'allowed_image_formats':constants.allowed_image_formats,
+        'allowed_video_formats':constants.allowed_video_formats,
+        'content_pagination_limit':constants.content_pagination_limit,
 
     }

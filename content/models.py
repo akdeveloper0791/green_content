@@ -9,6 +9,14 @@ from django.contrib.auth.models import User
 # Create your models here.
 from django.db.models import Q
 from django.db.models import Count
+import datetime
+from django.core import serializers
+
+import shutil
+from signagecms import constants
+import os
+from django.http import JsonResponse
+import requests
 
 class Content(models.Model):
     user = models.ForeignKey(User,on_delete=models.CASCADE)
@@ -17,6 +25,8 @@ class Content(models.Model):
     store_location = models.SmallIntegerField(default=2)#1->local,2->db
     file_path = models.TextField(default="")
     file_name = models.CharField(max_length=125,default="")
+    content_type = models.CharField(max_length=15,default="image")
+    created_at = models.DateTimeField(default=datetime.datetime.now())
 
     def initUpload(postData,accessToken,storeLocation,
         isWeb,userEmailId):
@@ -40,7 +50,8 @@ class Content(models.Model):
                     description=postData.get('description'),
                     access_level=postData.get('access_level'),
                     file_path=savePath,
-                    file_name=postData.get('file_name'));
+                    file_name=postData.get('file_name'),
+                    content_type=postData.get('content_type'));
                 if('store_location' in postData):
                     content.store_location = postData.get('store_location');
                 content.save();
@@ -79,6 +90,55 @@ class Content(models.Model):
             return (contents[0]['t_count']);
         return 0;
 
+    def getMyContent(userId,limit,offset):
+        myContent = Content.objects.filter(user_id=userId).order_by('-id')[offset:(offset+limit)]
+        if(myContent.exists()):
+            return {'statusCode':0,'content':list(myContent.values())};
+        else:
+            return {'statusCode':2,'status':'No content found'};
+
+    def getContentInfo(cId,userId):
+        try:
+            content = Content.objects.get(id=cId,user_id=userId);
+            content = serializers.serialize('json', [ content, ]);
+            content = json.loads(content);
+            return {'statusCode':0,
+            'content':content[0].get('fields')};
+        except Content.DoesNotExist:
+            return {'statusCode':2,'status':'content not found'};
+    
+    
+    def deleteMyContent(contentId,accessToken,isWeb):
+        userId=accessToken;
+        if(isWeb==False):
+            userId = User_unique_id.getUserId(accessToken);
+            if(userId == False):
+                return {'statusCode':1,'status':
+                         "Invalid session, please login"};
+        try:
+            content = Content.objects.get(id=contentId,user_id=userId);
+            savePath = content.file_path+str(content.file_name);
+
+            #return {'savePath':savePath}
+            storeLocation = content.store_location;
+            if(storeLocation==2):#drop box
+                post_data = JsonResponse({ "path": savePath })
+                headers = {'Authorization': 'Bearer {}'.format(constants.DROP_BOX_ACCESS_TOKEN),
+                    'Content-Type': 'application/json'}
+                response = requests.post('https://api.dropboxapi.com/2/files/delete_v2', data=post_data,
+                    headers=headers);
+            elif(storeLocation==1):#local
+                #delete from local storage
+                campaignPath = str(constants.file_storage_path)+savePath;
+                BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+                if(os.path.exists(os.path.join(BASE_DIR,"media"+savePath))):
+                    os.remove(campaignPath)
+                    #shutil.rmtree(campaignPath);
+        
+            return {'statusCode':0,'status':'Campaign has been deleted successfully'};
+            
+        except Content.DoesNotExist as e:
+            return {'statusCode':3,'status':'Error -'+str(e)};
 class Content_Key(models.Model):
     content = models.ForeignKey(Content,on_delete=models.CASCADE)
     key= models.CharField(max_length=125,null=False,blank=False)

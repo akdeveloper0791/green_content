@@ -1,10 +1,10 @@
 function ajaxindicatorstart(text)
 {
-  if(jQuery('body').find('#resultLoading').attr('id') != 'resultLoading'){
-  jQuery('body').append('<div id="resultLoading" style="display:none"><div><div>'+text+'</div></div><div class="bg"></div></div>');
+  if($('body').find('#resultLoading').attr('id') != 'resultLoading'){
+  $('body').append('<div id="resultLoading" style="display:none"><div><div>'+text+'</div></div><div class="bg"></div></div>');
   }
 
-  jQuery('#resultLoading').css({
+  $('#resultLoading').css({
     'width':'100%',
     'height':'100%',
     'position':'fixed',
@@ -16,7 +16,7 @@ function ajaxindicatorstart(text)
     'margin':'auto'
   });
 
-  jQuery('#resultLoading .bg').css({
+  $('#resultLoading .bg').css({
     'background':'#000000',
     'opacity':'0.7',
     'width':'100%',
@@ -25,7 +25,7 @@ function ajaxindicatorstart(text)
     'top':'0'
   });
 
-  jQuery('#resultLoading>div:first').css({
+  $('#resultLoading>div:first').css({
     'width': '250px',
     'height':'75px',
     'text-align': 'center',
@@ -41,14 +41,14 @@ function ajaxindicatorstart(text)
 
   });
 
-    jQuery('#resultLoading .bg').height('100%');
-       jQuery('#resultLoading').fadeIn(300);
-    jQuery('body').css('cursor', 'wait');
+    $('#resultLoading .bg').height('100%');
+       $('#resultLoading').fadeIn(300);
+    $('body').css('cursor', 'wait');
 }
 
 function ajaxindicatorstop()
 {
-    jQuery('#resultLoading .bg').height('100%');
-       jQuery('#resultLoading').fadeOut(300);
-    jQuery('body').css('cursor', 'default');
+    $('#resultLoading .bg').height('100%');
+       $('#resultLoading').fadeOut(300);
+    $('body').css('cursor', 'default');
 }
