@@ -140,13 +140,13 @@ function lmcbDisplayContent(contentList,paginationPages)
               
               detailsRow = table.insertRow(-1);
               contentFileName = content['file_name'];
-              contentFileName =contentFileName.split(' ').join('+');;
+              contentFileName =contentFileName.split(' ').join('+');
               console.log(contentFileName);
               var cell = detailsRow.insertCell(-1);
-              cell.innerHTML = "<input type='text' value="+content['file_path']+" id='content_file_path_"+contentId+"' />"
+              cell.innerHTML = "<input type='hidden' value="+content['file_path']+" id='content_file_path_"+contentId+"' />"
               
               var cell = detailsRow.insertCell(-1);
-              cell.innerHTML = "<input type='text' value="+contentFileName+" id='content_file_name_"+contentId+"' />"
+              cell.innerHTML = "<input type='hidden' value="+contentFileName+" id='content_file_name_"+contentId+"' />"
 
               var cell = detailsRow.insertCell(-1);
               cell.innerHTML = "<input type='hidden' value="+content['store_location']+" id='content_store_location_"+contentId+"'/>"

@@ -15,8 +15,7 @@ function afterLoad()
 	  document.getElementById("file_name").value;
 	downloadThumbInfo.store_location = 
 	  document.getElementById("store_location").value;
-	  console.log(JSON.stringify(downloadThumbInfo))
-
+	 
 	  downloadThumbFile();
 }
 

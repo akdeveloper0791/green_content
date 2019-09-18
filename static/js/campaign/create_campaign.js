@@ -21,6 +21,7 @@ var downloadThumbInfo = {
     media_type:1,//campaign type
   };
 var pendingDownloadThumb = [];
+var isDownloadingMedia = false;
 function updateScreenSize()
 {
   var w = window,
@@ -1914,7 +1915,7 @@ function onSelectImgRegFromLibrary(imgPath,storeLocation,fileName)
 function checkAndDisplayMediaThumb(imgPath,storeLocation,fileName,regId)
 {
   
- 
+  fileName = fileName.split("+").join(" ");
   pendingDownloadThumb.push({
     id: regId,
     save_path: imgPath,
@@ -1922,13 +1923,19 @@ function checkAndDisplayMediaThumb(imgPath,storeLocation,fileName,regId)
     store_location: storeLocation,//default to drop box
     media_type:1,//campaign type
   });
-  console.log(JSON.stringify(pendingDownloadThumb));
+
+ 
+  if(!isDownloadingMedia)
+  {
+    checkAndDownloadThumbFile()
+  }
+ 
 }
 
 function selectVideoRegionOptions()
 {
     dismissSelectRegOption();
-    console.log("selectImgRegionOptions");
+    
     document.getElementById('chose_img_option').style.display="block";
     document.getElementById('select_video_file_type_div').style.display="block";
 
@@ -1960,14 +1967,14 @@ function onSelectVideoRegFromLibrary(imgPath,storeLocation,fileName)
     isResourceFromLibrary=true;
     dismissSelectRegOption();
 
-  console.log("addVideoReg:info:"+JSON.stringify(info));
+  
   checkAndDisplayMediaThumb(imgPath,storeLocation,fileName,idPosition);
 }
 
 function selectPdfRegionOptions()
 {
     dismissSelectRegOption();
-    console.log("selectImgRegionOptions");
+    
     document.getElementById('chose_img_option').style.display="block";
     document.getElementById('select_pdf_file_type_div').style.display="block";
 
@@ -1996,14 +2003,13 @@ function onSelectPdfRegFromLibrary(imgPath,storeLocation,fileName)
     isResourceFromLibrary=true;
     dismissSelectRegOption();
 
-  console.log("addVideoReg:info:"+JSON.stringify(info));
   checkAndDisplayMediaThumb(imgPath,storeLocation,fileName,idPosition);
 }
 
 function selectExcelRegionOptions()
 {
     dismissSelectRegOption();
-    console.log("selectImgRegionOptions");
+    
     document.getElementById('chose_img_option').style.display="block";
     document.getElementById('select_excel_file_type_div').style.display="block";
 
@@ -2032,8 +2038,35 @@ function onSelectExcelRegFromLibrary(imgPath,storeLocation,fileName)
     isResourceFromLibrary=true;
     dismissSelectRegOption();
 
-  console.log("addVideoReg:info:"+JSON.stringify(info));
+  
   checkAndDisplayMediaThumb(imgPath,storeLocation,fileName,idPosition);
 }
+
+function checkAndDownloadThumbFile()
+{
+  
+  if(pendingDownloadThumb.length>=1)
+  {
+    isDownloadingMedia=true;
+    downloadThumbInfo =  pendingDownloadThumb.pop();
+    
+    downloadThumbFile();
+  }else{
+    isDownloadingMedia = false;
+  }
+  
+}
+
+function updateThumbPreview(url)
+ {
+   //reform url to display preview
+   var res = url.split("?");
+   url = res[0]+"?raw=1";
+
+   document.getElementById('reg_div_child_'+
+           downloadThumbInfo.id).src = url;
+   checkAndDownloadThumbFile();
+ }
+
 
 

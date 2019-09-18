@@ -15,17 +15,17 @@ function checkAndDownloadThumbFile()
 
 function downloadThumbFile()
 {
-  console.log("downloadThumbInfo.store_location"+downloadThumbInfo.store_location);
-   var resourceFile = downloadThumbInfo.resourceName;
+  var resourceFile = downloadThumbInfo.resourceName;
   if(downloadThumbInfo.store_location == 1)//local
   {
     var url = "/media"+downloadThumbInfo.save_path+resourceFile;
     updateThumbPreview(url);
     
   }else{ //drop box
+    
   if(uploadDXXX!=null && Object.keys(uploadDXXX).length>=1)
   {
-    {
+    
      
      var xhr = new XMLHttpRequest();
       xhr.onload = function() {
@@ -79,20 +79,20 @@ function downloadThumbFile()
        
 
      xhr.send(params);
-   }
+   
   }else
    {
-         initUploadDxxx();
+     
+     initDMUploadDxxx();
    }
   }
  }
 
 
-function initUploadDxxx(campaignName,savePath)
+function initDMUploadDxxx()
 {
+  
     var xhr = new XMLHttpRequest();
-    
-
     xhr.onload = function() {
       
         if (xhr.status === 200) {
