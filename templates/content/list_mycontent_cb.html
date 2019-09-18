@@ -136,7 +136,7 @@ function lmcbDisplayContent(contentList,paginationPages)
               
               var cell = row.insertCell(-1);
             
-              cell.innerHTML = content['description']
+            cell.innerHTML = "<a target='_blank' href='/content/preview/"+contentId+"' >"+content['description']+"</a>"
               
               detailsRow = table.insertRow(-1);
               contentFileName = content['file_name'];
