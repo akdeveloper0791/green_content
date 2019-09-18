@@ -90,13 +90,13 @@
 		    <label class="info-title" for="exampleInputEmail1">Search Keywords (Comma Separated) <span>*</span></label>
 		    <input type="text" class="form-control unicase-form-control text-input" name="keys" id="Keyword" placeholder="Please enter multiple search keywords with comma Separated" minlength=4 required>
 		</div>
-        <div class="form-group">
+        <div class="form-group" style="display:none">
 		    <label class="info-title" for="exampleInputEmail1">Select Content Type <span>*</span></label><br/>
 		    <input type="radio" name="Private"  value="private" class="private" id="private" onclick="show();" checked="checked" ><span class="buying-selling-word" style="padding-right:20px;">Private</span>
             <input type="radio" name="Private" value="public" class="public" id="public" onclick="hide();"><span class="buying-selling-word">Public</span><br/>
 		</div>
 
-         <div class="form-group" id="emaildiv">
+         <div class="form-group" id="emaildiv" style="display:none">
 		    <label class="info-title" for="exampleInputEmail1">Select GC Group <span>*</span></label>
         <select class="multiselect" multiple="multiple" name="groups"></select>
         </div>
