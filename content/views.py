@@ -156,3 +156,60 @@ def delete(request):
     else:
         return JsonResponse({'statusCode':1,
             'status':'Invalid request'});
+
+@api_view(["POST"])
+def listMyContentAPI(request):
+    if(request.user.is_authenticated):
+        pageNumber = int(request.POST.get('pageNumber'));
+        cType=request.POST.get('type');
+        totalValues=Content.getTotalContent(request.user.id,cType);
+        totalPages= totalValues/content_pagination_limit;
+        totalPagesInt = int(totalPages);
+        paginationPages=[];
+        if(totalPagesInt<totalPages):
+            totalPagesInt+=1;
+        #Backward,ForwardLimits
+        BML,FML,BL,FL=5,5,(pageNumber-1),(totalPagesInt-pageNumber);
+        
+        if(BL>0 or FL>0):    
+            if BL>=5 and FL>=5:
+                pass
+            elif(BL<FL):
+                BDifference=(BML-BL)-1;#include current one
+                FML +=BDifference;
+                BML = BL+1; #include current page
+
+            elif(FL<BL and FL>=0):
+                FDifference=(FML-FL);
+                BML += FDifference;
+                FML = FL+1;
+                
+
+            BSP=(pageNumber+1)-BML;#Backward starting point
+            if(BSP<=0):
+                BSP=1;
+            count=1;
+            while(BSP<=pageNumber and BSP>0 and count<=BML):
+                paginationPages.append(BSP);
+                BSP +=1;
+                count +=1;
+            FEP=pageNumber+FL;
+            FSP = pageNumber+1;
+            
+            count=1;
+
+            while(FSP<=FEP and FSP<=totalPagesInt and count<=FML):
+                paginationPages.append(FSP);
+                FSP +=1;
+                count = count+1;
+        offSet = pageNumber*constants.content_pagination_limit-constants.content_pagination_limit;    
+        response = Content.getMyContent(request.user.id,constants.content_pagination_limit,
+            offSet,cType);
+        response['paginationPages']=paginationPages;
+        response['currentPage'] = pageNumber;
+        response['totalValues'] = totalValues;
+        return JsonResponse(response);
+        
+    else:
+        return JsonResponse({'statusCode':2,
+            'status':'Invalid session, please login'});

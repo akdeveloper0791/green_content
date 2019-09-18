@@ -19,6 +19,8 @@
 	
   <script  src="{% static 'scripts/Dropbox-sdk.min.js' %}"></script>
 
+  <script  src="{% static 'js/default_busy_loader.js' %}"></script>
+
  <script  src="{% static 'scripts/html2canvas.js' %}"></script>
 
   <!--alert style-->
@@ -288,12 +290,12 @@ textarea {
         
         <div class="col-md-3 col-xs-3" style="margin: 5px 0px;">
            <input type="file" accept="image/*" name="input-file-preview" id="select_img_file_type" style="display:none" onchange="onSelectImgReg(this)"/>
-                <img src='{% static "images/campaign/mobile/ic_image_yellow.png" %}' style='cursor:pointer' onclick="selectImgRegion();">
+                <img src='{% static "images/campaign/mobile/ic_image_yellow.png" %}' style='cursor:pointer' onclick="selectImgRegionOptions();">
                 <p align="center">Image</p>
         </div>
         <div class="col-md-3 col-xs-3" style="margin: 5px 0px;">
             <input type="file" accept="video/*" name="input-file-preview" id="select_video_file_type" style="display:none" onchange="onSelectVideoReg(this)"/>
-                <img src='{% static "images/campaign/mobile/ic_video_yellow.png" %}' onclick="selectVideoRegion();" style='cursor:pointer'>
+                <img src='{% static "images/campaign/mobile/ic_video_yellow.png" %}' onclick="selectVideoRegionOptions();" style='cursor:pointer'>
                 <p align="center">Video</p>
         </div>
 
@@ -320,13 +322,13 @@ textarea {
 
         <div  class="col-md-3 col-xs-3" style="margin: 5px 0px;">
             <input type="file" accept="application/pdf" name="Pdf File" id="select_pdf_file_type" style="display:none" onchange="onSelectPDFReg(this)"/>
-                <img src='{% static "images/campaign/mobile/ic_pdf_file.png" %}' onclick="selectPdfRegion();" style='cursor:pointer'>
+                <img src='{% static "images/campaign/mobile/ic_pdf_file.png" %}' onclick="selectPdfRegionOptions();" style='cursor:pointer'>
                 <p align="center">File</p>
         </div>
          <div  class="col-md-3 col-xs-3" style="margin: 5px 0px;">
             <input type="file" accept="application/vnd.ms-excel"  
             name="Excel File" id="select_excel_file_type" style="display:none" onchange="onSelectExcelReg(this)"/>
-                <img src='{% static "images/campaign/mobile/ic_excel.png" %}' onclick="selectExcleRegion();" style='cursor:pointer'>
+                <img src='{% static "images/campaign/mobile/ic_excel.png" %}' onclick="selectExcelRegionOptions();" style='cursor:pointer'>
                 <p align="center">Excel</p>
         </div>
      </div>
@@ -884,7 +886,99 @@ textarea {
     </div>
   </div>
 
+ <div class="modal" style="padding-top: 5px; " id="chose_img_option">
+    <div class="modal-dialog">
+      <div class="modal-content"> 
+      
+        <!-- Modal Header -->
+        <div class="modal-header"> 
+          <h4 class="modal-title" style="text-align:center;color:#5FCF80;">  Choose From
+          </h4>
+        </div>
+        
+        <!-- Modal body -->
+        <div class="modal-body">
 
+     <div class="col-md-16 col-xs-16" style="text-align: center;">
+      <div class="rows">
+        <div class="col-md-6 col-xs-6" style="margin: 5px 0px;display:none" id="select_img_file_type_div">
+        <div class="col-md-3 col-xs-3"  id="select_i">
+           <input type="file" accept="image/*" name="input-file-preview" id="select_img_file_type" style="display:none" onchange="onSelectImgReg(this)"/>
+                <img src='{% static "images/campaign/mobile/ic_image_yellow.png" %}' style='cursor:pointer' onclick="selectImgRegion();">
+                <p align="center">Gallery</p>
+        </div>
+
+        <div class="col-md-3 col-xs-3" >
+           <input type="hidden" accept="image/*" name="input-file-preview" id="select_img_file_type" style="display:none" onchange="onSelectImgReg(this)"/>
+            <img src='{% static "images/campaign/mobile/ic_image_yellow.png" %}' style='cursor:pointer' onclick="selectImgFromMedia();">
+            <p align="center">Library</p>
+        </div>
+        </div>
+         <div class="col-md-6 col-xs-6" style="margin: 5px 0px;display:none" id="select_video_file_type_div">
+           <div class="col-md-3 col-xs-3" style="margin: 5px 0px;">
+            <input type="file" accept="video/*" name="input-file-preview" id="select_video_file_type" style="display:none" onchange="onSelectVideoReg(this)"/>
+                <img src='{% static "images/campaign/mobile/ic_video_yellow.png" %}' onclick="selectVideoRegion();" style='cursor:pointer'>
+                <p align="center">Video</p>
+            </div>
+
+           <div class="col-md-3 col-xs-3" >
+            <input type="hidden" accept="image/*" name="input-file-preview" id="select_video_file_type" style="display:none" onchange="onSelectImgReg(this)"/>
+            <img src='{% static "images/campaign/mobile/ic_image_yellow.png" %}' style='cursor:pointer' onclick="selectImgFromMedia('video');">
+            <p align="center">Library</p>
+           </div>
+         </div>
+         <div class="col-md-6 col-xs-6" style="margin: 5px 0px;display:none" id="select_pdf_file_type_div">
+           <div  class="col-md-3 col-xs-3" style="margin: 5px 0px;">
+            <input type="file" accept="application/pdf" name="Pdf File" id="select_pdf_file_type" style="display:none" onchange="onSelectPDFReg(this)"/>
+                <img src='{% static "images/campaign/mobile/ic_pdf_file.png" %}' onclick="selectPdfRegion();" style='cursor:pointer'>
+                <p align="center">File</p>
+            </div>
+
+            <div class="col-md-3 col-xs-3" >
+            <input type="hidden" accept="image/*" name="input-file-preview" id="select_pdf_file_type" style="display:none" onchange="onSelectImgReg(this)"/>
+            <img src='{% static "images/campaign/mobile/ic_image_yellow.png" %}' style='cursor:pointer' onclick="selectImgFromMedia('pdf');">
+            <p align="center">Library</p>
+           </div>
+         </div>
+
+          <div class="col-md-6 col-xs-6" style="margin: 5px 0px;display:none" id="select_excel_file_type_div">
+
+            <div  class="col-md-3 col-xs-3" style="margin: 5px 0px;">
+                <input type="file" accept="application/vnd.ms-excel"
+                   name="Excel File" id="select_excel_file_type" style="display:none" onchange="onSelectExcelReg(this)"/>
+                <img src='{% static "images/campaign/mobile/ic_excel.png" %}' onclick="selectExcleRegion();" style='cursor:pointer'>
+                <p align="center">Excel</p>
+             </div>
+
+            <div class="col-md-3 col-xs-3" >
+            <input type="hidden" accept="image/*" name="input-file-preview" id="select_excel_file_type" style="display:none" onchange="onSelectImgReg(this)"/>
+            <img src='{% static "images/campaign/mobile/ic_image_yellow.png" %}' style='cursor:pointer' onclick="selectImgFromMedia('excel');">
+            <p align="center">Library</p>
+           </div>
+         </div>
+
+
+         
+      </div>
+     </div>
+
+<div class="col-md-12 col-xs-12">
+      <div class="rows">
+        <br/>
+          <center>
+          <button  class="btn btn-danger" data-dismiss="modal" onclick="dismissChoseImgOption();">Close</button>
+     </center>
+   </div>
+ </div>
+
+
+        </div>
+        
+      </div>
+    </div> 
+</div>
+
+{% include 'content/list_mycontent_cb.html' %}
 
  <script id="hide2">
    var csrf_token = '{{ csrf_token }}';

@@ -120,7 +120,7 @@ class CampaignInfo(models.Model):
     #get campaigns created by user
     def getUserCampaigns(userId,isUserId=False):
         if(isUserId==False):
-            userId = User_unique_id.getUserId(user_sessionId);
+            userId = User_unique_id.getUserId(userId);
             if(userId == False):
                 return {'statusCode':1,'status':
                 "Invalid session, please login"};
@@ -251,7 +251,7 @@ class CampaignInfo(models.Model):
         except Multiple_campaign_upload.DoesNotExist:
            return {'statusCode':1,'status':'No campaign found'}; 
 
-    def listCampaigns1():
+    def listCampaigns1(self):
     
       with connection.cursor() as cursor:
         

@@ -1,22 +1,21 @@
 from django.db import models
-import uuid 
-import time
+
 from django.db import transaction
 import json
 from cmsapp.models import User_unique_id
 from django.contrib.auth.models import User
 
 # Create your models here.
-from django.db.models import Q
+
 from django.db.models import Count
 import datetime
 from django.core import serializers
 
-import shutil
 from signagecms import constants
 import os
 from django.http import JsonResponse
 import requests
+
 
 class Content(models.Model):
     user = models.ForeignKey(User,on_delete=models.CASCADE)
@@ -83,15 +82,22 @@ class Content(models.Model):
         except Multiple_campaign_upload.DoesNotExist:
            return {'statusCode':1,'status':'No content found'}; 
     
-    def getTotalContent(userId):
+    def getTotalContent(userId,cType="all"):
        
         contents = Content.objects.values('user_id').annotate(t_count=Count('user_id')).filter(user_id=userId)
+        if (cType != "all"):
+            contents = contents.filter(content_type=cType);
         if(len(contents)>=1):
             return (contents[0]['t_count']);
         return 0;
 
-    def getMyContent(userId,limit,offset):
-        myContent = Content.objects.filter(user_id=userId).order_by('-id')[offset:(offset+limit)]
+    def getMyContent(userId,limit,offset,cType="all"):
+        myContent = Content.objects.filter(user_id=userId);
+        if(cType!="all"):
+            myContent = myContent.filter(content_type=cType);
+        
+        myContent = myContent.order_by('-id')[offset:(offset+limit)]    
+        
         if(myContent.exists()):
             return {'statusCode':0,'content':list(myContent.values())};
         else:
@@ -134,11 +140,12 @@ class Content(models.Model):
                 if(os.path.exists(os.path.join(BASE_DIR,"media"+savePath))):
                     os.remove(campaignPath)
                     #shutil.rmtree(campaignPath);
-        
+            content.delete();
             return {'statusCode':0,'status':'Campaign has been deleted successfully'};
             
         except Content.DoesNotExist as e:
             return {'statusCode':3,'status':'Error -'+str(e)};
+
 class Content_Key(models.Model):
     content = models.ForeignKey(Content,on_delete=models.CASCADE)
     key= models.CharField(max_length=125,null=False,blank=False)

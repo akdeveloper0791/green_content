@@ -7,6 +7,7 @@ urlpatterns = [
     path('uploadContentResource/',views.uploadContentResource,name='uploadContentResource'),
     path('mycontent/',views.mycontent,name='mycontent'),
     path('mycontent/<int:pageNumber>',views.listMyContent,name='listMyContent'),
+    path('mycontent_api/',views.listMyContentAPI,name='mycontentAPI'),
     path('preview/<int:contentId>',views.preview,name="previewContent"),
     path('delete',views.delete,name='deleteContent'),
     ]

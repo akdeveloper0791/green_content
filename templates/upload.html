@@ -73,7 +73,7 @@
 	<form id="upload-file" class="upload-file">
 	    {% csrf_token %}
 		<div class="form-group">
-	    	<label class="info-title" for="exampleInputEmail2">Select File <span>*</span></label>
+	    	<label class="info-title">Select File <span>*</span></label>
 	    	<div class="fileupload fileupload-new image-preview-input" data-provides="fileupload">
       <span class="btn btn-info btn-file"><span class="fileupload-new image-preview-input" style="color:white;">Select file</span>
       <span class="fileupload-exists" style="color:white;">Change</span>
@@ -244,7 +244,8 @@ $('#my_input').multipleInput();
 <script>
       var file_name;
 
-        var video_format = ['wmv','avi','mpeg','mpg','3gp','webm','mp4','mkv','jpg','jpeg','png','bmp','gif','mp3','m4a','ts','flac','wav','ogg','xmf','ota'];
+        var video_format = ['wmv','avi','mpeg','mpg','3gp','webm','mp4','mkv','jpg','jpeg','png','bmp','gif','mp3','m4a','ts','flac','wav','ogg','xmf','ota',
+        'pdf','xls'];
 
         $(".image-preview-input input:file").change(function (){
           var file = this.files[0];
