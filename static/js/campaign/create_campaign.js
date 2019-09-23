@@ -352,6 +352,8 @@ slider.oninput = function()
        regionsResourceFiles[idPosition] = selectedFile;
        //get the region info
        info = regionsInfo[idPosition];
+       info.is_content_path=false;
+
        if(info.type.toLowerCase()=='image')
        {
         info.media_name = getUploadMediaName(selectedFile.name);
@@ -397,6 +399,7 @@ slider.oninput = function()
   		var idPosition = document.getElementById('select_media_reg_id').value;
   		//get the region info
   		info = regionsInfo[idPosition];
+      info.is_content_path=false;
 
   		var selectedFile = input.files[0];
   		regionsResourceFiles[idPosition] = selectedFile;
@@ -1624,6 +1627,7 @@ function onSelectPDFReg(input)
        regionsResourceFiles[idPosition] = selectedFile;
        //get the region info
        info = regionsInfo[idPosition];
+       info.is_content_path=false;
        if(info.type.toLowerCase()=='file')
        {
         info.media_name = getUploadMediaName(selectedFile.name);
@@ -1754,6 +1758,8 @@ function selectExcleRegion()
        regionsResourceFiles[idPosition] = selectedFile;
        //get the region info
        info = regionsInfo[idPosition];
+       info.is_content_path=false;
+       
        if(info.type.toLowerCase()=='excel')
        {
         info.media_name = getUploadMediaName(selectedFile.name);
@@ -1878,6 +1884,24 @@ function selectImgFromMedia(mediaType="image")
   lmcbListContents(mediaType);
 }
 
+function onSelectMediaFromLibrary(contentType,imgPath,storeLocation,fileName)
+{
+  if(contentType=='image')
+      {
+        onSelectImgRegFromLibrary(filePath,storeLocation,fileName);
+      }else if(contentType=='video')
+      {
+        onSelectVideoRegFromLibrary(filePath,storeLocation,fileName);
+      }else if(contentType=='pdf')
+      {
+        onSelectPdfRegFromLibrary(filePath,storeLocation,fileName);
+
+      }else if(contentType=="excel")
+      {
+        onSelectExcelRegFromLibrary(filePath,storeLocation,fileName);
+      }
+}
+
 function onSelectImgRegFromLibrary(imgPath,storeLocation,fileName)
 {
 
@@ -1887,6 +1911,7 @@ function onSelectImgRegFromLibrary(imgPath,storeLocation,fileName)
    info = regionsInfo[idPosition];
    info.content_path = imgPath;
    info.content_store_location = storeLocation;
+   info.is_content_path=true;
 
    if(info.type.toLowerCase()=='image')
    {
@@ -1954,6 +1979,7 @@ function onSelectVideoRegFromLibrary(imgPath,storeLocation,fileName)
    info = regionsInfo[idPosition];
    info.content_path = imgPath;
    info.content_store_location = storeLocation;
+   info.is_content_path=true;
 
   if(info.type.toLowerCase == 'video')
   {
@@ -1992,6 +2018,7 @@ function onSelectPdfRegFromLibrary(imgPath,storeLocation,fileName)
    info = regionsInfo[idPosition];
    info.content_path = imgPath;
    info.content_store_location = storeLocation;
+   info.is_content_path=true;
 
    if(info.type.toLowerCase()=='file')
    {
@@ -2027,6 +2054,7 @@ function onSelectExcelRegFromLibrary(imgPath,storeLocation,fileName)
    info = regionsInfo[idPosition];
    info.content_path = imgPath;
    info.content_store_location = storeLocation;
+   info.is_content_path=true;
 
    if(info.type.toLowerCase()=='excel')
    {

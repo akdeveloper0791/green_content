@@ -195,20 +195,7 @@ function lmcbDisplayContent(contentList,paginationPages)
       var fileName=document.getElementById('content_file_name_'+contentId).value;
       console.log("File path is"+filePath);
       closeLmcbContent();
-      if(contentType=='image')
-      {
-        onSelectImgRegFromLibrary(filePath,storeLocation,fileName);
-      }else if(contentType=='video')
-      {
-        onSelectVideoRegFromLibrary(filePath,storeLocation,fileName);
-      }else if(contentType=='pdf')
-      {
-        onSelectPdfRegFromLibrary(filePath,storeLocation,fileName);
-
-      }else if(contentType=="excel")
-      {
-        onSelectExcelRegFromLibrary(filePath,storeLocation,fileName);
-      }
+      onSelectMediaFromLibrary(contentType,imgPath,storeLocation,fileName);
 
      }
   }
