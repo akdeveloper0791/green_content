@@ -132,13 +132,19 @@ function constructDivs()
   	//get region info 
   	info = regionsInfo[idPosition];
   	removeChildElement(idPosition);
+
+    console.log("addImgReg::"+JSON.stringify(info));
+
     //create child tag
     var childTag = document.createElement('IMG');
   	info.type="Image";
 
     info.properties = {"scaleType":"fillScreen"};
     childTag.src= '/static/images/campaign/campaign_default2.png';
-    info.is_self_path = true; 
+    info.is_self_path = true;
+
+     info.currt_next_play=1;
+     info.play_duration=10;
 
     if(file==null)
   	{
@@ -177,8 +183,10 @@ function constructDivs()
 
         };
     document.getElementById('reg_div_'+idPosition).appendChild(childTag);
-
   	regionsInfo[idPosition] = info;
+
+    console.log("addImgReg:regionsInfo:"+JSON.stringify(regionsInfo[idPosition]));
+
   }
 
   function addVideoRegion(idPosition,file)
@@ -187,6 +195,9 @@ function constructDivs()
   	info = regionsInfo[idPosition];
   	removeChildElement(idPosition);
     //create child tag
+
+     info.currt_next_play=1;
+   
     var childTag = document.createElement('VIDEO');
   	if(file==null)
   	{
@@ -204,11 +215,18 @@ function constructDivs()
       childTag.onloadedmetadata = function() {
       
        var tempDuration = parseInt(childTag.duration);
+       var playDuration = document.getElementById('video_play_duration');
        
        if(tempDuration>duration)
        {
         duration = tempDuration;
-       }
+        playDuration.value=duration;
+       }else
+           {
+             playDuration.value=tempDuration;
+           }
+        
+
       }
      childTag.src= fileUrl;
   	}
@@ -224,7 +242,7 @@ function constructDivs()
     info.properties = {"isStretch":true,"volume":100};
     info.type="Video";
     info.is_self_path = true;
-    
+
     childTag.onclick=function(){
         	displayRegSelectOption(idPosition);
         };
@@ -251,17 +269,18 @@ function displayVideoPropertiesDialog(properties)
     var slider = document.getElementById("volume_range");
     var stretch = document.getElementById("is_stretch");
     var volume = document.getElementById("volume");
- 
-     slider.value=100;
+
+
+    slider.value=100;
     volume.innerHTML=info.properties.volume;
     stretch.checked=info.properties.isStretch;
 
-slider.oninput = function() 
+  slider.oninput = function() 
   {
   volume.innerHTML = this.value;
   }
 
-  }
+}
 
 
   function setVideoProperties()
@@ -272,13 +291,17 @@ slider.oninput = function()
        //get the region info
        info = regionsInfo[idPosition];
 
+      console.log("setVideoProperties:play_duration:"+info.play_duration);
+
        //set properties
        info.properties = {
        'isStretch':document.getElementById('is_stretch').checked,
-       'volume':parseFloat(slider.value),
-       };
+       'volume':parseFloat(slider.value)};
+
+       info.play_duration=parseInt(document.getElementById('video_play_duration').value);
+
        dismissVideoPropertiesDialog();
-      console.log("setVideoProperties:info:"+JSON.stringify(info));
+       console.log("setVideoProperties:info:"+JSON.stringify(info));
   }
 
   function dismissVideoPropertiesDialog()
@@ -420,12 +443,18 @@ slider.oninput = function()
           childTag.onloadedmetadata = function() {
           
            var tempDuration = parseInt(childTag.duration);
-           
+           var playDuration = document.getElementById('video_play_duration');
            if(tempDuration>duration)
            {
             duration = tempDuration;
+            playDuration.value=duration;
+           }else
+           {
+             playDuration.value=tempDuration;
            }
+          
           }
+
          childTag.src= fileUrl;
          childTag.autoplay=true;
 
@@ -471,6 +500,10 @@ slider.oninput = function()
        info.media_name = mediaName;
        info.is_self_path = true;
 
+        info.currt_next_play=1;
+       info.play_duration=10;
+
+
        //set properties
        info.properties = {'textBgColor':"#"+document.getElementById('create_txt_media_txt_bg').value,
        'textColor':"#"+document.getElementById('create_txt_media_txt_color').value,
@@ -480,6 +513,9 @@ slider.oninput = function()
        'isItalic':document.getElementById('create_txt_media_txt_italic').checked,
        'isUnderLine':document.getElementById('create_txt_media_txt_underline').checked,
        'textAlignment':document.getElementById('create_txt_media_txt_algmt').value};
+
+         info.play_duration=parseInt(document.getElementById('text_play_duration').value); 
+      
        
        var childTag=null; 
        var isNew = true;
@@ -504,6 +540,8 @@ slider.oninput = function()
        styleTextChild(childTag,isNew,idPosition);
 
        dismissCreateTextRegion();
+
+        console.log("regionsInfo:"+JSON.stringify(info));
     }
   }
 
@@ -614,6 +652,13 @@ slider.oninput = function()
        info.media_name = mediaName;
        //set properties
        info.properties = {};
+
+
+        info.currt_next_play=1;
+        info.play_duration=10;
+
+       info.play_duration=document.getElementById('url_play_duration').value; 
+
        
        var childTag=null; 
        
@@ -1628,6 +1673,12 @@ function onSelectPDFReg(input)
        //get the region info
        info = regionsInfo[idPosition];
        info.is_content_path=false;
+
+        info.currt_next_play=1;
+        info.play_duration=10;
+
+       url_play_duration
+
        if(info.type.toLowerCase()=='file')
        {
         info.media_name = getUploadMediaName(selectedFile.name);
@@ -1739,8 +1790,11 @@ function addPdfRegion(idPosition,file)
        'zoomLevel':parseFloat(document.getElementById('zoom_level').value),
        'scrollingSpeed':parseInt(document.getElementById('scrolling_speed').value)
        };
+
+       info.play_duration=parseInt(document.getElementById('pdf_play_duration').value);
+
        dismissPdfPropertiesDialog();
-      //console.log("setFileProperties:info:"+JSON.stringify(info));
+      console.log("setFileProperties:info:"+JSON.stringify(info));
   }
 
 function selectExcleRegion()
@@ -1759,6 +1813,9 @@ function selectExcleRegion()
        //get the region info
        info = regionsInfo[idPosition];
        info.is_content_path=false;
+
+        info.currt_next_play=1;
+        info.play_duration=10;
        
        if(info.type.toLowerCase()=='excel')
        {
@@ -1831,7 +1888,34 @@ function selectExcleRegion()
 
      document.getElementById('reg_div_'+idPosition).appendChild(childTag);
      console.log("onSelectExcelReg:info:"+JSON.stringify(info)); 
+
+     excelPropertiesDialog();
+
      regionsInfo[idPosition] = info;
+  }
+
+
+   function excelPropertiesDialog()
+  {
+    document.getElementById('excel_properties_diag').style.display="block";
+  }
+
+  function dismissExcelPropertiesDialog()
+  {
+  document.getElementById('excel_properties_diag').style.display="none";
+  }
+
+ 
+  function setExcelProperties()
+  {
+    var idPosition = document.getElementById('select_media_reg_id').value;
+       //get the region info
+       info = regionsInfo[idPosition];
+       //set properties
+       info.play_duration=parseInt(document.getElementById('excel_play_duration').value);
+
+       dismissExcelPropertiesDialog();
+       console.log("setFileProperties:info:"+JSON.stringify(info));
   }
 
 
@@ -1851,6 +1935,8 @@ function selectExcleRegion()
        info.properties = {
        'scaleType':document.getElementById('scale_type').value,
        };
+       info.play_duration=parseInt(document.getElementById('img_play_duration').value);
+
        dismissImgScaleTypeDialog();
       console.log("setImgScaleTypeProperty:info:"+JSON.stringify(info));
   }

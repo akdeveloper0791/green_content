@@ -15,8 +15,7 @@ function cctDisplayTemplates()
 }
 
 function cctDismissTemplates()
-{
-	
+{	
 	if(isMobileBrowser())
 	{
 		document.getElementById('cct_display_template_modal_mobile').
