@@ -1884,8 +1884,11 @@ function selectImgFromMedia(mediaType="image")
   lmcbListContents(mediaType);
 }
 
-function onSelectMediaFromLibrary(contentType,imgPath,storeLocation,fileName)
+function onSelectMediaFromLibrary(contentType,filePath,storeLocation,fileName)
 {
+  console.log("file name before split "+fileName);
+  fileName = fileName.split("+").join(" ");
+  console.log("file name after split "+fileName);
   if(contentType=='image')
       {
         onSelectImgRegFromLibrary(filePath,storeLocation,fileName);
@@ -1909,7 +1912,8 @@ function onSelectImgRegFromLibrary(imgPath,storeLocation,fileName)
    //No resource file //regionsResourceFiles[idPosition] = selectedFile;
    //get the region info
    info = regionsInfo[idPosition];
-   info.content_path = imgPath;
+   info.content_path = imgPath+fileName;
+   info.media_name = fileName;
    info.content_store_location = storeLocation;
    info.is_content_path=true;
 
@@ -1977,9 +1981,10 @@ function onSelectVideoRegFromLibrary(imgPath,storeLocation,fileName)
    //No resource file //regionsResourceFiles[idPosition] = selectedFile;
    //get the region info
    info = regionsInfo[idPosition];
-   info.content_path = imgPath;
+   info.content_path = imgPath+fileName;
    info.content_store_location = storeLocation;
    info.is_content_path=true;
+   
 
   if(info.type.toLowerCase == 'video')
   {
@@ -1992,8 +1997,9 @@ function onSelectVideoRegFromLibrary(imgPath,storeLocation,fileName)
    }
     isResourceFromLibrary=true;
     dismissSelectRegOption();
-
-  
+   
+   info.media_name = fileName;
+   regionsInfo[idPosition] = info;
   checkAndDisplayMediaThumb(imgPath,storeLocation,fileName,idPosition);
 }
 
@@ -2016,9 +2022,10 @@ function onSelectPdfRegFromLibrary(imgPath,storeLocation,fileName)
    //No resource file //regionsResourceFiles[idPosition] = selectedFile;
    //get the region info
    info = regionsInfo[idPosition];
-   info.content_path = imgPath;
+   info.content_path = imgPath+fileName;
    info.content_store_location = storeLocation;
    info.is_content_path=true;
+   info.media_name = fileName;
 
    if(info.type.toLowerCase()=='file')
    {
@@ -2029,7 +2036,9 @@ function onSelectPdfRegFromLibrary(imgPath,storeLocation,fileName)
     }
     isResourceFromLibrary=true;
     dismissSelectRegOption();
-
+   
+   info.media_name = fileName;
+   regionsInfo[idPosition] = info;
   checkAndDisplayMediaThumb(imgPath,storeLocation,fileName,idPosition);
 }
 
@@ -2052,9 +2061,10 @@ function onSelectExcelRegFromLibrary(imgPath,storeLocation,fileName)
    //No resource file //regionsResourceFiles[idPosition] = selectedFile;
    //get the region info
    info = regionsInfo[idPosition];
-   info.content_path = imgPath;
+   info.content_path = imgPath+fileName;
    info.content_store_location = storeLocation;
    info.is_content_path=true;
+   info.media_name = fileName;
 
    if(info.type.toLowerCase()=='excel')
    {
@@ -2066,7 +2076,8 @@ function onSelectExcelRegFromLibrary(imgPath,storeLocation,fileName)
     isResourceFromLibrary=true;
     dismissSelectRegOption();
 
-  
+  info.media_name = fileName;
+   regionsInfo[idPosition] = info;
   checkAndDisplayMediaThumb(imgPath,storeLocation,fileName,idPosition);
 }
 
