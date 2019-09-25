@@ -7,7 +7,7 @@ from django.core.mail import EmailMessage
 class Command(BaseCommand):
     help = "Send Campaign delete notifications"
 
-    def handle(seld,*args,**kwargs):
+    def handle(self,*args,**kwargs):
         deletedCampaigns = Deleted_Campaigns.objects.all().order_by('id')[:100];
         print("Total deleted campaigns{} -".format(deletedCampaigns.count()));
         from_email = "contact@adskite.com"
