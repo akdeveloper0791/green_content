@@ -1,4 +1,4 @@
-DROP_BOX_ACCESS_TOKEN = "mkW1hX251tAAAAAAAAAKwHfZYe6SXtMZDOjnrmr4YDQdU4HHdcddSNo_Hjj34Azc"
+DROP_BOX_ACCESS_TOKEN = "mkW1hX251tAAAAAAAAAKwcvOgcti4go1R-GLzS0s3aBT7A8GI2QqHAxhQlVP3ywB"
 API_HOST = "https://www.greencontent.in"
 ADSKITE_PLAYER_REGISTER_PWD="!AdsKite2019$"
 SINGLE_100_100 = "{\"regions\":[{\"width\":100,\"height\":100,\"top_margin\":0,\"left_margin\":0,\"right_margin\":0,\"bottom_margin\":0}]}"
