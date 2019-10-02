@@ -66,7 +66,7 @@
     <div class="container-login100">
       <div class="wrap-login100">
         <form class="login100-form validate-form" action= "{% url 'signup' %}" method = "post" name="Login_Form" id="loginForm" >
-          <span class="login100-form-title p-b-20">
+          <span style="padding-top: 20px;" class="login100-form-title p-b-20">
             Register
           </span>
           <span class="login100-form-title p-b-15">
@@ -140,6 +140,12 @@
      document.title="Hospital Health TV | iHealthTV";
      document.getElementById('fav_icon').href="{% static 'images/favicon.png' %}";
      domineLogo.src="{% static 'images/ihealth_tv.png' %}";
+    }//192.168.0.106  www.sunriosignage.com
+    else if (serverName == 'www.sunriosignage.com')
+    {
+      document.title="Smart Digital Signage | SunrioSignage";
+     document.getElementById('fav_icon').href="{% static 'images/fav_sunriosignage.png' %}";
+     domineLogo.src="{% static 'images/signrio_logo.png' %}";
     }
     else
     { 

@@ -88,7 +88,7 @@
             </div>
           </div>
 
- <div class="col-md-6 >
+ <div class="col-md-6" >
        <div class="container-login100-form-btn">
             <div class="wrap-login100-form-btn">
               <div class="login100-form-bgbtn" ></div>
@@ -117,6 +117,12 @@
      document.title="Hospital Health TV | iHealthTV";
      document.getElementById('fav_icon').href="{% static 'images/favicon.png' %}";
      domineLogo.src="{% static 'images/ihealth_tv.png' %}";
+    }else //192.168.0.106  www.sunriosignage.com
+    if (serverName == 'www.sunriosignage.com')
+    {
+       document.title="Smart Digital Signage | SunrioSignage";
+     document.getElementById('fav_icon').href="{% static 'images/fav_sunriosignage.png' %}";
+     domineLogo.src="{% static 'images/signrio_logo.png' %}";
     }
     else
     { 
