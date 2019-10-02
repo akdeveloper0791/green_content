@@ -427,7 +427,7 @@ textarea {
 
 
 <!-- video properties dialog -->
- <div class="modal" id="video_properties_diag" >
+ <div class="modal" id="video_properties_diag" style="overflow-y: auto;" >
     <div class="modal-dialog">
       <div class="modal-content">
       
@@ -451,6 +451,10 @@ textarea {
                 </div>
                 <br/>
 
+                 <label style="font-weight:bold">Media Play Duration (sec):</label>
+                    <input type="number" class="form-control" value="10" placeholder="Enter Duration(Sec)" name="duration" id="video_play_duration" size="100"> <br />
+                 <br>
+
         </div>
 
         <div class="modal-footer">
@@ -468,7 +472,7 @@ textarea {
 <!-- end of video properties dialog -->
 
 <!-- Text -->
-  <div class="modal" id="create_text_modal" style="padding-top:0px" >
+  <div class="modal " id="create_text_modal" style="padding-top:0px;overflow-y: auto;" >
     <div class="modal-dialog">
       <div class="modal-content">
       
@@ -514,6 +518,11 @@ textarea {
 
             <input type="checkbox" checked=true id="create_txt_media_scroll_anim" > Scroll Animation
 
+            <br />
+            <label style="font-weight:bold">Media Play Duration (sec):</label>
+                    <input type="number" class="form-control" value="10" placeholder="Enter Duration(Sec)" name="duration" id="text_play_duration" size="100"> 
+
+
         </div>
      
 
@@ -536,7 +545,7 @@ textarea {
 
 
 <!-- Text -->
-  <div class="modal" id="create_ticker_text_modal" style="padding-top:0px" >
+  <div class="modal" id="create_ticker_text_modal" style="padding-top:0px;overflow-y: auto;" >
     <div class="modal-dialog">
       <div class="modal-content">
       
@@ -589,7 +598,7 @@ textarea {
 <!-- Text -->
 
 <!-- URL-->
-  <div class="modal" id="create_url_reg_dialog" >
+  <div class="modal" id="create_url_reg_dialog" style="overflow-y: auto;" >
     <div class="modal-dialog ">
       <div class="modal-content">
       
@@ -612,6 +621,12 @@ textarea {
               </form>
                 <span>Enter url address like https://www.xyz.com</span><br>
               </div>
+
+               <br />
+            <label style="font-weight:bold">Media Play Duration (sec):</label>
+                    <input type="number" class="form-control" value="10" placeholder="Enter Duration(Sec)" name="duration" id="url_play_duration" size="100"> 
+                 <br/>
+
 
     
         </div>
@@ -688,7 +703,7 @@ textarea {
 <!-- RSS -->
 
 <!-- Table -->
-  <div class="modal" id="create_table_reg_dialog" style="z-index:1600;">
+  <div class="modal" id="create_table_reg_dialog" style="z-index:1600;overflow-y: auto;">
     <div class="modal-dialog modal-lg">
       <div class="modal-content">
       
@@ -730,7 +745,7 @@ textarea {
 <!-- Table -->
 
 <!-- campaign info dialog -->
-  <div class="modal" id="campaign_info_diag" style="overflow:auto;padding-top:10px;" >
+  <div class="modal" id="campaign_info_diag" style="overflow:auto;padding-top:10px;overflow-y: auto;" >
     <div class="modal-dialog">
       <div class="modal-content">
       
@@ -792,7 +807,7 @@ textarea {
 <!-- SEND-->
 
 <!-- pdf/file info dialog -->
- <div class="modal" id="file_properties_diag" >
+ <div class="modal" id="file_properties_diag" style="overflow-y: auto;" >
     <div class="modal-dialog">
       <div class="modal-content">
       
@@ -815,7 +830,12 @@ textarea {
                   <input style="text-align: center;" type="text" class="form-control" placeholder="Enter scrolling speed" value="10" name="scrolling_speed" id="scrolling_speed" size="100" style="width: 50%;">  
                   <label for="exampleInputPassword1" style="font-weight:bold">Zoom Level :</label>
                   <input style="text-align: center;"  type="text" class="form-control" placeholder="Enter zoom level" value="1.0" name="zoom_level" id="zoom_level" size="4" style="width: 50%;"> 
-                  <input type="checkbox" id="fit_to_screen" checked>Fit to Screen  
+                  <input type="checkbox" id="fit_to_screen" checked>Fit to Screen
+
+                  <br/>
+                     <label style="font-weight:bold">Media Play Duration (sec):</label>
+                    <input type="number" class="form-control" value="10" placeholder="Enter Duration(Sec)" name="duration" id="pdf_play_duration" size="100"> 
+                 <br/>
 
                 </div>
                 <br>
@@ -838,14 +858,61 @@ textarea {
 <!-- end of pdf info dialog -->
 
 
-<!-- image scale type info dialog -->
- <div class="modal" id="image_properties_diag" >
+
+<!-- excel info dialog -->
+ <div class="modal" id="excel_properties_diag" style="overflow-y: auto;" >
     <div class="modal-dialog">
       <div class="modal-content">
       
         <!-- Modal Header -->
         <div class="modal-header">
-          <h4 class="modal-title" style="text-align:center;">Choose Image Scale Type
+          <h4 class="modal-title" style="text-align:center;">Properties Dialog
+         <!--  <span type="button" class="close" data-dismiss="modal" onclick="dismissCreateCampaignDialog();">&times;</span> --></h4>
+           <center><img id="loading" src="../images/ajax-loader.gif" alt="Updating ..." style="display: none;" /></center>
+        </div>
+        
+        <!-- Modal body -->
+        <div class="modal-body" style="overflow-y:auto;text-align: center;">
+     
+                <div class="col-md-12">
+
+          <!-- <form class="feedback" name="feedback"> -->
+    
+               <div class="form-group">
+                  <br/>
+                     <label style="font-weight:bold">Media Play Duration (sec):</label>
+                    <input type="number" class="form-control" value="10" placeholder="Enter Duration(Sec)" name="duration" id="excel_play_duration" size="100"> 
+                 <br/>
+
+                </div>
+                <br>
+
+          </div>
+        </div>
+
+        <div class="modal-footer">
+        <center>     
+                 <button class="btn btn-danger"  data-dismiss="modal" onclick="dismissExcelPropertiesDialog()">Cancel</button>       
+                  <button class="btn btn-success" id="submit" onclick="setExcelProperties();">Proceed</button>
+        </center>
+         
+        </div>
+        
+      </div>
+    </div>
+  </div>
+
+<!-- end of excel info dialog -->
+
+
+<!-- image scale type info dialog -->
+ <div class="modal"  id="image_properties_diag" style="overflow-y: auto;">
+    <div class="modal-dialog"  >
+      <div class="modal-content">
+      
+        <!-- Modal Header -->
+        <div class="modal-header">
+          <h4 class="modal-title" style="text-align:center;">Choose Image Properties
          <!--  <span type="button" class="close" data-dismiss="modal" onclick="dismissCreateCampaignDialog();">&times;</span> --></h4>
            <center><img id="loading" src="../images/ajax-loader.gif" alt="Updating ..." style="display: none;" /></center>
         </div>
@@ -872,7 +939,10 @@ textarea {
                    <option value="circleCrop">circleCrop</option>
               </select>
                 </div>
-                <br>
+              
+                 <label style="font-weight:bold">Media Play Duration (sec):</label>
+                    <input type="number" class="form-control" value="10" placeholder="Enter Duration(Sec)" name="duration" id="img_play_duration" size="100"> <br />
+                 <br>
 
           </div>
         </div>
