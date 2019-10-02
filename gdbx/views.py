@@ -10,7 +10,7 @@ def getGDbxxx(request):
     if(request.method == "POST" and request.user.is_authenticated):       
         host = request.META['HTTP_HOST'];
         server = request.META['SERVER_NAME'];
-        if((server=="www.signageserv.ai" and host=="www.signageserv.ai") or host=="192.168.0.143:8080" or host=="127.0.0.1:8000" or (server=="www.signageserv.ai" and host=="www.signageserv.ai")):
+        if((server=="www.signageserv.ai" and host=="www.signageserv.ai") or host=="192.168.0.143:8080" or host=="www.sunriosignage.com" or (server=="www.signageserv.ai" and host=="www.signageserv.ai")):
             return JsonResponse({'xxdd':DROP_BOX_ACCESS_TOKEN});
         else:
             return JsonResponse({});
