@@ -26,6 +26,7 @@ class Content(models.Model):
     file_name = models.CharField(max_length=125,default="")
     content_type = models.CharField(max_length=15,default="image")
     created_at = models.DateTimeField(default=datetime.datetime.now())
+    is_approved = models.SmallIntegerField(default=0)#0->false, 1-> true
 
     def initUpload(postData,accessToken,storeLocation,
         isWeb,userEmailId):

@@ -1,4 +1,4 @@
-DROP_BOX_ACCESS_TOKEN = "mkW1hX251tAAAAAAAAAKwcvOgcti4go1R-GLzS0s3aBT7A8GI2QqHAxhQlVP3ywB"
+DROP_BOX_ACCESS_TOKEN = "mkW1hX251tAAAAAAAAAKxZ3gp0O57Chlmg5z8FRum9webawujkCb6AcBbf464MJY"
 API_HOST = "https://www.greencontent.in"
 ADSKITE_PLAYER_REGISTER_PWD="!AdsKite2019$"
 SINGLE_100_100 = "{\"regions\":[{\"width\":100,\"height\":100,\"top_margin\":0,\"left_margin\":0,\"right_margin\":0,\"bottom_margin\":0}]}"
@@ -14,8 +14,8 @@ allowed_image_formats = '''jpeg,jpg,png'''
 allowed_video_formats = '''wmv,avi,mpg,mpeg,webm,mp4'''
 file_storage_path="C:/Users/adskite/python_projects/green_content/media";
 
-STORE_LOCATION =1; #2-> dropbox , 1-> local
-setup = 1; #2 server, 1->local
+STORE_LOCATION =2; #2-> dropbox , 1-> local
+setup = 2; #2 server, 1->local
 
 project_local_path = "C:/Users/adskite/python_projects/green_content"
 project_server_path = "/home/adskite/myproject/signagecms"

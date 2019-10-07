@@ -5,6 +5,8 @@ from .models import Content
 from rest_framework.decorators import api_view
 from django.http import JsonResponse
 from django.shortcuts import render,redirect
+from django.contrib.auth.decorators import login_required
+
 @api_view(["POST"])
 def initContentUpload(request):
     if(request.method == "POST"):
@@ -213,3 +215,7 @@ def listMyContentAPI(request):
     else:
         return JsonResponse({'statusCode':2,
             'status':'Invalid session, please login'});
+
+@login_required
+def listPendingApprovals(request):
+    pass

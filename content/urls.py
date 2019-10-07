@@ -10,4 +10,6 @@ urlpatterns = [
     path('mycontent_api/',views.listMyContentAPI,name='mycontentAPI'),
     path('preview/<int:contentId>',views.preview,name="previewContent"),
     path('delete',views.delete,name='deleteContent'),
+    path('list_pending_approval/',views.listPendingApprovals,name='listPendingApprovalsContent'),
+    
     ]
