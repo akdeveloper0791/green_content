@@ -1877,3 +1877,15 @@ def downloadSoftIOT(request):
 def apiDocumentation(request):
     return render(request,'api_documentation.html')
 
+def downloadDSP(request):
+    if(request.user.is_authenticated==False):
+       return redirect('/accounts/signin/?next=/download_dsp')
+
+    fileName='signage_player.apk';
+    file_path = os.path.join(settings.MEDIA_ROOT, fileName)
+    if os.path.exists(file_path):
+        with open(file_path, 'rb') as fh:
+            response = HttpResponse(fh, content_type="application/vnd.android.package-archive") 
+            response["Content-disposition"] = "attachment; filename={}".format(os.path.basename(file_path))
+            return response
+    raise Http404

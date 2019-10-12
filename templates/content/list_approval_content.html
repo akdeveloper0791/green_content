@@ -1,0 +1,194 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+{% block header %} 
+{% include 'header.html' %} 
+{% endblock %}
+
+<link rel="stylesheet"
+ href="{% static 'bootstrap/3.4.0/bootstrap.min.css' %}">
+<script src="{% static 'jquery/3.4.0/jquery.min.js' %}">
+  </script>
+{% block body %}
+ <br /><br /><br />
+ <body>
+ <style>
+ ul {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  
+  background-color: #333333;
+}
+
+li {
+  float: right;
+}
+
+li a {
+  display: block;
+  color: black;
+  text-align: center;
+  padding: 5px;
+  text-decoration: none;
+}
+
+li a:hover {
+  
+}
+li a.current_page
+{
+   display: block;
+  color: green;
+  text-align: center;
+  padding: 5px;
+  text-decoration: none;
+}
+ </style>
+
+
+
+
+<section id="contact" class="section-padding">
+  
+  <div class='container' id="listemail">
+  <div class='rows'>
+ 
+    <br /><br />
+<div align="right">
+{% if is_approved == 0 %}
+  <a href="1">Show Approved </a><br />
+              
+{% else %}
+ <a href="0">Show Pending </a><br />
+{% endif %}
+</div>
+ {% if response.statusCode == 0 %}
+  
+  
+    <table id="content_list_table" class="table" style="border:0px;border-spacing: 2px;width: 100%;text-align: center;">
+      <thead style="border: 0px;">
+        <tr style="border: 0px;">
+          <th style="border: 0px;"></th>
+          <th style="border: 0px;"></th>
+          <th style="border: 0px;"></th>
+          
+        </tr>
+      </thead>
+
+  {% for content in response.content %}
+   
+    <div class="rows" id="content_row_{{ content.id }}">
+
+          <tr id="content_title_{{ content.id }}" class="content_row">
+              <td colspan="2" style="width: 12%">
+              <a target="_blank" href="/content/preview/{{ content.id }}">
+                <h3>{{ content.description }} </h3></a></td>
+              <td  class="content_row" style="text-align:center;">
+              {% if is_approved == 0 %}
+              <input type="button" value="Approve" onclick="modifyAccess({{ content.id}},1)"/>
+              
+              {% else %}
+ <input type="button" value="Reject" onclick="modifyAccess({{ content.id}},0)"/>
+             {% endif %}
+              
+</td>
+          </tr>
+
+          <tr id="content_title2_{{ content.id }}" 
+          class="content_row">
+          <td colspan = "2" style="text-align:right;border:0px">{{ content.user__email}}</td>
+              <td colspan = "1" style="text-align:right;border:0px">{{ content.created_at}}</td>   
+          </tr>
+
+       
+
+    </div>
+ 
+  {% endfor %}
+  </table>
+    
+
+
+  
+ {% else %}
+ 
+    {{response.status}}
+ {% endif %}
+ </div> 
+  </div>
+  </section>
+
+<br/><br/>
+<script>
+var csrf_token = '{{ csrf_token }}';
+ function modifyAccess(contentId,access)
+ {
+  
+ajaxindicatorstart("Please wait");
+   var xhr = new XMLHttpRequest();
+   xhr.onload = function() {
+      if (xhr.status === 200) {
+        ajaxindicatorstop();
+          console.log("xhr.response"+xhr.response);
+          var response = JSON.parse(xhr.response);       
+          try
+          {
+             if(response.statusCode==0)
+             {
+              
+              deleteCampaignRow(contentId);
+                alert("Success");
+             }else{
+              error(response.status);
+             }
+          }catch(exception)
+          {
+
+            error('Unable to delete -'+exception.message);
+          }
+          
+      }
+      else {
+           var errorMessage = xhr.response;
+           error('Unable to delete-'+errorMessage);
+         
+          }
+  };
+  xhr.onerror = function()
+  {
+    error('No internet');
+  };
+  xhr.open('POST', '/content/approve');
+  xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+  xhr.setRequestHeader("X-CSRFToken", csrf_token);
+  
+  
+  var params = 'access='+access+'&content_id='+contentId+'&mac=web';
+   
+   xhr.send(params);
+ }
+
+ function error(msg)
+ {
+  alert(msg);
+ }
+
+ function deleteCampaignRow(campaignId)
+ {
+   document.getElementById("content_list_table").deleteRow(document.getElementById('content_title_'+campaignId).rowIndex);
+   document.getElementById("content_list_table").deleteRow(document.getElementById('content_title2_'+campaignId).rowIndex);
+ }
+
+</script>
+
+</body>
+ 
+{% endblock %}
+
+
+{% block footer %} 
+{% include 'footer.html' %} 
+{% endblock %}
