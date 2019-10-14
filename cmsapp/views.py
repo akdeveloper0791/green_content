@@ -1878,8 +1878,8 @@ def apiDocumentation(request):
     return render(request,'api_documentation.html')
 
 def downloadDSP(request):
-    if(request.user.is_authenticated==False):
-       return redirect('/accounts/signin/?next=/download_dsp')
+   # if(request.user.is_authenticated==False):
+       #return redirect('/accounts/signin/?next=/download_dsp')
 
     fileName='signage_player.apk';
     file_path = os.path.join(settings.MEDIA_ROOT, fileName)
