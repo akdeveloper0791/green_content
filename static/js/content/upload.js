@@ -14,6 +14,7 @@ var uploadDXXX = [];
 
 function contentUpload()
 {
+
   if(storeLocation==2)
   {
     checkAndUploadViaDbx();
@@ -83,7 +84,7 @@ function initUpload()
     alert("File format not supported");
     return;
   }
-  
+   
     try {
       displayInitUploadBusyDialog();
       $.ajax(

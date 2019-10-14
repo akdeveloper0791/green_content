@@ -4,6 +4,7 @@
   <!--alert style-->
   <link rel="stylesheet" href="{% static 'css/sweetalert.css' %}">
   <script src="{% static 'js/sweetalert.js' %}"></script>
+<link rel="stylesheet" type="text/css" href="{% static 'Mentor/css/font-awesome.min.css' %}">
 
   <style>
 * {box-sizing: border-box;}
@@ -44,7 +45,7 @@ body {
 
 .topnav input[type=text] {
   padding: 6px;
-  margin-top: 8px;
+  margin-top: 2px;
   font-size: 17px;
   border: none;
 }
@@ -52,7 +53,7 @@ body {
 .topnav .search-container button {
   float: right;
   padding: 6px 10px;
-  margin-top: 8px;
+  margin-top: 3px;
   margin-right: 16px;
   background: #ddd;
   font-size: 17px;
@@ -100,9 +101,9 @@ body {
   
           <div class="search-container">
             
-            <input type="text" placeholder="Search.." name="search">
+            <input id="search_content_kw" type="text" placeholder="Enter Search Keyword.." name="search">
             
-            <button type="submit"><i class="fa fa-search"></i></button>
+            <button type="submit" onclick="searchContent()"><i class="fa fa-search"></i></button>
             
           </div>
         </div>
@@ -168,6 +169,8 @@ body {
         }
        else
        {
+
+        lmcbDisplayContent([],[]);
 
              swal(data['status']);
                                     
@@ -295,6 +298,70 @@ function lmcbDisplayContent(contentList,paginationPages)
      document.getElementById("lmcb_content_list").innerHTML = "";
      document.getElementById("content_pagination_table").innerHTML = "";
      lmcbGetContent(pageNumber,contentType);
+  }
+
+  function searchContent()
+  {
+    var searchValue = document.getElementById('search_content_kw').value;
+    console.log("searchValue is "+searchValue);
+    if(searchValue.length>=1)
+    {
+    try {
+        ajaxindicatorstart("<img src='{% static "images/ajax-loader.gif" %}'><br/> Please wait...!");
+
+    $.ajax(
+    {
+
+      type:'POST',
+      url: '/content/search',
+      headers: {            
+            'X-CSRFToken':'{{ csrf_token }}'
+        },
+      data:{
+            secretKey: 'web',
+            type:contentType,
+            search_key:searchValue,
+      },
+      
+      success: function(data)
+       {
+         ajaxindicatorstop();
+        
+        console.log("data is-"+JSON.stringify(data));
+        if(data['statusCode']==0)
+        {
+             
+            lmcbDisplayContent(data['content'],data['paginationPages']);
+            
+        }
+       else
+       {
+
+             swal(data['status']);
+                                    
+       }
+
+
+       },
+    
+     error: function (jqXHR, exception) {
+      ajaxindicatorstop();
+      console.log(jqXHR.responseText);
+
+      swal(exception+jqXHR.responseText);
+     }
+
+    });
+    }
+    catch(Exception)
+    {
+      alert("Error ");
+      swal(Exception.message);
+    }
+   }else
+   {
+     lmcbGetContent(1,contentType);
+   }
   }
 </script>
 

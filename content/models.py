@@ -164,18 +164,30 @@ class Content(models.Model):
         except Content.DoesNotExist:
             return {'statusCode':2,'status':'content not found'};
 
-from django.db.models import Q  
+from django.db.models import Q
+from django.db.models import F
 class Content_Key(models.Model):
     content = models.ForeignKey(Content,on_delete=models.CASCADE)
     key= models.CharField(max_length=125,null=False,blank=False)
 
-    def searchContent(userId,key):
-        content = Content_Key.objects.filter(
+    def searchContent(userId,key,cType):
+        content = Content_Key.objects.values('content__id').filter(
             Q(key__icontains=key)&(Q(content__user_id=userId) | 
                 (Q(content__access_level=1)&Q(content__is_approved=1))));
+        if(content!="all"):
+            content = content.filter(content__content_type=cType);
+        
+        content = content.annotate(user_id=F('content__user_id'),
+            id=F('content__id'),description=F('content__description'),
+            access_level=F('content__access_level'),store_location=F('content__store_location'),
+            file_path=F('content__file_path'),file_name=F('content__file_name'),
+            content_type=F('content__content_type'),
+            is_approved=F('content__is_approved'))
+        
         if(content.exists()):
             return {'statusCode':0,
-                'content':list(content.values('content__id','content__description','content__store_location',
-                    'content__file_path','content__file_name','content__type'))}
+                'content':list(content.values().distinct()),
+                'paginationPages':[],'currentPage':1}
+            
         else:
             return {'statusCode':2,'status':'No content found'};

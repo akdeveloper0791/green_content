@@ -314,7 +314,6 @@ function show(){
 function selectdropdown(result)
 {
 
-
   $.map(result, function (x) {
     return $('.multiselect').append("<option value='"+x.group_id+"'>" + x.group_name + "</option>");
   });
@@ -332,9 +331,9 @@ function selectdropdown(result)
 function verifyDetails()
 {
   
-  
   description = document.getElementById('description').value;
   keyword = document.getElementById('Keyword').value;
+
   accessType=0;//private
   if(!document.getElementById('private').checked)
   {
@@ -354,6 +353,8 @@ function verifyDetails()
     alert("Please select keyword");
     return;
   }
+
+  keyword = keyword.split(",");
   uploadFiles.push(selectedFile);
   checkAndUploadViaDbx();
   return false;
