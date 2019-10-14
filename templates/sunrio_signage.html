@@ -66,6 +66,8 @@ Visitor engagement, Production Line Management and Other."/>
       <link rel="stylesheet" href="{% static 'css/styles.css' %}">
 
 
+
+
    
 
 
@@ -152,6 +154,9 @@ padding-right: 0px;
 }
 
 }
+
+
+
 
  </style>
 
@@ -388,6 +393,33 @@ section
   flex: 1 0 21%; /* explanation below */
   margin: 5px;
  }
+
+ /* The Modal (background) */
+.modal {
+  display: none; /* Hidden by default */
+  position: fixed; /* Stay in place */
+  z-index: 1; /* Sit on top */
+  /* Location of the box */
+  left: 0;
+  top: 0;
+  width: 100%; /* Full width */
+  height: 100%; /* Full height */
+  overflow: auto; /* Enable scroll if needed */
+  background-color: rgb(0,0,0); 
+  background-color: rgba(0,0,0,0.4); 
+}
+
+
+.modal-backdrop {
+    z-index: 1040 !important;
+}
+.modal-dialog {
+    margin: 2px auto;
+    z-index: 1100 !important;
+}
+
+
+
 </style>
 
  <div class="bg_section">
@@ -843,12 +875,12 @@ This is unique feature to announcement will be played. This will take the attent
       <div class="platforms" style="margin: 5px auto;">
          <img style="height:300px;width:180px;" src="{% static 'images/app/ss.png' %}"alt="Signage Manager" >
       </div>
-       <div class="platforms"  style="margin: 5px auto;">
-          <a class="btn btn-primary inverse scrollpoint sp-effect2" href="/download_dsp">
-          <i class="content fa fa-android fa-3x pull-left"></i>
-          <span>Download Signage Player</span><br>
-          <b>Signage Player</b>
-          </a>
+       <div class="platforms"  style="margin: 5px auto;color: white;">
+          <a style="color: white;cursor: pointer;" class=" inverse scrollpoint sp-effect2"  data-toggle=modal data-target="#myModal2">
+             <span>Download Signage Player for</span> <br>Andriod Box /
+             <a style="color: white;cursor: pointer;" href="/download_dsp" >
+          <b> Mi TV</b></a>
+         </a>    
       </div>
  
   </div>
@@ -977,13 +1009,16 @@ event.preventDefault();
 });
 </script>
 
+
+
+
  
 
-<div class="modal fade" id=myModal1 role=dialog>
-<div class="modal-dialog modal-sm">
+<div style="margin-top: 120px;margin-bottom: 50px;"  class="modal" id=myModal1 role=dialog>
+<div  class="modal-dialog modal-sm ">
 <div class=modal-content>
 <div class=modal-header style="background-color: #66cdcc;">
-<button type=button class=close data-dismiss=modal>&times;</button>
+<button type=button class=close data-dismiss="modal">&times;</button>
 <h4 class=modal-title style="color:white;"><b>Download Signage Manager App</b></h4>
 </div>
 <div class=modal-body>
@@ -1009,7 +1044,7 @@ event.preventDefault();
 </div>
 </div>
 
-<div class="modal fade" id=myModal2 role=dialog>
+<div style="margin-top: 120px;margin-bottom: 50px;" class="modal" id=myModal2 role=dialog>
 <div class="modal-dialog modal-sm">
 <div class=modal-content>
 <div class=modal-header style="background-color: #66cdcc;">
@@ -1051,7 +1086,12 @@ next=i+1;moveIt(next);},10000);</script>
 <script>$(".dropdown dt a").on('click',function(){$(".dropdown dd ul").slideToggle('fast');});$(".dropdown dd ul li a").on('click',function(){$(".dropdown dd ul").hide();});function getSelectedValue(id){return $("#"+id).find("dt a span.value").html();}
 $(document).bind('click',function(e){var $clicked=$(e.target);if(!$clicked.parents().hasClass("dropdown"))$(".dropdown dd ul").hide();});$('.mutliSelect input[type="checkbox"]').on('click',function(){var title=$(this).closest('.mutliSelect').find('input[type="checkbox"]').val(),title=$(this).val()+",";if($(this).is(':checked')){var html='<span title="'+title+'">'+title+'</span>';$('.multiSel').append(html);$(".hida").hide();}else{$('span[title="'+title+'"]').remove();var ret=$(".hida");$('.dropdown dt a').append(ret);}});function submitform()
 {document.forms["searchform"].submit();}
-$("#smsform").submit(function(event){$('.loader2').show();var phone=$("#phone").val();var message=$("#message").val();var dataString='phone='+phone+'&message='+message;$.ajax({type:"POST",url:"https://www.adskite.com/send_sms.php",data:dataString,success:function(data){var frm=document.getElementById('smsform');frm.reset();$('.loader2').html("Download link sent successfully!");}});event.preventDefault();});$("#smsform1").submit(function(event){$('.loader3').show();var phonee=$("#phonee").val();var messagee=$("#messagee").val();var dataString='phonee='+phonee+'&messagee='+messagee;$.ajax({type:"POST",url:"https://www.signageserv.com/send_sms1.php",data:dataString,success:function(data){var frm=document.getElementById('smsform1');frm.reset();$('.loader3').html("Download link sent successfully!");}});event.preventDefault();});$("#smsform2").submit(function(event){$('.loader4').show();var phones=$("#phones").val();var messages=$("#messages").val();var dataString='phones='+phones+'&messages='+messages;$.ajax({type:"POST",url:"https://www.signageserv.com/send_sms2.php",data:dataString,success:function(data){var frm=document.getElementById('smsform2');frm.reset();$('.loader4').html("Download link sent successfully!");}});event.preventDefault();});</script>
+$("#smsform").submit(function(event){$('.loader2').show();var phone=$("#phone").val();var message=$("#message").val();var dataString='phone='+phone+'&message='+message;$.ajax({type:"POST",url:"https://www.adskite.com/send_sms.php",data:dataString,success:function(data){var frm=document.getElementById('smsform');frm.reset();$('.loader2').html("Download link sent successfully!");}});event.preventDefault();});$("#smsform1").submit(function(event){$('.loader3').show();var phonee=$("#phonee").val();var messagee=$("#messagee").val();var dataString='phonee='+phonee+'&messagee='+messagee;$.ajax({type:"POST",url:"https://www.signageserv.com/send_sms1.php",data:dataString,success:function(data){var frm=document.getElementById('smsform1');frm.reset();$('.loader3').html("Download link sent successfully!");}});event.preventDefault();});$("#smsform2").submit(function(event){$('.loader4').show();var phones=$("#phones").val();var messages=$("#messages").val();var dataString='phones='+phones+'&messages='+messages;$.ajax({type:"POST",url:"https://www.signageserv.com/send_sms2.php",data:dataString,success:function(data){var frm=document.getElementById('smsform2');frm.reset();$('.loader4').html("Download link sent successfully!");}});event.preventDefault();});
+
+
+
+
+</script>
 
 
 
