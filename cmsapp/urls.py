@@ -98,20 +98,8 @@ urlpatterns = [
         path('download_softiot',views.downloadSoftIOT,name="downloadSoftIOT"),
 
         url(r'^api_documentation/', views.apiDocumentation, name='apiDocumentation'),
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+        
+        path('download_dsp',views.downloadDSP,name="downloadDSP"),
 
 ]
 

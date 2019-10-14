@@ -217,5 +217,31 @@ def listMyContentAPI(request):
             'status':'Invalid session, please login'});
 
 @login_required
-def listPendingApprovals(request):
-    pass
+def listPendingApprovals(request,approveType):
+    if(request.user.is_authenticated==False):
+        return redirect('/accounts/signin/?next=/content/list_pending_approval')
+    userEmail = request.user.email;
+    if((userEmail=="vineethkumar0791@gmail.com") == False):
+        return JsonResponse({'status':'You are not authorized to view the page'});
+    response = Content.listPendingApproval(approveType);
+    return render(request,'content/list_approval_content.html',{'response':response,'is_approved':approveType})
+
+def approve(request):
+    if(request.user.is_authenticated==False):
+        return JsonResponse({'statusCode':1,'status':'Invalid access token, please login'})
+    userEmail = request.user.email;
+    if((userEmail=="vineethkumar0791@gmail.com") == False):
+        return JsonResponse({'statusCode':2,'status':'You are not authorized to view the page'});
+    response = Content.modifyAccess(request.POST.get('content_id'),
+        request.POST.get('access'));
+    return JsonResponse(response);
+
+@api_view(["POST"])
+def search(request):
+    if(request.user.is_authenticated==False):
+        return JsonResponse({'statusCode':1,
+            'status':'Invalid access token, please login'})
+    response = Content.searchContent(request.user.id,
+        request.POST.get('search_key'));
+
+    return JsonResponse(response);

@@ -146,8 +146,36 @@ class Content(models.Model):
             
         except Content.DoesNotExist as e:
             return {'statusCode':3,'status':'Error -'+str(e)};
+    
+    def listPendingApproval(approveType):
+        content = Content.objects.filter(access_level=1,is_approved=approveType);
+        if(content.exists()):
+            return {'statusCode':0,'content':list(content.values('id',
+                'description','created_at','user__email'))}
+        else:
+            return {'statusCode':2,'status':'No content found'};
+    
+    def modifyAccess(contentId,access):
+        try:
+            content = Content.objects.get(id=contentId);
+            content.is_approved = access;
+            content.save();
+            return {'statusCode':0,'status':'Success'};
+        except Content.DoesNotExist:
+            return {'statusCode':2,'status':'content not found'};
 
+from django.db.models import Q  
 class Content_Key(models.Model):
     content = models.ForeignKey(Content,on_delete=models.CASCADE)
     key= models.CharField(max_length=125,null=False,blank=False)
 
+    def searchContent(userId,key):
+        content = Content_Key.objects.filter(
+            Q(key__icontains=key)&(Q(content__user_id=userId) | 
+                (Q(content__access_level=1)&Q(content__is_approved=1))));
+        if(content.exists()):
+            return {'statusCode':0,
+                'content':list(content.values('content__id','content__description','content__store_location',
+                    'content__file_path','content__file_name','content__type'))}
+        else:
+            return {'statusCode':2,'status':'No content found'};
