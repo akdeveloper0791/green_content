@@ -47,11 +47,13 @@ def web_search(request):
 
 def signageserv(request):
     server = request.META['SERVER_NAME'];
-    #SERVER:www.ihealthtv.com || SERVER:www.sunriosignage.com|| LOCAL:ADSKITE
+    #SERVER:www.ihealthtv.com || SERVER:www.sunriosignage.com||www.nextgenlearning.in|| LOCAL:ADSKITE||signageserv.html
     if server == 'www.ihealthtv.com':
         return render(request,'ihealthtv.html')
     elif server == 'www.sunriosignage.com':
         return render(request,'sunrio_signage.html')
+    elif server == 'www.nextgenlearning.in':
+        return render(request,'nextgen_learning.html')
     else:
        return render(request,'signageserv.html')
 
