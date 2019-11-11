@@ -242,7 +242,13 @@ function isMobileBrowser()
      document.title="Hospital Health TV | iHealthTV";
     document.getElementById('fav_icon').href="{% static 'images/favicon.png' %}";
     domineLogo.src="{% static 'images/ihealth_tv.png' %}";
+    }else if (serverName == 'www.nextgenlearning.in')
+    {
+      document.title="NextGenLearning | Educational Signage";
+     document.getElementById('fav_icon').href="{% static 'images/ngl_icon.png' %}";
+     domineLogo.src="{% static 'images/ngl_.png' %}";
     }
+    
     else
     { 
      domineLogo.src="{% static 'images/signageserv.png' %}";

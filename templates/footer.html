@@ -68,6 +68,18 @@ body {
     parent_dom.innerHTML="Sunrio Technologies Pvt Ltd";
     parent_dom.href="http://sunrio.in";
     
+    }else if (serverName == 'www.nextgenlearning.in')
+    {
+      var footerId=document.getElementById("footer_id");
+      footerId.style.backgroundColor="black";
+    domine.innerHTML="NextGenLearning";
+    domine.href="https://www.nextgenlearning.in";
+    parent_dom.innerHTML="iBetter Technologies LLP";
+    parent_dom.href="http://www.ibettertechnologies.com";
+
+      document.title="NextGenLearning | Educational Signage";
+     document.getElementById('fav_icon').href="{% static 'images/ngl_icon.png' %}";
+     domineLogo.src="{% static 'images/ngl_.png' %}";
     }
     else
     {
