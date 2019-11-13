@@ -103,6 +103,8 @@ urlpatterns = [
 
         path('download_ngl_remote',views.downloadNGLPlayerRemote,name="downloadNGLPlayerRemote"),
 
+        path('download_ngl_player',views.downloadNGLPlayer,name="downloadNGLPlayer"),
+
 ]
 
 
