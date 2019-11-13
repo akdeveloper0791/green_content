@@ -1891,3 +1891,29 @@ def downloadDSP(request):
             response["Content-disposition"] = "attachment; filename={}".format(os.path.basename(file_path))
             return response
     raise Http404
+
+def downloadNGLPlayerRemote(request):
+   # if(request.user.is_authenticated==False):
+       #return redirect('/accounts/signin/?next=/download_dsp')
+
+    fileName='ngl_player_remote.apk';
+    file_path = os.path.join(settings.MEDIA_ROOT, fileName)
+    if os.path.exists(file_path):
+        with open(file_path, 'rb') as fh:
+            response = HttpResponse(fh, content_type="application/vnd.android.package-archive") 
+            response["Content-disposition"] = "attachment; filename={}".format(os.path.basename(file_path))
+            return response
+    raise Http404 
+
+def downloadNGLPlayer(request):
+   # if(request.user.is_authenticated==False):
+       #return redirect('/accounts/signin/?next=/download_dsp')
+
+    fileName='ngl_player.apk';
+    file_path = os.path.join(settings.MEDIA_ROOT, fileName)
+    if os.path.exists(file_path):
+        with open(file_path, 'rb') as fh:
+            response = HttpResponse(fh, content_type="application/vnd.android.package-archive") 
+            response["Content-disposition"] = "attachment; filename={}".format(os.path.basename(file_path))
+            return response
+    raise Http404

@@ -101,6 +101,8 @@ urlpatterns = [
         
         path('download_dsp',views.downloadDSP,name="downloadDSP"),
 
+        path('download_ngl_remote',views.downloadNGLPlayerRemote,name="downloadNGLPlayerRemote"),
+
 ]
 
 
