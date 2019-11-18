@@ -25,6 +25,8 @@
 
 </head>
 
+
+{% block body %}
 <body>
   <!--Navigation bar-->
   <nav class="navbar navbar-default navbar-fixed-top" style="background-color: lightblue;">
@@ -127,8 +129,6 @@
 
   {% endif %}
 
-{% block footer %} {% include 'footer.html' %} {% endblock %}
-</body>
 <script type="text/javascript">
 
     var serverName = location.hostname;
@@ -157,4 +157,12 @@
      domineLogo.src="{% static 'images/signageserv.png' %}";
     } 
 </script>
+
+{% endblock %}
+
+
+{% block footer %} {% include 'footer.html' %} {% endblock %}
+
+</body>
+
 </html>
