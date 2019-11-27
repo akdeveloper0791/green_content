@@ -105,6 +105,8 @@ urlpatterns = [
 
         path('download_ngl_player',views.downloadNGLPlayer,name="downloadNGLPlayer"),
 
+        path('send_enquiry',views.sendEnquiry,name="sendEnquiry"),
+
 ]
 
 

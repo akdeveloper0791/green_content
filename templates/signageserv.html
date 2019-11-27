@@ -27,6 +27,7 @@ Visitor engagement, Production Line Management and Other."/>
   <script src="{% static 'bootstrap/3.4.0/bootstrap.min.js' %}">
   </script>
 
+
 <link rel="stylesheet" href="{% static 'font-awsome/4.7.0/font-awesome.min.css' %}">
         <!-- Bootstrap 3.3.2 -->
     <link rel="stylesheet"
@@ -159,51 +160,51 @@ padding-right: 0px;
     
         <nav class="navbar navbar-fixed-top sticky" style="background-color:lightblue;margin-bottom: 10px;" role="navigation">
               
-                    <!-- Brand and toggle get grouped for better mobile display -->
-                    <div class="navbar-header">
-                        <button  style="background-color: transparent;" type="button" class="navbar-toggle" 
-                        data-toggle="collapse" 
-                        data-target="#bs-example-navbar-collapse-1">
-                            <span class="fa fa-bars fa-lg"></span>
-                        </button>
-                        <a class="brand-logo" href="/signageserv">
-                       <img class="signage_logo"  src="{% static 'images/signage_serv.png' %}" alt="" class="logo animated fadeInDown" style="cursor:pointer;padding-left:10px;"></a>
-                    </div>
+      <!-- Brand and toggle get grouped for better mobile display -->
+      <div class="navbar-header">
+          <button  style="background-color: transparent;" type="button" class="navbar-toggle" 
+          data-toggle="collapse" 
+          data-target="#bs-example-navbar-collapse-1">
+              <span class="fa fa-bars fa-lg"></span>
+          </button>
+          <a class="brand-logo" href="/signageserv">
+         <img class="signage_logo"  src="{% static 'images/signage_serv.png' %}" alt="" class="logo animated fadeInDown" style="cursor:pointer;padding-left:10px;"></a>
+      </div>
 
-                    <!-- Collect thi nav links, forms, and other content for toggling -->
-                  <div class="collapse navbar-collapse" 
-                    id="bs-example-navbar-collapse-1"  
-                    style="padding-top: 5px; height: 340px;">
+      <!-- Collect thi nav links, forms, and other content for toggling -->
+    <div class="collapse navbar-collapse" 
+      id="bs-example-navbar-collapse-1"  
+      style="padding-top: 5px; height: 340px;">
 
-                    <ul style="text-align: center;" class="nav navbar-nav navbar-right">
-                            <li><a href="#about_us">Why SignageServ?</a>
-                            </li>
-			                      <li><a href="#about">Solutions</a>
-                            </li>
-                            <li><a href="#features">Features</a>
-                            </li>
-                            <li><a href="#screens">Resources</a>
-                            </li>
-                            <li><a class="getApp" href="#getApp">Products</a>
-                            </li>
-                           <li><a href="#hardware">Gallery</a></li>
-                            <li><a href="#demo">Demo</a>
-                            </li>
-                            <li><a href="#support">Contact Us</a>
-                            </li>
-                            {% if request.user.is_authenticated %}
+      <ul style="text-align: center;" class="nav navbar-nav navbar-right">
+              <li><a href="#about_us">Why SignageServ?</a>
+              </li>
+              <li><a href="#about">Solutions</a>
+              </li>
+              <li><a href="#features">Features</a>
+              </li>
+              <li><a href="#screens">Resources</a>
+              </li>
+              <li><a class="getApp" href="#getApp">Products</a>
+              </li>
+         <li><a href="#hardware">Gallery</a></li>
+          <li><a href="#demo">Demo</a>
+          </li>
+          <li><a href="#support">Contact Us</a>
+          </li>
+          {% if request.user.is_authenticated %}
 
-                  <li>
-                    <a class="btn btn-primary  btn-lg" data-toggle="modal" 
-                    style="color: green;font-weight: bold;font-size: 14px;" href="/accounts/signin/">
+          <li>
+            <a class="btn btn-primary  btn-lg" data-toggle="modal" 
+            style="color: green;font-weight: bold;font-size: 14px;" href="/accounts/signin/">
                 {{ request.user.first_name}} </a></li> 
 
-                      {% else %}  
-                       <li ><a class="btn btn-info btn-lg " 
-                    data-toggle="modal" style="text-align: center;color: blue;font-weight: bold;font-size: 14px;" href="/accounts/signin/">Login</a> </li> 
-                      {% endif %}
-                        </ul>
-                    </div>
+        {% else %}  
+         <li ><a class="btn btn-info btn-lg " 
+      data-toggle="modal" style="text-align: center;color: blue;font-weight: bold;font-size: 14px;" href="/accounts/signin/">Login</a> </li> 
+        {% endif %}
+          </ul>
+      </div>
                     <!-- /.navbar-collapse -->
     
                 <!-- /.container-->
@@ -1128,7 +1129,7 @@ This is unique feature to announcement will be played. This will take the attent
                     <div class="col-md-12">
                         <div class="row">
                 
-                            <form action="" id="enqform123" name="send_enquiry" method="GET" enctype="multipart/form-data">
+      <form action="" id="enqform123" name="send_enquiry" method="GET" enctype="multipart/form-data">
         <div class="col-md-12">
          <div class="col-md-6">
             <div class="col-md-12" style="margin-bottom: 10px;">
@@ -1144,8 +1145,8 @@ This is unique feature to announcement will be played. This will take the attent
             
         <div class="col-md-6">
            
-            <div class="col-md-12">
-                <textarea class="form-control" id="messages_message" name="messages_message" placeholder="Type your message here..." rows="8" required="" data-gramm="true" data-txt_gramm_id="b68f938f-6756-bf8a-fb2d-e0d5c39d02b6" data-gramm_id="b68f938f-6756-bf8a-fb2d-e0d5c39d02b6" spellcheck="false" data-gramm_editor="true" style="z-index: auto; position: relative;font-size: 14px; transition: none; "></textarea>                
+      <div class="col-md-12">
+        <textarea class="form-control" id="messages_message" name="messages_message" placeholder="Type your message here..." rows="8" required="" data-gramm="true" data-txt_gramm_id="b68f938f-6756-bf8a-fb2d-e0d5c39d02b6" data-gramm_id="b68f938f-6756-bf8a-fb2d-e0d5c39d02b6" spellcheck="false" data-gramm_editor="true" style="z-index: auto; position: relative;font-size: 14px; transition: none; "></textarea>                
             </div>
         </div> 
 
@@ -1254,6 +1255,8 @@ This is unique feature to announcement will be played. This will take the attent
 </script>
 <script type="text/javascript">
 $( "#enqform123" ).submit(function( event ) {
+
+  event.preventDefault(); 
 var names_name = $("#names_name").val();
 var emails = $("#emails").val();
 var phones_phone = $("#phones_phone").val();
@@ -1276,10 +1279,21 @@ if (names_name == "Enter Name" || names_name == "" || names_name == null)
 $('.loader').show();
 var dataString = 'names_name='+ names_name + '&emails=' + emails + '&phones_phone=' + phones_phone + '&messages_message=' + messages_message;
 
-$.ajax({
+/*$.ajax({
 type: "POST",
-url: "https://bizmaxer.com/campaign_enquiry.php",
-data: dataString,
+url: '/device_group/create/',
+headers: {            
+            'X-CSRFToken':csrf_token
+        },
+      data:{
+           accessToken: 'web',
+           name: names_name,
+           email:emails,
+           phone:phones_phone,
+           message:messages_message
+
+
+      },
 success: function(data){
 var frm = document.getElementById('enqform123'); 
 frm.reset();  // Reset
@@ -1288,11 +1302,61 @@ $('#myModal_campaign').hide(function () {
  window.location.reload();
 })
 }
-});
-swal("Your request has been sent Successfully.");
+});*/
+
+ try {
+     
+    $.ajax(
+    {
+
+      type:'POST',
+      url: '/send_enquiry',
+      headers: {            
+            'X-CSRFToken':"{{csrf_token}}"
+        },
+       data:{
+           accessToken: 'web',
+           name: names_name,
+           email:emails,
+           phone:phones_phone,
+           message:messages_message
+
+
+      },
+     
+      success: function(data)
+       {
+        //ajaxindicatorstop();
+        if(data.statusCode == 0)
+          {
+            swal("Success");
+          }
+        else
+        {
+          swal(data.status);
+        }
+
+       },
+    
+     error: function (jqXHR, exception) {
+      
+      //ajaxindicatorstop();
+      swal(exception+jqXHR.responseText);
+     }
+
+    });
+    }
+      catch(Exception)
+      {
+        //ajaxindicatorstop();
+        console.log(Exception.message);
+        alert("Error"+Exception.message);
+        swal(Exception.message);
+      }
+
 }
 
-event.preventDefault();
+//event.preventDefault();
 });
 </script>
 

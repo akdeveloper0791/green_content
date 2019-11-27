@@ -1917,3 +1917,21 @@ def downloadNGLPlayer(request):
             response["Content-disposition"] = "attachment; filename={}".format(os.path.basename(file_path))
             return response
     raise Http404
+
+from django.core import mail
+from django.core.mail import EmailMessage
+
+@api_view(['POST'])
+def sendEnquiry(request):
+    from_email = "contact@adskite.com";
+    try:
+            with mail.get_connection() as connection:
+                    body="name({}),email({}),phoneNumber({}),message({})".format(
+                        request.POST.get('name'),request.POST.get('email'),request.POST.get('phone'),request.POST.get('message'));
+                    msg = EmailMessage("Send Enquiry request",body, to=[from_email], from_email=from_email,
+                    connection=connection)
+                    msg.content_subtype = 'html'
+                    response = msg.send();
+                    return JsonResponse({'statusCode':0,'status':'success'})
+    except Exception as e:
+        return JsonResponse({'statusCode':100,'status':'Error in sending mail'+str(e)})

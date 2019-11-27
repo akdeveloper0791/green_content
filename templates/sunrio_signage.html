@@ -984,6 +984,8 @@ This is unique feature to announcement will be played. This will take the attent
 </script>
 <script type="text/javascript">
 $( "#enqform123" ).submit(function( event ) {
+
+  event.preventDefault(); 
 var names_name = $("#names_name").val();
 var emails = $("#emails").val();
 var phones_phone = $("#phones_phone").val();
@@ -1006,10 +1008,21 @@ if (names_name == "Enter Name" || names_name == "" || names_name == null)
 $('.loader').show();
 var dataString = 'names_name='+ names_name + '&emails=' + emails + '&phones_phone=' + phones_phone + '&messages_message=' + messages_message;
 
-$.ajax({
+/*$.ajax({
 type: "POST",
-url: "https://bizmaxer.com/campaign_enquiry.php",
-data: dataString,
+url: '/device_group/create/',
+headers: {            
+            'X-CSRFToken':csrf_token
+        },
+      data:{
+           accessToken: 'web',
+           name: names_name,
+           email:emails,
+           phone:phones_phone,
+           message:messages_message
+
+
+      },
 success: function(data){
 var frm = document.getElementById('enqform123'); 
 frm.reset();  // Reset
@@ -1018,11 +1031,61 @@ $('#myModal_campaign').hide(function () {
  window.location.reload();
 })
 }
-});
-swal("Your request has been sent Successfully.");
-}
+});*/
 
-event.preventDefault();
+ try {
+     
+    $.ajax(
+    {
+
+      type:'POST',
+      url: '/send_enquiry',
+      headers: {            
+            'X-CSRFToken':"{{csrf_token}}"
+        },
+       data:{
+           accessToken: 'web',
+           name: names_name,
+           email:emails,
+           phone:phones_phone,
+           message:messages_message
+
+
+      },
+     
+      success: function(data)
+       {
+        //ajaxindicatorstop();
+        if(data.statusCode == 0)
+          {
+            swal("Success");
+          }
+        else
+        {
+          swal(data.status);
+        }
+
+       },
+    
+     error: function (jqXHR, exception) {
+      
+      //ajaxindicatorstop();
+      swal(exception+jqXHR.responseText);
+     }
+
+    });
+    }
+      catch(Exception)
+      {
+        //ajaxindicatorstop();
+        console.log(Exception.message);
+        alert("Error"+Exception.message);
+        swal(Exception.message);
+      }
+
+}
+swal("Your request has been sent Successfully.");
+//event.preventDefault();
 });
 </script>
 
