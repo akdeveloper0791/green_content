@@ -198,9 +198,7 @@ padding-right: 0px;
                             </li>
                                <li><a href="#screens">Resources</a>
                             </li>
-                            <li><a href="#demo">Demo</a>
-                            </li>
-                            <li><a href="#support">Contact Us</a>
+                            <li><a href="#demo">Contact Us</a>
                             </li>
                             {% if request.user.is_authenticated %}
 
@@ -703,7 +701,7 @@ This is unique feature to announcement will be played. This will take the attent
           <a style="color: white;cursor: pointer;" class="btn btn-primary inverse scrollpoint sp-effect2"  
           href="/download_ngl_player">
           <i class="content fa fa-android fa-3x pull-left"></i>
-             <span>Download NGL Player for</span> <br>Andriod Devices
+             <span>Download NGL Player App for</span> <br>Andriod Devices
              
          </a>    
       </div>
@@ -713,13 +711,13 @@ This is unique feature to announcement will be played. This will take the attent
   
                                                       
       <div class="platforms" style="margin: 5px auto;">
-         <img style="height:300px;width:180px;" src="{% static 'images/app/sm.png' %}"alt="Signage Manager" >
+         <img style="height:300px;width:180px;" src="{% static 'images/app/ngl_remote.png' %}"alt="Signage Manager" >
       </div>
        <div class="platforms"  style="margin: 5px auto;">
         <a  class="btn btn-primary inverse scrollpoint sp-effect1" 
          href="/download_ngl_remote">
         <i class="content fa fa-android fa-3x pull-left"></i>
-        <span>Download NGLP Remote for</span><br>
+        <span>Download NGLP Remote App for</span><br>
         <b>Android Mobile</b>
         </a>
       </div>
@@ -890,7 +888,7 @@ This is unique feature to announcement will be played. This will take the attent
             <section id="demo" class="doublediagonal">
             <div class="container">
                 <div class="section-heading scrollpoint sp-effect3">
-                   <h2 class="block_title">Request for Free Demo</h2>
+                   <h2 class="block_title">Contact Us</h2>
                     <div class="divider"></div>
                   
                 </div>
@@ -923,10 +921,19 @@ This is unique feature to announcement will be played. This will take the attent
     <p align="center" style="margin:10px 10px;"><input type="submit" class="btn btn-info" name="submit" value="Send Request"></p>
     <div class="loader" style="display: none;"></div>
   </form>
-  <a href="tel:+91 9900819475" style="text-decoration:none;color: white;"><p style="font-size:14px;font-family: sans-serif;text-align:right;color:#66cdcc;"><b>&nbsp;&nbsp;Call us at: 
-    <i class="fa fa-phone fa-lg"></i>+91-9900819475</b></p></a>     
+
+  
+
+    
+   <a href="tel:+91 9632637285" style="float: right;text-decoration:none;color: white;"><p style="font-size:14px;font-family: sans-serif;color:#66cdcc;"><b>/ 9632637285</b></p>
+
+     <a href="tel:+91 9900819475" style="float: right; text-align: right;text-decoration:none;color: white;"><p style="font-size:14px;font-family: sans-serif;color:#66cdcc;"><b>&nbsp;&nbsp;Call us at: 
+    <i class="fa fa-phone fa-lg"></i>+91-9900819475</b></p></a> 
+   </a>
+   
+      
                                 
-                           
+              
                         </div>
                     </div>
                 </div>
@@ -934,7 +941,7 @@ This is unique feature to announcement will be played. This will take the attent
         </section>
 
 
- <section id="support" style="padding: 0 0 50px 0;" 
+ <section id="support"  style="padding: 0 0 50px 0;display: none;" 
  class="doublediagonal">
         <div class="container">
       <div class="section-heading scrollpoint sp-effect3">
@@ -998,8 +1005,7 @@ This is unique feature to announcement will be played. This will take the attent
                     <a href="https://www.facebook.com/Adskite-1659890184252995/" class="scrollpoint sp-effect3"><i class="fa fa-facebook fa-lg"></i></a>
                 </div>
                 <div class="rights">
-		 Copyright (c) 2019 <a style="color: white;" href="https://www.nextgenlearning.in"><b>nextgenlearning.in</b></a>, All Rights Reserved. Powered by 
-     <a style="color: white;" href="http://www.ibettertechnologies.com/"><b>iBetter Technologies LLP</b></a>.
+		 Copyright (c) 2019 <a style="color: white;" href="https://www.nextgenlearning.in"><b>nextgenlearning.in</b></a>, All Rights Reserved.
                 </div>
             </div>
         </footer>
@@ -1204,8 +1210,6 @@ next=i+1;moveIt(next);},10000);</script>
 $(document).bind('click',function(e){var $clicked=$(e.target);if(!$clicked.parents().hasClass("dropdown"))$(".dropdown dd ul").hide();});$('.mutliSelect input[type="checkbox"]').on('click',function(){var title=$(this).closest('.mutliSelect').find('input[type="checkbox"]').val(),title=$(this).val()+",";if($(this).is(':checked')){var html='<span title="'+title+'">'+title+'</span>';$('.multiSel').append(html);$(".hida").hide();}else{$('span[title="'+title+'"]').remove();var ret=$(".hida");$('.dropdown dt a').append(ret);}});function submitform()
 {document.forms["searchform"].submit();}
 $("#smsform").submit(function(event){$('.loader2').show();var phone=$("#phone").val();var message=$("#message").val();var dataString='phone='+phone+'&message='+message;$.ajax({type:"POST",url:"https://www.adskite.com/send_sms.php",data:dataString,success:function(data){var frm=document.getElementById('smsform');frm.reset();$('.loader2').html("Download link sent successfully!");}});event.preventDefault();});$("#smsform1").submit(function(event){$('.loader3').show();var phonee=$("#phonee").val();var messagee=$("#messagee").val();var dataString='phonee='+phonee+'&messagee='+messagee;$.ajax({type:"POST",url:"https://www.signageserv.com/send_sms1.php",data:dataString,success:function(data){var frm=document.getElementById('smsform1');frm.reset();$('.loader3').html("Download link sent successfully!");}});event.preventDefault();});$("#smsform2").submit(function(event){$('.loader4').show();var phones=$("#phones").val();var messages=$("#messages").val();var dataString='phones='+phones+'&messages='+messages;$.ajax({type:"POST",url:"https://www.signageserv.com/send_sms2.php",data:dataString,success:function(data){var frm=document.getElementById('smsform2');frm.reset();$('.loader4').html("Download link sent successfully!");}});event.preventDefault();});</script>
-
-
 
 
 </body>
