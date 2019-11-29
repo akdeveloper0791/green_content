@@ -137,6 +137,29 @@ padding-right: 0px;
 
  </style>
 
+ <style>
+.loader {
+  border: 16px solid #f3f3f3;
+  border-radius: 50%;
+  border-top: 16px solid #3498db;
+  width: 120px;
+  height: 120px;
+  -webkit-animation: spin 2s linear infinite; /* Safari */
+  animation: spin 2s linear infinite;
+}
+
+/* Safari */
+@-webkit-keyframes spin {
+  0% { -webkit-transform: rotate(0deg); }
+  100% { -webkit-transform: rotate(360deg); }
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+</style>
+
 </head>
 
 <body>
@@ -1152,7 +1175,7 @@ This is unique feature to announcement will be played. This will take the attent
 
     </div>
     <p align="center" style="margin:10px 10px;"><input type="submit" class="btn btn-info" name="submit" value="Send Request"></p>
-    <div class="loader" style="display: none;"></div>
+    <div align="center" class="loader" style="margin:10px 10px;"></div>
   </form>
   <a href="tel:+91 9900819475" style="text-decoration:none;color: white;"><p style="font-size:14px;font-family: sans-serif;text-align:right;color:#66cdcc;"><b>&nbsp;&nbsp;Call us at: 
     <i class="fa fa-phone fa-lg"></i>+91-9900819475</b></p></a>     
@@ -1326,6 +1349,7 @@ $('#myModal_campaign').hide(function () {
      
       success: function(data)
        {
+        $('.loader').hide();
         //ajaxindicatorstop();
         if(data.statusCode == 0)
           {
@@ -1339,7 +1363,7 @@ $('#myModal_campaign').hide(function () {
        },
     
      error: function (jqXHR, exception) {
-      
+      $('.loader').hide();
       //ajaxindicatorstop();
       swal(exception+jqXHR.responseText);
      }
@@ -1348,6 +1372,7 @@ $('#myModal_campaign').hide(function () {
     }
       catch(Exception)
       {
+        $('.loader').hide();
         //ajaxindicatorstop();
         console.log(Exception.message);
         alert("Error"+Exception.message);

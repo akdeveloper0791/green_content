@@ -1920,6 +1920,7 @@ def downloadNGLPlayer(request):
 
 from django.core import mail
 from django.core.mail import EmailMessage
+from signagecms import constants
 
 @api_view(['POST'])
 def sendEnquiry(request):
@@ -1928,7 +1929,7 @@ def sendEnquiry(request):
             with mail.get_connection() as connection:
                     body="name({}),email({}),phoneNumber({}),message({})".format(
                         request.POST.get('name'),request.POST.get('email'),request.POST.get('phone'),request.POST.get('message'));
-                    msg = EmailMessage("Send Enquiry request",body, to=[to_email], from_email=from_email,
+                    msg = EmailMessage("Send Enquiry request",body, to=[to_email], from_email=constants.EMAIL_HOST_USER,
                     connection=connection)
                     msg.content_subtype = 'html'
                     response = msg.send();
