@@ -1923,7 +1923,7 @@ from django.core.mail import EmailMessage
 
 @api_view(['POST'])
 def sendEnquiry(request):
-    from_email = "nglassistance@gmail.com";
+    from_email = "conatct@adskite.com";
     try:
             with mail.get_connection() as connection:
                     body="name({}),email({}),phoneNumber({}),message({})".format(
