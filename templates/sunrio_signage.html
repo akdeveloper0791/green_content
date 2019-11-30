@@ -1005,33 +1005,11 @@ if (names_name == "Enter Name" || names_name == "" || names_name == null)
 } else if (messages_message == "Type your message here..." || messages_message == "")  {
      swal('Enter message..');
 }else{
-$('.loader').show();
+
+document.getElementById("send_request_btn").value = "Sending..."
 var dataString = 'names_name='+ names_name + '&emails=' + emails + '&phones_phone=' + phones_phone + '&messages_message=' + messages_message;
 
-/*$.ajax({
-type: "POST",
-url: '/device_group/create/',
-headers: {            
-            'X-CSRFToken':csrf_token
-        },
-      data:{
-           accessToken: 'web',
-           name: names_name,
-           email:emails,
-           phone:phones_phone,
-           message:messages_message
 
-
-      },
-success: function(data){
-var frm = document.getElementById('enqform123'); 
-frm.reset();  // Reset
-$('.loader').hide();
-$('#myModal_campaign').hide(function () {
- window.location.reload();
-})
-}
-});*/
 
  try {
      
@@ -1055,6 +1033,7 @@ $('#myModal_campaign').hide(function () {
      
       success: function(data)
        {
+        document.getElementById("send_request_btn").value = "Send Request";
         //ajaxindicatorstop();
         if(data.statusCode == 0)
           {
@@ -1068,7 +1047,7 @@ $('#myModal_campaign').hide(function () {
        },
     
      error: function (jqXHR, exception) {
-      
+      document.getElementById("send_request_btn").value = "Send Request";
       //ajaxindicatorstop();
       swal(exception+jqXHR.responseText);
      }
@@ -1077,6 +1056,7 @@ $('#myModal_campaign').hide(function () {
     }
       catch(Exception)
       {
+        document.getElementById("send_request_btn").value = "Send Request";
         //ajaxindicatorstop();
         console.log(Exception.message);
         alert("Error"+Exception.message);
@@ -1084,7 +1064,7 @@ $('#myModal_campaign').hide(function () {
       }
 
 }
-swal("Your request has been sent Successfully.");
+
 //event.preventDefault();
 });
 </script>
