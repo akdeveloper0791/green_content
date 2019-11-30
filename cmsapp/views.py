@@ -1936,6 +1936,6 @@ def sendEnquiry(request):
                     connection=connection)
                     msg.content_subtype = 'html'
                     response = msg.send();
-                    return JsonResponse({'statusCode':0,'status':'success'})
+                    return JsonResponse({'statusCode':0,'status':'Request has been submitted successfully'})
     except Exception as e:
         return JsonResponse({'statusCode':100,'status':'Error in sending mail'+str(e)})
