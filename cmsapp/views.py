@@ -1925,11 +1925,14 @@ from signagecms import constants
 @api_view(['POST'])
 def sendEnquiry(request):
     to_email = "nglassistance@gmail.com";
+    from_email = constants.EMAIL_HOST_USER;
     try:
             with mail.get_connection() as connection:
                     body="name({}),email({}),phoneNumber({}),message({})".format(
                         request.POST.get('name'),request.POST.get('email'),request.POST.get('phone'),request.POST.get('message'));
+
                     msg = EmailMessage("Send Enquiry request",body, to=[to_email], from_email=constants.EMAIL_HOST_USER,
+
                     connection=connection)
                     msg.content_subtype = 'html'
                     response = msg.send();
