@@ -22,6 +22,8 @@ var downloadThumbInfo = {
   };
 var pendingDownloadThumb = [];
 var isDownloadingMedia = false;
+
+var videoFilesCount=0;
 function updateScreenSize()
 {
   var w = window,
@@ -133,7 +135,7 @@ function constructDivs()
   	info = regionsInfo[idPosition];
   	removeChildElement(idPosition);
 
-    console.log("addImgReg::"+JSON.stringify(info));
+    //console.log("addImgReg::"+JSON.stringify(info));
 
     //create child tag
     var childTag = document.createElement('IMG');
@@ -185,7 +187,7 @@ function constructDivs()
     document.getElementById('reg_div_'+idPosition).appendChild(childTag);
   	regionsInfo[idPosition] = info;
 
-    console.log("addImgReg:regionsInfo:"+JSON.stringify(regionsInfo[idPosition]));
+    //console.log("addImgReg:regionsInfo:"+JSON.stringify(regionsInfo[idPosition]));
 
   }
 
@@ -291,7 +293,7 @@ function displayVideoPropertiesDialog(properties)
        //get the region info
        info = regionsInfo[idPosition];
 
-      console.log("setVideoProperties:play_duration:"+info.play_duration);
+      //console.log("setVideoProperties:play_duration:"+info.play_duration);
 
        //set properties
        info.properties = {
@@ -301,7 +303,7 @@ function displayVideoPropertiesDialog(properties)
        info.play_duration=parseInt(document.getElementById('video_play_duration').value);
 
        dismissVideoPropertiesDialog();
-       console.log("setVideoProperties:info:"+JSON.stringify(info));
+       //console.log("setVideoProperties:info:"+JSON.stringify(info));
   }
 
   function dismissVideoPropertiesDialog()
@@ -361,7 +363,7 @@ function displayVideoPropertiesDialog(properties)
   }
   function selectImgRegion()
   {
-    console.log("Inside selectImgRegion");
+    //console.log("Inside selectImgRegion");
     dismissChoseImgOption();
   	document.getElementById('select_img_file_type').click();
   }
@@ -406,7 +408,7 @@ function displayVideoPropertiesDialog(properties)
     }else{
       
     }
-      console.log("addImgReg:info:"+JSON.stringify(info));
+      //console.log("addImgReg:info:"+JSON.stringify(info));
   }
 
   function selectVideoRegion()
@@ -541,7 +543,7 @@ function displayVideoPropertiesDialog(properties)
 
        dismissCreateTextRegion();
 
-        console.log("regionsInfo:"+JSON.stringify(info));
+        //console.log("regionsInfo:"+JSON.stringify(info));
     }
   }
 
@@ -742,7 +744,7 @@ function displayVideoPropertiesDialog(properties)
          info.refresh_interval=1*60;
        }
        var bg_color=document.getElementById('rss_feed_text_bg_color').value;
-       console.log("bg_color:"+bg_color);
+       //console.log("bg_color:"+bg_color);
        if(bg_color == "FFFFFF")
        {
         info.bg_color="transperant";
@@ -786,7 +788,7 @@ function displayVideoPropertiesDialog(properties)
        
        //x.setAttribute("src", "https://www.w3schools.com/jsref/prop_video_autoplay.asp");
        //update info
-       console.log("regionsInfo:"+JSON.stringify(info));
+       //console.log("regionsInfo:"+JSON.stringify(info));
        regionsInfo[idPosition] = info;
 
        
@@ -990,7 +992,8 @@ function prepareInfoFile(mediaName)
  
   var playDuration = document.getElementById("file_duration").value;
   var infoJSON = { "type": "multi_region", "regions": activeRegions,
-  "duration": playDuration,'hide_ticker_txt': document.getElementById("create_txt_media_hide_ticker").checked}; 
+  "duration": playDuration,'hide_ticker_txt': document.getElementById("create_txt_media_hide_ticker").checked,
+"video_files_count":videoFilesCount}; 
   
   if(isRssFeed)
   {
@@ -1000,6 +1003,7 @@ function prepareInfoFile(mediaName)
     infoJSON.type="ticker_txt";
   }
   info = JSON.stringify(infoJSON);
+  //console.log("infoJSON:"+info);
 
   //var blob = new Blob([info], {type: "text/plain;charset=utf-8"});
   campaignName = mediaName;
@@ -1013,6 +1017,7 @@ function prepareInfoFile(mediaName)
    displayInitUploadBusyDialog();
    clearParentDiv();
    prepareThumbView(0);
+   videoFilesCount=0;
   //clearParentDiv();
   
   //initUpload();
@@ -1029,6 +1034,12 @@ function deleteInActiveDivs()
       info['is_active']==false))
     {
       newRegions.push(info);
+    }
+
+    if(info.type=="Video")
+    {
+      videoFilesCount=videoFilesCount+1;
+      //console.log("videoFilesCount:"+videoFilesCount);
     }
   }
 
@@ -1377,7 +1388,7 @@ function initDraw(canvas)
 
     function startResizing(event,element)
     {
-      console.log("start resizing"+element.id);
+      //console.log("start resizing"+element.id);
       event = event || window.event;
       event.preventDefault();
       resizeMouse.startX = parseInt(element.style.left);
@@ -1794,7 +1805,7 @@ function addPdfRegion(idPosition,file)
        info.play_duration=parseInt(document.getElementById('pdf_play_duration').value);
 
        dismissPdfPropertiesDialog();
-      console.log("setFileProperties:info:"+JSON.stringify(info));
+      //console.log("setFileProperties:info:"+JSON.stringify(info));
   }
 
 function selectExcleRegion()
@@ -1887,7 +1898,7 @@ function selectExcleRegion()
         };
 
      document.getElementById('reg_div_'+idPosition).appendChild(childTag);
-     console.log("onSelectExcelReg:info:"+JSON.stringify(info)); 
+     //console.log("onSelectExcelReg:info:"+JSON.stringify(info)); 
 
      excelPropertiesDialog();
 
@@ -1915,7 +1926,7 @@ function selectExcleRegion()
        info.play_duration=parseInt(document.getElementById('excel_play_duration').value);
 
        dismissExcelPropertiesDialog();
-       console.log("setFileProperties:info:"+JSON.stringify(info));
+       //console.log("setFileProperties:info:"+JSON.stringify(info));
   }
 
 
@@ -1938,7 +1949,7 @@ function selectExcleRegion()
        info.play_duration=parseInt(document.getElementById('img_play_duration').value);
 
        dismissImgScaleTypeDialog();
-      console.log("setImgScaleTypeProperty:info:"+JSON.stringify(info));
+      //console.log("setImgScaleTypeProperty:info:"+JSON.stringify(info));
   }
 
   function dismissImgScaleTypeDialog()
@@ -1949,7 +1960,7 @@ function selectExcleRegion()
 function selectImgRegionOptions()
 {
     dismissSelectRegOption();
-    console.log("selectImgRegionOptions");
+    //console.log("selectImgRegionOptions");
     document.getElementById('chose_img_option').style.display="block";
     document.getElementById('select_img_file_type_div').style.display="block";
     document.getElementById('select_video_file_type_div').style.display="none";
@@ -1972,9 +1983,9 @@ function selectImgFromMedia(mediaType="image")
 
 function onSelectMediaFromLibrary(contentType,filePath,storeLocation,fileName)
 {
-  console.log("file name before split "+fileName);
+  //console.log("file name before split "+fileName);
   fileName = fileName.split("+").join(" ");
-  console.log("file name after split "+fileName);
+  //console.log("file name after split "+fileName);
   if(contentType=='image')
       {
         onSelectImgRegFromLibrary(filePath,storeLocation,fileName);
@@ -2022,8 +2033,8 @@ function onSelectImgRegFromLibrary(imgPath,storeLocation,fileName)
     
     isResourceFromLibrary=true;
   
-   console.log("addImgReg:info:"+JSON.stringify(info));
-   console.log("add img imgPath "+imgPath);
+   //console.log("addImgReg:info:"+JSON.stringify(info));
+   //console.log("add img imgPath "+imgPath);
    checkAndDisplayMediaThumb(imgPath,storeLocation,fileName,idPosition);
 }
 
