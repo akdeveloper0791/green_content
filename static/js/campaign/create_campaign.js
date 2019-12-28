@@ -1015,7 +1015,7 @@ function prepareInfoFile(mediaName)
    prepareThumbView(0);
   //clearParentDiv();
   
-  //initUpload();
+  initUpload();
 }
 
 function deleteInActiveDivs()
@@ -1065,7 +1065,8 @@ function startUpload()
   {
    initUpload();
   }else{
-    initLocalUpload();
+     console.log("Inside start upload, init local upload");
+     initLocalUpload();
   }
 }
 
@@ -1163,16 +1164,23 @@ function prepareThumbView(i)
 
 function getUploadMediaName(selectedFileName)
 {
+  var slectedFileNameOriginal = selectedFileName;
+
   if(selectedFileName.startsWith("DNDM-"))
   {
     tempName = selectedFileName;
   }else{
     //add DNDM
-    tempName = "DNDM-"+selectedFileName;
+    //tempName = "DNDM-"+selectedFileName;
+    var splitFile = selectedFileName.split('.');
+    var fileType = splitFile.pop();
+    selectedFileName = splitFile.pop().replace(/[&\/\\#, +()$~%.'":*?<>{}]/g, '');
+    tempName = "DNDM-"+Math.floor((Math.random() * 99) + 1)+"_"+selectedFileName.substring(0,5)+
+    "_"+new Date().getTime()+"."+fileType;
   }
-
+  
   //save to array
-  uploadFilesTempNames[selectedFileName] = tempName;
+  uploadFilesTempNames[slectedFileNameOriginal] = tempName;
 
   return tempName;
 }
