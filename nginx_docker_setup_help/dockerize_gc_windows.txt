@@ -7,6 +7,7 @@
 
 5-1)once cloned replace \signagecms\constants.py file with \nginx_docker_setup_help\constants.py file
 
+5-2)replace nginx.conf(C:\Program Files\nginx-1.16.1) file with \nginx_docker_setup_help\nginx.conf and search for 192.168.0.143 and replace with your ip.
 
 6)open cmd prompt and cd to C:\Users\Jitendra\python_projects\green_content
 7)run the following commands
