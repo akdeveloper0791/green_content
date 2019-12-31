@@ -129,7 +129,7 @@ td.campaign_row:hover {
           <tr id="campaign_title_{{ campaign.id }}" class="campaign_row">
               <td rowspan="2" style="width: 12%"><img id="thumb_img_{{ campaign.id }}" src="{% static 'images/campaign/default_campaign.png' %}" style="width: 100%;
     height: 100px;"></td>
-              <td rowspan="2" class="campaign_row" style="text-align:center;text-size:10px">campaign.campaign_name</td>
+              <td rowspan="2" class="campaign_row" style="text-align:center;">{{ campaign.campaign_name }} </td>
               
               <td ><i class='fa fa-trash fa-lg' style='color:orangered;cursor: pointer;' alt="Delete" title="Delete"
                onclick='deleteCampaign("{{campaign.id}}","{{ campaign.campaign_name }}")'></i></td>
