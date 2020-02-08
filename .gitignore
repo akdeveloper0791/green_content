@@ -5,4 +5,3 @@ cms
 db.sqlite3
 media
 .DS_Store
-signagecms/constants.py

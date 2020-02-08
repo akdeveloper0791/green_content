@@ -261,19 +261,26 @@ a.btn:active{
   color: black;
 }
 
+ #map {
+        height: 400px;  /* The height is 400 pixels */
+        width: 85%;  /* The width is the width of the web page */
+         margin-top: 25px;
+       }
 </style>
 
 <!-- [--] skip toggle ui -->
 <br /><br /><br /> <br /> 
- 
+
 <div   class="container">
   <a style="text-align: center;background-color: blue;" class="tablink" href="{% url 'deviceMgmtPlayers' %}" id="defaultOpen">Players</a>
 <a style="text-align: center;" class="tablink" href="{% url 'deviceGroups' %}" id="groups_id">Device Groups</a>
 </div>
-
+<div class="container">
+  <image alt="map" src="{% static 'images/ic_list.png' %}" style="float:right;" onclick="toggleDisplayPlayer(this)"/>
+</div>
  {% if res.statusCode == 0 %}
 
-<div id="players" class="container" style="overflow-x: auto;">
+<div id="players" class="container" style="overflow-x: auto; display:none">
   
   <table class="testTable table table-hover" id="reports_table">
   	<tr style="background: transparent;color: black;">
@@ -379,9 +386,70 @@ a.btn:active{
       </div>
     </div>
 
+<div id="map" class="container" ></div>
+
  <script>
   csrf_token = "{{ csrf_token }}"
+  function myMap(){
+
+//default lat and lng
+ var myLatlng = new google.maps.LatLng(12.97,77.59);
+
+  var mapOptions = {
+    zoom: 12,
+    center: myLatlng
+  }
+
+  var map = new google.maps.Map(document.getElementById("map"), mapOptions);
+
+  {% for player in res.metrics %}
+  var playerLat = "{{player.player_lat}}";
+  var playerLng = "{{player.player_lng}}";
+  if(!isNaN(playerLat)){
+    addMarker(playerLat,playerLng,
+      "{{player.player__id}}",map);
+  }
+  {% endfor %}
+  
+ }
+
+  // Adds a marker to the map.
+function addMarker(lat,lng,playerId,map) {
+  var myLatlng = new google.maps.LatLng(lat,lng);
+
+  // Place a draggable marker on the map
+  var marker = new google.maps.Marker({
+      position: myLatlng,
+      map: map,
+      id:playerId,
+  });
+
+  google.maps.event.addListener(marker, 'click', function() {
+    getCampaignInfo(playerId);
+    });
+}
+
+function toggleDisplayPlayer(imageView){
+  if(imageView.alt == "list"){
+    document.getElementById('map').style.display='block';
+    document.getElementById('players').style.display='none';
+
+    imageView.alt="map";
+    imageView.src = "{% static 'images/ic_list.png' %}";
+  }else{
+    document.getElementById('map').style.display='none';
+    document.getElementById('players').style.display='block';
+    imageView.alt="list";
+    imageView.src = "{% static 'images/ic_map_new_1.png' %}";
+  }
+  
+}
+
  </script>
+
+
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDJFxDX9SBYXt8uprJopnel8cXgsEPo8-I&callback=myMap"></script>
+
 
 {% endblock %}
 
