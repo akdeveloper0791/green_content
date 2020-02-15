@@ -352,7 +352,7 @@ function afterLoad()
 
 function searchCampaigns(searchField){
   var filter = searchField.value.toUpperCase();
-  console.log("Search campaigns filter name-"+filter);
+
   {% for campaign in res.campaigns %}
     var campaignName = "{{campaign.campaign_name}}";
     var campaignId = "{{campaign.id}}";
