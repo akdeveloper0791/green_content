@@ -1,5 +1,26 @@
 {% load static %}
 <html>
+<style>
+* {
+  box-sizing: border-box;
+}
+
+#searchInput {
+  background-image: url("{% static 'images/search_ic.png' %}");
+  background-position: 10px 12px;
+  background-repeat: no-repeat;
+  width: 100%;
+  font-size: 16px;
+  padding: 12px 20px 12px 50px;
+  border: 1px solid #ddd;
+  margin-bottom: 12px;
+}
+
+#searchInput:focus
+{
+    border: 1px solid blue;
+}
+</style>
 <body>
     <!--alert style-->
         <link rel="stylesheet" href="{% static 'css/sweetalert.css' %}">
@@ -18,6 +39,8 @@
         
         <!-- Modal body -->
         <div class="modal-body">
+
+          <input type="text" id="searchInput" onkeyup="searchCampaigns(this)" placeholder="Search for campaigns.." title="Type in a name">
           <div id="lmcb_campaigns_list" class="table-responsive" style="overflow-x: auto;">
           </div>
          
@@ -41,9 +64,11 @@
   <script>
   var lmcbselectedCampaigns=[];
   var existedCampaigns=[];
+  var lmcbCampaigns = [];
   function closeLmcbCampaigns()
   {
     existedCampaigns=[];
+    lmcbCampaigns = [];
     document.getElementById('lmcb_campaigns').style.display = "none";
   }
 
@@ -113,7 +138,7 @@
   function lmcbDisplayCampaigns(campaigns)
   {
     lmcbselectedCampaigns = [];
-
+    lmcbCampaigns = campaigns;
     var dvTable = document.getElementById("lmcb_campaigns_list");
 
     if(campaigns.length>=0)
@@ -130,14 +155,17 @@
 
         for (var i = 0; i < campaigns.length; i++) 
         {
+          campaignId = campaigns[i]['id'];
              row = table.insertRow(-1);
              row.style.height = "25px";
+             row.id="campaign_row_"+campaignId;
+
              for (var j = 0; j < columnCount; j++) 
              {
 
               var cell = row.insertCell(-1);
               /*cell.innerHTML = campaigns[i]['campaign_name'];*/
-              campaignId = campaigns[i]['id'];
+              
               var isDisable = existedCampaigns.includes(campaignId);
 
               if(isDisable)
@@ -197,6 +225,27 @@
   {
     console.log(JSON.stringify(lmcbselectedCampaigns));
   }*/
+
+function searchCampaigns(searchField){
+  var filter = searchField.value.toUpperCase();
+  console.log("Search campaigns filter name-"+filter);
+  for (var i = 0; i < lmcbCampaigns.length; i++)
+  {
+    var campaignName = lmcbCampaigns[i]['campaign_name'];
+    var campaignId = lmcbCampaigns[i]['id'];
+    var campaignRow = document.getElementById('campaign_row_'+campaignId);
+    
+    if (campaignName.toUpperCase().indexOf(filter) > -1) {
+      campaignRow.style.display="";
+    
+    }
+    else{
+      campaignRow.style.display="none";
+    }
+  }
+  
+}
+  
 
   </script>
    

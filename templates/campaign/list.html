@@ -32,13 +32,6 @@
 }
 
 
-td.campaign_row:hover { 
-  font-size: 18px
-}
-
-.campaign_row a {
-  color:#5D8AA8;
-}
 
 /* The Modal (background) */
 .modal {
@@ -98,6 +91,35 @@ td.campaign_row:hover {
   to {bottom: 0; opacity: 0;}
 }
 
+td.campaign_row:hover { 
+  font-size: 18px
+}
+
+.campaign_row a {
+  color:#5D8AA8;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+#searchInput {
+  background-image: url("{% static 'images/search_ic.png' %}");
+  background-position: 10px 12px;
+  background-repeat: no-repeat;
+  width: 100%;
+  font-size: 16px;
+  padding: 12px 20px 12px 50px;
+  border: 1px solid #ddd;
+  margin-bottom: 12px;
+}
+
+#searchInput:focus
+{
+    border: 1px solid #c1cdc1;
+    background: #c1cdc1;
+}
+
 </style>
 
 
@@ -110,7 +132,9 @@ td.campaign_row:hover {
     <button class="gradient-button gradient-btn"><i class='fa fa-plus'> Create Campaign</i></button></a><br /><br />
 
 <!-- 	<ul class='list-group'> -->
- 
+
+ <input type="text" id="searchInput" onkeyup="searchCampaigns(this)" placeholder="Search for campaigns.." title="Type in a name">
+
 	<table id="campaign_list_table" class="table table-responsive" style="border:0px;border-spacing: 2px;width: 100%;text-align: center;">
     <thead style="border: 0px;">
       <tr style="border: 0px;">
@@ -124,7 +148,7 @@ td.campaign_row:hover {
 
 	{% for campaign in res.campaigns %}
    
-    <div class="rows" id="campaign_row_{{ campaign.id }}">
+    <div class="rows" id="campaign_row_{{campaign.id}}">
 
           <tr id="campaign_title_{{ campaign.id }}" class="campaign_row">
               <td rowspan="2" style="width: 12%"><img id="thumb_img_{{ campaign.id }}" src="{% static 'images/campaign/default_campaign.png' %}" style="width: 100%;
@@ -325,6 +349,29 @@ function afterLoad()
    highliteSelectedLink("campaigns_nav");  
    checkAndDownloadThumbFile(); 
 }
+
+function searchCampaigns(searchField){
+  var filter = searchField.value.toUpperCase();
+  console.log("Search campaigns filter name-"+filter);
+  {% for campaign in res.campaigns %}
+    var campaignName = "{{campaign.campaign_name}}";
+    var campaignId = "{{campaign.id}}";
+    var campaignRow1 = document.getElementById('campaign_title_'+campaignId);
+    var campaignRow2 = document.getElementById('campaign_title2_'+campaignId);
+     
+    if (campaignName.toUpperCase().indexOf(filter) > -1) {
+      campaignRow1.style.display="";
+    campaignRow2.style.display="";
+        }
+    else{
+      campaignRow1.style.display="none";
+      campaignRow2.style.display="none";
+    }
+        
+
+  {% endfor %}
+}
+
 </script>
 {% endblock %}
 
