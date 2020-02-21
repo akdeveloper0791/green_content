@@ -68,6 +68,8 @@ function displayPlayerCampaigns(campaigns,pId)
     
     //init existing campaigns
     existedCampaigns=[];
+    assignedCampaigns = campaigns;
+
 
     if(campaigns.length>=1)
     {
@@ -381,6 +383,23 @@ function getLastPlayerAccessedTime(serverTime)
   
 }
 
+function searchAssignedCampaigns(searchField){
+	var filter = searchField.value.toUpperCase();
 
+  for (var i = 0; i < assignedCampaigns.length; i++)
+  {
+    var campaignName = assignedCampaigns[i]['campaign_name'];
+    var campaignId = assignedCampaigns[i]['id'];
+    var campaignRow = document.getElementById('campaign_row_'+campaignId);
+    
+    if (campaignName.toUpperCase().indexOf(filter) > -1) {
+      campaignRow.style.display="";
+     
+    }
+    else{
+      campaignRow.style.display="none";
+    }
+  }
+}
 
 

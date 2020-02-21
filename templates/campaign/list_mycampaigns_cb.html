@@ -5,7 +5,7 @@
   box-sizing: border-box;
 }
 
-#searchInput {
+.searchInput {
   background-image: url("{% static 'images/search_ic.png' %}");
   background-position: 10px 12px;
   background-repeat: no-repeat;
@@ -16,7 +16,7 @@
   margin-bottom: 12px;
 }
 
-#searchInput:focus
+.searchInput:focus
 {
     border: 1px solid blue;
 }
@@ -40,7 +40,7 @@
         <!-- Modal body -->
         <div class="modal-body">
 
-          <input type="text" id="searchInput" onkeyup="searchCampaigns(this)" placeholder="Search for campaigns.." title="Type in a name">
+          <input type="text" class="searchInput" id="searchInput" onkeyup="searchCampaigns(this)" placeholder="Search for campaigns.." title="Type in a name">
           <div id="lmcb_campaigns_list" class="table-responsive" style="overflow-x: auto;">
           </div>
          

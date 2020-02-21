@@ -321,6 +321,8 @@ a.btn:active{
       
         <!-- Modal Header -->
         <div class="modal-header">
+          <div style="text-align: right"><img src="{% static 'images/ic_close.png' %}" onclick="closePlayerCampaignInfo()"/></div>
+        
          <p id="campaigns_info_player" style="color:#4CAF50;text-align: center;font-weight: 700;font-size:26px;">Player</p>      
         </div>
          <!--  </div> 
@@ -331,7 +333,8 @@ a.btn:active{
           <input type="hidden" id="player_campaign_info_id" />
           <div id="campaigns_info">
             <span style="float: right;" class="gradient-button gradient-btn" onclick="displayCampaignsToAdd()"><sapn class="fa fa-plus"> Assign New </sapn></span> <br/>
-            <h5 style="color:cornflowerblue;display:inline-block"> Assigned Campaigns</h5>           
+            <h5 style="color:cornflowerblue;display:inline-block"> Assigned Campaigns</h5> <br />
+            <input type="text" class="searchInput" id="searchAssignedInput" onkeyup="searchAssignedCampaigns(this)" placeholder="Search for campaigns.." title="Type in a name">          
            <div id="player_info_campaigns" class="table-responsive" style="margin-top:2px;">
             </div>
           </div>
