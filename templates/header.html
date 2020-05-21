@@ -126,15 +126,15 @@
 
   <div class="topnav" id="myTopnav">
   {% if request.user.is_authenticated %}
-  <a id="campaigns_nav" href="{% url 'listCampaignsWeb' %}" >Campaign <br /> Management</a>
+  <a id="campaigns_nav" href="{% url 'listCampaignsWeb' %}" >Lesson <br /> Management</a>
   <a id="deviceMgmt_nav" href="{% url 'deviceMgmt' %}" >Device <br />Management</a>
-  <a id="web_search_nav" href="{% url 'mycontent' %}" >Content<br /> Management</a>
+ <!-- <a id="web_search_nav" href="{% url 'mycontent' %}" >Content<br /> Management</a> -->
   <a id="gcGroups_nav" href="{% url 'gcGroups' %}">Partners &<br/>Accounts</a>
-  <a id="campaignReports_nav"  href="{% url 'campaignReports' %}" >Campaign <br />Reports</a>
+  <a id="campaignReports_nav"  href="{% url 'campaignReports' %}" >Lesson <br />Reports</a>
   
-  <a id="viewerMetrics_nav"  href="{% url 'iotViewerMetrics' %}" >ADview <br />Reports</a>
+ <!-- <a id="viewerMetrics_nav"  href="{% url 'iotViewerMetrics' %}" >ADview <br />Reports</a>
 
-  <a id="contextualAdsRules_nav"  href="{% url 'contextualAdsRules' %}" >Contextual <br />Campaigns</a>
+  <a id="contextualAdsRules_nav"  href="{% url 'contextualAdsRules' %}" >Contextual <br />Campaigns</a> -->
    
   <a class="btn btn-lg " id="logout" href="{% url 'logout' %}" >{{ request.user.first_name}}<br /> (Logout)</a>
   {% else %}
@@ -160,15 +160,15 @@ function screenOrientationChange() {
   if (x.className === "topnav") 
   {
     x.className += " responsive";
-document.getElementById('campaigns_nav').innerHTML = "Campaign Management ";
+document.getElementById('campaigns_nav').innerHTML = "Lesson Management ";
 document.getElementById('deviceMgmt_nav').innerHTML = "Device Management";
-document.getElementById('web_search_nav').innerHTML = "Content Management";
+//document.getElementById('web_search_nav').innerHTML = "Content Management";
 document.getElementById('gcGroups_nav').innerHTML = "Partners & Accounts";
-document.getElementById('campaignReports_nav').innerHTML="Campaign Reports";
+document.getElementById('campaignReports_nav').innerHTML="Lesson Reports";
 
-document.getElementById('viewerMetrics_nav').innerHTML = "ADview Reports";
+/*document.getElementById('viewerMetrics_nav').innerHTML = "ADview Reports";
 
-document.getElementById('contextualAdsRules_nav').innerHTML = "Contextual Campaigns";
+document.getElementById('contextualAdsRules_nav').innerHTML = "Contextual Campaigns"; */
 var logg=document.getElementById('logout');
 if (logg.className !="btn btn-lg btn-info")
 {
