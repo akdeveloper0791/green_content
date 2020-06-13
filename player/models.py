@@ -124,7 +124,7 @@ class Player(models.Model):
       with connection.cursor() as cursor:
           query = '''SELECT player.id,player.name,player_campaign.id as pcId FROM player_player as player 
            LEFT JOIN campaign_player_campaign as player_campaign ON player.id = player_campaign.player_id AND player_campaign.campaign_id=%s 
-           WHERE (player.user_id=%s)'''
+           WHERE (player.user_id=%s or player.id IN (SELECT player_id FROM group_player where gc_group_id IN (SELECT gc_group_id FROM group_gcgroupmembers WHERE member_id =%s and status=1)))'''
           cursor.execute(query,[campaignId,userId]);
           players = dictfetchall(cursor);
           cursor.close();
