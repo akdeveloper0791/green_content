@@ -541,10 +541,10 @@ class Player_Campaign(models.Model):
             #check group info
             try:
                 #check for player,,
-                playerInfo = Player.canAccessPlayers(players,userId);
+                '''playerInfo = Player.canAccessPlayers(players,userId);
                 if(playerInfo == False):
                     return {'statusCode':5,'status':
-                    'Some of the players are not found, please refresh and try again later'};
+                    'Some of the players are not found, please refresh and try again later'};'''
 
                 #check for campaigns (provided campaigns must be user uploaded)
                 campaigns = [];
