@@ -147,6 +147,21 @@ class Player(models.Model):
           return {'statusCode':0,'metrics':players[0]}
         else:
           return False;
+    
+    def canAccessPlayers(players,userId):
+      params = players.copy();
+      query = '''SELECT player.name as player__name, player.id as player__id FROM player_player as player 
+                 WHERE player.id = IN ({}) AND (player.user_id = %s or player.id IN (SELECT player_id FROM group_player where gc_group_id IN (SELECT gc_group_id FROM group_gcgroupmembers WHERE member_id =%s and status=1))) LIMIT %s'''.format(','.join(['%s' for _ in range(len(players))]))
+	  params.append(userId);
+	  params.append(userId);
+	  params.append(len(players));
+      with connection.cursor() as cursor:
+        cursor.execute(query,params);
+        players = dictfetchall(cursor);
+        if(len(players)>=1):
+          return {'statusCode':0,'metrics':players[0]}
+        else:
+          return False;
 
     def getMyAssignedPlayers(userId):
       query = '''SELECT player.name as player__name, player.id as player__id, datetime(metrics.accessed_at,'localtime') as accessed_at, player.player_lat, player.player_lng FROM player_player as player 
