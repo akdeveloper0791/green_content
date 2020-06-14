@@ -690,7 +690,8 @@ class Player_Campaign(models.Model):
             LEFT JOIN campaign_schedule_campaign sc on pc.id = sc.player_campaign_id or dgc.id = sc.device_group_campaign_id 
             WHERE ( (pc.user_id = %s or pc.user_id IN (SELECT gMember.member_id FROM group_gcgroups as groups INNER JOIN 
             group_player as gp on gp.gc_group_id=groups.id AND gp.player_id=%s
-            INNER JOIN group_gcgroupmembers as gMember on gMember.gc_group_id = groups.id AND gMember.status=1 WHERE groups.user_id=%s group by gMember.member_id)) or dgc.device_group_id IN (SELECT device_group_id FROM device_group_device_group_player WHERE player_id=%s and device_group_id IN (SELECT id FROM device_group_device_group WHERE user_id = %s))) ORDER BY campaigns.updated_date DESC'''
+            INNER JOIN group_gcgroupmembers as gMember on gMember.gc_group_id = groups.id AND gMember.status=1 WHERE groups.user_id=%s group by gMember.member_id)) or dgc.device_group_id IN (SELECT device_group_id FROM device_group_device_group_player WHERE player_id=%s and device_group_id IN (SELECT id FROM device_group_device_group WHERE user_id = %s or user_id IN (SELECT gMember.member_id FROM group_gcgroups as groups INNER JOIN 
+            group_player as gp on gp.gc_group_id=groups.id AND gp.player_id=%s INNER JOIN group_gcgroupmembers as gMember on gMember.gc_group_id = groups.id AND gMember.status=1 WHERE groups.user_id=%s group by gMember.member_id)))) ORDER BY campaigns.updated_date DESC'''
                         
             cursor.execute(conditionQuery,[player,userId,player,userId,player,userId])
             campaigns = dictfetchall(cursor);
