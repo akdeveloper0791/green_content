@@ -52,7 +52,7 @@ def signageserv(request):
         return render(request,'ihealthtv.html')
     elif server == 'www.sunriosignage.com':
         return render(request,'sunrio_signage.html')
-    elif server == 'www.nextgenlearning.in':
+    elif server == 'www.nextgenlearning.in' or server == 'ngl.gurukulalumni.org':
         return render(request,'nextgen_learning.html')
     else:
        return render(request,'signageserv.html')
